@@ -1,0 +1,350 @@
+/**
+ * \file des.h
+ *
+ * \brief DES block cipher
+ *
+ * \warning   DES is considered a weak cipher and its use constitutes a
+ *            security risk. We recommend considering stronger ciphers
+ *            instead.
+ */
+/*
+ *  Copyright (C) 2006-2015, ARM Limited, All Rights Reserved
+ *  SPDX-License-Identifier: Apache-2.0
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"); you may
+ *  not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ *  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *  This file is part of Mbed Crypto (https://tls.mbed.org)
+ *
+ */
+#ifndef MBEDCRYPTO_DES_H
+#define MBEDCRYPTO_DES_H
+
+#if !defined(MBEDCRYPTO_CONFIG_FILE)
+#include "config.h"
+#else
+#include MBEDCRYPTO_CONFIG_FILE
+#endif
+
+#include <stddef.h>
+#include <stdint.h>
+
+#define MBEDCRYPTO_DES_ENCRYPT     1
+#define MBEDCRYPTO_DES_DECRYPT     0
+
+#define MBEDCRYPTO_ERR_DES_INVALID_INPUT_LENGTH              -0x0032  /**< The data input has an invalid length. */
+#define MBEDCRYPTO_ERR_DES_HW_ACCEL_FAILED                   -0x0033  /**< DES hardware accelerator failed. */
+
+#define MBEDCRYPTO_DES_KEY_SIZE    8
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#if !defined(MBEDCRYPTO_DES_ALT)
+// Regular implementation
+//
+
+/**
+ * \brief          DES context structure
+ *
+ * \warning        DES is considered a weak cipher and its use constitutes a
+ *                 security risk. We recommend considering stronger ciphers
+ *                 instead.
+ */
+typedef struct
+{
+    uint32_t sk[32];            /*!<  DES subkeys       */
+}
+mbedcrypto_des_context;
+
+/**
+ * \brief          Triple-DES context structure
+ */
+typedef struct
+{
+    uint32_t sk[96];            /*!<  3DES subkeys      */
+}
+mbedcrypto_des3_context;
+
+#else  /* MBEDCRYPTO_DES_ALT */
+#include "des_alt.h"
+#endif /* MBEDCRYPTO_DES_ALT */
+
+/**
+ * \brief          Initialize DES context
+ *
+ * \param ctx      DES context to be initialized
+ *
+ * \warning        DES is considered a weak cipher and its use constitutes a
+ *                 security risk. We recommend considering stronger ciphers
+ *                 instead.
+ */
+void mbedcrypto_des_init( mbedcrypto_des_context *ctx );
+
+/**
+ * \brief          Clear DES context
+ *
+ * \param ctx      DES context to be cleared
+ *
+ * \warning        DES is considered a weak cipher and its use constitutes a
+ *                 security risk. We recommend considering stronger ciphers
+ *                 instead.
+ */
+void mbedcrypto_des_free( mbedcrypto_des_context *ctx );
+
+/**
+ * \brief          Initialize Triple-DES context
+ *
+ * \param ctx      DES3 context to be initialized
+ */
+void mbedcrypto_des3_init( mbedcrypto_des3_context *ctx );
+
+/**
+ * \brief          Clear Triple-DES context
+ *
+ * \param ctx      DES3 context to be cleared
+ */
+void mbedcrypto_des3_free( mbedcrypto_des3_context *ctx );
+
+/**
+ * \brief          Set key parity on the given key to odd.
+ *
+ *                 DES keys are 56 bits long, but each byte is padded with
+ *                 a parity bit to allow verification.
+ *
+ * \param key      8-byte secret key
+ *
+ * \warning        DES is considered a weak cipher and its use constitutes a
+ *                 security risk. We recommend considering stronger ciphers
+ *                 instead.
+ */
+void mbedcrypto_des_key_set_parity( unsigned char key[MBEDCRYPTO_DES_KEY_SIZE] );
+
+/**
+ * \brief          Check that key parity on the given key is odd.
+ *
+ *                 DES keys are 56 bits long, but each byte is padded with
+ *                 a parity bit to allow verification.
+ *
+ * \param key      8-byte secret key
+ *
+ * \return         0 is parity was ok, 1 if parity was not correct.
+ *
+ * \warning        DES is considered a weak cipher and its use constitutes a
+ *                 security risk. We recommend considering stronger ciphers
+ *                 instead.
+ */
+int mbedcrypto_des_key_check_key_parity( const unsigned char key[MBEDCRYPTO_DES_KEY_SIZE] );
+
+/**
+ * \brief          Check that key is not a weak or semi-weak DES key
+ *
+ * \param key      8-byte secret key
+ *
+ * \return         0 if no weak key was found, 1 if a weak key was identified.
+ *
+ * \warning        DES is considered a weak cipher and its use constitutes a
+ *                 security risk. We recommend considering stronger ciphers
+ *                 instead.
+ */
+int mbedcrypto_des_key_check_weak( const unsigned char key[MBEDCRYPTO_DES_KEY_SIZE] );
+
+/**
+ * \brief          DES key schedule (56-bit, encryption)
+ *
+ * \param ctx      DES context to be initialized
+ * \param key      8-byte secret key
+ *
+ * \return         0
+ *
+ * \warning        DES is considered a weak cipher and its use constitutes a
+ *                 security risk. We recommend considering stronger ciphers
+ *                 instead.
+ */
+int mbedcrypto_des_setkey_enc( mbedcrypto_des_context *ctx, const unsigned char key[MBEDCRYPTO_DES_KEY_SIZE] );
+
+/**
+ * \brief          DES key schedule (56-bit, decryption)
+ *
+ * \param ctx      DES context to be initialized
+ * \param key      8-byte secret key
+ *
+ * \return         0
+ *
+ * \warning        DES is considered a weak cipher and its use constitutes a
+ *                 security risk. We recommend considering stronger ciphers
+ *                 instead.
+ */
+int mbedcrypto_des_setkey_dec( mbedcrypto_des_context *ctx, const unsigned char key[MBEDCRYPTO_DES_KEY_SIZE] );
+
+/**
+ * \brief          Triple-DES key schedule (112-bit, encryption)
+ *
+ * \param ctx      3DES context to be initialized
+ * \param key      16-byte secret key
+ *
+ * \return         0
+ */
+int mbedcrypto_des3_set2key_enc( mbedcrypto_des3_context *ctx,
+                      const unsigned char key[MBEDCRYPTO_DES_KEY_SIZE * 2] );
+
+/**
+ * \brief          Triple-DES key schedule (112-bit, decryption)
+ *
+ * \param ctx      3DES context to be initialized
+ * \param key      16-byte secret key
+ *
+ * \return         0
+ */
+int mbedcrypto_des3_set2key_dec( mbedcrypto_des3_context *ctx,
+                      const unsigned char key[MBEDCRYPTO_DES_KEY_SIZE * 2] );
+
+/**
+ * \brief          Triple-DES key schedule (168-bit, encryption)
+ *
+ * \param ctx      3DES context to be initialized
+ * \param key      24-byte secret key
+ *
+ * \return         0
+ */
+int mbedcrypto_des3_set3key_enc( mbedcrypto_des3_context *ctx,
+                      const unsigned char key[MBEDCRYPTO_DES_KEY_SIZE * 3] );
+
+/**
+ * \brief          Triple-DES key schedule (168-bit, decryption)
+ *
+ * \param ctx      3DES context to be initialized
+ * \param key      24-byte secret key
+ *
+ * \return         0
+ */
+int mbedcrypto_des3_set3key_dec( mbedcrypto_des3_context *ctx,
+                      const unsigned char key[MBEDCRYPTO_DES_KEY_SIZE * 3] );
+
+/**
+ * \brief          DES-ECB block encryption/decryption
+ *
+ * \param ctx      DES context
+ * \param input    64-bit input block
+ * \param output   64-bit output block
+ *
+ * \return         0 if successful
+ *
+ * \warning        DES is considered a weak cipher and its use constitutes a
+ *                 security risk. We recommend considering stronger ciphers
+ *                 instead.
+ */
+int mbedcrypto_des_crypt_ecb( mbedcrypto_des_context *ctx,
+                    const unsigned char input[8],
+                    unsigned char output[8] );
+
+#if defined(MBEDCRYPTO_CIPHER_MODE_CBC)
+/**
+ * \brief          DES-CBC buffer encryption/decryption
+ *
+ * \note           Upon exit, the content of the IV is updated so that you can
+ *                 call the function same function again on the following
+ *                 block(s) of data and get the same result as if it was
+ *                 encrypted in one call. This allows a "streaming" usage.
+ *                 If on the other hand you need to retain the contents of the
+ *                 IV, you should either save it manually or use the cipher
+ *                 module instead.
+ *
+ * \param ctx      DES context
+ * \param mode     MBEDCRYPTO_DES_ENCRYPT or MBEDCRYPTO_DES_DECRYPT
+ * \param length   length of the input data
+ * \param iv       initialization vector (updated after use)
+ * \param input    buffer holding the input data
+ * \param output   buffer holding the output data
+ *
+ * \warning        DES is considered a weak cipher and its use constitutes a
+ *                 security risk. We recommend considering stronger ciphers
+ *                 instead.
+ */
+int mbedcrypto_des_crypt_cbc( mbedcrypto_des_context *ctx,
+                    int mode,
+                    size_t length,
+                    unsigned char iv[8],
+                    const unsigned char *input,
+                    unsigned char *output );
+#endif /* MBEDCRYPTO_CIPHER_MODE_CBC */
+
+/**
+ * \brief          3DES-ECB block encryption/decryption
+ *
+ * \param ctx      3DES context
+ * \param input    64-bit input block
+ * \param output   64-bit output block
+ *
+ * \return         0 if successful
+ */
+int mbedcrypto_des3_crypt_ecb( mbedcrypto_des3_context *ctx,
+                     const unsigned char input[8],
+                     unsigned char output[8] );
+
+#if defined(MBEDCRYPTO_CIPHER_MODE_CBC)
+/**
+ * \brief          3DES-CBC buffer encryption/decryption
+ *
+ * \note           Upon exit, the content of the IV is updated so that you can
+ *                 call the function same function again on the following
+ *                 block(s) of data and get the same result as if it was
+ *                 encrypted in one call. This allows a "streaming" usage.
+ *                 If on the other hand you need to retain the contents of the
+ *                 IV, you should either save it manually or use the cipher
+ *                 module instead.
+ *
+ * \param ctx      3DES context
+ * \param mode     MBEDCRYPTO_DES_ENCRYPT or MBEDCRYPTO_DES_DECRYPT
+ * \param length   length of the input data
+ * \param iv       initialization vector (updated after use)
+ * \param input    buffer holding the input data
+ * \param output   buffer holding the output data
+ *
+ * \return         0 if successful, or MBEDCRYPTO_ERR_DES_INVALID_INPUT_LENGTH
+ */
+int mbedcrypto_des3_crypt_cbc( mbedcrypto_des3_context *ctx,
+                     int mode,
+                     size_t length,
+                     unsigned char iv[8],
+                     const unsigned char *input,
+                     unsigned char *output );
+#endif /* MBEDCRYPTO_CIPHER_MODE_CBC */
+
+/**
+ * \brief          Internal function for key expansion.
+ *                 (Only exposed to allow overriding it,
+ *                 see MBEDCRYPTO_DES_SETKEY_ALT)
+ *
+ * \param SK       Round keys
+ * \param key      Base key
+ *
+ * \warning        DES is considered a weak cipher and its use constitutes a
+ *                 security risk. We recommend considering stronger ciphers
+ *                 instead.
+ */
+void mbedcrypto_des_setkey( uint32_t SK[32],
+                         const unsigned char key[MBEDCRYPTO_DES_KEY_SIZE] );
+
+/**
+ * \brief          Checkup routine
+ *
+ * \return         0 if successful, or 1 if the test failed
+ */
+int mbedcrypto_des_self_test( int verbose );
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* des.h */
