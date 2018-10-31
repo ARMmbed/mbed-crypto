@@ -28,6 +28,7 @@ The Mbed Crypto library is a reference implementation of the PSA Cryptography AP
 
 * The [PSA Cryptography API overview](docs/PSA_Crypto_API_Overview.pdf).
 * The [PSA Cryptography API detailed function reference](docs/PSA_Crypto_API_Reference.pdf), which you can also browse in [HTML format](docs/html/modules.html).
+* The [PSA Cryptography Driver model](docs/PSACryptoDriverModelSpec.pdf).
 
 ## Compiling
 
