@@ -43,9 +43,8 @@
 #include <string.h>
 
 #if defined(MBEDTLS_SELF_TEST) && defined(MBEDTLS_AES_C)
-#if defined(MBEDTLS_PLATFORM_C)
 #include "mbedtls/platform.h"
-#else
+#if !defined(MBEDTLS_PLATFORM_C)
 #include <stdio.h>
 #define mbedtls_printf printf
 #endif /* MBEDTLS_PLATFORM_C */

@@ -50,6 +50,7 @@
 extern "C" {
 #endif
 
+#if defined(MBEDTLS_PLATFORM_C)
 /**
  * \name SECTION: Module settings
  *
@@ -57,7 +58,6 @@ extern "C" {
  * Either change them in config.h or define them on the compiler command line.
  * \{
  */
-
 /* The older Microsoft Windows common runtime provides non-conforming
  * implementations of some standard library functions, including snprintf
  * and vsnprintf. This affects MSVC and MinGW builds.
@@ -412,6 +412,7 @@ int mbedtls_platform_setup( mbedtls_platform_context *ctx );
  */
 void mbedtls_platform_teardown( mbedtls_platform_context *ctx );
 
+#endif /* MBEDTLS_PLATFORM_C */
 #ifdef __cplusplus
 }
 #endif

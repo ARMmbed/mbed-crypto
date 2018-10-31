@@ -49,9 +49,8 @@
 #include "mbedtls/asn1.h"
 #endif
 
-#if defined(MBEDTLS_PLATFORM_C)
 #include "mbedtls/platform.h"
-#else
+#if !defined(MBEDTLS_PLATFORM_C)
 #include <stdlib.h>
 #include <stdio.h>
 #define mbedtls_printf     printf
