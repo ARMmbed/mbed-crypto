@@ -1057,9 +1057,6 @@ void mbedtls_ecp_gen_key( int id )
     TEST_ASSERT_RET( mbedtls_ecp_gen_key( id, &key, &rnd_pseudo_rand,
                                           &rnd_info ), 0 );
 
-    TEST_ASSERT_RET( mbedtls_ecp_check_pubkey( &key.grp, &key.Q ), 0 );
-    TEST_ASSERT_RET( mbedtls_ecp_check_privkey( &key.grp, &key.d ), 0 );
-
 exit:
     mbedtls_ecp_keypair_free( &key );
 }
@@ -1068,18 +1065,16 @@ exit:
 /* BEGIN_CASE */
 void mbedtls_ecp_read_key( int grp_id, data_t* in_key, int expected )
 {
-    int ret = 0;
     mbedtls_ecp_keypair key;
 
     mbedtls_ecp_keypair_init( &key );
 
-    ret = mbedtls_ecp_read_key( grp_id, &key, in_key->x, in_key->len );
-    TEST_ASSERT( ret == expected );
+    TEST_ASSERT_RET( mbedtls_ecp_read_key( grp_id, &key,
+                                           in_key->x, in_key->len ), expected );
 
     if( expected == 0 )
     {
-        ret = mbedtls_ecp_check_privkey( &key.grp, &key.d );
-        TEST_ASSERT( ret == 0 );
+        TEST_ASSERT_RET( mbedtls_ecp_check_privkey( &key.grp, &key.d ), 0 );
     }
 
 exit:

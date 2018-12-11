@@ -30,6 +30,7 @@
 #include "mbedtls/pk.h"
 #include "mbedtls/asn1.h"
 #include "mbedtls/oid.h"
+#include "mbedtls/platform.h"
 #include "mbedtls/platform_util.h"
 #include "mbedtls/error.h"
 
@@ -546,7 +547,18 @@ static int pk_get_rsapubkey( unsigned char **p,
 
     if( ( ret = mbedtls_rsa_import_raw( rsa, *p, len, NULL, 0, NULL, 0,
                                         NULL, 0, NULL, 0 ) ) != 0 )
-        return( MBEDTLS_ERR_PK_INVALID_PUBKEY );
+    {
+        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+        {
+            ret = MBEDTLS_ERR_PK_INVALID_PUBKEY |
+                  MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED;
+        }
+        else
+        {
+            ret = MBEDTLS_ERR_PK_INVALID_PUBKEY;
+        }
+        return( ret );
+    }
 
     *p += len;
 
@@ -556,14 +568,49 @@ static int pk_get_rsapubkey( unsigned char **p,
 
     if( ( ret = mbedtls_rsa_import_raw( rsa, NULL, 0, NULL, 0, NULL, 0,
                                         NULL, 0, *p, len ) ) != 0 )
-        return( MBEDTLS_ERR_PK_INVALID_PUBKEY );
+    {
+        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+        {
+            ret = MBEDTLS_ERR_PK_INVALID_PUBKEY |
+                  MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED;
+        }
+        else
+        {
+            ret = MBEDTLS_ERR_PK_INVALID_PUBKEY;
+        }
+        return( ret );
+    }
 
     *p += len;
 
-    if( mbedtls_rsa_complete( rsa ) != 0 ||
-        mbedtls_rsa_check_pubkey( rsa ) != 0 )
+    ret = mbedtls_rsa_complete( rsa );
+    if( ret != 0 )
     {
-        return( MBEDTLS_ERR_PK_INVALID_PUBKEY );
+        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+        {
+            ret = MBEDTLS_ERR_PK_INVALID_PUBKEY |
+                  MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED;
+        }
+        else
+        {
+            ret = MBEDTLS_ERR_PK_INVALID_PUBKEY;
+        }
+        return( ret );
+    }
+
+    ret = mbedtls_rsa_check_pubkey( rsa );
+    if( ret != 0 )
+    {
+        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+        {
+            ret = MBEDTLS_ERR_PK_INVALID_PUBKEY |
+                  MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED;
+        }
+        else
+        {
+            ret = MBEDTLS_ERR_PK_INVALID_PUBKEY;
+        }
+        return( ret );
     }
 
     if( *p != end )
@@ -796,7 +843,6 @@ cleanup:
             ret = MBEDTLS_ERR_PK_KEY_INVALID_FORMAT + ret;
         else
             ret = MBEDTLS_ERR_PK_KEY_INVALID_FORMAT;
-
         mbedtls_rsa_free( rsa );
     }
 
@@ -902,9 +948,14 @@ static int pk_parse_key_sec1_der( mbedtls_ecp_keypair *eck,
             {
                 /*
                  * The only acceptable failure mode of pk_get_ecpubkey() above
-                 * is if the point format is not recognized.
+                 * is if the point format is not recognized. if the underlying
+                 * platform does not support this specific error,
+                 * we should return that specific error.
                  */
-                if( ret != MBEDTLS_ERR_ECP_FEATURE_UNAVAILABLE )
+                if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+                    return( MBEDTLS_ERR_PK_KEY_INVALID_FORMAT |
+                            MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED );
+                else if( ret != MBEDTLS_ERR_ECP_FEATURE_UNAVAILABLE )
                     return( MBEDTLS_ERR_PK_KEY_INVALID_FORMAT );
             }
         }
@@ -1368,7 +1419,10 @@ int mbedtls_pk_parse_key( mbedtls_pk_context *pk,
      * also ok and in line with the mbedtls_pk_free() calls
      * on failed PEM parsing attempts. */
 
-    return( MBEDTLS_ERR_PK_KEY_INVALID_FORMAT );
+    if( ( ret & -0x7f ) == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+        return( MBEDTLS_ERR_PK_KEY_INVALID_FORMAT |
+                MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED );
+    else return( MBEDTLS_ERR_PK_KEY_INVALID_FORMAT );
 }
 
 /*

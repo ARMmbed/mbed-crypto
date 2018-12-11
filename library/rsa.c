@@ -695,13 +695,38 @@ int mbedtls_rsa_check_privkey( const mbedtls_rsa_context *ctx )
 int mbedtls_rsa_check_pub_priv( const mbedtls_rsa_context *pub,
                                 const mbedtls_rsa_context *prv )
 {
+    int ret;
     RSA_VALIDATE_RET( pub != NULL );
     RSA_VALIDATE_RET( prv != NULL );
 
-    if( mbedtls_rsa_check_pubkey( pub )  != 0 ||
-        mbedtls_rsa_check_privkey( prv ) != 0 )
+    ret = mbedtls_rsa_check_pubkey( pub );
+    if( ret != 0 )
     {
-        return( MBEDTLS_ERR_RSA_KEY_CHECK_FAILED );
+        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+        {
+            ret = MBEDTLS_ERR_RSA_KEY_CHECK_FAILED |
+                  MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED;
+        }
+        else
+        {
+            ret = MBEDTLS_ERR_RSA_KEY_CHECK_FAILED;
+        }
+        return( ret );
+    }
+
+    ret = mbedtls_rsa_check_privkey( prv );
+    if( ret != 0 )
+    {
+        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+        {
+            ret = MBEDTLS_ERR_RSA_KEY_CHECK_FAILED |
+                  MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED;
+        }
+        else
+        {
+            ret = MBEDTLS_ERR_RSA_KEY_CHECK_FAILED;
+        }
+        return( ret );
     }
 
     if( mbedtls_mpi_cmp_mpi( &pub->N, &prv->N ) != 0 ||
@@ -2806,8 +2831,8 @@ int mbedtls_rsa_self_test( int verbose )
     }
 
     if( ( ret =  mbedtls_rsa_pkcs1_sign( &rsa, myrand, NULL,
-                                        MBEDTLS_RSA_PRIVATE, MBEDTLS_MD_SHA1, 0,
-                                        sha1sum, rsa_ciphertext ) ) != 0 )
+                                         MBEDTLS_RSA_PRIVATE, MBEDTLS_MD_SHA1, 0,
+                                         sha1sum, rsa_ciphertext ) ) != 0 )
     {
         if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
         {

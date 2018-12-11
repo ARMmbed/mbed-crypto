@@ -670,7 +670,7 @@ mbedtls_pk_type_t mbedtls_pk_get_type( const mbedtls_pk_context *ctx );
  *
  * \note            The key is also checked for correctness.
  *
- * \return          0 if successful, or a specific PK or PEM error code
+ * \return          0 if successful, or a specific PK, PEM or generic platform error code
  */
 int mbedtls_pk_parse_key( mbedtls_pk_context *ctx,
                   const unsigned char *key, size_t keylen,
@@ -696,7 +696,7 @@ int mbedtls_pk_parse_key( mbedtls_pk_context *ctx,
  *
  * \note            The key is also checked for correctness.
  *
- * \return          0 if successful, or a specific PK or PEM error code
+ * \return          0 if successful, or a specific PK, PEM or generic platform error code
  */
 int mbedtls_pk_parse_public_key( mbedtls_pk_context *ctx,
                          const unsigned char *key, size_t keylen );
@@ -721,7 +721,7 @@ int mbedtls_pk_parse_public_key( mbedtls_pk_context *ctx,
  *
  * \note            The key is also checked for correctness.
  *
- * \return          0 if successful, or a specific PK or PEM error code
+ * \return          0 if successful, or a specific PK, PEM or generic platform error code
  */
 int mbedtls_pk_parse_keyfile( mbedtls_pk_context *ctx,
                       const char *path, const char *password );
@@ -741,7 +741,7 @@ int mbedtls_pk_parse_keyfile( mbedtls_pk_context *ctx,
  *
  * \note            The key is also checked for correctness.
  *
- * \return          0 if successful, or a specific PK or PEM error code
+ * \return          0 if successful, or a specific PK, PEM or generic platform error code
  */
 int mbedtls_pk_parse_public_keyfile( mbedtls_pk_context *ctx, const char *path );
 #endif /* MBEDTLS_FS_IO */
@@ -819,7 +819,7 @@ int mbedtls_pk_write_key_pem( mbedtls_pk_context *ctx, unsigned char *buf, size_
  * \param pk        The PK context to fill. It must have been initialized
  *                  but not set up.
  *
- * \return          0 if successful, or a specific PK error code
+ * \return          0 if successful, or a specific PK or generic platform error code
  */
 int mbedtls_pk_parse_subpubkey( unsigned char **p, const unsigned char *end,
                         mbedtls_pk_context *pk );
