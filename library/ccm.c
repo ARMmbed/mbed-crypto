@@ -484,8 +484,15 @@ int mbedtls_ccm_self_test( int verbose )
 
     mbedtls_ccm_init( &ctx );
 
-    if( mbedtls_ccm_setkey( &ctx, MBEDTLS_CIPHER_ID_AES, key_test_data,
-                            8 * sizeof key_test_data ) != 0 )
+    ret = mbedtls_ccm_setkey( &ctx, MBEDTLS_CIPHER_ID_AES, key_test_data,
+                            8 * sizeof key_test_data );
+    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+    {
+        if( verbose != 0 )
+            mbedtls_printf( "  CCM: skipped\n" );
+        return( 0 );
+    }
+    else if( ret != 0 )
     {
         if( verbose != 0 )
             mbedtls_printf( "  CCM: setup failed" );
@@ -508,8 +515,13 @@ int mbedtls_ccm_self_test( int verbose )
                                            plaintext, ciphertext,
                                            ciphertext + msg_len_test_data[i],
                                            tag_len_test_data[i] );
-
-        if( ret != 0 ||
+        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+        {
+            if( verbose != 0 )
+                mbedtls_printf( "skipped\n" );
+            continue;
+        }
+        else if( ret != 0 ||
             memcmp( ciphertext, res_test_data[i],
                     msg_len_test_data[i] + tag_len_test_data[i] ) != 0 )
         {
@@ -526,8 +538,13 @@ int mbedtls_ccm_self_test( int verbose )
                                         ciphertext, plaintext,
                                         ciphertext + msg_len_test_data[i],
                                         tag_len_test_data[i] );
-
-        if( ret != 0 ||
+        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+        {
+            if( verbose != 0 )
+                mbedtls_printf( "skipped\n" );
+            continue;
+        }
+        else if( ret != 0 ||
             memcmp( plaintext, msg_test_data, msg_len_test_data[i] ) != 0 )
         {
             if( verbose != 0 )

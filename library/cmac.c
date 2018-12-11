@@ -790,28 +790,56 @@ static int cmac_test_subkeys( int verbose,
 
         if( ( ret = mbedtls_cipher_setup( &ctx, cipher_info ) ) != 0 )
         {
-            if( verbose != 0 )
-                mbedtls_printf( "test execution failed\n" );
+            if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+            {
+                if( verbose != 0 )
+                    mbedtls_printf( "skipped\n" );
+                ret = 0;
+                continue;
+            }
+            else
+            {
+                if( verbose != 0 )
+                    mbedtls_printf( "test execution failed\n" );
 
-            goto cleanup;
+                goto cleanup;
+            }
         }
 
         if( ( ret = mbedtls_cipher_setkey( &ctx, key, keybits,
                                        MBEDTLS_ENCRYPT ) ) != 0 )
         {
-            if( verbose != 0 )
-                mbedtls_printf( "test execution failed\n" );
-
-            goto cleanup;
+            if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+            {
+                if( verbose != 0 )
+                    mbedtls_printf( "skipped\n" );
+                ret = 0;
+                continue;
+            }
+            else
+            {
+                if( verbose != 0 )
+                    mbedtls_printf( "test execution failed\n" );
+                goto cleanup;
+            }
         }
 
         ret = cmac_generate_subkeys( &ctx, K1, K2 );
         if( ret != 0 )
         {
-           if( verbose != 0 )
-                mbedtls_printf( "failed\n" );
-
-            goto cleanup;
+            if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+            {
+                if( verbose != 0 )
+                    mbedtls_printf( "skipped\n" );
+                ret = 0;
+                continue;
+            }
+            else
+            {
+                if( verbose != 0 )
+                    mbedtls_printf( "failed\n" );
+                goto cleanup;
+            }
         }
 
         if( ( ret = memcmp( K1, subkeys, block_size ) ) != 0  ||
@@ -870,9 +898,19 @@ static int cmac_test_wth_cipher( int verbose,
         if( ( ret = mbedtls_cipher_cmac( cipher_info, key, keybits, messages,
                                          message_lengths[i], output ) ) != 0 )
         {
-            if( verbose != 0 )
-                mbedtls_printf( "failed\n" );
-            goto exit;
+            if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+            {
+                if( verbose != 0 )
+                    mbedtls_printf( "skipped\n" );
+                ret = 0;
+                continue;
+            }
+            else
+            {
+                if( verbose != 0 )
+                    mbedtls_printf( "failed\n" );
+                goto exit;
+            }
         }
 
         if( ( ret = memcmp( output, &expected_result[i * block_size], block_size ) ) != 0 )
@@ -902,10 +940,16 @@ static int test_aes128_cmac_prf( int verbose )
     {
         mbedtls_printf( "  AES CMAC 128 PRF #%u: ", i );
         ret = mbedtls_aes_cmac_prf_128( PRFK, PRFKlen[i], PRFM, 20, output );
-        if( ret != 0 ||
+        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+        {
+            if( verbose != 0 )
+                mbedtls_printf( "skipped\n" );
+            ret = 0;
+            continue;
+        }
+        else if( ret != 0 ||
             memcmp( output, PRFT[i], MBEDTLS_AES_BLOCK_SIZE ) != 0 )
         {
-
             if( verbose != 0 )
                 mbedtls_printf( "failed\n" );
 

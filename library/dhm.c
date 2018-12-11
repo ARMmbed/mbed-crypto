@@ -692,10 +692,20 @@ int mbedtls_dhm_self_test( int verbose )
                     (const unsigned char *) mbedtls_test_dhm_params,
                     mbedtls_test_dhm_params_len ) ) != 0 )
     {
-        if( verbose != 0 )
-            mbedtls_printf( "failed\n" );
+        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+        {
+            if( verbose != 0 )
+                    mbedtls_printf( "skipped\n" );
 
-        ret = 1;
+                ret = 0;
+        }
+        else
+        {
+            if( verbose != 0 )
+                mbedtls_printf( "failed\n" );
+
+            ret = 1;
+        }
         goto exit;
     }
 

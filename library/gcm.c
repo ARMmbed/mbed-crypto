@@ -802,15 +802,10 @@ int mbedtls_gcm_self_test( int verbose )
             ret = mbedtls_gcm_setkey( &ctx, cipher,
                                       key_test_data[key_index_test_data[i]],
                                       key_len );
-            /*
-             * AES-192 is an optional feature that may be unavailable when
-             * there is an alternative underlying implementation i.e. when
-             * MBEDTLS_AES_ALT is defined.
-             */
-            if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED && key_len == 192 )
+            if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED  )
             {
                 mbedtls_printf( "skipped\n" );
-                break;
+                continue;
             }
             else if( ret != 0 )
             {
@@ -825,7 +820,13 @@ int mbedtls_gcm_self_test( int verbose )
                                 add_len_test_data[i],
                                 pt_test_data[pt_index_test_data[i]],
                                 buf, 16, tag_buf );
-            if( ret != 0 )
+            if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+            {
+                if( verbose != 0 )
+                    mbedtls_printf( "skipped\n" );
+                continue;
+            }
+            else if( ret != 0 )
                 goto exit;
 
             if ( memcmp( buf, ct_test_data[j * 6 + i],
@@ -850,7 +851,13 @@ int mbedtls_gcm_self_test( int verbose )
             ret = mbedtls_gcm_setkey( &ctx, cipher,
                                       key_test_data[key_index_test_data[i]],
                                       key_len );
-            if( ret != 0 )
+            if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+            {
+                if( verbose != 0 )
+                    mbedtls_printf( "skipped\n" );
+                continue;
+            }
+            else if( ret != 0 )
                 goto exit;
 
             ret = mbedtls_gcm_crypt_and_tag( &ctx, MBEDTLS_GCM_DECRYPT,
@@ -860,8 +867,13 @@ int mbedtls_gcm_self_test( int verbose )
                                 additional_test_data[add_index_test_data[i]],
                                 add_len_test_data[i],
                                 ct_test_data[j * 6 + i], buf, 16, tag_buf );
-
-            if( ret != 0 )
+            if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+            {
+                if( verbose != 0 )
+                    mbedtls_printf( "skipped\n" );
+                continue;
+            }
+            else if( ret != 0 )
                 goto exit;
 
             if( memcmp( buf, pt_test_data[pt_index_test_data[i]],
@@ -886,7 +898,13 @@ int mbedtls_gcm_self_test( int verbose )
             ret = mbedtls_gcm_setkey( &ctx, cipher,
                                       key_test_data[key_index_test_data[i]],
                                       key_len );
-            if( ret != 0 )
+            if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+            {
+                if( verbose != 0 )
+                    mbedtls_printf( "skipped\n" );
+                continue;
+            }
+            else if( ret != 0 )
                 goto exit;
 
             ret = mbedtls_gcm_starts( &ctx, MBEDTLS_GCM_ENCRYPT,
@@ -894,7 +912,13 @@ int mbedtls_gcm_self_test( int verbose )
                                   iv_len_test_data[i],
                                   additional_test_data[add_index_test_data[i]],
                                   add_len_test_data[i] );
-            if( ret != 0 )
+            if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+            {
+                if( verbose != 0 )
+                    mbedtls_printf( "skipped\n" );
+                continue;
+            }
+            else if( ret != 0 )
                 goto exit;
 
             if( pt_len_test_data[i] > 32 )
@@ -903,13 +927,25 @@ int mbedtls_gcm_self_test( int verbose )
                 ret = mbedtls_gcm_update( &ctx, 32,
                                           pt_test_data[pt_index_test_data[i]],
                                           buf );
-                if( ret != 0 )
+                if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+                {
+                    if( verbose != 0 )
+                        mbedtls_printf( "skipped\n" );
+                    continue;
+                }
+                else if( ret != 0 )
                     goto exit;
 
                 ret = mbedtls_gcm_update( &ctx, rest_len,
                                       pt_test_data[pt_index_test_data[i]] + 32,
                                       buf + 32 );
-                if( ret != 0 )
+                if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+                {
+                    if( verbose != 0 )
+                        mbedtls_printf( "skipped\n" );
+                    continue;
+                }
+                else if( ret != 0 )
                     goto exit;
             }
             else
@@ -917,12 +953,24 @@ int mbedtls_gcm_self_test( int verbose )
                 ret = mbedtls_gcm_update( &ctx, pt_len_test_data[i],
                                           pt_test_data[pt_index_test_data[i]],
                                           buf );
-                if( ret != 0 )
+                if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+                {
+                    if( verbose != 0 )
+                        mbedtls_printf( "skipped\n" );
+                    continue;
+                }
+                else if( ret != 0 )
                     goto exit;
             }
 
             ret = mbedtls_gcm_finish( &ctx, tag_buf, 16 );
-            if( ret != 0 )
+            if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+            {
+                if( verbose != 0 )
+                    mbedtls_printf( "skipped\n" );
+                continue;
+            }
+            else if( ret != 0 )
                 goto exit;
 
             if( memcmp( buf, ct_test_data[j * 6 + i],
@@ -947,7 +995,13 @@ int mbedtls_gcm_self_test( int verbose )
             ret = mbedtls_gcm_setkey( &ctx, cipher,
                                       key_test_data[key_index_test_data[i]],
                                       key_len );
-            if( ret != 0 )
+            if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+            {
+                if( verbose != 0 )
+                    mbedtls_printf( "skipped\n" );
+                continue;
+            }
+            else if( ret != 0 )
                 goto exit;
 
             ret = mbedtls_gcm_starts( &ctx, MBEDTLS_GCM_DECRYPT,
@@ -955,7 +1009,13 @@ int mbedtls_gcm_self_test( int verbose )
                               iv_len_test_data[i],
                               additional_test_data[add_index_test_data[i]],
                               add_len_test_data[i] );
-            if( ret != 0 )
+            if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+            {
+                if( verbose != 0 )
+                    mbedtls_printf( "skipped\n" );
+                continue;
+            }
+            else if( ret != 0 )
                 goto exit;
 
             if( pt_len_test_data[i] > 32 )
@@ -969,7 +1029,13 @@ int mbedtls_gcm_self_test( int verbose )
                 ret = mbedtls_gcm_update( &ctx, rest_len,
                                           ct_test_data[j * 6 + i] + 32,
                                           buf + 32 );
-                if( ret != 0 )
+                if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+                {
+                    if( verbose != 0 )
+                        mbedtls_printf( "skipped\n" );
+                    continue;
+                }
+                else if( ret != 0 )
                     goto exit;
             }
             else
@@ -977,7 +1043,13 @@ int mbedtls_gcm_self_test( int verbose )
                 ret = mbedtls_gcm_update( &ctx, pt_len_test_data[i],
                                           ct_test_data[j * 6 + i],
                                           buf );
-                if( ret != 0 )
+                if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+                {
+                    if( verbose != 0 )
+                        mbedtls_printf( "skipped\n" );
+                    continue;
+                }
+                else if( ret != 0 )
                     goto exit;
             }
 

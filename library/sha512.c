@@ -599,7 +599,16 @@ int mbedtls_sha512_self_test( int verbose )
             mbedtls_printf( "  SHA-%d test #%d: ", 512 - k * 128, j + 1 );
 
         if( ( ret = mbedtls_sha512_starts_ret( &ctx, k ) ) != 0 )
-            goto fail;
+        {
+            if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+            {
+                if( verbose != 0 )
+                    mbedtls_printf( "skipped\n" );
+                ret = 0;
+                continue;
+            }
+            else goto fail;
+        }
 
         if( j == 2 )
         {
@@ -608,20 +617,47 @@ int mbedtls_sha512_self_test( int verbose )
             for( j = 0; j < 1000; j++ )
             {
                 ret = mbedtls_sha512_update_ret( &ctx, buf, buflen );
-                if( ret != 0 )
-                    goto fail;
+                {
+                    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+                    {
+                        if( verbose != 0 )
+                            mbedtls_printf( "skipped\n" );
+                        ret = 0;
+                        continue;
+                    }
+                    else if( ret != 0 )
+                        goto fail;
+                }
             }
         }
         else
         {
             ret = mbedtls_sha512_update_ret( &ctx, sha512_test_buf[j],
                                              sha512_test_buflen[j] );
-            if( ret != 0 )
-                goto fail;
+            {
+                if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+                {
+                    if( verbose != 0 )
+                        mbedtls_printf( "skipped\n" );
+                    ret = 0;
+                    continue;
+                }
+                else if( ret != 0 )
+                    goto fail;
+            }
         }
 
         if( ( ret = mbedtls_sha512_finish_ret( &ctx, sha512sum ) ) != 0 )
-            goto fail;
+        {
+            if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+            {
+                if( verbose != 0 )
+                    mbedtls_printf( "skipped\n" );
+                ret = 0;
+                continue;
+            }
+            else goto fail;
+        }
 
         if( memcmp( sha512sum, sha512_test_sum[i], 64 - k * 16 ) != 0 )
         {

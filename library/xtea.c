@@ -248,14 +248,23 @@ int mbedtls_xtea_self_test( int verbose )
         memcpy( buf, xtea_test_pt[i], 8 );
 
         mbedtls_xtea_setup( &ctx, xtea_test_key[i] );
-        mbedtls_xtea_crypt_ecb( &ctx, MBEDTLS_XTEA_ENCRYPT, buf, buf );
+        ret = mbedtls_xtea_crypt_ecb( &ctx, MBEDTLS_XTEA_ENCRYPT, buf, buf );
 
-        if( memcmp( buf, xtea_test_ct[i], 8 ) != 0 )
+        if( ret != 0 ||
+            memcmp( buf, xtea_test_ct[i], 8 ) != 0 )
         {
-            if( verbose != 0 )
-                mbedtls_printf( "failed\n" );
-
-            ret = 1;
+            if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+            {
+                if( verbose != 0 )
+                    mbedtls_printf( "skipped\n" );
+                ret = 0;
+            }
+            else
+            {
+                if( verbose != 0 )
+                    mbedtls_printf( "failed\n" );
+                ret = 1;
+            }
             goto exit;
         }
 
@@ -263,10 +272,10 @@ int mbedtls_xtea_self_test( int verbose )
             mbedtls_printf( "passed\n" );
     }
 
+exit:
     if( verbose != 0 )
         mbedtls_printf( "\n" );
 
-exit:
     mbedtls_xtea_free( &ctx );
 
     return( ret );

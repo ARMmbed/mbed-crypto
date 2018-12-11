@@ -553,12 +553,25 @@ static int hmac_drbg_self_test_entropy( void *data,
     return( 0 );
 }
 
-#define CHK( c )    if( (c) != 0 )                          \
-                    {                                       \
-                        if( verbose != 0 )                  \
-                            mbedtls_printf( "failed\n" );  \
-                        return( 1 );                        \
-                    }
+#define CHK( c )    do                                                            \
+                    {                                                             \
+                        int ret = (c);                                            \
+                        if( ret != 0 )                                            \
+                        {                                                         \
+                            if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED ) \
+                            {                                                     \
+                                if( verbose != 0 )                                \
+                                    mbedtls_printf( "skipped\n" );                \
+                                return( 0 );                                      \
+                            }                                                     \
+                            else                                                  \
+                            {                                                     \
+                                if( verbose != 0 )                                \
+                                    mbedtls_printf( "failed\n" );                 \
+                                return( 1 );                                      \
+                            }                                                     \
+                        }                                                         \
+                    } while( 0 );
 
 /*
  * Checkup routine for HMAC_DRBG with SHA-1

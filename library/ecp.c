@@ -3037,9 +3037,25 @@ int mbedtls_ecp_self_test( int verbose )
 
     /* Use secp192r1 if available, or any available curve */
 #if defined(MBEDTLS_ECP_DP_SECP192R1_ENABLED)
-    MBEDTLS_MPI_CHK( mbedtls_ecp_group_load( &grp, MBEDTLS_ECP_DP_SECP192R1 ) );
+    ret = mbedtls_ecp_group_load( &grp, MBEDTLS_ECP_DP_SECP192R1 );
+    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+    {
+        if( verbose != 0 )
+            mbedtls_printf( "skipped\n" );
+        ret = 0;
+        goto cleanup;
+    }
+    MBEDTLS_MPI_CHK( ret );
 #else
-    MBEDTLS_MPI_CHK( mbedtls_ecp_group_load( &grp, mbedtls_ecp_curve_list()->grp_id ) );
+    ret =  mbedtls_ecp_group_load( &grp, mbedtls_ecp_curve_list()->grp_id );
+    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+    {
+        if( verbose != 0 )
+            mbedtls_printf( "skipped\n" );
+        ret = 0;
+        goto cleanup;
+    }
+    MBEDTLS_MPI_CHK( ret );
 #endif
 
     if( verbose != 0 )
@@ -3047,13 +3063,22 @@ int mbedtls_ecp_self_test( int verbose )
 
     /* Do a dummy multiplication first to trigger precomputation */
     MBEDTLS_MPI_CHK( mbedtls_mpi_lset( &m, 2 ) );
-    MBEDTLS_MPI_CHK( mbedtls_ecp_mul( &grp, &P, &m, &grp.G, NULL, NULL ) );
+    ret = mbedtls_ecp_mul( &grp, &P, &m, &grp.G, NULL, NULL );
+    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+    {
+        if( verbose != 0 )
+            mbedtls_printf( "skipped\n" );
+        ret = 0;
+        goto cleanup;
+    }
+    MBEDTLS_MPI_CHK( ret );
 
     add_count = 0;
     dbl_count = 0;
     mul_count = 0;
     MBEDTLS_MPI_CHK( mbedtls_mpi_read_string( &m, 16, exponents[0] ) );
-    MBEDTLS_MPI_CHK( mbedtls_ecp_mul( &grp, &R, &m, &grp.G, NULL, NULL ) );
+    ret = mbedtls_ecp_mul( &grp, &R, &m, &grp.G, NULL, NULL );
+    MBEDTLS_MPI_CHK( ret );
 
     for( i = 1; i < sizeof( exponents ) / sizeof( exponents[0] ); i++ )
     {
@@ -3065,7 +3090,15 @@ int mbedtls_ecp_self_test( int verbose )
         mul_count = 0;
 
         MBEDTLS_MPI_CHK( mbedtls_mpi_read_string( &m, 16, exponents[i] ) );
-        MBEDTLS_MPI_CHK( mbedtls_ecp_mul( &grp, &R, &m, &grp.G, NULL, NULL ) );
+        ret = mbedtls_ecp_mul( &grp, &R, &m, &grp.G, NULL, NULL );
+        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+        {
+            if( verbose != 0 )
+                mbedtls_printf( "skipped\n" );
+            ret = 0;
+            continue;
+        }
+        MBEDTLS_MPI_CHK( ret );
 
         if( add_count != add_c_prev ||
             dbl_count != dbl_c_prev ||
@@ -3090,7 +3123,15 @@ int mbedtls_ecp_self_test( int verbose )
     dbl_count = 0;
     mul_count = 0;
     MBEDTLS_MPI_CHK( mbedtls_mpi_read_string( &m, 16, exponents[0] ) );
-    MBEDTLS_MPI_CHK( mbedtls_ecp_mul( &grp, &R, &m, &P, NULL, NULL ) );
+    ret = mbedtls_ecp_mul( &grp, &R, &m, &P, NULL, NULL );
+    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+    {
+        if( verbose != 0 )
+            mbedtls_printf( "skipped\n" );
+        ret = 0;
+        goto cleanup;
+    }
+    MBEDTLS_MPI_CHK( ret );
 
     for( i = 1; i < sizeof( exponents ) / sizeof( exponents[0] ); i++ )
     {
@@ -3102,7 +3143,15 @@ int mbedtls_ecp_self_test( int verbose )
         mul_count = 0;
 
         MBEDTLS_MPI_CHK( mbedtls_mpi_read_string( &m, 16, exponents[i] ) );
-        MBEDTLS_MPI_CHK( mbedtls_ecp_mul( &grp, &R, &m, &P, NULL, NULL ) );
+        ret = mbedtls_ecp_mul( &grp, &R, &m, &P, NULL, NULL );
+        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+        {
+            if( verbose != 0 )
+                mbedtls_printf( "skipped\n" );
+            ret = 0;
+            continue;
+        }
+        MBEDTLS_MPI_CHK( ret );
 
         if( add_count != add_c_prev ||
             dbl_count != dbl_c_prev ||

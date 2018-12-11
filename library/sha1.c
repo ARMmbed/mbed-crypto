@@ -520,7 +520,16 @@ int mbedtls_sha1_self_test( int verbose )
             mbedtls_printf( "  SHA-1 test #%d: ", i + 1 );
 
         if( ( ret = mbedtls_sha1_starts_ret( &ctx ) ) != 0 )
+        {
+            if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+            {
+                if( verbose != 0 )
+                    mbedtls_printf( "skipped\n" );
+                ret = 0;
+                continue;
+            }
             goto fail;
+        }
 
         if( i == 2 )
         {
@@ -529,20 +538,47 @@ int mbedtls_sha1_self_test( int verbose )
             for( j = 0; j < 1000; j++ )
             {
                 ret = mbedtls_sha1_update_ret( &ctx, buf, buflen );
-                if( ret != 0 )
-                    goto fail;
+                {
+                    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+                    {
+                        if( verbose != 0 )
+                            mbedtls_printf( "skipped\n" );
+                        ret = 0;
+                        continue;
+                    }
+                    else if( ret != 0 )
+                        goto fail;
+                }
             }
         }
         else
         {
             ret = mbedtls_sha1_update_ret( &ctx, sha1_test_buf[i],
                                            sha1_test_buflen[i] );
-            if( ret != 0 )
-                goto fail;
+            {
+                if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+                {
+                    if( verbose != 0 )
+                        mbedtls_printf( "skipped\n" );
+                    ret = 0;
+                    continue;
+                }
+                else if( ret != 0 )
+                    goto fail;
+            }
         }
 
         if( ( ret = mbedtls_sha1_finish_ret( &ctx, sha1sum ) ) != 0 )
-            goto fail;
+        {
+            if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
+            {
+                if( verbose != 0 )
+                    mbedtls_printf( "skipped\n" );
+                ret = 0;
+                continue;
+            }
+            else goto fail;
+        }
 
         if( memcmp( sha1sum, sha1_test_sum[i], 20 ) != 0 )
         {
