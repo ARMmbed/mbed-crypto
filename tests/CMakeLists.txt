@@ -38,7 +38,7 @@ function(add_test_suite suite_name)
     target_link_libraries(test_suite_${data_name} ${libs})
     target_include_directories(test_suite_${data_name}
         PUBLIC ${CMAKE_SOURCE_DIR}/include/
-        PRIVATE ${CMAKE_SOURCE_DIR}/library/
+        PRIVATE ${CMAKE_SOURCE_DIR}/library/include/
         PUBLIC ${CMAKE_SOURCE_DIR}/crypto/include/)
     add_test(${data_name}-suite test_suite_${data_name} --verbose)
 endfunction(add_test_suite)

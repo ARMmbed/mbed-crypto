@@ -5,7 +5,7 @@ CFLAGS	?= -O2
 WARNING_CFLAGS ?=  -Wall -W -Wdeclaration-after-statement
 LDFLAGS ?=
 
-CRYPTO_INCLUDES ?= -I../include
+CRYPTO_INCLUDES ?= -I../include -Iinclude
 LOCAL_CFLAGS = $(WARNING_CFLAGS) $(CRYPTO_INCLUDES) -D_FILE_OFFSET_BITS=64
 LOCAL_LDFLAGS =
 

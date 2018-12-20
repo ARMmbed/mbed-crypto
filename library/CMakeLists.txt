@@ -150,6 +150,7 @@ if(USE_STATIC_MBEDTLS_LIBRARY)
     target_link_libraries(${mbedcrypto_static_target} ${libs})
     target_include_directories(${mbedcrypto_static_target}
         PUBLIC ${CMAKE_SOURCE_DIR}/include/
+        PRIVATE ${CMAKE_SOURCE_DIR}/library/include/
         PUBLIC ${CMAKE_SOURCE_DIR}/crypto/include/)
 
     if(USE_CRYPTO_SUBMODULE)
@@ -177,6 +178,7 @@ if(USE_SHARED_MBEDTLS_LIBRARY)
     target_link_libraries(mbedcrypto ${libs})
     target_include_directories(mbedcrypto
         PUBLIC ${CMAKE_SOURCE_DIR}/include/
+        PRIVATE ${CMAKE_SOURCE_DIR}/library/include/
         PUBLIC ${CMAKE_SOURCE_DIR}/crypto/include/)
 
     if(USE_CRYPTO_SUBMODULE)
