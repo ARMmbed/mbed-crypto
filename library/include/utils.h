@@ -34,4 +34,11 @@
 #define STATIC_ASSERT_EXPR( const_expr )                                \
     ( 0 && sizeof( struct { int STATIC_ASSERT : 1 - 2 * ! ( const_expr ); } ) )
 
+/* A statement that does nothing after its built. If `const_expr` is not a
+ * compile-time constant with a nonzero value, cause a compile-time error. */
+#define STATIC_ASSERT( const_expr, msg )                                \
+    struct STATIC_ASSERT##msg {                                         \
+        int STATIC_ASSERT_##msg : 1 - 2 * ! ( const_expr );             \
+    }
+
 #endif /* MC_UTILS_H */
