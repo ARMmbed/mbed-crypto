@@ -36,6 +36,10 @@ function(add_test_suite suite_name)
     include_directories(${CMAKE_CURRENT_SOURCE_DIR})
     add_executable(test_suite_${data_name} test_suite_${data_name}.c)
     target_link_libraries(test_suite_${data_name} ${libs})
+    target_include_directories(test_suite_${data_name}
+        PUBLIC ${CMAKE_SOURCE_DIR}/include/
+        PRIVATE ${CMAKE_SOURCE_DIR}/library/
+        PUBLIC ${CMAKE_SOURCE_DIR}/crypto/include/)
     add_test(${data_name}-suite test_suite_${data_name} --verbose)
 endfunction(add_test_suite)
 
