@@ -1,17 +1,19 @@
 /**
- * \file crypto_struct.h
+ * \file crypto_struct_impl.h
  *
- * \brief PSA cryptography module: Mbed TLS structured type implementations
- *
- * \note This file may not be included directly. Applications must
- * include psa/crypto.h.
+ * \brief Mbed Crypto structured type implementations
  *
  * This file contains the definitions of some data structures with
  * implementation-specific definitions.
  *
- * In implementations with isolation between the application and the
- * cryptography module, it is expected that the front-end and the back-end
- * would have different versions of this file.
+ * The definitions in this file provide the implementation-specific detail of
+ * the structs defined in psa/crypto_struct.h for use by the library itself
+ * (not users of the library). The implementation-specific detail here is free
+ * to change between versions of the library, so long as the size of the
+ * structs never decreases (unless an ABI break is tolerable). The size of the
+ * structs in psa/crypto_struct.h must be at least as big as those in this file
+ * in order for users of the library to be able to allocate sufficient memory
+ * for these structs.
  */
 /*
  *  Copyright (C) 2018, ARM Limited, All Rights Reserved
@@ -32,8 +34,8 @@
  *  This file is part of mbed TLS (https://tls.mbed.org)
  */
 
-#ifndef PSA_CRYPTO_STRUCT_H
-#define PSA_CRYPTO_STRUCT_H
+#ifndef MC_CRYPTO_STRUCT_IMPL_H
+#define MC_CRYPTO_STRUCT_IMPL_H
 
 /* Include the Mbed TLS configuration file, the way Mbed TLS does it
  * in each of its header files. */
@@ -42,6 +44,8 @@
 #else
 #include MBEDTLS_CONFIG_FILE
 #endif
+
+#include "utils.h"
 
 #include "mbedtls/cipher.h"
 #include "mbedtls/cmac.h"
@@ -55,7 +59,7 @@
 #include "mbedtls/sha256.h"
 #include "mbedtls/sha512.h"
 
-struct psa_hash_operation_s
+typedef struct psa_hash_operation_impl_s
 {
     psa_algorithm_t alg;
     union
@@ -83,7 +87,11 @@ struct psa_hash_operation_s
         mbedtls_sha512_context sha512;
 #endif
     } ctx;
-};
+} psa_hash_operation_impl_t;
+
+STATIC_ASSERT(
+    sizeof(psa_hash_operation_t) >= sizeof(psa_hash_operation_impl_t),
+    psa_hash_operation_t_too_small);
 
 #if defined(MBEDTLS_MD_C)
 typedef struct
@@ -95,7 +103,7 @@ typedef struct
 } psa_hmac_internal_data;
 #endif /* MBEDTLS_MD_C */
 
-struct psa_mac_operation_s
+typedef struct psa_mac_operation_impl_s
 {
     psa_algorithm_t alg;
     unsigned int key_set : 1;
@@ -114,9 +122,13 @@ struct psa_mac_operation_s
         mbedtls_cipher_context_t cmac;
 #endif
     } ctx;
-};
+} psa_mac_operation_impl_t;
 
-struct psa_cipher_operation_s
+STATIC_ASSERT(
+    sizeof(psa_mac_operation_t) >= sizeof(psa_mac_operation_impl_t),
+    psa_mac_operation_t_too_small);
+
+typedef struct psa_cipher_operation_impl_s
 {
     psa_algorithm_t alg;
     unsigned int key_set : 1;
@@ -128,7 +140,11 @@ struct psa_cipher_operation_s
     {
         mbedtls_cipher_context_t cipher;
     } ctx;
-};
+} psa_cipher_operation_impl_t;
+
+STATIC_ASSERT(
+    sizeof(psa_cipher_operation_t) >= sizeof(psa_cipher_operation_impl_t),
+    psa_cipher_operation_t_too_small);
 
 #if defined(MBEDTLS_MD_C)
 typedef struct
@@ -177,7 +193,7 @@ typedef struct psa_tls12_prf_generator_s
 } psa_tls12_prf_generator_t;
 #endif /* MBEDTLS_MD_C */
 
-struct psa_crypto_generator_s
+typedef struct psa_crypto_generator_impl_s
 {
     psa_algorithm_t alg;
     size_t capacity;
@@ -193,19 +209,10 @@ struct psa_crypto_generator_s
         psa_tls12_prf_generator_t tls12_prf;
 #endif
     } ctx;
-};
+} psa_crypto_generator_impl_t;
 
-#define PSA_CRYPTO_GENERATOR_INIT {0, 0, {{0, 0}}}
-static inline struct psa_crypto_generator_s psa_crypto_generator_init( void )
-{
-    const struct psa_crypto_generator_s v = PSA_CRYPTO_GENERATOR_INIT;
-    return( v );
-}
+STATIC_ASSERT(
+    sizeof(psa_crypto_generator_t) >= sizeof(psa_crypto_generator_impl_t),
+    psa_crypto_generator_t_too_small);
 
-struct psa_key_policy_s
-{
-    psa_key_usage_t usage;
-    psa_algorithm_t alg;
-};
-
-#endif /* PSA_CRYPTO_STRUCT_H */
+#endif /* MC_CRYPTO_STRUCT_IMPL_H */
