@@ -22,10 +22,6 @@
 #ifndef PSA_CRYPTO_SLOT_MANAGEMENT_H
 #define PSA_CRYPTO_SLOT_MANAGEMENT_H
 
-/* Number of key slots (plus one because 0 is not used).
- * The value is a compile-time constant for now, for simplicity. */
-#define PSA_KEY_SLOT_COUNT 32
-
 /** Access a key slot at the given handle.
  *
  * \param handle        Key handle to query.

@@ -46,7 +46,7 @@
 
 typedef struct
 {
-    psa_key_slot_t key_slots[PSA_KEY_SLOT_COUNT];
+    psa_key_slot_t key_slots[MBEDTLS_PSA_KEY_SLOT_COUNT];
     unsigned key_slots_initialized : 1;
 } psa_global_data_t;
 
@@ -90,7 +90,7 @@ psa_status_t psa_initialize_key_slots( void )
 void psa_wipe_all_key_slots( void )
 {
     psa_key_handle_t key;
-    for( key = 1; key <= PSA_KEY_SLOT_COUNT; key++ )
+    for( key = 1; key <= MBEDTLS_PSA_KEY_SLOT_COUNT; key++ )
     {
         psa_key_slot_t *slot = &global_data.key_slots[key - 1];
         (void) psa_wipe_key_slot( slot );
@@ -108,7 +108,7 @@ void psa_wipe_all_key_slots( void )
  */
 static psa_status_t psa_internal_allocate_key_slot( psa_key_handle_t *handle )
 {
-    for( *handle = PSA_KEY_SLOT_COUNT; *handle != 0; --( *handle ) )
+    for( *handle = MBEDTLS_PSA_KEY_SLOT_COUNT; *handle != 0; --( *handle ) )
     {
         psa_key_slot_t *slot = &global_data.key_slots[*handle - 1];
         if( ! slot->allocated )
