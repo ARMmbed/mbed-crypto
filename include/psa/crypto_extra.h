@@ -123,10 +123,9 @@ psa_status_t mbedtls_psa_inject_entropy(const unsigned char *seed,
 
 /* The Number of key slots (plus one because 0 is not used).
  * The value is a compile-time constant for now, for simplicity. */
-#if defined(MBEDTLS_PSA_KEY_SLOT_COUNT)
-#else
+#if !defined(MBEDTLS_PSA_KEY_SLOT_COUNT)
     #define MBEDTLS_PSA_KEY_SLOT_COUNT 32
-#endif /*MBEDTLS_PSA_KEY_SLOT_COUNT*/
+#endif /* !defined(MBEDTLS_PSA_KEY_SLOT_COUNT) */
 
 
 #ifdef __cplusplus
