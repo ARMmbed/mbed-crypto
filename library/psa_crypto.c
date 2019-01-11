@@ -512,28 +512,65 @@ static psa_status_t psa_check_rsa_key_byte_aligned(
     return( status );
 }
 
-static psa_status_t psa_import_rsa_key( mbedtls_pk_context *pk,
+static psa_status_t psa_import_rsa_key( psa_key_type_t type,
+                                        const uint8_t *data,
+                                        size_t data_length,
                                         mbedtls_rsa_context **p_rsa )
 {
-    if( mbedtls_pk_get_type( pk ) != MBEDTLS_PK_RSA )
-        return( PSA_ERROR_INVALID_ARGUMENT );
+    psa_status_t status;
+    mbedtls_pk_context pk;
+    mbedtls_rsa_context *rsa;
+
+    mbedtls_pk_init( &pk );
+
+    /* Parse the data. */
+    if( PSA_KEY_TYPE_IS_KEYPAIR( type ) )
+        status = mbedtls_to_psa_error(
+            mbedtls_pk_parse_key( &pk, data, data_length, NULL, 0 ) );
+    else
+        status = mbedtls_to_psa_error(
+            mbedtls_pk_parse_public_key( &pk, data, data_length ) );
+    if( status != PSA_SUCCESS )
+        goto exit;
+
+    /* We have something that the pkparse module recognizes.
+     * If it has the expected type and passes any type-specific
+     * checks, store it. */
+    if( mbedtls_pk_get_type( &pk ) != MBEDTLS_PK_RSA )
+    {
+        status = PSA_ERROR_INVALID_ARGUMENT;
+        goto exit;
+    }
     else
     {
-        mbedtls_rsa_context *rsa = mbedtls_pk_rsa( *pk );
+        size_t bits;
+
+        rsa = mbedtls_pk_rsa( pk );
         /* The size of an RSA key doesn't have to be a multiple of 8.
          * Mbed TLS supports non-byte-aligned key sizes, but not well.
          * For example, mbedtls_rsa_get_len() returns the key size in
          * bytes, not in bits. */
-        size_t bits = PSA_BYTES_TO_BITS( mbedtls_rsa_get_len( rsa ) );
-        psa_status_t status;
+        bits = PSA_BYTES_TO_BITS( mbedtls_rsa_get_len( rsa ) );
         if( bits > PSA_VENDOR_RSA_MAX_KEY_BITS )
-            return( PSA_ERROR_NOT_SUPPORTED );
+        {
+            status = PSA_ERROR_NOT_SUPPORTED;
+            goto exit;
+        }
         status = psa_check_rsa_key_byte_aligned( rsa );
-        if( status != PSA_SUCCESS )
-            return( status );
-        *p_rsa = rsa;
-        return( PSA_SUCCESS );
     }
+
+exit:
+    /* Free the content of the pk object only on error. */
+    if( status != PSA_SUCCESS )
+    {
+        mbedtls_pk_free( &pk );
+        return( status );
+    }
+
+    /* On success, store the content of the object in the RSA context. */
+    *p_rsa = rsa;
+
+    return( PSA_SUCCESS );
 }
 #endif /* defined(MBEDTLS_RSA_C) && defined(MBEDTLS_PK_PARSE_C) */
 
@@ -685,30 +722,12 @@ psa_status_t psa_import_key_into_slot( psa_key_slot_t *slot,
 #if defined(MBEDTLS_RSA_C) && defined(MBEDTLS_PK_PARSE_C)
     if( PSA_KEY_TYPE_IS_RSA( slot->type ) )
     {
-        int ret;
-        mbedtls_pk_context pk;
-        mbedtls_pk_init( &pk );
+        status = psa_import_rsa_key( slot->type,
+            data, data_length,
+            &slot->data.rsa );
 
-        /* Parse the data. */
-        if( PSA_KEY_TYPE_IS_KEYPAIR( slot->type ) )
-            ret = mbedtls_pk_parse_key( &pk, data, data_length, NULL, 0 );
-        else
-            ret = mbedtls_pk_parse_public_key( &pk, data, data_length );
-        if( ret != 0 )
-            return( mbedtls_to_psa_error( ret ) );
-
-        /* We have something that the pkparse module recognizes.
-         * If it has the expected type and passes any type-specific
-         * checks, store it. */
-        status = psa_import_rsa_key( &pk, &slot->data.rsa );
-
-        /* Free the content of the pk object only on error. On success,
-         * the content of the object has been stored in the slot. */
         if( status != PSA_SUCCESS )
-        {
-            mbedtls_pk_free( &pk );
             return( status );
-        }
     }
     else
 #endif /* defined(MBEDTLS_RSA_C) && defined(MBEDTLS_PK_PARSE_C) */
