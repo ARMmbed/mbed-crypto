@@ -1053,12 +1053,6 @@ int main( int argc, char *argv[] )
             mbedtls_ecdh_init( &ecdh );
             mbedtls_snprintf( title, sizeof( title ), "ECDHE-%s",
                                               curve_info->name );
-            if( mbedtls_ecp_group_load( &ecdh.grp, curve_info->grp_id ) != 0 )
-            {
-                mbedtls_printf( HEADER_FORMAT, title );
-                PRINT_ERROR;
-                mbedtls_exit( 1 );
-            }
 
             CHECK_AND_CONTINUE( mbedtls_ecp_group_load( &ecdh.grp, curve_info->grp_id ) );
             CHECK_AND_CONTINUE( mbedtls_ecdh_make_public( &ecdh, &olen, buf, sizeof( buf),
