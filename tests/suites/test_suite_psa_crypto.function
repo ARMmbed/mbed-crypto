@@ -564,7 +564,7 @@ static int exported_key_sanity_check( psa_key_type_t type, size_t bits,
     else
 #endif
 
-#if defined(MBEDTLS_RSA_C) && defined(MBEDTLS_PK_PARSE_C)
+#if defined(MBEDTLS_RSA_C)
     if( type == PSA_KEY_TYPE_RSA_KEYPAIR )
     {
         uint8_t *p = exported;
@@ -622,12 +622,12 @@ static int exported_key_sanity_check( psa_key_type_t type, size_t bits,
 
     if( PSA_KEY_TYPE_IS_PUBLIC_KEY( type ) )
     {
-        uint8_t *p = exported;
-        uint8_t *end = exported + exported_length;
-        size_t len;
 #if defined(MBEDTLS_RSA_C)
         if( type == PSA_KEY_TYPE_RSA_PUBLIC_KEY )
         {
+            uint8_t *end = exported + exported_length;
+            uint8_t *p = exported;
+            size_t len;
             /*   RSAPublicKey ::= SEQUENCE {
              *      modulus            INTEGER,    -- n
              *      publicExponent     INTEGER  }  -- e
@@ -654,8 +654,8 @@ static int exported_key_sanity_check( psa_key_type_t type, size_t bits,
              *      - `y_P` as a `ceiling(m/8)`-byte string, big-endian;
              *      - where m is the bit size associated with the curve.
              */
-            TEST_EQUAL( p + 1 + 2 * PSA_BITS_TO_BYTES( bits ), end );
-            TEST_EQUAL( p[0], 4 );
+            TEST_EQUAL( exported_length, 1 + 2 * PSA_BITS_TO_BYTES( bits ) );
+            TEST_EQUAL( exported[0], 4 );
         }
         else
 #endif /* MBEDTLS_ECP_C */
