@@ -764,9 +764,9 @@ int mbedtls_ssl_derive_keys( mbedtls_ssl_context *ssl )
 #endif
 #endif /* MBEDTLS_SSL_EXTENDED_MASTER_SECRET */
 
-        (void) ciphersuite_info;
 
 #if defined(MBEDTLS_SSL_EXTENDED_MASTER_SECRET)
+        (void) ciphersuite_info;
         if( ssl->handshake->extended_ms == MBEDTLS_SSL_EXTENDED_MS_ENABLED )
         {
             MBEDTLS_SSL_DEBUG_MSG( 3, ( "using extended master secret" ) );
