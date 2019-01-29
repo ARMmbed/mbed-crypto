@@ -684,7 +684,10 @@ int main( int argc, char *argv[] )
     }
 #endif
 
-#if defined(MBEDTLS_HMAC_DRBG_C)
+#if defined(MBEDTLS_HMAC_DRBG_C) &&             \
+    ( defined(MBEDTLS_SHA1_C) ||                \
+      defined(MBEDTLS_SHA256_C) ||              \
+      defined(MBEDTLS_SHA512_C) )
     if( todo.hmac_drbg )
     {
         mbedtls_hmac_drbg_context hmac_drbg;
@@ -725,6 +728,24 @@ int main( int argc, char *argv[] )
         TIME_AND_TSC( "HMAC_DRBG SHA-256 (PR)",
                 mbedtls_hmac_drbg_random( &hmac_drbg, buf, BUFSIZE ) );
 #endif
+
+#if defined(MBEDTLS_SHA512_C)
+        if( ( md_info = mbedtls_md_info_from_type( MBEDTLS_MD_SHA512 ) ) == NULL )
+            mbedtls_exit(1);
+
+        if( mbedtls_hmac_drbg_seed( &hmac_drbg, md_info, myrand, NULL, NULL, 0 ) != 0 )
+            mbedtls_exit(1);
+        TIME_AND_TSC( "HMAC_DRBG SHA-512 (NOPR)",
+                mbedtls_hmac_drbg_random( &hmac_drbg, buf, BUFSIZE ) );
+
+        if( mbedtls_hmac_drbg_seed( &hmac_drbg, md_info, myrand, NULL, NULL, 0 ) != 0 )
+            mbedtls_exit(1);
+        mbedtls_hmac_drbg_set_prediction_resistance( &hmac_drbg,
+                                             MBEDTLS_HMAC_DRBG_PR_ON );
+        TIME_AND_TSC( "HMAC_DRBG SHA-512 (PR)",
+                mbedtls_hmac_drbg_random( &hmac_drbg, buf, BUFSIZE ) );
+#endif
+
         mbedtls_hmac_drbg_free( &hmac_drbg );
     }
 #endif
