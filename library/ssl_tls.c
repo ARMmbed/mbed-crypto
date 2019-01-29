@@ -759,8 +759,12 @@ int mbedtls_ssl_derive_keys( mbedtls_ssl_context *ssl )
 #if defined(MBEDTLS_SSL_EXTENDED_MASTER_SECRET)
         const mbedtls_ssl_ciphersuite_t *ciphersuite_info =
             ssl->transform_negotiate->ciphersuite_info;
+#if defined(MBEDTLS_SHA512_C)
         mbedtls_md_type_t const md_type = ciphersuite_info->mac;
+#endif
 #endif /* MBEDTLS_SSL_EXTENDED_MASTER_SECRET */
+
+        (void) ciphersuite_info;
 
 #if defined(MBEDTLS_SSL_EXTENDED_MASTER_SECRET)
         if( ssl->handshake->extended_ms == MBEDTLS_SSL_EXTENDED_MS_ENABLED )
@@ -806,9 +810,11 @@ int mbedtls_ssl_derive_keys( mbedtls_ssl_context *ssl )
             if( ssl->handshake->psk_opaque != 0 )
                 psk = ssl->handshake->psk_opaque;
 
+#if defined(MBEDTLS_SHA512_C)
             if( md_type == MBEDTLS_MD_SHA384 )
                 alg = PSA_ALG_TLS12_PSK_TO_MS(PSA_ALG_SHA_384);
             else
+#endif /* MBEDTLS_SHA512_C */
                 alg = PSA_ALG_TLS12_PSK_TO_MS(PSA_ALG_SHA_256);
 
             status = psa_key_derivation( &generator, psk, alg,
