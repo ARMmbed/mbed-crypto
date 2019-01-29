@@ -456,7 +456,7 @@ static int my_send( void *ctx, const unsigned char *buf, size_t len )
     return( ret );
 }
 
-#if defined(MBEDTLS_X509_CRT_PARSE_C)
+#if defined(MBEDTLS_KEY_EXCHANGE__WITH_CERT__ENABLED)
 /*
  * Enabled if debug_level > 1 in code below
  */
@@ -496,7 +496,7 @@ static int ssl_sig_hashes_for_test[] = {
 #endif
     MBEDTLS_MD_NONE
 };
-#endif /* MBEDTLS_X509_CRT_PARSE_C */
+#endif /* MBEDTLS_KEY_EXCHANGE__WITH_CERT__ENABLED */
 
 /*
  * Wait for an event from the underlying transport or the timer
@@ -577,7 +577,7 @@ int main( int argc, char *argv[] )
     psa_status_t status;
 #endif
 
-#if defined(MBEDTLS_X509_CRT_PARSE_C)
+#if defined(MBEDTLS_KEY_EXCHANGE__WITH_CERT__ENABLED)
     mbedtls_x509_crt_profile crt_profile_for_test = mbedtls_x509_crt_profile_default;
 #endif
     mbedtls_entropy_context entropy;
@@ -1468,7 +1468,7 @@ int main( int argc, char *argv[] )
         goto exit;
     }
 
-#if defined(MBEDTLS_X509_CRT_PARSE_C)
+#if defined(MBEDTLS_KEY_EXCHANGE__WITH_CERT__ENABLED)
     /* The default algorithms profile disables SHA-1, but our tests still
        rely on it heavily. */
     if( opt.allow_sha1 > 0 )
@@ -1480,7 +1480,7 @@ int main( int argc, char *argv[] )
 
     if( opt.debug_level > 0 )
         mbedtls_ssl_conf_verify( &conf, my_verify, NULL );
-#endif /* MBEDTLS_X509_CRT_PARSE_C */
+#endif /* MBEDTLS_KEY_EXCHANGE__WITH_CERT__ENABLED */
 
     if( opt.auth_mode != DFL_AUTH_MODE )
         mbedtls_ssl_conf_authmode( &conf, opt.auth_mode );

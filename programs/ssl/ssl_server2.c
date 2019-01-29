@@ -924,7 +924,7 @@ void term_handler( int sig )
 }
 #endif
 
-#if defined(MBEDTLS_X509_CRT_PARSE_C)
+#if defined(MBEDTLS_KEY_EXCHANGE__WITH_CERT__ENABLED)
 static int ssl_sig_hashes_for_test[] = {
 #if defined(MBEDTLS_SHA512_C)
     MBEDTLS_MD_SHA512,
@@ -940,7 +940,7 @@ static int ssl_sig_hashes_for_test[] = {
 #endif
     MBEDTLS_MD_NONE
 };
-#endif /* MBEDTLS_X509_CRT_PARSE_C */
+#endif /* MBEDTLS_KEY_EXCHANGE__WITH_CERT__ENABLED */
 
 /** Return true if \p ret is a status code indicating that there is an
  * operation in progress on an SSL connection, and false if it indicates
@@ -1281,7 +1281,7 @@ int main( int argc, char *argv[] )
     mbedtls_ssl_cookie_ctx cookie_ctx;
 #endif
 
-#if defined(MBEDTLS_X509_CRT_PARSE_C)
+#if defined(MBEDTLS_KEY_EXCHANGE__WITH_CERT__ENABLED)
     mbedtls_x509_crt_profile crt_profile_for_test = mbedtls_x509_crt_profile_default;
 #endif
     mbedtls_entropy_context entropy;
@@ -2368,7 +2368,7 @@ int main( int argc, char *argv[] )
         goto exit;
     }
 
-#if defined(MBEDTLS_X509_CRT_PARSE_C)
+#if defined(MBEDTLS_KEY_EXCHANGE__WITH_CERT__ENABLED)
     /* The default algorithms profile disables SHA-1, but our tests still
        rely on it heavily. Hence we allow it here. A real-world server
        should use the default profile unless there is a good reason not to. */
@@ -2378,7 +2378,7 @@ int main( int argc, char *argv[] )
         mbedtls_ssl_conf_cert_profile( &conf, &crt_profile_for_test );
         mbedtls_ssl_conf_sig_hashes( &conf, ssl_sig_hashes_for_test );
     }
-#endif /* MBEDTLS_X509_CRT_PARSE_C */
+#endif /* MBEDTLS_KEY_EXCHANGE__WITH_CERT__ENABLED */
 
     if( opt.auth_mode != DFL_AUTH_MODE )
         mbedtls_ssl_conf_authmode( &conf, opt.auth_mode );
