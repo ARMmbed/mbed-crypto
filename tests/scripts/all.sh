@@ -222,9 +222,12 @@ cleanup()
     fi
 
     command make clean
+    cd crypto
+    command make clean
+    cd ..
 
     # Remove CMake artefacts
-    find . -name .git -prune \
+    find . -name .git -prune -o \
            -iname CMakeFiles -exec rm -rf {} \+ -o \
            \( -iname cmake_install.cmake -o \
               -iname CTestTestfile.cmake -o \
@@ -233,6 +236,11 @@ cleanup()
     rm -f include/Makefile include/mbedtls/Makefile programs/*/Makefile
     git update-index --no-skip-worktree Makefile library/Makefile programs/Makefile tests/Makefile
     git checkout -- Makefile library/Makefile programs/Makefile tests/Makefile
+    cd crypto
+    rm -f include/Makefile include/mbedtls/Makefile programs/*/Makefile
+    git update-index --no-skip-worktree Makefile library/Makefile programs/Makefile tests/Makefile
+    git checkout -- Makefile library/Makefile programs/Makefile tests/Makefile
+    cd ..
 
     if [ -f "$CONFIG_BAK" ]; then
         mv "$CONFIG_BAK" "$CONFIG_H"
@@ -766,6 +774,30 @@ component_build_default_make_gcc_and_cxx () {
 
     msg "build: Unix make, incremental g++"
     make TEST_CPP=1
+}
+
+component_test_check_params_without_platform () {
+    msg "build+test: MBEDTLS_CHECK_PARAMS without MBEDTLS_PLATFORM_C"
+    scripts/config.pl full # includes CHECK_PARAMS
+    scripts/config.pl unset MBEDTLS_MEMORY_BACKTRACE # too slow for tests
+    scripts/config.pl unset MBEDTLS_MEMORY_BUFFER_ALLOC_C
+    scripts/config.pl unset MBEDTLS_PLATFORM_EXIT_ALT
+    scripts/config.pl unset MBEDTLS_PLATFORM_TIME_ALT
+    scripts/config.pl unset MBEDTLS_PLATFORM_FPRINTF_ALT
+    scripts/config.pl unset MBEDTLS_PLATFORM_MEMORY
+    scripts/config.pl unset MBEDTLS_PLATFORM_PRINTF_ALT
+    scripts/config.pl unset MBEDTLS_PLATFORM_SNPRINTF_ALT
+    scripts/config.pl unset MBEDTLS_ENTROPY_NV_SEED
+    scripts/config.pl unset MBEDTLS_PLATFORM_C
+    make CC=gcc CFLAGS='-Werror -O1' all test
+}
+
+component_test_check_params_silent () {
+    msg "build+test: MBEDTLS_CHECK_PARAMS with alternative MBEDTLS_PARAM_FAILED()"
+    scripts/config.pl full # includes CHECK_PARAMS
+    scripts/config.pl unset MBEDTLS_MEMORY_BACKTRACE # too slow for tests
+    sed -i 's/.*\(#define MBEDTLS_PARAM_FAILED( cond )\).*/\1/' "$CONFIG_H"
+    make CC=gcc CFLAGS='-Werror -O1' all test
 }
 
 component_test_no_platform () {
