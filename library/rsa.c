@@ -1215,18 +1215,13 @@ int mbedtls_rsa_rsaes_pkcs1_v15_encrypt( mbedtls_rsa_context *ctx,
     int ret;
     unsigned char *p = output;
 
-    RSA_VALIDATE_RET( ctx != NULL );
-    RSA_VALIDATE_RET( mode == MBEDTLS_RSA_PRIVATE ||
-                      mode == MBEDTLS_RSA_PUBLIC );
-    RSA_VALIDATE_RET( output != NULL );
-    RSA_VALIDATE_RET( input != NULL );
-
+    if( mode == MBEDTLS_RSA_PRIVATE && ctx->padding != MBEDTLS_RSA_PKCS_V15 )
+        return( MBEDTLS_ERR_RSA_BAD_INPUT_DATA );
+        
     // We don't check p_rng because it won't be dereferenced here
     if( f_rng == NULL || output == NULL )
         return( MBEDTLS_ERR_RSA_BAD_INPUT_DATA );
     if( ilen != 0 && input == NULL )
-        return( MBEDTLS_ERR_RSA_BAD_INPUT_DATA );
-    if( mode == MBEDTLS_RSA_PRIVATE && ctx->padding != MBEDTLS_RSA_PKCS_V15 )
         return( MBEDTLS_ERR_RSA_BAD_INPUT_DATA );
 
     olen = ctx->len;

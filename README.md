@@ -61,6 +61,7 @@ make -j
 make test
 ```
 
+Please note that setting `CFLAGS` overrides its default value of `-O2` and setting `WARNING_CFLAGS` overrides its default value (starting with `-Wall -W`), so if you just want to add some warning options to the default ones, you can do so by setting `CFLAGS=-O2 -Werror` for example. Setting `WARNING_CFLAGS` is useful when you want to get rid of its default content (for example because your compiler doesn't accept `-Wall` as an option). Directory-specific options cannot be overridden from the command line.
 When building Mbed Crypto as a subproject of Mbed TLS, the Mbed TLS
 configuration file (config.h) is used, and not the Mbed Crypto configuration
 file.
