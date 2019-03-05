@@ -24,7 +24,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Platform Security Architecture — cryptography and keystore interface
-   &#160;<span id="projectnumber">beta 1 — 2019-01-21</span>
+   &#160;<span id="projectnumber">beta 2 — 2019-02-22</span>
    </div>
   </td>
  </tr>
@@ -249,12 +249,12 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">handle</td><td>Handle to the key to use for the operation. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">alg</td><td>The MAC algorithm to compute (<code>PSA_ALG_XXX</code> value such that <a class="el" href="group__crypto__types.html#gaca7aee4c9dde316b3b1a150a26eab776">PSA_ALG_IS_MAC(alg)</a> is true). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">alg</td><td>The MAC algorithm to compute (<code>PSA_ALG_XXX</code> value such that <a class="el" href="group__crypto__types.html#gaca7aee4c9dde316b3b1a150a26eab776">PSA_ALG_IS_MAC</a>(<code>alg</code>) is true). </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>Buffer containing the input message. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">input_length</td><td>Size of the <code>input</code> buffer in bytes. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">mac</td><td>Buffer where the MAC value is to be written. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">mac_size</td><td>Size of the <code>mac</code> buffer in bytes. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">mac_length</td><td>On success, the number of bytes that make up the mac value. This is always <a class="el" href="crypto__sizes_8h.html#aef340331ce3cba2b57e1fc5624bf1f99">PSA_HASH_SIZE</a>(<code>alg</code>) where <code>alg</code> is the hash algorithm that is calculated.</td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">mac_length</td><td>On success, the number of bytes that make up the MAC value.</td></tr>
   </table>
   </dd>
 </dl>
@@ -387,7 +387,7 @@ Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramdir">[in,out]</td><td class="paramname">operation</td><td>The operation object to set up. It must have been initialized as per the documentation for <a class="el" href="group__MAC.html#ga78f0838b0c4e3db28b26355624d4bd37">psa_mac_operation_t</a> and not yet in use. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">handle</td><td>Handle to the key to use for the operation. It must remain valid until the operation terminates. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">alg</td><td>The MAC algorithm to compute (<code>PSA_ALG_XXX</code> value such that <a class="el" href="group__crypto__types.html#gaca7aee4c9dde316b3b1a150a26eab776">PSA_ALG_IS_MAC(alg)</a> is true).</td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">alg</td><td>The MAC algorithm to compute (<code>PSA_ALG_XXX</code> value such that <a class="el" href="group__crypto__types.html#gaca7aee4c9dde316b3b1a150a26eab776">PSA_ALG_IS_MAC</a>(<code>alg</code>) is true).</td></tr>
   </table>
   </dd>
 </dl>
@@ -515,7 +515,7 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">handle</td><td>Handle to the key to use for the operation. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">alg</td><td>The MAC algorithm to compute (<code>PSA_ALG_XXX</code> value such that <a class="el" href="group__crypto__types.html#gaca7aee4c9dde316b3b1a150a26eab776">PSA_ALG_IS_MAC(alg)</a> is true). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">alg</td><td>The MAC algorithm to compute (<code>PSA_ALG_XXX</code> value such that <a class="el" href="group__crypto__types.html#gaca7aee4c9dde316b3b1a150a26eab776">PSA_ALG_IS_MAC</a>(<code>alg</code>) is true). </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>Buffer containing the input message. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">input_length</td><td>Size of the <code>input</code> buffer in bytes. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">mac</td><td>Buffer containing the expected MAC value. </td></tr>

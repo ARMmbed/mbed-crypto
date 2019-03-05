@@ -24,7 +24,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Platform Security Architecture — cryptography and keystore interface
-   &#160;<span id="projectnumber">beta 1 — 2019-01-21</span>
+   &#160;<span id="projectnumber">beta 2 — 2019-02-22</span>
    </div>
   </td>
  </tr>
@@ -147,8 +147,8 @@ Macros</h2></td></tr>
 <tr class="separator:aa84c5fb384ac7cb1bfc52adde96588ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85667d47a7aa6c7b99a80e5273671266"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="crypto__sizes_8h.html#a85667d47a7aa6c7b99a80e5273671266">PSA_AEAD_ENCRYPT_OUTPUT_SIZE</a>(alg,  plaintext_length)</td></tr>
 <tr class="separator:a85667d47a7aa6c7b99a80e5273671266"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af45d92c1d7ef43822b8df21ab1117d3f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="crypto__sizes_8h.html#af45d92c1d7ef43822b8df21ab1117d3f">PSA_AEAD_FINISH_OUTPUT_SIZE</a>(alg,  plaintext_length)&#160;&#160;&#160;((size_t)0)</td></tr>
-<tr class="separator:af45d92c1d7ef43822b8df21ab1117d3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab097f6e054f1a73e975d597ade9029a6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="crypto__sizes_8h.html#ab097f6e054f1a73e975d597ade9029a6">PSA_AEAD_FINISH_OUTPUT_SIZE</a>(alg)&#160;&#160;&#160;((size_t)0)</td></tr>
+<tr class="separator:ab097f6e054f1a73e975d597ade9029a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d057796166c16eb673ad1997e48a60b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="crypto__sizes_8h.html#a1d057796166c16eb673ad1997e48a60b">PSA_AEAD_DECRYPT_OUTPUT_SIZE</a>(alg,  ciphertext_length)</td></tr>
 <tr class="separator:a1d057796166c16eb673ad1997e48a60b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec0bcba60e7514b83f967b171d494ed3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><b>PSA_RSA_MINIMUM_PADDING_SIZE</b>(alg)</td></tr>
@@ -221,7 +221,7 @@ Macros</h2></td></tr>
 <p>If the size of the plaintext buffer is at least this large, it is guaranteed that <a class="el" href="group__aead.html#gaa8ce6527f2e227f1071fadbf2099793b">psa_aead_decrypt()</a> will not fail due to an insufficient buffer size. Depending on the algorithm, the actual size of the plaintext may be smaller.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">alg</td><td>An AEAD algorithm (<code>PSA_ALG_XXX</code> value such that <a class="el" href="group__crypto__types.html#ga1d44829d60065eaa4ac9a703e7d6abc8">PSA_ALG_IS_AEAD(alg)</a> is true). </td></tr>
+    <tr><td class="paramname">alg</td><td>An AEAD algorithm (<code>PSA_ALG_XXX</code> value such that <a class="el" href="group__crypto__types.html#ga1d44829d60065eaa4ac9a703e7d6abc8">PSA_ALG_IS_AEAD</a>(<code>alg</code>) is true). </td></tr>
     <tr><td class="paramname">ciphertext_length</td><td>Size of the plaintext in bytes.</td></tr>
   </table>
   </dd>
@@ -258,7 +258,7 @@ Macros</h2></td></tr>
 <p>If the size of the ciphertext buffer is at least this large, it is guaranteed that <a class="el" href="group__aead.html#ga44de092cf58bb6c820c5c80a6c51610d">psa_aead_encrypt()</a> will not fail due to an insufficient buffer size. Depending on the algorithm, the actual size of the ciphertext may be smaller.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">alg</td><td>An AEAD algorithm (<code>PSA_ALG_XXX</code> value such that <a class="el" href="group__crypto__types.html#ga1d44829d60065eaa4ac9a703e7d6abc8">PSA_ALG_IS_AEAD(alg)</a> is true). </td></tr>
+    <tr><td class="paramname">alg</td><td>An AEAD algorithm (<code>PSA_ALG_XXX</code> value such that <a class="el" href="group__crypto__types.html#ga1d44829d60065eaa4ac9a703e7d6abc8">PSA_ALG_IS_AEAD</a>(<code>alg</code>) is true). </td></tr>
     <tr><td class="paramname">plaintext_length</td><td>Size of the plaintext in bytes.</td></tr>
   </table>
   </dd>
@@ -267,7 +267,7 @@ Macros</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="af45d92c1d7ef43822b8df21ab1117d3f"></a>
+<a class="anchor" id="ab097f6e054f1a73e975d597ade9029a6"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -275,18 +275,8 @@ Macros</h2></td></tr>
           <td class="memname">#define PSA_AEAD_FINISH_OUTPUT_SIZE</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">alg, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">plaintext_length&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td>&#160;&#160;&#160;((size_t)0)</td>
+          <td class="paramname">alg</td><td>)</td>
+          <td>&#160;&#160;&#160;((size_t)0)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -294,7 +284,7 @@ Macros</h2></td></tr>
 <p>If the size of the ciphertext buffer is at least this large, it is guaranteed that <a class="el" href="group__aead.html#ga759791bbe1763b377c3b5447641f1fc8">psa_aead_finish()</a> will not fail due to an insufficient buffer size. Depending on the algorithm, the actual size of the ciphertext may be smaller.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">alg</td><td>An AEAD algorithm (<code>PSA_ALG_XXX</code> value such that <a class="el" href="group__crypto__types.html#ga1d44829d60065eaa4ac9a703e7d6abc8">PSA_ALG_IS_AEAD(alg)</a> is true).</td></tr>
+    <tr><td class="paramname">alg</td><td>An AEAD algorithm (<code>PSA_ALG_XXX</code> value such that <a class="el" href="group__crypto__types.html#ga1d44829d60065eaa4ac9a703e7d6abc8">PSA_ALG_IS_AEAD</a>(<code>alg</code>) is true).</td></tr>
   </table>
   </dd>
 </dl>
@@ -546,16 +536,16 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">(                                                           \</div><div class="line">        PSA_ALG_HMAC_GET_HASH(alg) == PSA_ALG_MD2 ? 16 :            \</div><div class="line">        PSA_ALG_HMAC_GET_HASH(alg) == PSA_ALG_MD4 ? 16 :            \</div><div class="line">        PSA_ALG_HMAC_GET_HASH(alg) == PSA_ALG_MD5 ? 16 :            \</div><div class="line">        PSA_ALG_HMAC_GET_HASH(alg) == PSA_ALG_RIPEMD160 ? 20 :      \</div><div class="line">        PSA_ALG_HMAC_GET_HASH(alg) == PSA_ALG_SHA_1 ? 20 :          \</div><div class="line">        PSA_ALG_HMAC_GET_HASH(alg) == <a class="code" href="group__crypto__types.html#ga25d6a3244d10a7148fe6b026d1979f7b">PSA_ALG_SHA_224</a> ? 28 :        \</div><div class="line">        PSA_ALG_HMAC_GET_HASH(alg) == <a class="code" href="group__crypto__types.html#ga619471f978e13cdd0a1e37145e4bf341">PSA_ALG_SHA_256</a> ? 32 :        \</div><div class="line">        PSA_ALG_HMAC_GET_HASH(alg) == <a class="code" href="group__crypto__types.html#ga58af64dd9a86a287e8da9ed7739eead4">PSA_ALG_SHA_384</a> ? 48 :        \</div><div class="line">        PSA_ALG_HMAC_GET_HASH(alg) == <a class="code" href="group__crypto__types.html#gafba3ae409f46d3dd7f37a0910660c3e9">PSA_ALG_SHA_512</a> ? 64 :        \</div><div class="line">        PSA_ALG_HMAC_GET_HASH(alg) == <a class="code" href="group__crypto__types.html#ga3fe2d7c3c80e3186ca78d16a35d5d931">PSA_ALG_SHA_512_224</a> ? 28 :    \</div><div class="line">        PSA_ALG_HMAC_GET_HASH(alg) == <a class="code" href="group__crypto__types.html#ga5910b3964c14e9613e8643a45b09c2d4">PSA_ALG_SHA_512_256</a> ? 32 :    \</div><div class="line">        PSA_ALG_HMAC_GET_HASH(alg) == <a class="code" href="group__crypto__types.html#ga16f5fe34ccce68c2fada1224c054a999">PSA_ALG_SHA3_224</a> ? 28 :       \</div><div class="line">        PSA_ALG_HMAC_GET_HASH(alg) == <a class="code" href="group__crypto__types.html#gaace70d9515489bbe3c5e7ac1b7d9155b">PSA_ALG_SHA3_256</a> ? 32 :       \</div><div class="line">        PSA_ALG_HMAC_GET_HASH(alg) == <a class="code" href="group__crypto__types.html#gab0f079257ea75e2acfe2fc3b38c78cd8">PSA_ALG_SHA3_384</a> ? 48 :       \</div><div class="line">        PSA_ALG_HMAC_GET_HASH(alg) == <a class="code" href="group__crypto__types.html#ga37e5dbe936dddb155e76f2997de27188">PSA_ALG_SHA3_512</a> ? 64 :       \</div><div class="line">        0)</div><div class="ttc" id="group__crypto__types_html_gaace70d9515489bbe3c5e7ac1b7d9155b"><div class="ttname"><a href="group__crypto__types.html#gaace70d9515489bbe3c5e7ac1b7d9155b">PSA_ALG_SHA3_256</a></div><div class="ttdeci">#define PSA_ALG_SHA3_256</div><div class="ttdef"><b>Definition:</b> crypto_values.h:673</div></div>
-<div class="ttc" id="group__crypto__types_html_ga16f5fe34ccce68c2fada1224c054a999"><div class="ttname"><a href="group__crypto__types.html#ga16f5fe34ccce68c2fada1224c054a999">PSA_ALG_SHA3_224</a></div><div class="ttdeci">#define PSA_ALG_SHA3_224</div><div class="ttdef"><b>Definition:</b> crypto_values.h:671</div></div>
-<div class="ttc" id="group__crypto__types_html_ga37e5dbe936dddb155e76f2997de27188"><div class="ttname"><a href="group__crypto__types.html#ga37e5dbe936dddb155e76f2997de27188">PSA_ALG_SHA3_512</a></div><div class="ttdeci">#define PSA_ALG_SHA3_512</div><div class="ttdef"><b>Definition:</b> crypto_values.h:677</div></div>
-<div class="ttc" id="group__crypto__types_html_ga619471f978e13cdd0a1e37145e4bf341"><div class="ttname"><a href="group__crypto__types.html#ga619471f978e13cdd0a1e37145e4bf341">PSA_ALG_SHA_256</a></div><div class="ttdeci">#define PSA_ALG_SHA_256</div><div class="ttdef"><b>Definition:</b> crypto_values.h:661</div></div>
-<div class="ttc" id="group__crypto__types_html_gafba3ae409f46d3dd7f37a0910660c3e9"><div class="ttname"><a href="group__crypto__types.html#gafba3ae409f46d3dd7f37a0910660c3e9">PSA_ALG_SHA_512</a></div><div class="ttdeci">#define PSA_ALG_SHA_512</div><div class="ttdef"><b>Definition:</b> crypto_values.h:665</div></div>
-<div class="ttc" id="group__crypto__types_html_ga25d6a3244d10a7148fe6b026d1979f7b"><div class="ttname"><a href="group__crypto__types.html#ga25d6a3244d10a7148fe6b026d1979f7b">PSA_ALG_SHA_224</a></div><div class="ttdeci">#define PSA_ALG_SHA_224</div><div class="ttdef"><b>Definition:</b> crypto_values.h:659</div></div>
-<div class="ttc" id="group__crypto__types_html_ga58af64dd9a86a287e8da9ed7739eead4"><div class="ttname"><a href="group__crypto__types.html#ga58af64dd9a86a287e8da9ed7739eead4">PSA_ALG_SHA_384</a></div><div class="ttdeci">#define PSA_ALG_SHA_384</div><div class="ttdef"><b>Definition:</b> crypto_values.h:663</div></div>
-<div class="ttc" id="group__crypto__types_html_ga3fe2d7c3c80e3186ca78d16a35d5d931"><div class="ttname"><a href="group__crypto__types.html#ga3fe2d7c3c80e3186ca78d16a35d5d931">PSA_ALG_SHA_512_224</a></div><div class="ttdeci">#define PSA_ALG_SHA_512_224</div><div class="ttdef"><b>Definition:</b> crypto_values.h:667</div></div>
-<div class="ttc" id="group__crypto__types_html_ga5910b3964c14e9613e8643a45b09c2d4"><div class="ttname"><a href="group__crypto__types.html#ga5910b3964c14e9613e8643a45b09c2d4">PSA_ALG_SHA_512_256</a></div><div class="ttdeci">#define PSA_ALG_SHA_512_256</div><div class="ttdef"><b>Definition:</b> crypto_values.h:669</div></div>
-<div class="ttc" id="group__crypto__types_html_gab0f079257ea75e2acfe2fc3b38c78cd8"><div class="ttname"><a href="group__crypto__types.html#gab0f079257ea75e2acfe2fc3b38c78cd8">PSA_ALG_SHA3_384</a></div><div class="ttdeci">#define PSA_ALG_SHA3_384</div><div class="ttdef"><b>Definition:</b> crypto_values.h:675</div></div>
+<b>Value:</b><div class="fragment"><div class="line">(                                                           \</div><div class="line">        PSA_ALG_HMAC_GET_HASH(alg) == PSA_ALG_MD2 ? 16 :            \</div><div class="line">        PSA_ALG_HMAC_GET_HASH(alg) == PSA_ALG_MD4 ? 16 :            \</div><div class="line">        PSA_ALG_HMAC_GET_HASH(alg) == PSA_ALG_MD5 ? 16 :            \</div><div class="line">        PSA_ALG_HMAC_GET_HASH(alg) == PSA_ALG_RIPEMD160 ? 20 :      \</div><div class="line">        PSA_ALG_HMAC_GET_HASH(alg) == PSA_ALG_SHA_1 ? 20 :          \</div><div class="line">        PSA_ALG_HMAC_GET_HASH(alg) == <a class="code" href="group__crypto__types.html#ga25d6a3244d10a7148fe6b026d1979f7b">PSA_ALG_SHA_224</a> ? 28 :        \</div><div class="line">        PSA_ALG_HMAC_GET_HASH(alg) == <a class="code" href="group__crypto__types.html#ga619471f978e13cdd0a1e37145e4bf341">PSA_ALG_SHA_256</a> ? 32 :        \</div><div class="line">        PSA_ALG_HMAC_GET_HASH(alg) == <a class="code" href="group__crypto__types.html#ga58af64dd9a86a287e8da9ed7739eead4">PSA_ALG_SHA_384</a> ? 48 :        \</div><div class="line">        PSA_ALG_HMAC_GET_HASH(alg) == <a class="code" href="group__crypto__types.html#gafba3ae409f46d3dd7f37a0910660c3e9">PSA_ALG_SHA_512</a> ? 64 :        \</div><div class="line">        PSA_ALG_HMAC_GET_HASH(alg) == <a class="code" href="group__crypto__types.html#ga3fe2d7c3c80e3186ca78d16a35d5d931">PSA_ALG_SHA_512_224</a> ? 28 :    \</div><div class="line">        PSA_ALG_HMAC_GET_HASH(alg) == <a class="code" href="group__crypto__types.html#ga5910b3964c14e9613e8643a45b09c2d4">PSA_ALG_SHA_512_256</a> ? 32 :    \</div><div class="line">        PSA_ALG_HMAC_GET_HASH(alg) == <a class="code" href="group__crypto__types.html#ga16f5fe34ccce68c2fada1224c054a999">PSA_ALG_SHA3_224</a> ? 28 :       \</div><div class="line">        PSA_ALG_HMAC_GET_HASH(alg) == <a class="code" href="group__crypto__types.html#gaace70d9515489bbe3c5e7ac1b7d9155b">PSA_ALG_SHA3_256</a> ? 32 :       \</div><div class="line">        PSA_ALG_HMAC_GET_HASH(alg) == <a class="code" href="group__crypto__types.html#gab0f079257ea75e2acfe2fc3b38c78cd8">PSA_ALG_SHA3_384</a> ? 48 :       \</div><div class="line">        PSA_ALG_HMAC_GET_HASH(alg) == <a class="code" href="group__crypto__types.html#ga37e5dbe936dddb155e76f2997de27188">PSA_ALG_SHA3_512</a> ? 64 :       \</div><div class="line">        0)</div><div class="ttc" id="group__crypto__types_html_gaace70d9515489bbe3c5e7ac1b7d9155b"><div class="ttname"><a href="group__crypto__types.html#gaace70d9515489bbe3c5e7ac1b7d9155b">PSA_ALG_SHA3_256</a></div><div class="ttdeci">#define PSA_ALG_SHA3_256</div><div class="ttdef"><b>Definition:</b> crypto_values.h:660</div></div>
+<div class="ttc" id="group__crypto__types_html_ga16f5fe34ccce68c2fada1224c054a999"><div class="ttname"><a href="group__crypto__types.html#ga16f5fe34ccce68c2fada1224c054a999">PSA_ALG_SHA3_224</a></div><div class="ttdeci">#define PSA_ALG_SHA3_224</div><div class="ttdef"><b>Definition:</b> crypto_values.h:658</div></div>
+<div class="ttc" id="group__crypto__types_html_ga37e5dbe936dddb155e76f2997de27188"><div class="ttname"><a href="group__crypto__types.html#ga37e5dbe936dddb155e76f2997de27188">PSA_ALG_SHA3_512</a></div><div class="ttdeci">#define PSA_ALG_SHA3_512</div><div class="ttdef"><b>Definition:</b> crypto_values.h:664</div></div>
+<div class="ttc" id="group__crypto__types_html_ga619471f978e13cdd0a1e37145e4bf341"><div class="ttname"><a href="group__crypto__types.html#ga619471f978e13cdd0a1e37145e4bf341">PSA_ALG_SHA_256</a></div><div class="ttdeci">#define PSA_ALG_SHA_256</div><div class="ttdef"><b>Definition:</b> crypto_values.h:648</div></div>
+<div class="ttc" id="group__crypto__types_html_gafba3ae409f46d3dd7f37a0910660c3e9"><div class="ttname"><a href="group__crypto__types.html#gafba3ae409f46d3dd7f37a0910660c3e9">PSA_ALG_SHA_512</a></div><div class="ttdeci">#define PSA_ALG_SHA_512</div><div class="ttdef"><b>Definition:</b> crypto_values.h:652</div></div>
+<div class="ttc" id="group__crypto__types_html_ga25d6a3244d10a7148fe6b026d1979f7b"><div class="ttname"><a href="group__crypto__types.html#ga25d6a3244d10a7148fe6b026d1979f7b">PSA_ALG_SHA_224</a></div><div class="ttdeci">#define PSA_ALG_SHA_224</div><div class="ttdef"><b>Definition:</b> crypto_values.h:646</div></div>
+<div class="ttc" id="group__crypto__types_html_ga58af64dd9a86a287e8da9ed7739eead4"><div class="ttname"><a href="group__crypto__types.html#ga58af64dd9a86a287e8da9ed7739eead4">PSA_ALG_SHA_384</a></div><div class="ttdeci">#define PSA_ALG_SHA_384</div><div class="ttdef"><b>Definition:</b> crypto_values.h:650</div></div>
+<div class="ttc" id="group__crypto__types_html_ga3fe2d7c3c80e3186ca78d16a35d5d931"><div class="ttname"><a href="group__crypto__types.html#ga3fe2d7c3c80e3186ca78d16a35d5d931">PSA_ALG_SHA_512_224</a></div><div class="ttdeci">#define PSA_ALG_SHA_512_224</div><div class="ttdef"><b>Definition:</b> crypto_values.h:654</div></div>
+<div class="ttc" id="group__crypto__types_html_ga5910b3964c14e9613e8643a45b09c2d4"><div class="ttname"><a href="group__crypto__types.html#ga5910b3964c14e9613e8643a45b09c2d4">PSA_ALG_SHA_512_256</a></div><div class="ttdeci">#define PSA_ALG_SHA_512_256</div><div class="ttdef"><b>Definition:</b> crypto_values.h:656</div></div>
+<div class="ttc" id="group__crypto__types_html_gab0f079257ea75e2acfe2fc3b38c78cd8"><div class="ttname"><a href="group__crypto__types.html#gab0f079257ea75e2acfe2fc3b38c78cd8">PSA_ALG_SHA3_384</a></div><div class="ttdeci">#define PSA_ALG_SHA3_384</div><div class="ttdef"><b>Definition:</b> crypto_values.h:662</div></div>
 </div><!-- fragment --><p>The size of the output of <a class="el" href="group__hash.html#ga4795fd06a0067b0adcd92e9627b8c97e">psa_hash_finish()</a>, in bytes.</p>
 <p>This is also the hash size that <a class="el" href="group__hash.html#ga7be923c5700c9c70ef77ee9b76d1a5c0">psa_hash_verify()</a> expects.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -642,17 +632,17 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">((alg) &amp; PSA_ALG_MAC_TRUNCATION_MASK ? <a class="code" href="group__crypto__types.html#gab03726c4476174e019a08e2a04018ce8">PSA_MAC_TRUNCATED_LENGTH</a>(alg) : <a class="code" href="group__crypto__types.html#ga4a050c3c3cbc6eb96418f18847601c8a">\</a></div><div class="line"><a class="code" href="group__crypto__types.html#ga4a050c3c3cbc6eb96418f18847601c8a">     PSA_ALG_IS_HMAC</a>(alg) ? <a class="code" href="crypto__sizes_8h.html#aef340331ce3cba2b57e1fc5624bf1f99">PSA_HASH_SIZE</a>(PSA_ALG_HMAC_GET_HASH(alg)) : \</div><div class="line">     <a class="code" href="group__crypto__types.html#gae49d1eb601125d65a5c5b252aa45479e">PSA_ALG_IS_BLOCK_CIPHER_MAC</a>(alg) ? <a class="code" href="group__crypto__types.html#gacaa366bdeb0413e63e87a667c5457b2e">PSA_BLOCK_CIPHER_BLOCK_SIZE</a>(key_type) : \</div><div class="line">     ((void)(key_type), (void)(key_bits), 0))</div><div class="ttc" id="crypto__sizes_8h_html_aef340331ce3cba2b57e1fc5624bf1f99"><div class="ttname"><a href="crypto__sizes_8h.html#aef340331ce3cba2b57e1fc5624bf1f99">PSA_HASH_SIZE</a></div><div class="ttdeci">#define PSA_HASH_SIZE(alg)</div><div class="ttdef"><b>Definition:</b> crypto_sizes.h:70</div></div>
-<div class="ttc" id="group__crypto__types_html_gae49d1eb601125d65a5c5b252aa45479e"><div class="ttname"><a href="group__crypto__types.html#gae49d1eb601125d65a5c5b252aa45479e">PSA_ALG_IS_BLOCK_CIPHER_MAC</a></div><div class="ttdeci">#define PSA_ALG_IS_BLOCK_CIPHER_MAC(alg)</div><div class="ttdef"><b>Definition:</b> crypto_values.h:836</div></div>
+<div class="ttc" id="group__crypto__types_html_gae49d1eb601125d65a5c5b252aa45479e"><div class="ttname"><a href="group__crypto__types.html#gae49d1eb601125d65a5c5b252aa45479e">PSA_ALG_IS_BLOCK_CIPHER_MAC</a></div><div class="ttdeci">#define PSA_ALG_IS_BLOCK_CIPHER_MAC(alg)</div><div class="ttdef"><b>Definition:</b> crypto_values.h:823</div></div>
 <div class="ttc" id="group__crypto__types_html_gacaa366bdeb0413e63e87a667c5457b2e"><div class="ttname"><a href="group__crypto__types.html#gacaa366bdeb0413e63e87a667c5457b2e">PSA_BLOCK_CIPHER_BLOCK_SIZE</a></div><div class="ttdeci">#define PSA_BLOCK_CIPHER_BLOCK_SIZE(type)</div><div class="ttdef"><b>Definition:</b> crypto_values.h:527</div></div>
-<div class="ttc" id="group__crypto__types_html_gab03726c4476174e019a08e2a04018ce8"><div class="ttname"><a href="group__crypto__types.html#gab03726c4476174e019a08e2a04018ce8">PSA_MAC_TRUNCATED_LENGTH</a></div><div class="ttdeci">#define PSA_MAC_TRUNCATED_LENGTH(alg)</div><div class="ttdef"><b>Definition:</b> crypto_values.h:820</div></div>
-<div class="ttc" id="group__crypto__types_html_ga4a050c3c3cbc6eb96418f18847601c8a"><div class="ttname"><a href="group__crypto__types.html#ga4a050c3c3cbc6eb96418f18847601c8a">PSA_ALG_IS_HMAC</a></div><div class="ttdeci">#define PSA_ALG_IS_HMAC(alg)</div><div class="ttdef"><b>Definition:</b> crypto_values.h:743</div></div>
+<div class="ttc" id="group__crypto__types_html_gab03726c4476174e019a08e2a04018ce8"><div class="ttname"><a href="group__crypto__types.html#gab03726c4476174e019a08e2a04018ce8">PSA_MAC_TRUNCATED_LENGTH</a></div><div class="ttdeci">#define PSA_MAC_TRUNCATED_LENGTH(alg)</div><div class="ttdef"><b>Definition:</b> crypto_values.h:807</div></div>
+<div class="ttc" id="group__crypto__types_html_ga4a050c3c3cbc6eb96418f18847601c8a"><div class="ttname"><a href="group__crypto__types.html#ga4a050c3c3cbc6eb96418f18847601c8a">PSA_ALG_IS_HMAC</a></div><div class="ttdeci">#define PSA_ALG_IS_HMAC(alg)</div><div class="ttdef"><b>Definition:</b> crypto_values.h:730</div></div>
 </div><!-- fragment --><p>The size of the output of <a class="el" href="group__MAC.html#gac22bc0125580c96724a09226cfbc97f2">psa_mac_sign_finish()</a>, in bytes.</p>
 <p>This is also the MAC size that <a class="el" href="group__MAC.html#gac92b2930d6728e1be4d011c05d485822">psa_mac_verify_finish()</a> expects.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">key_type</td><td>The type of the MAC key. </td></tr>
     <tr><td class="paramname">key_bits</td><td>The size of the MAC key in bits. </td></tr>
-    <tr><td class="paramname">alg</td><td>A MAC algorithm (<code>PSA_ALG_XXX</code> value such that <a class="el" href="group__crypto__types.html#gaca7aee4c9dde316b3b1a150a26eab776">PSA_ALG_IS_MAC(alg)</a> is true).</td></tr>
+    <tr><td class="paramname">alg</td><td>A MAC algorithm (<code>PSA_ALG_XXX</code> value such that <a class="el" href="group__crypto__types.html#gaca7aee4c9dde316b3b1a150a26eab776">PSA_ALG_IS_MAC</a>(<code>alg</code>) is true).</td></tr>
   </table>
   </dd>
 </dl>

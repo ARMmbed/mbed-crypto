@@ -24,7 +24,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Platform Security Architecture — cryptography and keystore interface
-   &#160;<span id="projectnumber">beta 1 — 2019-01-21</span>
+   &#160;<span id="projectnumber">beta 2 — 2019-02-22</span>
    </div>
   </td>
  </tr>
@@ -289,7 +289,7 @@ Functions</h2></td></tr>
     <tr><td class="paramdir"></td><td class="paramname">ciphertext_length</td><td>Size of <code>ciphertext</code> in bytes. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">plaintext</td><td>Output buffer for the decrypted data. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">plaintext_size</td><td>Size of the <code>plaintext</code> buffer in bytes. This must be at least <a class="el" href="crypto__sizes_8h.html#a1d057796166c16eb673ad1997e48a60b">PSA_AEAD_DECRYPT_OUTPUT_SIZE</a>(<code>alg</code>, <code>ciphertext_length</code>). </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">plaintext_length</td><td>On success, the size of the output in the <b>plaintext</b> buffer.</td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">plaintext_length</td><td>On success, the size of the output in the <code>plaintext</code> buffer.</td></tr>
   </table>
   </dd>
 </dl>
@@ -475,7 +475,7 @@ Functions</h2></td></tr>
     <tr><td class="paramdir"></td><td class="paramname">plaintext_length</td><td>Size of <code>plaintext</code> in bytes. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">ciphertext</td><td>Output buffer for the authenticated and encrypted data. The additional data is not part of this output. For algorithms where the encrypted data and the authentication tag are defined as separate outputs, the authentication tag is appended to the encrypted data. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">ciphertext_size</td><td>Size of the <code>ciphertext</code> buffer in bytes. This must be at least <a class="el" href="crypto__sizes_8h.html#a85667d47a7aa6c7b99a80e5273671266">PSA_AEAD_ENCRYPT_OUTPUT_SIZE</a>(<code>alg</code>, <code>plaintext_length</code>). </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">ciphertext_length</td><td>On success, the size of the output in the <b>ciphertext</b> buffer.</td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">ciphertext_length</td><td>On success, the size of the output in the <code>ciphertext</code> buffer.</td></tr>
   </table>
   </dd>
 </dl>
@@ -756,7 +756,7 @@ Functions</h2></td></tr>
 <p>The application must call this function before calling <a class="el" href="group__aead.html#ga6d0eed03f832e5c9c91cb8adf2882569">psa_aead_update_ad()</a> or <a class="el" href="group__aead.html#ga3b105de2088cef7c3d9e2fd8048c841c">psa_aead_update()</a> if the algorithm for the operation requires it. If the algorithm does not require it, calling this function is optional, but if this function is called then the implementation must enforce the lengths.</p>
 <p>You may call this function before or after setting the nonce with <a class="el" href="group__aead.html#ga40641d0721ca7fe01bbcd9ef635fbc46">psa_aead_set_nonce()</a> or <a class="el" href="group__aead.html#ga3eadcf2a29f662129ea4fb3454969ba2">psa_aead_generate_nonce()</a>.</p>
 <ul>
-<li>For #PSA_ALG_CCM, calling this function is required.</li>
+<li>For <a class="el" href="group__crypto__types.html#gac2c0e7d21f1b2df5e76bcb4a8f84273c">PSA_ALG_CCM</a>, calling this function is required.</li>
 <li>For the other AEAD algorithms defined in this specification, calling this function is not required.</li>
 <li>For vendor-defined algorithm, refer to the vendor documentation.</li>
 </ul>
