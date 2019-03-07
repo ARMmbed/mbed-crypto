@@ -24,7 +24,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Platform Security Architecture — cryptography and keystore interface
-   &#160;<span id="projectnumber">beta 1 — 2019-01-21</span>
+   &#160;<span id="projectnumber">beta 2 — 2019-02-22</span>
    </div>
   </td>
  </tr>
@@ -379,7 +379,7 @@ Typedefs</h2></td></tr>
 <p>There was a storage failure that may have led to data loss.</p>
 <p>This error indicates that some persistent storage is corrupted. It should not be used for a corruption of volatile memory (use <a class="el" href="group__error.html#ga2c5dda1485cb54f2385cb9c1279a7004">PSA_ERROR_TAMPERING_DETECTED</a>), for a communication error between the cryptoprocessor and its external storage (use <a class="el" href="group__error.html#ga5cdb6948371d49e916106249020ea3f7">PSA_ERROR_COMMUNICATION_FAILURE</a>), or when the storage is in a valid state but is full (use <a class="el" href="group__error.html#ga897a45eb206a6f6b7be7ffbe36f0d766">PSA_ERROR_INSUFFICIENT_STORAGE</a>).</p>
 <p>Note that a storage failure does not indicate that any data that was previously read is invalid. However this previously read data may no longer be readable from storage.</p>
-<p>When a storage failure occurs, it is no longer possible to ensure the global integrity of the keystore. Depending on the global integrity guarantees offered by the implementation, access to other data may or may not fail even if the data is still readable but its integrity canont be guaranteed.</p>
+<p>When a storage failure occurs, it is no longer possible to ensure the global integrity of the keystore. Depending on the global integrity guarantees offered by the implementation, access to other data may or may not fail even if the data is still readable but its integrity cannot be guaranteed.</p>
 <p>Implementations should only use this error code to report a permanent storage corruption. However application writers should keep in mind that transient errors while reading the storage may be reported using this error code. </p>
 
 </div>

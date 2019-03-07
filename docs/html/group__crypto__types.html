@@ -24,7 +24,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Platform Security Architecture — cryptography and keystore interface
-   &#160;<span id="projectnumber">beta 1 — 2019-01-21</span>
+   &#160;<span id="projectnumber">beta 2 — 2019-02-22</span>
    </div>
   </td>
  </tr>
@@ -312,15 +312,10 @@ Macros</h2></td></tr>
 <tr class="separator:ga6d490d0904e0698f6c1268a89d72ff31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga41d2ee937d54efd76bd54a97b2ebc08a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__crypto__types.html#ga41d2ee937d54efd76bd54a97b2ebc08a">PSA_ALG_IS_ASYMMETRIC_ENCRYPTION</a>(alg)&#160;&#160;&#160;(((alg) &amp; PSA_ALG_CATEGORY_MASK) == PSA_ALG_CATEGORY_ASYMMETRIC_ENCRYPTION)</td></tr>
 <tr class="separator:ga41d2ee937d54efd76bd54a97b2ebc08a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab19961aac97f3856f83057b04ba7c5f5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gab19961aac97f3856f83057b04ba7c5f5"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>PSA_ALG_KEY_SELECTION_FLAG</b>&#160;&#160;&#160;((<a class="el" href="group__crypto__types.html#gac2e4d47f1300d73c2f829a6d99252d69">psa_algorithm_t</a>)0x01000000)</td></tr>
-<tr class="separator:gab19961aac97f3856f83057b04ba7c5f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga59753742cb06553bd22751bbef472b6f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__crypto__types.html#ga59753742cb06553bd22751bbef472b6f">PSA_ALG_IS_KEY_AGREEMENT</a>(alg)</td></tr>
+<tr class="memitem:ga59753742cb06553bd22751bbef472b6f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__crypto__types.html#ga59753742cb06553bd22751bbef472b6f">PSA_ALG_IS_KEY_AGREEMENT</a>(alg)&#160;&#160;&#160;(((alg) &amp; PSA_ALG_CATEGORY_MASK) == PSA_ALG_CATEGORY_KEY_AGREEMENT)</td></tr>
 <tr class="separator:ga59753742cb06553bd22751bbef472b6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf8b90c648aa53dbd06c236695e300cd0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__crypto__types.html#gaf8b90c648aa53dbd06c236695e300cd0">PSA_ALG_IS_KEY_DERIVATION</a>(alg)&#160;&#160;&#160;(((alg) &amp; PSA_ALG_CATEGORY_MASK) == PSA_ALG_CATEGORY_KEY_DERIVATION)</td></tr>
 <tr class="separator:gaf8b90c648aa53dbd06c236695e300cd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga51b1834ee5e98c6a83c2cfc7699f9077"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__crypto__types.html#ga51b1834ee5e98c6a83c2cfc7699f9077">PSA_ALG_IS_KEY_SELECTION</a>(alg)&#160;&#160;&#160;(((alg) &amp; PSA_ALG_CATEGORY_MASK) == PSA_ALG_CATEGORY_KEY_SELECTION)</td></tr>
-<tr class="separator:ga51b1834ee5e98c6a83c2cfc7699f9077"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac41a7077aef55bb20c629c8949d43c57"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gac41a7077aef55bb20c629c8949d43c57"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>PSA_ALG_HASH_MASK</b>&#160;&#160;&#160;((<a class="el" href="group__crypto__types.html#gac2e4d47f1300d73c2f829a6d99252d69">psa_algorithm_t</a>)0x000000ff)</td></tr>
 <tr class="separator:gac41a7077aef55bb20c629c8949d43c57"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -424,11 +419,9 @@ Macros</h2></td></tr>
 <tr class="separator:gacb332d72716958880ee7f97d8365ae66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaef50d2e9716eb6d476046608e4e0c78c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__crypto__types.html#gaef50d2e9716eb6d476046608e4e0c78c">PSA_ALG_CBC_PKCS7</a>&#160;&#160;&#160;((<a class="el" href="group__crypto__types.html#gac2e4d47f1300d73c2f829a6d99252d69">psa_algorithm_t</a>)0x04600101)</td></tr>
 <tr class="separator:gaef50d2e9716eb6d476046608e4e0c78c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac2c0e7d21f1b2df5e76bcb4a8f84273c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gac2c0e7d21f1b2df5e76bcb4a8f84273c"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>PSA_ALG_CCM</b>&#160;&#160;&#160;((<a class="el" href="group__crypto__types.html#gac2e4d47f1300d73c2f829a6d99252d69">psa_algorithm_t</a>)0x06001001)</td></tr>
+<tr class="memitem:gac2c0e7d21f1b2df5e76bcb4a8f84273c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__crypto__types.html#gac2c0e7d21f1b2df5e76bcb4a8f84273c">PSA_ALG_CCM</a>&#160;&#160;&#160;((<a class="el" href="group__crypto__types.html#gac2e4d47f1300d73c2f829a6d99252d69">psa_algorithm_t</a>)0x06001001)</td></tr>
 <tr class="separator:gac2c0e7d21f1b2df5e76bcb4a8f84273c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0d7d02b15aaae490d38277d99f1c637c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga0d7d02b15aaae490d38277d99f1c637c"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>PSA_ALG_GCM</b>&#160;&#160;&#160;((<a class="el" href="group__crypto__types.html#gac2e4d47f1300d73c2f829a6d99252d69">psa_algorithm_t</a>)0x06001002)</td></tr>
+<tr class="memitem:ga0d7d02b15aaae490d38277d99f1c637c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__crypto__types.html#ga0d7d02b15aaae490d38277d99f1c637c">PSA_ALG_GCM</a>&#160;&#160;&#160;((<a class="el" href="group__crypto__types.html#gac2e4d47f1300d73c2f829a6d99252d69">psa_algorithm_t</a>)0x06001002)</td></tr>
 <tr class="separator:ga0d7d02b15aaae490d38277d99f1c637c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga575d9082463a06a86c2a22dd63c2e772"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga575d9082463a06a86c2a22dd63c2e772"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>PSA_ALG_AEAD_TAG_LENGTH_MASK</b>&#160;&#160;&#160;((<a class="el" href="group__crypto__types.html#gac2e4d47f1300d73c2f829a6d99252d69">psa_algorithm_t</a>)0x00003f00)</td></tr>
@@ -471,8 +464,7 @@ Macros</h2></td></tr>
 <tr class="memitem:ga1d2a96f788cce4f8fc156d13342e70de"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga1d2a96f788cce4f8fc156d13342e70de"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>PSA_ALG_DSA_DETERMINISTIC_FLAG</b>&#160;&#160;&#160;((<a class="el" href="group__crypto__types.html#gac2e4d47f1300d73c2f829a6d99252d69">psa_algorithm_t</a>)0x00010000)</td></tr>
 <tr class="separator:ga1d2a96f788cce4f8fc156d13342e70de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab8eb98fb6d2e094e47f3b44dfe128f94"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gab8eb98fb6d2e094e47f3b44dfe128f94"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>PSA_ALG_DETERMINISTIC_DSA</b>(hash_alg)&#160;&#160;&#160;(PSA_ALG_DETERMINISTIC_DSA_BASE | ((hash_alg) &amp; PSA_ALG_HASH_MASK))</td></tr>
+<tr class="memitem:gab8eb98fb6d2e094e47f3b44dfe128f94"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__crypto__types.html#gab8eb98fb6d2e094e47f3b44dfe128f94">PSA_ALG_DETERMINISTIC_DSA</a>(hash_alg)&#160;&#160;&#160;(PSA_ALG_DETERMINISTIC_DSA_BASE | ((hash_alg) &amp; PSA_ALG_HASH_MASK))</td></tr>
 <tr class="separator:gab8eb98fb6d2e094e47f3b44dfe128f94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gacfc3cd50ef0c4bf694cf936079bcbaee"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><b>PSA_ALG_IS_DSA</b>(alg)</td></tr>
 <tr class="separator:gacfc3cd50ef0c4bf694cf936079bcbaee"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -568,8 +560,7 @@ Macros</h2></td></tr>
 <tr class="memitem:gaf837c55ba698b488b6e63300e3470abf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaf837c55ba698b488b6e63300e3470abf"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>PSA_ALG_KEY_AGREEMENT_GET_BASE</b>(alg)&#160;&#160;&#160;(((alg) &amp; PSA_ALG_KEY_AGREEMENT_MASK) | PSA_ALG_CATEGORY_KEY_AGREEMENT)</td></tr>
 <tr class="separator:gaf837c55ba698b488b6e63300e3470abf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa40ab362ce141ce541d69b2eb1f41438"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaa40ab362ce141ce541d69b2eb1f41438"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>PSA_ALG_IS_RAW_KEY_AGREEMENT</b>(alg)&#160;&#160;&#160;(PSA_ALG_KEY_AGREEMENT_GET_KDF(alg) == PSA_ALG_CATEGORY_KEY_DERIVATION)</td></tr>
+<tr class="memitem:gaa40ab362ce141ce541d69b2eb1f41438"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__crypto__types.html#gaa40ab362ce141ce541d69b2eb1f41438">PSA_ALG_IS_RAW_KEY_AGREEMENT</a>(alg)</td></tr>
 <tr class="separator:gaa40ab362ce141ce541d69b2eb1f41438"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga14529588c008091de0ad2716170dbd48"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga14529588c008091de0ad2716170dbd48"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>PSA_ALG_IS_KEY_DERIVATION_OR_AGREEMENT</b>(alg)&#160;&#160;&#160;((<a class="el" href="group__crypto__types.html#gaf8b90c648aa53dbd06c236695e300cd0">PSA_ALG_IS_KEY_DERIVATION</a>(alg) || <a class="el" href="group__crypto__types.html#ga59753742cb06553bd22751bbef472b6f">PSA_ALG_IS_KEY_AGREEMENT</a>(alg)))</td></tr>
@@ -582,8 +573,6 @@ Macros</h2></td></tr>
 <tr class="separator:gab2dbcf71b63785e7dd7b54a100edee43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9d9b6533d2a6bea7bac7ae01facb820d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__crypto__types.html#ga9d9b6533d2a6bea7bac7ae01facb820d">PSA_ALG_IS_ECDH</a>(alg)&#160;&#160;&#160;(PSA_ALG_KEY_AGREEMENT_GET_BASE(alg) == <a class="el" href="group__crypto__types.html#gab2dbcf71b63785e7dd7b54a100edee43">PSA_ALG_ECDH</a>)</td></tr>
 <tr class="separator:ga9d9b6533d2a6bea7bac7ae01facb820d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacf83d7430e82b97cecb8b26ca6fa1426"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__crypto__types.html#gacf83d7430e82b97cecb8b26ca6fa1426">PSA_ALG_IS_WILDCARD</a>(alg)</td></tr>
-<tr class="separator:gacf83d7430e82b97cecb8b26ca6fa1426"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gacf83d7430e82b97cecb8b26ca6fa1426"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__crypto__types.html#gacf83d7430e82b97cecb8b26ca6fa1426">PSA_ALG_IS_WILDCARD</a>(alg)</td></tr>
 <tr class="separator:gacf83d7430e82b97cecb8b26ca6fa1426"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -624,7 +613,7 @@ typedef uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><a class="code" href="group__crypto__types.html#gaa63c520b62ab001d54d28801742fc9db">PSA_ALG_AEAD_WITH_TAG_LENGTH</a>(alg, 0) == <a class="code" href="group__crypto__types.html#gaa63c520b62ab001d54d28801742fc9db">\</a></div><div class="line"><a class="code" href="group__crypto__types.html#gaa63c520b62ab001d54d28801742fc9db">    PSA_ALG_AEAD_WITH_TAG_LENGTH</a>(ref, 0) ?  \</div><div class="line">    ref :</div><div class="ttc" id="group__crypto__types_html_gaa63c520b62ab001d54d28801742fc9db"><div class="ttname"><a href="group__crypto__types.html#gaa63c520b62ab001d54d28801742fc9db">PSA_ALG_AEAD_WITH_TAG_LENGTH</a></div><div class="ttdeci">#define PSA_ALG_AEAD_WITH_TAG_LENGTH(alg, tag_length)</div><div class="ttdef"><b>Definition:</b> crypto_values.h:929</div></div>
+<b>Value:</b><div class="fragment"><div class="line"><a class="code" href="group__crypto__types.html#gaa63c520b62ab001d54d28801742fc9db">PSA_ALG_AEAD_WITH_TAG_LENGTH</a>(alg, 0) == <a class="code" href="group__crypto__types.html#gaa63c520b62ab001d54d28801742fc9db">\</a></div><div class="line"><a class="code" href="group__crypto__types.html#gaa63c520b62ab001d54d28801742fc9db">    PSA_ALG_AEAD_WITH_TAG_LENGTH</a>(ref, 0) ?  \</div><div class="line">    ref :</div><div class="ttc" id="group__crypto__types_html_gaa63c520b62ab001d54d28801742fc9db"><div class="ttname"><a href="group__crypto__types.html#gaa63c520b62ab001d54d28801742fc9db">PSA_ALG_AEAD_WITH_TAG_LENGTH</a></div><div class="ttdeci">#define PSA_ALG_AEAD_WITH_TAG_LENGTH(alg, tag_length)</div><div class="ttdef"><b>Definition:</b> crypto_values.h:921</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -641,7 +630,9 @@ typedef uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">(                                                                   \</div><div class="line">        PSA__ALG_AEAD_WITH_DEFAULT_TAG_LENGTH__CASE(alg, PSA_ALG_CCM)   \</div><div class="line">        PSA__ALG_AEAD_WITH_DEFAULT_TAG_LENGTH__CASE(alg, PSA_ALG_GCM)   \</div><div class="line">        0)</div></div><!-- fragment --><p>Calculate the corresponding AEAD algorithm with the default tag length.</p>
+<b>Value:</b><div class="fragment"><div class="line">(                                                                   \</div><div class="line">        PSA__ALG_AEAD_WITH_DEFAULT_TAG_LENGTH__CASE(alg, <a class="code" href="group__crypto__types.html#gac2c0e7d21f1b2df5e76bcb4a8f84273c">PSA_ALG_CCM</a>)   \</div><div class="line">        PSA__ALG_AEAD_WITH_DEFAULT_TAG_LENGTH__CASE(alg, <a class="code" href="group__crypto__types.html#ga0d7d02b15aaae490d38277d99f1c637c">PSA_ALG_GCM</a>)   \</div><div class="line">        0)</div><div class="ttc" id="group__crypto__types_html_ga0d7d02b15aaae490d38277d99f1c637c"><div class="ttname"><a href="group__crypto__types.html#ga0d7d02b15aaae490d38277d99f1c637c">PSA_ALG_GCM</a></div><div class="ttdeci">#define PSA_ALG_GCM</div><div class="ttdef"><b>Definition:</b> crypto_values.h:894</div></div>
+<div class="ttc" id="group__crypto__types_html_gac2c0e7d21f1b2df5e76bcb4a8f84273c"><div class="ttname"><a href="group__crypto__types.html#gac2c0e7d21f1b2df5e76bcb4a8f84273c">PSA_ALG_CCM</a></div><div class="ttdeci">#define PSA_ALG_CCM</div><div class="ttdef"><b>Definition:</b> crypto_values.h:890</div></div>
+</div><!-- fragment --><p>Calculate the corresponding AEAD algorithm with the default tag length.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">alg</td><td>An AEAD algorithm (<code>PSA_ALG_XXX</code> value such that <a class="el" href="group__crypto__types.html#ga1d44829d60065eaa4ac9a703e7d6abc8">PSA_ALG_IS_AEAD</a>(<code>alg</code>) is true).</td></tr>
@@ -702,7 +693,7 @@ Unspecified if <code>alg</code> is not a supported AEAD algorithm or if <code>ta
 <p>Allow any hash algorithm.</p>
 <p>This value may only be used to form the algorithm usage field of a policy for a signature algorithm that is parametrized by a hash. That is, suppose that <code>PSA_xxx_SIGNATURE</code> is one of the following macros:</p><ul>
 <li><a class="el" href="group__crypto__types.html#ga702ff75385a6ae7d4247033f479439af">PSA_ALG_RSA_PKCS1V15_SIGN</a>, <a class="el" href="group__crypto__types.html#ga62152bf4cb4bf6aace5e1be8f143564d">PSA_ALG_RSA_PSS</a>,</li>
-<li><a class="el" href="group__crypto__types.html#ga9a68efdddff5ae95f104a1416b12742e">PSA_ALG_DSA</a>, #PSA_ALG_DETERMINISTIC_DSA,</li>
+<li><a class="el" href="group__crypto__types.html#ga9a68efdddff5ae95f104a1416b12742e">PSA_ALG_DSA</a>, <a class="el" href="group__crypto__types.html#gab8eb98fb6d2e094e47f3b44dfe128f94">PSA_ALG_DETERMINISTIC_DSA</a>,</li>
 <li><a class="el" href="group__crypto__types.html#ga7e3ce9f514a227d5ba5d8318870452e3">PSA_ALG_ECDSA</a>, <a class="el" href="group__crypto__types.html#ga11da566bcd341661c8de921e2ca5ed03">PSA_ALG_DETERMINISTIC_ECDSA</a>. Then you may create a key as follows:</li>
 <li>Set the key usage field using <a class="el" href="group__crypto__types.html#gaa1288ea8bd397a8a3f5e19e94110f2e4">PSA_ALG_ANY_HASH</a>, for example: <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;psa_key_policy_set_usage(&amp;policy,</div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;                         PSA_KEY_USAGE_SIGN, //or PSA_KEY_USAGE_VERIFY</div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;                         PSA_xxx_SIGNATURE(PSA_ALG_ANY_HASH));</div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;psa_set_key_policy(handle, &amp;policy);</div></div><!-- fragment --></li>
 <li>Import or generate key material.</li>
@@ -756,6 +747,19 @@ Unspecified if <code>alg</code> is not a supported AEAD algorithm or if <code>ta
 
 </div>
 </div>
+<a class="anchor" id="gac2c0e7d21f1b2df5e76bcb4a8f84273c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PSA_ALG_CCM&#160;&#160;&#160;((<a class="el" href="group__crypto__types.html#gac2e4d47f1300d73c2f829a6d99252d69">psa_algorithm_t</a>)0x06001001)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The CCM authenticated encryption algorithm. </p>
+
+</div>
+</div>
 <a class="anchor" id="gad318309706a769cffdc64e4c7e06b2e9"></a>
 <div class="memitem">
 <div class="memproto">
@@ -767,6 +771,33 @@ Unspecified if <code>alg</code> is not a supported AEAD algorithm or if <code>ta
 </div><div class="memdoc">
 <p>The CTR stream cipher mode.</p>
 <p>CTR is a stream cipher which is built from a block cipher. The underlying block cipher is determined by the key type. For example, to use AES-128-CTR, use this algorithm with a key of type <a class="el" href="group__crypto__types.html#ga6ee54579dcf278c677eda4bb1a29575e">PSA_KEY_TYPE_AES</a> and a length of 128 bits (16 bytes). </p>
+
+</div>
+</div>
+<a class="anchor" id="gab8eb98fb6d2e094e47f3b44dfe128f94"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PSA_ALG_DETERMINISTIC_DSA</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">hash_alg</td><td>)</td>
+          <td>&#160;&#160;&#160;(PSA_ALG_DETERMINISTIC_DSA_BASE | ((hash_alg) &amp; PSA_ALG_HASH_MASK))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Deterministic DSA signature with hashing.</p>
+<p>This is the deterministic variant defined by RFC 6979 of the signature scheme defined by FIPS 186-4.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">hash_alg</td><td>A hash algorithm (<code>PSA_ALG_XXX</code> value such that <a class="el" href="group__crypto__types.html#gac9280662bb482590b4b33d1dcd32930f">PSA_ALG_IS_HASH</a>(<code>hash_alg</code>) is true). This includes <a class="el" href="group__crypto__types.html#gaa1288ea8bd397a8a3f5e19e94110f2e4">PSA_ALG_ANY_HASH</a> when specifying the algorithm in a usage policy.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The corresponding DSA signature algorithm. </dd>
+<dd>
+Unspecified if <code>alg</code> is not a supported hash algorithm. </dd></dl>
 
 </div>
 </div>
@@ -924,6 +955,19 @@ Unspecified if <code>alg</code> is not a supported hash algorithm. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The corresponding base MAC algorithm. </dd>
 <dd>
 Unspecified if <code>alg</code> is not a supported MAC algorithm. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ga0d7d02b15aaae490d38277d99f1c637c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PSA_ALG_GCM&#160;&#160;&#160;((<a class="el" href="group__crypto__types.html#gac2e4d47f1300d73c2f829a6d99252d69">psa_algorithm_t</a>)0x06001002)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The GCM authenticated encryption algorithm. </p>
 
 </div>
 </div>
@@ -1272,11 +1316,11 @@ Unspecified if <code>alg</code> is not a supported hash algorithm. </dd></dl>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">alg</td><td>)</td>
-          <td></td>
+          <td>&#160;&#160;&#160;(((alg) &amp; PSA_ALG_CATEGORY_MASK) == PSA_ALG_CATEGORY_KEY_AGREEMENT)</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">(((alg) &amp; PSA_ALG_CATEGORY_MASK &amp; ~PSA_ALG_KEY_SELECTION_FLAG) ==   \</div><div class="line">     PSA_ALG_CATEGORY_KEY_AGREEMENT)</div></div><!-- fragment --><p>Whether the specified algorithm is a key agreement algorithm.</p>
+<p>Whether the specified algorithm is a key agreement algorithm.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">alg</td><td>An algorithm identifier (value of type <a class="el" href="group__crypto__types.html#gac2e4d47f1300d73c2f829a6d99252d69" title="Encoding of a cryptographic algorithm. ">psa_algorithm_t</a>).</td></tr>
@@ -1311,30 +1355,6 @@ Unspecified if <code>alg</code> is not a supported hash algorithm. </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="ga51b1834ee5e98c6a83c2cfc7699f9077"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define PSA_ALG_IS_KEY_SELECTION</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">alg</td><td>)</td>
-          <td>&#160;&#160;&#160;(((alg) &amp; PSA_ALG_CATEGORY_MASK) == PSA_ALG_CATEGORY_KEY_SELECTION)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Whether the specified algorithm is a key selection algorithm.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">alg</td><td>An algorithm identifier (value of type <a class="el" href="group__crypto__types.html#gac2e4d47f1300d73c2f829a6d99252d69" title="Encoding of a cryptographic algorithm. ">psa_algorithm_t</a>).</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>1 if <code>alg</code> is a key selection algorithm, 0 otherwise. This macro may return either 0 or 1 if <code>alg</code> is not a supported algorithm identifier. </dd></dl>
-
-</div>
-</div>
 <a class="anchor" id="gaca7aee4c9dde316b3b1a150a26eab776"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1356,6 +1376,32 @@ Unspecified if <code>alg</code> is not a supported hash algorithm. </dd></dl>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>1 if <code>alg</code> is a MAC algorithm, 0 otherwise. This macro may return either 0 or 1 if <code>alg</code> is not a supported algorithm identifier. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="gaa40ab362ce141ce541d69b2eb1f41438"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PSA_ALG_IS_RAW_KEY_AGREEMENT</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">alg</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">(<a class="code" href="group__crypto__types.html#ga59753742cb06553bd22751bbef472b6f">PSA_ALG_IS_KEY_AGREEMENT</a>(alg) &amp;&amp;                                   \</div><div class="line">     PSA_ALG_KEY_AGREEMENT_GET_KDF(alg) == PSA_ALG_CATEGORY_KEY_DERIVATION)</div><div class="ttc" id="group__crypto__types_html_ga59753742cb06553bd22751bbef472b6f"><div class="ttname"><a href="group__crypto__types.html#ga59753742cb06553bd22751bbef472b6f">PSA_ALG_IS_KEY_AGREEMENT</a></div><div class="ttdeci">#define PSA_ALG_IS_KEY_AGREEMENT(alg)</div><div class="ttdef"><b>Definition:</b> crypto_values.h:624</div></div>
+</div><!-- fragment --><p>Whether the specified algorithm is a raw key agreement algorithm.</p>
+<p>A raw key agreement algorithm is one that does not specify a key derivation function. Usually, raw key agreement algorithms are constructed directly with a <code>PSA_ALG_xxx</code> macro while non-raw key agreement algorithms are constructed with <a class="el" href="group__crypto__types.html#ga78bb81cffb87a635c247725eeb2a2682">PSA_ALG_KEY_AGREEMENT()</a>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">alg</td><td>An algorithm identifier (value of type <a class="el" href="group__crypto__types.html#gac2e4d47f1300d73c2f829a6d99252d69" title="Encoding of a cryptographic algorithm. ">psa_algorithm_t</a>).</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>1 if <code>alg</code> is a raw key agreement algorithm, 0 otherwise. This macro may return either 0 or 1 if <code>alg</code> is not a supported algorithm identifier. </dd></dl>
 
 </div>
 </div>
@@ -1469,41 +1515,9 @@ Unspecified if <code>alg</code> is not a supported hash algorithm. </dd></dl>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">(<a class="code" href="group__crypto__types.html#gad8a8ea0536975363b66410cdeafe38b6">PSA_ALG_IS_HASH_AND_SIGN</a>(alg) ?                    <a class="code" href="group__crypto__types.html#ga24cf6d7bcd2b9aeeeff86f07b6c674e3">\</a></div><div class="line"><a class="code" href="group__crypto__types.html#ga24cf6d7bcd2b9aeeeff86f07b6c674e3">     PSA_ALG_SIGN_GET_HASH</a>(alg) == <a class="code" href="group__crypto__types.html#gaa1288ea8bd397a8a3f5e19e94110f2e4">PSA_ALG_ANY_HASH</a> :   \</div><div class="line">     (alg) == <a class="code" href="group__crypto__types.html#gaa1288ea8bd397a8a3f5e19e94110f2e4">PSA_ALG_ANY_HASH</a>)</div><div class="ttc" id="group__crypto__types_html_gaa1288ea8bd397a8a3f5e19e94110f2e4"><div class="ttname"><a href="group__crypto__types.html#gaa1288ea8bd397a8a3f5e19e94110f2e4">PSA_ALG_ANY_HASH</a></div><div class="ttdeci">#define PSA_ALG_ANY_HASH</div><div class="ttdef"><b>Definition:</b> crypto_values.h:712</div></div>
-<div class="ttc" id="group__crypto__types_html_ga24cf6d7bcd2b9aeeeff86f07b6c674e3"><div class="ttname"><a href="group__crypto__types.html#ga24cf6d7bcd2b9aeeeff86f07b6c674e3">PSA_ALG_SIGN_GET_HASH</a></div><div class="ttdeci">#define PSA_ALG_SIGN_GET_HASH(alg)</div><div class="ttdef"><b>Definition:</b> crypto_values.h:1138</div></div>
-<div class="ttc" id="group__crypto__types_html_gad8a8ea0536975363b66410cdeafe38b6"><div class="ttname"><a href="group__crypto__types.html#gad8a8ea0536975363b66410cdeafe38b6">PSA_ALG_IS_HASH_AND_SIGN</a></div><div class="ttdeci">#define PSA_ALG_IS_HASH_AND_SIGN(alg)</div><div class="ttdef"><b>Definition:</b> crypto_values.h:1116</div></div>
-</div><!-- fragment --><p>Whether the specified algorithm encoding is a wildcard.</p>
-<p>Wildcard values may only be used to set the usage algorithm field in a policy, not to perform an operation.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">alg</td><td>An algorithm identifier (value of type <a class="el" href="group__crypto__types.html#gac2e4d47f1300d73c2f829a6d99252d69" title="Encoding of a cryptographic algorithm. ">psa_algorithm_t</a>).</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>1 if <code>alg</code> is a wildcard algorithm encoding. </dd>
-<dd>
-0 if <code>alg</code> is a non-wildcard algorithm encoding (suitable for an operation). </dd>
-<dd>
-This macro may return either 0 or 1 if <code>alg</code> is not a supported algorithm identifier. </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="gacf83d7430e82b97cecb8b26ca6fa1426"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define PSA_ALG_IS_WILDCARD</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">alg</td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">(<a class="code" href="group__crypto__types.html#gad8a8ea0536975363b66410cdeafe38b6">PSA_ALG_IS_HASH_AND_SIGN</a>(alg) ?                    <a class="code" href="group__crypto__types.html#ga24cf6d7bcd2b9aeeeff86f07b6c674e3">\</a></div><div class="line"><a class="code" href="group__crypto__types.html#ga24cf6d7bcd2b9aeeeff86f07b6c674e3">     PSA_ALG_SIGN_GET_HASH</a>(alg) == <a class="code" href="group__crypto__types.html#gaa1288ea8bd397a8a3f5e19e94110f2e4">PSA_ALG_ANY_HASH</a> :   \</div><div class="line">     (alg) == <a class="code" href="group__crypto__types.html#gaa1288ea8bd397a8a3f5e19e94110f2e4">PSA_ALG_ANY_HASH</a>)</div><div class="ttc" id="group__crypto__types_html_gaa1288ea8bd397a8a3f5e19e94110f2e4"><div class="ttname"><a href="group__crypto__types.html#gaa1288ea8bd397a8a3f5e19e94110f2e4">PSA_ALG_ANY_HASH</a></div><div class="ttdeci">#define PSA_ALG_ANY_HASH</div><div class="ttdef"><b>Definition:</b> crypto_values.h:712</div></div>
-<div class="ttc" id="group__crypto__types_html_ga24cf6d7bcd2b9aeeeff86f07b6c674e3"><div class="ttname"><a href="group__crypto__types.html#ga24cf6d7bcd2b9aeeeff86f07b6c674e3">PSA_ALG_SIGN_GET_HASH</a></div><div class="ttdeci">#define PSA_ALG_SIGN_GET_HASH(alg)</div><div class="ttdef"><b>Definition:</b> crypto_values.h:1138</div></div>
-<div class="ttc" id="group__crypto__types_html_gad8a8ea0536975363b66410cdeafe38b6"><div class="ttname"><a href="group__crypto__types.html#gad8a8ea0536975363b66410cdeafe38b6">PSA_ALG_IS_HASH_AND_SIGN</a></div><div class="ttdeci">#define PSA_ALG_IS_HASH_AND_SIGN(alg)</div><div class="ttdef"><b>Definition:</b> crypto_values.h:1116</div></div>
+<b>Value:</b><div class="fragment"><div class="line">(<a class="code" href="group__crypto__types.html#gad8a8ea0536975363b66410cdeafe38b6">PSA_ALG_IS_HASH_AND_SIGN</a>(alg) ?                    <a class="code" href="group__crypto__types.html#ga24cf6d7bcd2b9aeeeff86f07b6c674e3">\</a></div><div class="line"><a class="code" href="group__crypto__types.html#ga24cf6d7bcd2b9aeeeff86f07b6c674e3">     PSA_ALG_SIGN_GET_HASH</a>(alg) == <a class="code" href="group__crypto__types.html#gaa1288ea8bd397a8a3f5e19e94110f2e4">PSA_ALG_ANY_HASH</a> :   \</div><div class="line">     (alg) == <a class="code" href="group__crypto__types.html#gaa1288ea8bd397a8a3f5e19e94110f2e4">PSA_ALG_ANY_HASH</a>)</div><div class="ttc" id="group__crypto__types_html_gaa1288ea8bd397a8a3f5e19e94110f2e4"><div class="ttname"><a href="group__crypto__types.html#gaa1288ea8bd397a8a3f5e19e94110f2e4">PSA_ALG_ANY_HASH</a></div><div class="ttdeci">#define PSA_ALG_ANY_HASH</div><div class="ttdef"><b>Definition:</b> crypto_values.h:699</div></div>
+<div class="ttc" id="group__crypto__types_html_ga24cf6d7bcd2b9aeeeff86f07b6c674e3"><div class="ttname"><a href="group__crypto__types.html#ga24cf6d7bcd2b9aeeeff86f07b6c674e3">PSA_ALG_SIGN_GET_HASH</a></div><div class="ttdeci">#define PSA_ALG_SIGN_GET_HASH(alg)</div><div class="ttdef"><b>Definition:</b> crypto_values.h:1144</div></div>
+<div class="ttc" id="group__crypto__types_html_gad8a8ea0536975363b66410cdeafe38b6"><div class="ttname"><a href="group__crypto__types.html#gad8a8ea0536975363b66410cdeafe38b6">PSA_ALG_IS_HASH_AND_SIGN</a></div><div class="ttdeci">#define PSA_ALG_IS_HASH_AND_SIGN(alg)</div><div class="ttdef"><b>Definition:</b> crypto_values.h:1122</div></div>
 </div><!-- fragment --><p>Whether the specified algorithm encoding is a wildcard.</p>
 <p>Wildcard values may only be used to set the usage algorithm field in a policy, not to perform an operation.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1824,7 +1838,7 @@ Unspecified if <code>alg</code> is not a supported hash algorithm. </dd></dl>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">(<a class="code" href="group__crypto__types.html#gad8a8ea0536975363b66410cdeafe38b6">PSA_ALG_IS_HASH_AND_SIGN</a>(alg) ?                                   \</div><div class="line">     ((alg) &amp; PSA_ALG_HASH_MASK) == 0 ? <span class="comment">/*&quot;raw&quot; algorithm*/</span> 0 :        \</div><div class="line">     ((alg) &amp; PSA_ALG_HASH_MASK) | PSA_ALG_CATEGORY_HASH :             \</div><div class="line">     0)</div><div class="ttc" id="group__crypto__types_html_gad8a8ea0536975363b66410cdeafe38b6"><div class="ttname"><a href="group__crypto__types.html#gad8a8ea0536975363b66410cdeafe38b6">PSA_ALG_IS_HASH_AND_SIGN</a></div><div class="ttdeci">#define PSA_ALG_IS_HASH_AND_SIGN(alg)</div><div class="ttdef"><b>Definition:</b> crypto_values.h:1116</div></div>
+<b>Value:</b><div class="fragment"><div class="line">(<a class="code" href="group__crypto__types.html#gad8a8ea0536975363b66410cdeafe38b6">PSA_ALG_IS_HASH_AND_SIGN</a>(alg) ?                                   \</div><div class="line">     ((alg) &amp; PSA_ALG_HASH_MASK) == 0 ? <span class="comment">/*&quot;raw&quot; algorithm*/</span> 0 :        \</div><div class="line">     ((alg) &amp; PSA_ALG_HASH_MASK) | PSA_ALG_CATEGORY_HASH :             \</div><div class="line">     0)</div><div class="ttc" id="group__crypto__types_html_gad8a8ea0536975363b66410cdeafe38b6"><div class="ttname"><a href="group__crypto__types.html#gad8a8ea0536975363b66410cdeafe38b6">PSA_ALG_IS_HASH_AND_SIGN</a></div><div class="ttdeci">#define PSA_ALG_IS_HASH_AND_SIGN(alg)</div><div class="ttdef"><b>Definition:</b> crypto_values.h:1122</div></div>
 </div><!-- fragment --><p>Get the hash used by a hash-and-sign signature algorithm.</p>
 <p>A hash-and-sign algorithm is a signature algorithm which is composed of two phases: first a hashing phase which does not use the key and produces a hash of the input message, then a signing phase which only uses the hash and the key and not the message itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>

@@ -24,7 +24,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Platform Security Architecture — cryptography and keystore interface
-   &#160;<span id="projectnumber">beta 1 — 2019-01-21</span>
+   &#160;<span id="projectnumber">beta 2 — 2019-02-22</span>
    </div>
   </td>
  </tr>
@@ -374,15 +374,10 @@ Macros</h2></td></tr>
 <tr class="separator:ga6d490d0904e0698f6c1268a89d72ff31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga41d2ee937d54efd76bd54a97b2ebc08a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__crypto__types.html#ga41d2ee937d54efd76bd54a97b2ebc08a">PSA_ALG_IS_ASYMMETRIC_ENCRYPTION</a>(alg)&#160;&#160;&#160;(((alg) &amp; PSA_ALG_CATEGORY_MASK) == PSA_ALG_CATEGORY_ASYMMETRIC_ENCRYPTION)</td></tr>
 <tr class="separator:ga41d2ee937d54efd76bd54a97b2ebc08a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab19961aac97f3856f83057b04ba7c5f5"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>PSA_ALG_KEY_SELECTION_FLAG</b>&#160;&#160;&#160;((<a class="el" href="group__crypto__types.html#gac2e4d47f1300d73c2f829a6d99252d69">psa_algorithm_t</a>)0x01000000)</td></tr>
-<tr class="separator:gab19961aac97f3856f83057b04ba7c5f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga59753742cb06553bd22751bbef472b6f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__crypto__types.html#ga59753742cb06553bd22751bbef472b6f">PSA_ALG_IS_KEY_AGREEMENT</a>(alg)</td></tr>
+<tr class="memitem:ga59753742cb06553bd22751bbef472b6f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__crypto__types.html#ga59753742cb06553bd22751bbef472b6f">PSA_ALG_IS_KEY_AGREEMENT</a>(alg)&#160;&#160;&#160;(((alg) &amp; PSA_ALG_CATEGORY_MASK) == PSA_ALG_CATEGORY_KEY_AGREEMENT)</td></tr>
 <tr class="separator:ga59753742cb06553bd22751bbef472b6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf8b90c648aa53dbd06c236695e300cd0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__crypto__types.html#gaf8b90c648aa53dbd06c236695e300cd0">PSA_ALG_IS_KEY_DERIVATION</a>(alg)&#160;&#160;&#160;(((alg) &amp; PSA_ALG_CATEGORY_MASK) == PSA_ALG_CATEGORY_KEY_DERIVATION)</td></tr>
 <tr class="separator:gaf8b90c648aa53dbd06c236695e300cd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga51b1834ee5e98c6a83c2cfc7699f9077"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__crypto__types.html#ga51b1834ee5e98c6a83c2cfc7699f9077">PSA_ALG_IS_KEY_SELECTION</a>(alg)&#160;&#160;&#160;(((alg) &amp; PSA_ALG_CATEGORY_MASK) == PSA_ALG_CATEGORY_KEY_SELECTION)</td></tr>
-<tr class="separator:ga51b1834ee5e98c6a83c2cfc7699f9077"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac41a7077aef55bb20c629c8949d43c57"><td class="memItemLeft" align="right" valign="top">
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>PSA_ALG_HASH_MASK</b>&#160;&#160;&#160;((<a class="el" href="group__crypto__types.html#gac2e4d47f1300d73c2f829a6d99252d69">psa_algorithm_t</a>)0x000000ff)</td></tr>
 <tr class="separator:gac41a7077aef55bb20c629c8949d43c57"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -486,11 +481,9 @@ Macros</h2></td></tr>
 <tr class="separator:gacb332d72716958880ee7f97d8365ae66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaef50d2e9716eb6d476046608e4e0c78c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__crypto__types.html#gaef50d2e9716eb6d476046608e4e0c78c">PSA_ALG_CBC_PKCS7</a>&#160;&#160;&#160;((<a class="el" href="group__crypto__types.html#gac2e4d47f1300d73c2f829a6d99252d69">psa_algorithm_t</a>)0x04600101)</td></tr>
 <tr class="separator:gaef50d2e9716eb6d476046608e4e0c78c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac2c0e7d21f1b2df5e76bcb4a8f84273c"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>PSA_ALG_CCM</b>&#160;&#160;&#160;((<a class="el" href="group__crypto__types.html#gac2e4d47f1300d73c2f829a6d99252d69">psa_algorithm_t</a>)0x06001001)</td></tr>
+<tr class="memitem:gac2c0e7d21f1b2df5e76bcb4a8f84273c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__crypto__types.html#gac2c0e7d21f1b2df5e76bcb4a8f84273c">PSA_ALG_CCM</a>&#160;&#160;&#160;((<a class="el" href="group__crypto__types.html#gac2e4d47f1300d73c2f829a6d99252d69">psa_algorithm_t</a>)0x06001001)</td></tr>
 <tr class="separator:gac2c0e7d21f1b2df5e76bcb4a8f84273c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0d7d02b15aaae490d38277d99f1c637c"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>PSA_ALG_GCM</b>&#160;&#160;&#160;((<a class="el" href="group__crypto__types.html#gac2e4d47f1300d73c2f829a6d99252d69">psa_algorithm_t</a>)0x06001002)</td></tr>
+<tr class="memitem:ga0d7d02b15aaae490d38277d99f1c637c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__crypto__types.html#ga0d7d02b15aaae490d38277d99f1c637c">PSA_ALG_GCM</a>&#160;&#160;&#160;((<a class="el" href="group__crypto__types.html#gac2e4d47f1300d73c2f829a6d99252d69">psa_algorithm_t</a>)0x06001002)</td></tr>
 <tr class="separator:ga0d7d02b15aaae490d38277d99f1c637c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga575d9082463a06a86c2a22dd63c2e772"><td class="memItemLeft" align="right" valign="top">
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>PSA_ALG_AEAD_TAG_LENGTH_MASK</b>&#160;&#160;&#160;((<a class="el" href="group__crypto__types.html#gac2e4d47f1300d73c2f829a6d99252d69">psa_algorithm_t</a>)0x00003f00)</td></tr>
@@ -533,8 +526,7 @@ Macros</h2></td></tr>
 <tr class="memitem:ga1d2a96f788cce4f8fc156d13342e70de"><td class="memItemLeft" align="right" valign="top">
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>PSA_ALG_DSA_DETERMINISTIC_FLAG</b>&#160;&#160;&#160;((<a class="el" href="group__crypto__types.html#gac2e4d47f1300d73c2f829a6d99252d69">psa_algorithm_t</a>)0x00010000)</td></tr>
 <tr class="separator:ga1d2a96f788cce4f8fc156d13342e70de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab8eb98fb6d2e094e47f3b44dfe128f94"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>PSA_ALG_DETERMINISTIC_DSA</b>(hash_alg)&#160;&#160;&#160;(PSA_ALG_DETERMINISTIC_DSA_BASE | ((hash_alg) &amp; PSA_ALG_HASH_MASK))</td></tr>
+<tr class="memitem:gab8eb98fb6d2e094e47f3b44dfe128f94"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__crypto__types.html#gab8eb98fb6d2e094e47f3b44dfe128f94">PSA_ALG_DETERMINISTIC_DSA</a>(hash_alg)&#160;&#160;&#160;(PSA_ALG_DETERMINISTIC_DSA_BASE | ((hash_alg) &amp; PSA_ALG_HASH_MASK))</td></tr>
 <tr class="separator:gab8eb98fb6d2e094e47f3b44dfe128f94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gacfc3cd50ef0c4bf694cf936079bcbaee"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><b>PSA_ALG_IS_DSA</b>(alg)</td></tr>
 <tr class="separator:gacfc3cd50ef0c4bf694cf936079bcbaee"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -630,8 +622,7 @@ Macros</h2></td></tr>
 <tr class="memitem:gaf837c55ba698b488b6e63300e3470abf"><td class="memItemLeft" align="right" valign="top">
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>PSA_ALG_KEY_AGREEMENT_GET_BASE</b>(alg)&#160;&#160;&#160;(((alg) &amp; PSA_ALG_KEY_AGREEMENT_MASK) | PSA_ALG_CATEGORY_KEY_AGREEMENT)</td></tr>
 <tr class="separator:gaf837c55ba698b488b6e63300e3470abf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa40ab362ce141ce541d69b2eb1f41438"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>PSA_ALG_IS_RAW_KEY_AGREEMENT</b>(alg)&#160;&#160;&#160;(PSA_ALG_KEY_AGREEMENT_GET_KDF(alg) == PSA_ALG_CATEGORY_KEY_DERIVATION)</td></tr>
+<tr class="memitem:gaa40ab362ce141ce541d69b2eb1f41438"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__crypto__types.html#gaa40ab362ce141ce541d69b2eb1f41438">PSA_ALG_IS_RAW_KEY_AGREEMENT</a>(alg)</td></tr>
 <tr class="separator:gaa40ab362ce141ce541d69b2eb1f41438"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga14529588c008091de0ad2716170dbd48"><td class="memItemLeft" align="right" valign="top">
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>PSA_ALG_IS_KEY_DERIVATION_OR_AGREEMENT</b>(alg)&#160;&#160;&#160;((<a class="el" href="group__crypto__types.html#gaf8b90c648aa53dbd06c236695e300cd0">PSA_ALG_IS_KEY_DERIVATION</a>(alg) || <a class="el" href="group__crypto__types.html#ga59753742cb06553bd22751bbef472b6f">PSA_ALG_IS_KEY_AGREEMENT</a>(alg)))</td></tr>
@@ -644,8 +635,6 @@ Macros</h2></td></tr>
 <tr class="separator:gab2dbcf71b63785e7dd7b54a100edee43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9d9b6533d2a6bea7bac7ae01facb820d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__crypto__types.html#ga9d9b6533d2a6bea7bac7ae01facb820d">PSA_ALG_IS_ECDH</a>(alg)&#160;&#160;&#160;(PSA_ALG_KEY_AGREEMENT_GET_BASE(alg) == <a class="el" href="group__crypto__types.html#gab2dbcf71b63785e7dd7b54a100edee43">PSA_ALG_ECDH</a>)</td></tr>
 <tr class="separator:ga9d9b6533d2a6bea7bac7ae01facb820d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacf83d7430e82b97cecb8b26ca6fa1426"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__crypto__types.html#gacf83d7430e82b97cecb8b26ca6fa1426">PSA_ALG_IS_WILDCARD</a>(alg)</td></tr>
-<tr class="separator:gacf83d7430e82b97cecb8b26ca6fa1426"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gacf83d7430e82b97cecb8b26ca6fa1426"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__crypto__types.html#gacf83d7430e82b97cecb8b26ca6fa1426">PSA_ALG_IS_WILDCARD</a>(alg)</td></tr>
 <tr class="separator:gacf83d7430e82b97cecb8b26ca6fa1426"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8b438870ba69489b685730d346455108"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__key__lifetimes.html#ga8b438870ba69489b685730d346455108">PSA_KEY_LIFETIME_VOLATILE</a>&#160;&#160;&#160;((<a class="el" href="group__key__lifetimes.html#ga6821ff6dd39dc2bc370ded760ad8b0cf">psa_key_lifetime_t</a>)0x00000000)</td></tr>
