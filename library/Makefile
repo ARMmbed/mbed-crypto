@@ -71,7 +71,7 @@ OBJS_CRYPTO=	aes.o		aesni.o		arc4.o		\
 		dhm.o		ecdh.o		ecdsa.o		\
 		ecjpake.o	ecp.o				\
 		ecp_curves.o	entropy.o	entropy_poll.o	\
-		error.o		gcm.o		havege.o	\
+		gcm.o		havege.o			\
 		hkdf.o						\
 		hmac_drbg.o	md.o		md2.o		\
 		md4.o		md5.o		md_wrap.o	\
@@ -86,8 +86,20 @@ OBJS_CRYPTO=	aes.o		aesni.o		arc4.o		\
 		psa_its_file.o					\
 		ripemd160.o	rsa_internal.o	rsa.o  		\
 		sha1.o		sha256.o	sha512.o	\
-		threading.o	timing.o	version.o	\
-		version_features.o		xtea.o
+		threading.o	timing.o			\
+		xtea.o
+
+ifdef USE_CRYPTO_SUBMODULE
+OBJS_CRYPTO += ../../library/error.o
+OBJS_CRYPTO += ../../library/version.o
+OBJS_CRYPTO += ../../library/version_features.o
+else
+OBJS_CRYPTO += error.o
+OBJS_CRYPTO += version.o
+OBJS_CRYPTO += version_features.o
+endif
+
+$(info $(OBJS_CRYPTO))
 
 .SILENT:
 
