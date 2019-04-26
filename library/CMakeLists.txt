@@ -29,7 +29,6 @@ set(src_crypto
     ecp_curves.c
     entropy.c
     entropy_poll.c
-    error.c
     gcm.c
     havege.c
     hkdf.c
@@ -65,10 +64,24 @@ set(src_crypto
     sha512.c
     threading.c
     timing.c
-    version.c
-    version_features.c
     xtea.c
 )
+
+if(USE_CRYPTO_SUBMODULE)
+set(src_crypto
+    ${src_crypto}
+    ${CMAKE_SOURCE_DIR}/library/version.c
+    ${CMAKE_SOURCE_DIR}/library/version_features.c
+    ${CMAKE_SOURCE_DIR}/library/error.c
+)
+else
+set(src_crypto
+    ${src_crypto}
+    version.c
+    version_features.c
+    error.c
+)
+endif
 
 if(CMAKE_COMPILER_IS_GNUCC)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wmissing-declarations -Wmissing-prototypes")
