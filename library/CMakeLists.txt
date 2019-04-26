@@ -76,14 +76,14 @@ set(src_crypto
     ${CMAKE_SOURCE_DIR}/library/version_features.c
     ${CMAKE_SOURCE_DIR}/library/error.c
 )
-else
+else()
 set(src_crypto
     ${src_crypto}
     version.c
     version_features.c
     error.c
 )
-endif
+endif()
 
 if(CMAKE_COMPILER_IS_GNUCC)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wmissing-declarations -Wmissing-prototypes")
