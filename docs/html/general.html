@@ -1,0 +1,1456 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Introduction &#8212; psa_crypto_api 1.0 beta3 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Implementation-specific definitions" href="from_doxygen.html" />
+    <link rel="prev" title="PSA Cryptography API Specification" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="introduction">
+<h1>Introduction</h1>
+<p>Arm’s Platform Security Architecture (PSA) is a holistic set of threat
+models, security analyses, hardware and firmware architecture
+specifications, and an open source firmware reference implementation.
+PSA provides a recipe, based on industry best practice, that allows
+security to be consistently designed in, at both a hardware and firmware
+level.</p>
+<p>The PSA Cryptographic API (Crypto API) described in this document is an
+important PSA component that provides an interface to modern
+cryptographic primitives on resource-constrained devices. The interface
+is user-friendly, while still providing access to the primitives used in
+modern cryptography. It does not require that the user have access to
+the key material. Instead, it uses opaque key handles.</p>
+<p>This document is part of the PSA family of specifications. It defines an
+interface for cryptographic services, including cryptography primitives
+and a key storage functionality.</p>
+<p>This document includes:</p>
+<ul class="simple">
+<li>A <a class="reference external" href="#design-goals">rationale</a> for the design.</li>
+<li>A <a class="reference external" href="#functionality-overview">high-level overview of the
+functionality</a> provided by the interface.</li>
+<li>A <a class="reference external" href="#sample-architectures">description of typical architectures</a> of
+implementations for this specification.</li>
+<li>General considerations <a class="reference external" href="#implementation-considerations">for
+implementers</a> of this
+specification and <a class="reference external" href="#usage-considerations">for applications</a> that
+use the interface defined in this specification.</li>
+<li>A detailed definition of the API.</li>
+</ul>
+<p>Companion documents will define <em>profiles</em> for this specification. A
+profile is a minimum mandatory subset of the interface that a compliant
+implementation must provide.</p>
+</div>
+<div class="section" id="design-goals">
+<h1>Design goals</h1>
+<div class="section" id="suitable-for-constrained-devices">
+<h2>Suitable for constrained devices</h2>
+<p>The interface is suitable for a vast range of devices: from
+special-purpose cryptographic processors that process data with a
+built-in key, to constrained devices running custom application code,
+such as microcontrollers, and multi-application devices, such as
+servers. Consequentially, the interface is scalable and modular.</p>
+<ul class="simple">
+<li><em>Scalable</em>: you shouldn’t pay for functionality that you don’t need.</li>
+<li><em>Modular</em>: larger devices implement larger subsets of the same
+interface, rather than different interfaces.</li>
+</ul>
+<p>Because this specification is suitable for very constrained devices,
+including those where memory is very limited, all operations on
+unbounded amounts of data allow <em>multipart</em> processing, as long as the
+calculations on the data are performed in a streaming manner. This means
+that the application does not need to store the whole message in memory
+at one time.</p>
+<p>Memory outside the keystore boundary is managed by the application. An
+implementation of the interface is not required to retain any state
+between function calls, apart from the content of the keystore and other
+data that must be kept inside the keystore security boundary.</p>
+<p>The interface does not expose the representation of keys and
+intermediate data, except when required for interchange. This allows
+each implementation to choose optimal data representations.
+Implementations with multiple components are also free to choose which
+memory area to use for internal data.</p>
+</div>
+<div class="section" id="a-keystore-interface">
+<h2>A keystore interface</h2>
+<p>The specification allows cryptographic operations to be performed on a
+key to which the application does not have direct access. Except where
+required for interchange, applications access all keys indirectly, by a
+handle. The key material corresponding to that handle can reside inside
+a security boundary that prevents it from being extracted, except as
+permitted by a policy that is defined when the key is created.</p>
+</div>
+<div class="section" id="optional-isolation">
+<h2>Optional isolation</h2>
+<p>Implementations can isolate the cryptoprocessor from the calling
+application, and can further isolate multiple calling applications. The
+interface allows the implementation to be separated between a frontend
+and a backend. In an isolated implementation, the frontend is the part
+of the implementation that is located in the same isolation boundary as
+the application, which the application accesses by function calls. The
+backend is the part of the implementation that is located in a different
+environment, which is protected from the frontend. Various technologies
+can provide protection, for example:</p>
+<ul class="simple">
+<li>Process isolation in an operating system.</li>
+<li>Partition isolation, either with a virtual machine or a partition
+manager.</li>
+<li>Physical separation between devices.</li>
+</ul>
+<p>Communication between the frontend and backend is beyond the scope of
+this specification.</p>
+<p>In an isolated implementation, the backend can serve more than one
+implementation instance. In this case, a single backend communicates
+with multiple instances of the frontend. The backend must enforce
+<strong>caller isolation</strong>: it must ensure that assets of one frontend are not
+visible to any other frontend. How callers are identified is beyond the
+scope of this specification. An implementation that provides caller
+isolation must document how callers are identified. An implementation
+that provides isolation must document any implementation-specific
+extension of the API that enables frontend instances to share data in
+any form.</p>
+<p>In summary, there are three types of implementations:</p>
+<ul class="simple">
+<li>No isolation: there is no security boundary between the application
+and the cryptoprocessor. For example, a statically or dynamically
+linked library is an implementation with no isolation.</li>
+<li>Cryptoprocessor isolation: there is a security boundary between the
+application and the cryptoprocessor, but the cryptoprocessor does not
+communicate with other applications. For example, a cryptoprocessor
+chip that is a companion to an application processor is an
+implementation with cryptoprocessor isolation.</li>
+<li>Caller isolation: there are multiple application instances, with a
+security boundary between the application instances among themselves,
+as well as between the cryptoprocessor and the application instances.
+For example, a cryptography service in a multiprocess environment is
+an implementation with caller and cryptoprocessor isolation.</li>
+</ul>
+</div>
+<div class="section" id="choice-of-algorithms">
+<h2>Choice of algorithms</h2>
+<p>The specification defines a low-level cryptographic interface, where the
+caller explicitly chooses which algorithm and which security parameters
+they use. This is necessary to implement protocols that are inescapable
+in various use cases. The design of the interface enables applications
+to implement widely-used protocols and data exchange formats, as well as
+custom ones.</p>
+<p>As a consequence, all cryptographic functionality operates according to
+the precise algorithm specified by the caller. However, this does not
+apply to device-internal functionality, which does not involve any form
+of interoperability, such as random number generation. The specification
+does not include generic higher-level interfaces, where the
+implementation chooses the best algorithm for a purpose. However,
+higher-level libraries can be built on top of the PSA Crypto API.</p>
+<p>Another consequence is that the specification permits the use of
+algorithms, key sizes and other parameters that, while known to be
+insecure, may be necessary to support legacy protocols or legacy data.
+Where major weaknesses are known, the algorithm description give
+applicable warnings. However, the lack of a warning does not and cannot
+indicate that an algorithm is secure in all circumstances. Application
+developers should research the security of the algorithms that they plan
+to use to determine if the algorithms meet their requirements.</p>
+<p>The interface facilitates algorithm agility. As a consequence,
+cryptographic primitives are presented through generic functions with a
+parameter indicating the specific choice of algorithm. For example,
+there is a single function to calculate a message digest, which takes a
+parameter that identifies the specific hash algorithm.</p>
+</div>
+<div class="section" id="ease-of-use">
+<h2>Ease of use</h2>
+<p>The interface is designed to be as user-friendly as possible, given the
+aforementioned constraints on suitability for various types of devices
+and on the freedom to choose algorithms.</p>
+<p>In particular, the code flows are designed to reduce the chance of
+dangerous misuse. The interface makes it harder to misuse than to use
+correctly, and typical mistakes result in test failures, rather than
+subtle security issues. Implementations avoid leaking data when a
+function is called with invalid parameters, to the extent allowed by the
+C language and by implementation size constraints.</p>
+</div>
+<div class="section" id="example-use-cases">
+<h2>Example use cases</h2>
+<p>This section lists some of the use cases that were considered while
+designing this API. This list is not exhaustive, nor are all
+implementations required to support all use cases.</p>
+<div class="section" id="network-security-tls">
+<h3>Network Security (TLS)</h3>
+<p>The API provides everything needed to establish TLS connections on the
+device side: asymmetric key management inside a key store, symmetric
+ciphers, MAC, HMAC, message digests, and AEAD.</p>
+</div>
+<div class="section" id="secure-storage">
+<h3>Secure Storage</h3>
+<p>The API provides all primitives related to storage encryption, block or
+file-based, with master encryption keys stored inside a key store.</p>
+</div>
+<div class="section" id="network-credentials">
+<h3>Network Credentials</h3>
+<p>The API provides network credential management inside a key store, for
+example, for X.509-based authentication or pre-shared keys on enterprise
+networks.</p>
+</div>
+<div class="section" id="device-pairing">
+<h3>Device Pairing</h3>
+<p>The API provides support for key agreement protocols that are often used
+for secure pairing of devices over wireless channels. For example, the
+pairing of an NFC token or a Bluetooth device could make use of key
+agreement protocols upon first use.</p>
+</div>
+<div class="section" id="secure-boot">
+<h3>Secure Boot</h3>
+<p>The API provides primitives for use during firmware integrity and
+authenticity validation, during a secure or trusted boot process.</p>
+</div>
+<div class="section" id="attestation">
+<h3>Attestation</h3>
+<p>The API provides primitives used in attestation activities. Attestation
+is the ability for a device to sign an array of bytes with a device
+private key and return the result to the caller. There are several use
+cases: from attestation of the device state to the ability to generate a
+key pair and prove that it has been generated inside a secure key store.
+The API provides access to the algorithms commonly used for attestation.</p>
+</div>
+<div class="section" id="factory-provisioning">
+<h3>Factory Provisioning</h3>
+<p>Most IoT devices receive a unique identity during the factory
+provisioning process, or once deployed to the field. This API provides
+the APIs necessary for populating a device with keys that represent that
+identity.</p>
+</div>
+</div>
+</div>
+<div class="section" id="functionality-overview">
+<h1>Functionality overview</h1>
+<p>This section provides a high-level overview of the functionality
+provided by the interface defined in this specification. Refer to the
+API definition for a detailed description.</p>
+<p>Due to the modularity of the interface, almost every part of the library
+is optional. The only mandatory function is <code class="docutils literal notranslate"><span class="pre">psa_crypto_init</span></code>.</p>
+<div class="section" id="library-management">
+<h2>Library management</h2>
+<p>Before any use, applications must call <code class="docutils literal notranslate"><span class="pre">psa_crypto_init</span></code> to initialize
+the library.</p>
+</div>
+<div class="section" id="key-management">
+<h2>Key management</h2>
+<p>Applications always access keys via a handle. This allows keys to be
+non-extractable, that is, an application can perform operations using a
+key without having access to the key material. Non-extractable keys are
+bound to the device, can be rate-limited and can have their usage
+restricted by policies.</p>
+<p>Each key has a set of attributes that describe the key and the policy
+for using the key. A <code class="docutils literal notranslate"><span class="pre">psa_key_attributes_t</span></code> object contains all of the
+attributes, which is used when creating a key and when querying key
+attibutes.</p>
+<p>Each key has a <em>lifetime</em> that determines when the key material is
+destroyed. There are two types of lifetimes:
+<a class="reference external" href="#volatile-keys">volatile</a> and <a class="reference external" href="#persistent-keys">persistent</a>.</p>
+<div class="section" id="volatile-keys">
+<h3>Volatile keys</h3>
+<p>A <em>volatile</em> key is destroyed as soon as the application closes the
+handle to the key. When the application terminates, it conceptually
+closes all of its key handles. Conceptually, a volatile key is stored in
+RAM. Volatile keys have the lifetime <code class="docutils literal notranslate"><span class="pre">PSA_KEY_LIFETIME_VOLATILE</span></code>.</p>
+<p>To create a volatile key:</p>
+<ol class="arabic simple">
+<li>Populate a <code class="docutils literal notranslate"><span class="pre">psa_key_attributes_t</span></code> object with the key’s type, size,
+policy and other attributes.</li>
+<li>Create the key with <code class="docutils literal notranslate"><span class="pre">psa_import_key</span></code>, <code class="docutils literal notranslate"><span class="pre">psa_generate_key</span></code>,
+<code class="docutils literal notranslate"><span class="pre">psa_key_derivation_output_key</span></code> or <code class="docutils literal notranslate"><span class="pre">psa_copy_key</span></code>.</li>
+</ol>
+<p>To destroy a volatile key, call <code class="docutils literal notranslate"><span class="pre">psa_close_key</span></code> or <code class="docutils literal notranslate"><span class="pre">psa_destroy_key</span></code>
+(these functions are equivalent when called on a volatile key).</p>
+</div>
+<div class="section" id="persistent-keys">
+<h3>Persistent keys</h3>
+<p>A <em>persistent</em> key exists until it explicitly destroyed with
+<code class="docutils literal notranslate"><span class="pre">psa_destroy_key</span></code> or until it is wiped by the reset or destruction of
+the device.</p>
+<p>Each persistent key has a key identifier, which acts as a name for the
+key. Within an application, the key identifier corresponds to a single
+key. The application specifies the key identifier when the key is
+created, and uses the key identifier to obtain a handle to a persistent
+key that has already been created. If the implementation provides
+<a class="reference external" href="#optional-isolation">caller isolation</a>, then key identifiers are
+local to each application: the same key identifier in two applications
+corresponds to different keys.</p>
+<p>Persistent keys may be stored in different storage areas; this is
+indicated through different lifetime values. This specification defines
+a single lifetime value <code class="docutils literal notranslate"><span class="pre">PSA_KEY_LIFETIME_PERSISTENT</span></code> which
+corresponds to a default storage area. Implementations may define
+alternative lifetime values corresponding to different storage areas
+with different retention policies, or to secure elements with different
+security characteristics.</p>
+<p>To create a persistent key:</p>
+<ol class="arabic simple">
+<li>Populate a <code class="docutils literal notranslate"><span class="pre">psa_key_attributes_t</span></code> object with the key’s type, size,
+policy and other attributes.</li>
+<li>In the attributes object, set the desired lifetime and persistent
+identifier for the key.</li>
+<li>Create the key with <code class="docutils literal notranslate"><span class="pre">psa_import_key</span></code>, <code class="docutils literal notranslate"><span class="pre">psa_generate_key</span></code>,
+<code class="docutils literal notranslate"><span class="pre">psa_key_derivation_output_key</span></code> or <code class="docutils literal notranslate"><span class="pre">psa_copy_key</span></code>.</li>
+</ol>
+<p>To release memory resources associated with a key but keep the key in
+storage, call <code class="docutils literal notranslate"><span class="pre">psa_close_key</span></code>. To access an existing persistent key,
+call <code class="docutils literal notranslate"><span class="pre">psa_open_key</span></code> with the same key identifier used when creating
+the key.</p>
+<p>To destroy a persistent key, open it (if it isn’t already open) and call
+<code class="docutils literal notranslate"><span class="pre">psa_destroy_key</span></code>.</p>
+<p>The key lifetime and identifier are set when the key is created and
+cannot be changed without destroying the key first. If the original key
+permits copying, then the application can specify a different lifetime
+for the copy of the key.</p>
+</div>
+<div class="section" id="recommendations-of-minimum-standards-for-key-management">
+<h3>Recommendations of minimum standards for key management</h3>
+<p>Most implementations provide the function <code class="docutils literal notranslate"><span class="pre">psa_import_key</span></code>. The only
+exceptions are implementations that only give access to a key or keys
+that are provisioned by proprietary means, and do not allow the main
+application to use its own cryptographic material.</p>
+<p>Most implementations provide <code class="docutils literal notranslate"><span class="pre">psa_get_key_attributes</span></code> and the
+<code class="docutils literal notranslate"><span class="pre">psa_get_key_xxx</span></code> accessor functions, as they are easy to implement,
+and it is difficult to write applications and to diagnose issues without
+being able to check the metadata.</p>
+<p>Most implementations also provide <code class="docutils literal notranslate"><span class="pre">psa_export_public_key</span></code> if they
+support any asymmetric algorithm, since public-key cryptography often
+requires the delivery of a public key that is associated with a
+protected private key.</p>
+<p>Most implementations provide <code class="docutils literal notranslate"><span class="pre">psa_export_key</span></code>. However, highly
+constrained implementations that are designed to work only with
+short-term keys (no non-volatile storage), or only with long-term
+non-extractable keys, may omit this function.</p>
+</div>
+</div>
+<div class="section" id="usage-policies">
+<h2>Usage policies</h2>
+<p>All keys have an associated policy that regulates which operations are
+permitted on the key. Each key policy is a set of usage flags and a
+specific algorithm that is permitted with the key. The policy is part of
+the key attributes that are managed by a <code class="docutils literal notranslate"><span class="pre">psa_key_attributes_t</span></code>
+object.</p>
+<p>The usage flags are encoded in a bitmask, which has the type
+<code class="docutils literal notranslate"><span class="pre">psa_key_usage_t</span></code>. Three kinds of usage flag can be specified: * The
+extractable flag <code class="docutils literal notranslate"><span class="pre">PSA_KEY_USAGE_EXPORT</span></code> determines whether the key
+material can be extracted. * The copyable flag <code class="docutils literal notranslate"><span class="pre">PSA_KEY_USAGE_COPY</span></code>
+determines whether the key material can be copied into a new key, which
+can have a different lifetime or a more restrictive policy. * The usage
+flags <code class="docutils literal notranslate"><span class="pre">PSA_KEY_USAGE_ENCRYPT</span></code>, <code class="docutils literal notranslate"><span class="pre">PSA_KEY_USAGE_SIGN</span></code>, and so on
+determine whether the corresponding operation is permitted on the key.</p>
+<p>In addition to the usage bitmask, a policy specifies which algorithm is
+permitted with the key. This specification only defines policies that
+restrict keys to a single algorithm, which is in keeping with common
+practice and with security good practice.</p>
+<p>A highly constrained implementation may not be able to support all the
+policies that can be expressed through this interface. If an
+implementation cannot create a key with the required policy, it must
+return an appropriate error code when the key is created.</p>
+</div>
+<div class="section" id="symmetric-cryptography">
+<h2>Symmetric cryptography</h2>
+<p>This specification defines interfaces for message digests (hash
+functions), MAC (message authentication codes), symmetric ciphers and
+authenticated encryption with associated data (AEAD). For each type of
+primitive, the API includes two standalone functions (compute and
+verify, or encrypt and decrypt) as well as a series of functions that
+permit <a class="reference external" href="#multipart-operations">multipart operations</a>.</p>
+<p>The standalone functions are:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">psa_hash_compute</span></code> and <code class="docutils literal notranslate"><span class="pre">psa_hash_compare</span></code> to calculate the hash
+of a message or compare the hash of a message with a reference value.</li>
+<li><code class="docutils literal notranslate"><span class="pre">psa_mac_compute</span></code> and <code class="docutils literal notranslate"><span class="pre">psa_mac_verify</span></code> to calculate the MAC of a
+message of compare the MAC with a reference value.</li>
+<li><code class="docutils literal notranslate"><span class="pre">psa_cipher_encrypt</span></code> and <code class="docutils literal notranslate"><span class="pre">psa_cipher_decrypt</span></code> to encrypt or
+decrypt a message using an unauthenticated symmetric cipher. The
+encryption function generates a random IV; to use a deterministic IV
+(which is not secure in general, but can be secure in some conditions
+that depend on the algorithm), use the multipart API.</li>
+<li><code class="docutils literal notranslate"><span class="pre">psa_aead_encrypt</span></code> and <code class="docutils literal notranslate"><span class="pre">psa_aead_decrypt</span></code> to encrypt/decrypt and
+authenticate a message using an AEAD algorithm. These functions
+follow the interface recommended by RFC 5116.</li>
+</ul>
+<div class="section" id="multipart-operations">
+<h3>Multipart operations</h3>
+<p>The API provides a multipart interface to hash, MAC, symmetric cipher
+and AEAD primitives. These interfaces process messages one chunk at a
+time, with the size of chunks determined by the caller. This allows the
+processing of messages that cannot be assembled in memory. To perform a
+multipart operation:</p>
+<ol class="arabic simple">
+<li>Allocate an operation object of the appropriate type. You can use any
+allocation strategy: stack, heap, static, etc.</li>
+<li>Initialize the operation object by one of the following methods:<ul>
+<li>Set it to all-bits-zero.</li>
+<li>Initialize it to logical zero.</li>
+<li>Assign the value of the associated macro <code class="docutils literal notranslate"><span class="pre">PSA_xxx_INIT</span></code>.</li>
+<li>Assign the result of calling the associated function
+<code class="docutils literal notranslate"><span class="pre">psa_xxx_init</span></code>.</li>
+</ul>
+</li>
+<li>Specify a key for the operation using the associated setup function:
+<code class="docutils literal notranslate"><span class="pre">psa_hash_setup</span></code>, <code class="docutils literal notranslate"><span class="pre">psa_mac_sign_setup</span></code>, <code class="docutils literal notranslate"><span class="pre">psa_mac_verify_setup</span></code>,
+<code class="docutils literal notranslate"><span class="pre">psa_cipher_encrypt_setup</span></code>, <code class="docutils literal notranslate"><span class="pre">psa_cipher_decrypt_setup</span></code>,
+<code class="docutils literal notranslate"><span class="pre">psa_aead_encrypt_setup</span></code> or <code class="docutils literal notranslate"><span class="pre">psa_aead_decrypt_setup</span></code>.</li>
+<li>Provide additional parameters:<ul>
+<li>When encrypting data, generate or set an initialization vector
+(IV), nonce, or similar initial value such as an initial counter
+value.</li>
+<li>When decrypting, set the IV or nonce.</li>
+<li>For a symmetric cipher, to generate a random IV, which is
+recommended in most protocols, call <code class="docutils literal notranslate"><span class="pre">psa_cipher_generate_iv</span></code>. To
+set the IV, call <code class="docutils literal notranslate"><span class="pre">psa_cipher_set_iv</span></code>.</li>
+<li>For AEAD, call <code class="docutils literal notranslate"><span class="pre">psa_aead_generate_nonce</span></code> or
+<code class="docutils literal notranslate"><span class="pre">psa_aead_set_nonce</span></code>.</li>
+</ul>
+</li>
+<li>Call the associated update function on successive chunks of the
+message: <code class="docutils literal notranslate"><span class="pre">psa_hash_update</span></code>, <code class="docutils literal notranslate"><span class="pre">psa_mac_update</span></code>,
+<code class="docutils literal notranslate"><span class="pre">psa_cipher_update</span></code>, <code class="docutils literal notranslate"><span class="pre">psa_aead_update_ad</span></code> or <code class="docutils literal notranslate"><span class="pre">psa_aead_update</span></code>.</li>
+<li>At the end of the message, call the applicable finishing function.
+There are three kinds of finishing function, depending on what to do
+with the verification tag.<ul>
+<li>Unauthenticated encryption and decryption does not involve a
+verification tag. Call <code class="docutils literal notranslate"><span class="pre">psa_cipher_finish</span></code>.</li>
+<li>To calculate the digest or MAC or authentication tag of a message,
+call the associated function to calculate and output the
+verification tag: <code class="docutils literal notranslate"><span class="pre">psa_hash_finish</span></code>, <code class="docutils literal notranslate"><span class="pre">psa_mac_sign_finish</span></code> or
+<code class="docutils literal notranslate"><span class="pre">psa_aead_finish</span></code>.</li>
+<li>To verify the digest or MAC of a message against a reference value
+or to verify the authentication tag at the end of AEAD decryption,
+call the associated function to compare the verification tag with
+the reference value: <code class="docutils literal notranslate"><span class="pre">psa_hash_verify</span></code>,
+<code class="docutils literal notranslate"><span class="pre">psa_mac_verify_finish</span></code> or <code class="docutils literal notranslate"><span class="pre">psa_aead_verify</span></code>.</li>
+</ul>
+</li>
+</ol>
+<p>Calling the setup function allocates resources inside the
+implementation. These resources are freed when calling the associated
+finishing function. In addition, each family of functions defines a
+function <code class="docutils literal notranslate"><span class="pre">psa_xxx_abort</span></code>, which can be called at any time to free the
+resources associated with an operation.</p>
+</div>
+<div class="section" id="authenticated-encryption">
+<h3>Authenticated encryption</h3>
+<p>Having a multipart interface to authenticated encryption raises specific
+issues.</p>
+<p>Multipart authenticated decryption produces partial results that are not
+authenticated. Applications must not use or expose partial results of
+authenticated decryption until <code class="docutils literal notranslate"><span class="pre">psa_aead_verify</span></code> has returned a
+success status, and must destroy all partial results without revealing
+them if <code class="docutils literal notranslate"><span class="pre">psa_aead_verify</span></code> returns a failure status. Revealing partial
+results (directly, or indirectly through the application’s behavior) can
+compromise the confidentiality of all inputs that are encrypted with the
+same key.</p>
+<p>For encryption, some common algorithms cannot be processed in a
+streaming fashion. For SIV mode, the whole plaintext must be known
+before the encryption can start; the multipart AEAD API is not meant to
+be usable with SIV mode. For CCM mode, the length of the plaintext must
+be known before the encryption can start; the application can call the
+function <code class="docutils literal notranslate"><span class="pre">psa_aead_set_lengths</span></code> to provide these lengths before
+providing input.</p>
+</div>
+</div>
+<div class="section" id="key-derivation">
+<h2>Key derivation</h2>
+<p>The specification defines a mechanism for key derivation that allows the
+output of the derivation to be split into multiple keys, as well as
+non-key outputs.</p>
+<p>In an implementation with <a class="reference external" href="#optional-isolation">isolation</a>, the
+intermediate state of the key derivation is not visible to the caller,
+and if an output of the derivation is a non-exportable key, then this
+output cannot be recovered outside the isolation boundary.</p>
+<div class="section" id="key-derivation-operations">
+<h3>Key derivation operations</h3>
+<p>A key derivation operation encodes a deterministic method to generate a
+finite stream of bytes. This data stream is computed by the
+cryptoprocessor and extracted in chunks. If two key derivation
+operations are constructed with the same parameters, then they should
+produce the same outputs.</p>
+<p>Some example uses of key derivation operations are:</p>
+<ul class="simple">
+<li>A key derivation function: initialized with a secret, a salt and
+other parameters.</li>
+<li>A key agreement function: initialized with a public key (peer key), a
+key pair (own key) and other parameters.</li>
+</ul>
+<p>Applications use the <code class="docutils literal notranslate"><span class="pre">psa_key_derivation_operation_t</span></code> type to create
+key derivation operations.</p>
+<p>The lifecycle of a key derivation operation is as follows:</p>
+<ol class="arabic simple">
+<li>Setup: construct a <code class="docutils literal notranslate"><span class="pre">psa_key_derivation_operation_t</span></code> object, and set
+its parameters and inputs. The setup phase determines the key
+derivation operation’s capacity, which is the maximum number of bytes
+that can be output from this key derivation operation.</li>
+<li>Output: read bytes from the stream defined by the key derivation
+operation. This can be done any number of times, until the stream is
+exhausted when its capacity has been reached. Each output step can
+either be used to populate a key object
+(<code class="docutils literal notranslate"><span class="pre">psa_key_derivation_output_key</span></code>), or to read some bytes and
+extract them as cleartext (<code class="docutils literal notranslate"><span class="pre">psa_key_derivation_output_bytes</span></code>).</li>
+<li>Terminate: clear the key derivation operation and release associated
+resources (<code class="docutils literal notranslate"><span class="pre">psa_key_derivation_abort</span></code>).</li>
+</ol>
+<p>A key derivation operation cannot be rewound. Once a part of the stream
+has been output, it cannot be output again. This ensures that the same
+part of the output will not be used for different purposes.</p>
+</div>
+<div class="section" id="key-derivation-function">
+<h3>Key derivation function</h3>
+<p>This specification defines functions to set up a key derivation. A key
+derivation consists of two parts:</p>
+<ol class="arabic simple">
+<li>Input collection. This is sometimes known as <em>extraction</em>: the
+operation “extracts” information from the inputs to generate a
+pseudorandom intermediate secret value.</li>
+<li>Output generation. This is sometimes known as <em>expansion</em>: the
+operation “expands” the intermediate secret value to the desired
+output length.</li>
+</ol>
+<p>To perform a key derivation:</p>
+<ol class="arabic simple">
+<li>Initialize a <code class="docutils literal notranslate"><span class="pre">psa_key_derivation_operation_t</span></code> object to zero or to
+<code class="docutils literal notranslate"><span class="pre">PSA_KEY_DERIVATION_OPERAITON_INIT</span></code>.</li>
+<li>Call <code class="docutils literal notranslate"><span class="pre">psa_key_derivation_setup</span></code> to select a key derivation
+algorithm.</li>
+<li>Call the functions <code class="docutils literal notranslate"><span class="pre">psa_key_derivation_input_bytes</span></code> and
+<code class="docutils literal notranslate"><span class="pre">psa_key_derivation_input_key</span></code>, or
+<code class="docutils literal notranslate"><span class="pre">psa_key_derivation_key_agreement</span></code> to provide the inputs to the key
+derivation algorithm. Many key derivation algorithms take multiple
+inputs; the “step” parameter to these functions indicates which input
+is being passed. The documentation for each key derivation algorithm
+describes the expected inputs for that algorithm.</li>
+<li>Call <code class="docutils literal notranslate"><span class="pre">psa_key_derivation_output_key</span></code> to create a derived key, or
+<code class="docutils literal notranslate"><span class="pre">psa_key_derivation_output_bytes</span></code> to export the derived data. These
+functions may be called multiple times to read successive output from
+the key derivation.</li>
+<li>Call <code class="docutils literal notranslate"><span class="pre">psa_key_derivation_abort</span></code> to release the key derivation
+operation memory.</li>
+</ol>
+<p>Here is an example of a use case where a master key is used to generate
+both a message encryption key and an IV for the encryption, and the
+derived key and IV are then used to encrypt a message.</p>
+<ol class="arabic simple">
+<li>Derive the message encryption material from the master key.<ol class="arabic">
+<li>Initialize a <code class="docutils literal notranslate"><span class="pre">psa_key_derivation_operation_t</span></code> object to zero or
+to <code class="docutils literal notranslate"><span class="pre">PSA_KEY_DERIVATION_OPERATION_INIT</span></code>.</li>
+<li>Call <code class="docutils literal notranslate"><span class="pre">psa_key_derivation_setup</span></code> with <code class="docutils literal notranslate"><span class="pre">PSA_ALG_HKDF</span></code> as the
+algorithm.</li>
+<li>Call <code class="docutils literal notranslate"><span class="pre">psa_key_derivation_input_key</span></code> with the step
+<code class="docutils literal notranslate"><span class="pre">PSA_KEY_DERIVATION_INPUT_SECRET</span></code> and the master key.</li>
+<li>Call <code class="docutils literal notranslate"><span class="pre">psa_key_derivation_input_bytes</span></code> with the step
+<code class="docutils literal notranslate"><span class="pre">PSA_KEY_DERIVATION_INPUT_INFO</span></code> and a public value that uniquely
+identifies the message.</li>
+<li>Populate a <code class="docutils literal notranslate"><span class="pre">psa_key_attributes_t</span></code> object with the derived
+message encryption key’s attributes.</li>
+<li>Call <code class="docutils literal notranslate"><span class="pre">psa_key_derivation_output_key</span></code> to create the derived
+message key.</li>
+<li>Call <code class="docutils literal notranslate"><span class="pre">psa_key_derivation_output_bytes</span></code> to generate the derived
+IV.</li>
+<li>Call <code class="docutils literal notranslate"><span class="pre">psa_key_derivation_abort</span></code> to release the key derivation
+operation memory.</li>
+</ol>
+</li>
+<li>Encrypt the message with the derived material.<ol class="arabic">
+<li>Initialize a <code class="docutils literal notranslate"><span class="pre">psa_cipher_operation_t</span></code> object to zero or to
+<code class="docutils literal notranslate"><span class="pre">PSA_CIPHER_OPERATION_INIT</span></code>.</li>
+<li>Call <code class="docutils literal notranslate"><span class="pre">psa_cipher_encrypt_setup</span></code> with the derived message
+encryption key.</li>
+<li>Call <code class="docutils literal notranslate"><span class="pre">psa_cipher_set_iv</span></code> using the derived IV retrieved above.</li>
+<li>Call <code class="docutils literal notranslate"><span class="pre">psa_cipher_update</span></code> one or more times to encrypt the
+message.</li>
+<li>Call <code class="docutils literal notranslate"><span class="pre">psa_cipher_finish</span></code> at the end of the message.</li>
+</ol>
+</li>
+<li>Call <code class="docutils literal notranslate"><span class="pre">psa_destroy_key</span></code> to clear the generated key.</li>
+</ol>
+</div>
+</div>
+<div class="section" id="asymmetric-cryptography">
+<h2>Asymmetric cryptography</h2>
+<p>The asymmetric cryptography part of this interface defines functions for
+asymmetric encryption, asymmetric signature and two-way key agreement.</p>
+<div class="section" id="asymmetric-encryption">
+<h3>Asymmetric encryption</h3>
+<p>Asymmetric encryption is provided through the functions
+<code class="docutils literal notranslate"><span class="pre">psa_asymmetric_encrypt</span></code> and <code class="docutils literal notranslate"><span class="pre">psa_asymmetric_decrypt</span></code>.</p>
+</div>
+<div class="section" id="hash-and-sign">
+<h3>Hash-and-sign</h3>
+<p>The signature and verification functions <code class="docutils literal notranslate"><span class="pre">psa_asymmetric_sign</span></code> and
+<code class="docutils literal notranslate"><span class="pre">psa_asymmetric_verify</span></code> take a hash as one of their inputs. This hash
+should be calculated with <code class="docutils literal notranslate"><span class="pre">psa_hash_setup</span></code>, <code class="docutils literal notranslate"><span class="pre">psa_hash_update</span></code> and
+<code class="docutils literal notranslate"><span class="pre">psa_hash_finish</span></code> before calling <code class="docutils literal notranslate"><span class="pre">psa_asymmetric_sign</span></code> or
+<code class="docutils literal notranslate"><span class="pre">psa_asymmetric_verify</span></code>. To determine which hash algorithm to use,
+call the macro <code class="docutils literal notranslate"><span class="pre">PSA_ALG_SIGN_GET_HASH</span></code> on the corresponding signature
+algorithm.</p>
+</div>
+<div class="section" id="key-agreement">
+<h3>Key agreement</h3>
+<p>This specification defines two functions for a Diffie-Hellman-style key
+agreement where each party combines its own private key with the peer’s
+public key.</p>
+<p>The recommended approach is to use a <a class="reference external" href="#key-derivation">key derivation
+operation</a> with the
+<code class="docutils literal notranslate"><span class="pre">psa_key_derivation_key_agreement</span></code> input function, which calculates a
+shared secret for the key derivation function.</p>
+<p>In case an application needs direct access to the shared secret, it can
+call <code class="docutils literal notranslate"><span class="pre">psa_raw_key_agreement</span></code> instead. Note that in general the shared
+secret is not directly suitable for use as a key because it is biased.</p>
+</div>
+</div>
+<div class="section" id="randomness-and-key-generation">
+<h2>Randomness and key generation</h2>
+<p>We strongly recommended that implementations include a random generator,
+consisting of a cryptographically secure pseudo-random generator
+(CSPRNG), which is adequately seeded with a cryptographic-quality
+hardware entropy source, commonly referred to as a true random number
+generator (TRNG). Constrained implementations may omit the random
+generation functionality if they do not implement any algorithm that
+requires randomness internally, and they do not provide a key generation
+functionality. For example, a special-purpose component for signature
+verification can omit this.</p>
+<p>Applications should use <code class="docutils literal notranslate"><span class="pre">psa_generate_key</span></code>,
+<code class="docutils literal notranslate"><span class="pre">psa_encrypt_generate_iv</span></code> or <code class="docutils literal notranslate"><span class="pre">psa_aead_generate_iv</span></code> to generate
+suitably-formatted random data, as applicable. In addition, the API
+includes a function <code class="docutils literal notranslate"><span class="pre">psa_generate_random</span></code> to generate and extract
+arbitrary random data.</p>
+</div>
+<div class="section" id="future-additions">
+<h2>Future additions</h2>
+<p>We plan to cover the following features in future drafts and editions of
+this specification:</p>
+<ul class="simple">
+<li>Single-shot functions for symmetric operations.</li>
+<li>Multi-part operations for hybrid cryptography. For example, this
+includes hash-and-sign for EdDSA, and hybrid encryption for ECIES.</li>
+<li>Key exchange and a more general interface to key derivation. This
+would enable an application to derive a non-extractable session key
+from non-extractable secrets, without leaking the intermediate
+material.</li>
+<li>Key wrapping mechanisms to extract and import keys in a protected
+form (encrypted and authenticated).</li>
+<li>Key discovery mechanisms. This would enable an application to locate
+a key by its name or attributes.</li>
+<li>Implementation capability description. This would enable an
+application to determine the algorithms, key types and storage
+lifetimes that the implementation provides.</li>
+<li>An ownership and access control mechanism allowing a multi-client
+implementation to have privileged clients that are able to manage
+keys of other clients.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="sample-architectures">
+<h1>Sample architectures</h1>
+<p>This section describes some example architectures that can be used for
+implementations of the interface described in this specification. This
+list is not exhaustive and the section is entirely non-normative.</p>
+<div class="section" id="single-partition-architecture">
+<h2>Single-partition architecture</h2>
+<p>In this architecture, there is no security boundary inside the system.
+The application code may access all the system memory, including the
+memory used by the cryptographic services described in this
+specification. Thus, the architecture provides <a class="reference external" href="#optional-isolation">no
+isolation</a>.</p>
+<p>This architecture does not conform to the Arm <em>Platform Security
+Architecture Security Model</em>. However, it may be useful for providing
+cryptographic services that use the same interface, even on devices that
+cannot support any security boundary. So, while this architecture is not
+the primary design goal of the API defined in the present specification,
+it is supported.</p>
+<p>The functions in this specification simply execute the underlying
+algorithmic code. Security checks can be kept to a minimum, since the
+cryptoprocessor cannot defend against a malicious application. Key
+import and export copy data inside the same memory space.</p>
+<p>This architecture also describes a subset of some larger systems, where
+the cryptographic services are implemented inside a high-security
+partition, separate from the code of the main application, though it
+shares this high-security partition with other platform security
+services.</p>
+</div>
+<div class="section" id="cryptographic-token-and-single-application-processor">
+<h2>Cryptographic token and single-application processor</h2>
+<p>This system is composed of two partitions: one is a cryptoprocessor and
+the other partition runs an application. There is a security boundary
+between the two partitions, so that the application cannot access the
+cryptoprocessor, except through its public interface. Thus, the
+architecture provides <a class="reference external" href="#optional-isolation">cryptoprocessor
+isolation</a>. The cryptoprocessor has some
+nonvolatile storage, a TRNG, and possibly, some cryptographic
+accelerators.</p>
+<p>There are a number of potential physical realizations: the
+cryptoprocessor may be a separate chip, a separate processor on the same
+chip, or a logical partition using a combination of hardware and
+software to provide the isolation. These realizations are functionally
+equivalent in terms of the offered software interface, but they would
+typically offer different levels of security guarantees.</p>
+<p>The PSA crypto API in the application processor consists of a thin layer
+of code that translates function calls to remote procedure calls in the
+cryptoprocessor. All cryptographic computations are, therefore,
+performed inside the cryptoprocessor. Non-volatile keys are stored
+inside the cryptoprocessor.</p>
+</div>
+<div class="section" id="cryptoprocessor-with-no-key-storage">
+<h2>Cryptoprocessor with no key storage</h2>
+<p>As in the <a class="reference external" href="#cryptographic-token-and-single-application-processor">previous
+example</a>, this
+system is also composed of two partitions separated by a security
+boundary. Thus, this architecture also provides <a class="reference external" href="#optional-isolation">cryptoprocessor
+isolation</a>. However, unlike the previous
+architecture, in this system, the cryptoprocessor does not have any
+secure, persistent storage that could be used to store application keys.</p>
+<p>If the cryptoprocessor is not capable of storing cryptographic material,
+then there is little use for a separate cryptoprocessor, since all data
+would have to be imported by the application.</p>
+<p>The cryptoprocessor can provide useful services if it is able to store
+at least one key. This may be a hardware unique key that is burnt to
+one-time programmable memory during the manufacturing of the device.
+This key can be used for one or more purposes:</p>
+<ul class="simple">
+<li>Encrypt and authenticate data stored in the application processor.</li>
+<li>Communicate with a paired device.</li>
+<li>Allow the application to perform operations with keys that are
+derived from the hardware unique key.</li>
+</ul>
+</div>
+<div class="section" id="multi-client-cryptoprocessor">
+<h2>Multi-client cryptoprocessor</h2>
+<p>This is an expanded variant of the <a class="reference external" href="#cryptographic-token-and-single-application-processor">cryptographic token plus application
+architecture</a>.
+In this variant, the cryptoprocessor serves multiple applications that
+are mutually untrustworthy. This architecture provides <a class="reference external" href="#optional-isolation">caller
+isolation</a>.</p>
+<p>In this architecture, API calls are translated to remote procedure
+calls, which encode the identity of the client application. The
+cryptoprocessor carefully segments its internal storage to ensure that a
+client’s data is never leaked to another client.</p>
+</div>
+<div class="section" id="multi-cryptoprocessor-architecture">
+<h2>Multi-cryptoprocessor architecture</h2>
+<p>This system includes multiple cryptoprocessors. There are several
+reasons to have multiple cryptoprocessors:</p>
+<ul class="simple">
+<li>Different compromises between security and performance for different
+keys. Typically, this means a cryptoprocessor that runs on the same
+hardware as the main application and processes short-term secrets, a
+secure element or a similar separate chip that retains long-term
+secrets.</li>
+<li>Independent provisioning of certain secrets.</li>
+<li>A combination of a non-removable cryptoprocessor and removable ones,
+for example, a smartcard or HSM.</li>
+<li>Cryptoprocessors managed by different stakeholders who do not trust
+each other.</li>
+</ul>
+<p>The keystore implementation needs to dispatch each request to the
+correct processor. For example: * All requests involving a
+non-extractable key must be processed in the cryptoprocessor that holds
+that key. * Requests involving a persistent key must be processed in
+the cryptoprocessor that corresponds to the key’s lifetime value. *
+Requests involving a volatile key may target a cryptoprocessor based on
+parameters supplied by the application, or based on considerations such
+as performance inside the implementation.</p>
+</div>
+</div>
+<div class="section" id="library-conventions">
+<h1>Library conventions</h1>
+<div class="section" id="error-handling">
+<h2>Error handling</h2>
+<div class="section" id="return-status">
+<h3>Return status</h3>
+<p>Almost all functions return a status indication of type
+<code class="docutils literal notranslate"><span class="pre">psa_status_t</span></code>. This is an enumeration of integer values, with 0
+(<code class="docutils literal notranslate"><span class="pre">PSA_SUCCESS</span></code>) indicating successful operation and other values
+indicating errors. The exception is data structure accessor functions,
+which cannot fail. Such functions may return <code class="docutils literal notranslate"><span class="pre">void</span></code> or a data value.</p>
+<p>Unless specified otherwise, if multiple error conditions apply, an
+implementation is free to return any of the applicable error codes. The
+choice of error code is considered an implementation quality issue.
+Different implementations may make different choices, for example to
+favor code size over ease of debugging or vice versa.</p>
+<p>Note that if the behavior is undefined (for example, if a function
+receives an invalid pointer as a parameter), this specification makes no
+guarantee that the function will return an error. Implementations are
+encouraged to return an error or halt the application in a manner that
+is appropriate for the platform if the undefined behavior condition can
+be detected. However, application programmers should be aware that
+undefined behavior conditions cannot be detected in general.</p>
+</div>
+<div class="section" id="behavior-on-error">
+<h3>Behavior on error</h3>
+<p>All function calls must be implemented atomically:</p>
+<ul class="simple">
+<li>When a function returns a type other than <code class="docutils literal notranslate"><span class="pre">psa_status_t</span></code>, the
+requested action has been carried out.</li>
+<li>When a function returns the status <code class="docutils literal notranslate"><span class="pre">PSA_SUCCESS</span></code>, the requested
+action has been carried out.</li>
+<li>When a function returns another status of type <code class="docutils literal notranslate"><span class="pre">psa_status_t</span></code>, no
+action has been carried out. The content of the output parameters is
+undefined, but otherwise the state of the system has not changed,
+except as described below.</li>
+</ul>
+<p>In general, functions that modify the system state, for example,
+creating or destroying a key, must leave the system state unchanged if
+they return an error code. There are specific conditions that can result
+in different behavior:</p>
+<ul class="simple">
+<li>The status <code class="docutils literal notranslate"><span class="pre">PSA_ERROR_BAD_STATE</span></code> indicates that a parameter was not
+in a valid state for the requested action. This parameter may have
+been modified by the call and is now in an undefined state. The only
+valid action on an object in an undefined state is to abort it with
+the appropriate <code class="docutils literal notranslate"><span class="pre">psa_abort_xxx</span></code> function.</li>
+<li>The status <code class="docutils literal notranslate"><span class="pre">PSA_ERROR_INSUFFICIENT_CAPACITY</span></code> indicates that a key
+derivation object has reached its maximum capacity. The key
+derivation operation may have been modified by the call. Any further
+attempt to obtain output from the key derivation operation will
+return <code class="docutils literal notranslate"><span class="pre">PSA_ERROR_INSUFFICIENT_CAPACITY</span></code>.</li>
+<li>The status <code class="docutils literal notranslate"><span class="pre">PSA_ERROR_COMMUNICATION_FAILURE</span></code> indicates that the
+communication between the application and the cryptoprocessor has
+broken down. In this case, the cryptoprocessor must either finish the
+requested action successfully, or interrupt the action and roll back
+the system to its original state. Because it is often impossible to
+report the outcome to the application after a communication failure,
+this specification does not provide a way for the application to
+determine whether the action was successful.</li>
+<li>The statuses <code class="docutils literal notranslate"><span class="pre">PSA_ERROR_STORAGE_FAILURE</span></code>,
+<code class="docutils literal notranslate"><span class="pre">PSA_ERROR_HARDWARE_FAILURE</span></code> and <code class="docutils literal notranslate"><span class="pre">PSA_ERROR_TAMPERING_DETECTED</span></code>
+may indicate data corruption in the system state. When a function
+returns one of these statuses, the system state may have changed from
+its previous state before the function call, even though the function
+call failed.</li>
+<li>Some system states cannot be rolled back, for example, the internal
+state of the random number generator or the content of access logs.</li>
+</ul>
+<p>Unless otherwise documented, the content of output parameters is not
+defined when a function returns a status other than <code class="docutils literal notranslate"><span class="pre">PSA_SUCCESS</span></code>.
+Implementations should set output parameters to safe defaults to avoid
+leaking confidential data and limit risk, in case an application does
+not properly handle all errors.</p>
+</div>
+</div>
+<div class="section" id="parameter-conventions">
+<h2>Parameter conventions</h2>
+<div class="section" id="pointer-conventions">
+<h3>Pointer conventions</h3>
+<p>Unless explicitly stated in the documentation of a function, all
+pointers must be valid pointers to an object of the specified type.</p>
+<p>A parameter is considered a <strong>buffer</strong> if it points to an array of
+bytes. A buffer parameter always has the type <code class="docutils literal notranslate"><span class="pre">uint8_t</span> <span class="pre">*</span></code> or
+<code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">uint8_t</span> <span class="pre">*</span></code>, and always has an associated parameter indicating
+the size of the array. Note that a parameter of type <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*</span></code> is never
+considered a buffer.</p>
+<p>All parameters of pointer type must be valid non-null pointers, unless
+the pointer is to a buffer of length 0 or the function’s documentation
+explicitly describes the behavior when the pointer is null.
+Implementations where a null pointer dereference usually aborts the
+application, passing <code class="docutils literal notranslate"><span class="pre">NULL</span></code> as a function parameter where a null
+pointer is not allowed, should abort the caller in the habitual manner.</p>
+<p>Pointers to input parameters may be in read-only memory. Output
+parameters must be in writable memory. Output parameters that are not
+buffers must also be readable, and the implementation must be able to
+write to a non-buffer output parameter and read back the same value, as
+explained in the <a class="reference external" href="#stability-of-parameters">“Stability of
+parameters”</a> section.</p>
+</div>
+<div class="section" id="input-buffer-sizes">
+<h3>Input buffer sizes</h3>
+<p>For input buffers, the parameter convention is:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">uint8_t</span> <span class="pre">*foo</span></code>: pointer to the first byte of the data. The
+pointer may be invalid if the buffer size is 0.</li>
+<li><code class="docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">foo_length</span></code>: size of the buffer in bytes.</li>
+</ul>
+<p>The interface never uses input-output buffers.</p>
+</div>
+<div class="section" id="output-buffer-sizes">
+<h3>Output buffer sizes</h3>
+<p>For output buffers, the parameter convention is:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">uint8_t</span> <span class="pre">*foo</span></code>: pointer to the first byte of the data. The pointer
+may be invalid if the buffer size is 0.</li>
+<li><code class="docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">foo_size</span></code>: the size of the buffer in bytes.</li>
+<li><code class="docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">*foo_length</span></code>: on successful return, contains the length of
+the output in bytes.</li>
+</ul>
+<p>The content of the data buffer and of <code class="docutils literal notranslate"><span class="pre">*foo_length</span></code> on errors is
+unspecified, unless explicitly mentioned in the function description.
+They may be unmodified or set to a safe default. On successful
+completion, the content of the buffer between the offsets
+<code class="docutils literal notranslate"><span class="pre">*foo_length</span></code> and <code class="docutils literal notranslate"><span class="pre">foo_size</span></code> is also unspecified.</p>
+<p>Functions return <code class="docutils literal notranslate"><span class="pre">PSA_ERROR_BUFFER_TOO_SMALL</span></code> if the buffer size is
+insufficient to carry out the requested operation. The interface defines
+macros to calculate a sufficient buffer size for each operation that has
+an output buffer. These macros return compile-time constants if their
+arguments are compile-time constants, so they are suitable for static or
+stack allocation. Refer to an individual function’s documentation for
+the associated output size macro.</p>
+<p>Some functions always return exactly as much data as the size of the
+output buffer. In this case, the parameter convention changes to:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">uint8_t</span> <span class="pre">*foo</span></code>: pointer to the first byte of the output. The
+pointer may be invalid if the buffer size is 0.</li>
+<li><code class="docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">foo_length</span></code>: the number of bytes to return in <code class="docutils literal notranslate"><span class="pre">foo</span></code> if
+successful.</li>
+</ul>
+</div>
+<div class="section" id="overlap-between-parameters">
+<h3>Overlap between parameters</h3>
+<p>Output parameters that are not buffers must not overlap with any input
+buffer or with any other output parameter. Otherwise, the behavior is
+undefined.</p>
+<p>Output buffers may overlap with input buffers. If this happens, the
+implementation must return the same result, as if the buffers did not
+overlap. In other words, the implementation must behave as if it had
+copied all the inputs into temporary memory, as far as the result is
+concerned. However, application developers should note that overlap
+between parameters may affect the performance of a function call.
+Overlap may also affect memory management security if the buffer is
+located in memory that the caller shares with another security context,
+as described in the <a class="reference external" href="#stability-of-parameters">“Stability of
+parameters”</a> section.</p>
+</div>
+<div class="section" id="stability-of-parameters">
+<h3>Stability of parameters</h3>
+<p>In some environments, it is possible for the content of a parameter to
+change while a function is executing. It may also be possible for the
+content of an output parameter to be read before the function
+terminates. This can happen if the application is multithreaded. In some
+implementations, memory can be shared between security contexts, for
+example, between tasks in a multitasking operating system, between a
+user land task and the kernel, or between the non-secure world and the
+secure world of a trusted execution environment. This section describes
+what implementations need or need not guarantee in such cases.</p>
+<p>Parameters that are not buffers are assumed to be under the caller’s
+full control. In a shared memory environment, this means that the
+parameter must be in memory that is exclusively accessible by the
+application. In a multithreaded environment, this means that the
+parameter may not be modified during the execution, and the value of an
+output parameter is undetermined until the function returns. The
+implementation may read an input parameter that is not a buffer multiple
+times and expect to read the same data. The implementation may write to
+an output parameter that is not a buffer and expect to read back the
+value that it last wrote. The implementation has the same permissions on
+buffers that overlap with a buffer in the opposite direction.</p>
+<p>In an environment with multiple threads or with shared memory, the
+implementation carefully accesses non-overlapping buffer parameters in
+order to prevent any security risk resulting from the content of the
+buffer being modified or observed during the execution of the function.
+In an input buffer that does not overlap with an output buffer, the
+implementation reads each byte of the input once, at most. The
+implementation does not read from an output buffer that does not overlap
+with an input buffer. Additionally, the implementation does not write
+data to a non-overlapping output buffer if this data is potentially
+confidential and the implementation has not yet verified that outputting
+this data is authorized.</p>
+</div>
+</div>
+<div class="section" id="key-types-and-algorithms">
+<h2>Key types and algorithms</h2>
+<p>Types of cryptographic keys and cryptographic algorithms are encoded
+separately. Each is encoded by using an integral type:
+<code class="docutils literal notranslate"><span class="pre">psa_key_type_t</span></code> and <code class="docutils literal notranslate"><span class="pre">psa_algorithm_t</span></code>, respectively.</p>
+<p>There is some overlap in the information conveyed by key types and
+algorithms. Both types contain enough information, so that the meaning
+of an algorithm type value does not depend on what type of key it is
+used with, and vice versa. However, the particular instance of an
+algorithm may depend on the key type. For example, the algorithm
+<code class="docutils literal notranslate"><span class="pre">PSA_ALG_GCM</span></code> can be instantiated as any AEAD algorithm using the GCM
+mode over a block cipher. The underlying block cipher is determined by
+the key type.</p>
+<p>Key types do not encode the key size. For example, AES-128, AES-192 and
+AES-256 share a key type <code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_AES</span></code>.</p>
+<div class="section" id="structure-of-key-and-algorithm-types">
+<h3>Structure of key and algorithm types</h3>
+<p>Both types use a partial bitmask structure, which allows the analysis
+and building of values from parts. However, the interface defines
+constants, so that applications do not need to depend on the encoding,
+and an implementation may only care about the encoding for code size
+optimization.</p>
+<p>The encodings follows a few conventions:</p>
+<ul class="simple">
+<li>The highest bit is a vendor flag. Current and future versions of this
+specification will only define values where this bit is clear.
+Implementations that wish to define additional
+implementation-specific values must use values where this bit is set,
+to avoid conflicts with future versions of this specification.</li>
+<li>The next few highest bits indicate the corresponding algorithm
+category: hash, MAC, symmetric cipher, asymmetric encryption, and so
+on.</li>
+<li>The following bits identify a family of algorithms in a
+category-dependent manner.</li>
+<li>In some categories and algorithm families, the lowest-order bits
+indicate a variant in a systematic way. For example, algorithm
+families that are parametrized around a hash function encode the hash
+in the 8 lowest bits.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="concurrent-calls">
+<h2>Concurrent calls</h2>
+<p>In some environments, an application can make calls to the PSA crypto
+API in separate threads. In such an environment, concurrent calls are
+performed correctly, as if the calls were executed in sequence, provided
+that they obey the following constraints:</p>
+<ul class="simple">
+<li>There is no overlap between an output parameter of one call and an
+input or output parameter of another call. Overlap between input
+parameters is permitted.</li>
+<li>If a call modifies a key, then no other call must modify or use that
+key. <em>Using</em>, in this context, includes all functions of multipart
+operations using the key. Concurrent calls that merely use the same
+key are permitted.</li>
+<li>Concurrent calls must not use the same operation object.</li>
+</ul>
+<p>If any of these constraints are violated, the behavior is undefined.</p>
+<p>Individual implementations may provide additional guarantees.</p>
+</div>
+</div>
+<div class="section" id="implementation-considerations">
+<h1>Implementation considerations</h1>
+<div class="section" id="implementation-specific-aspects-of-the-interface">
+<h2>Implementation-specific aspects of the interface</h2>
+<div class="section" id="implementation-profile">
+<h3>Implementation profile</h3>
+<p>Implementations may implement a subset of the API and a subset of the
+available algorithms. The implemented subset is known as the
+implementation’s profile. The documentation for each implementation must
+describe the profile that it implements. This specification’s companion
+documents also define a number of standard profiles.</p>
+</div>
+<div class="section" id="implementation-specific-types">
+<h3>Implementation-specific types</h3>
+<p>This specification defines a number of platform-specific types, which
+represent data structures whose content depends on the implementation.
+These are C <code class="docutils literal notranslate"><span class="pre">struct</span></code> types. In the associated header files,
+<code class="docutils literal notranslate"><span class="pre">crypto.h</span></code> declares the <code class="docutils literal notranslate"><span class="pre">struct</span></code> tags and <code class="docutils literal notranslate"><span class="pre">crypto_struct.h</span></code>
+provides a definition for the structures.</p>
+</div>
+<div class="section" id="implementation-specific-macros">
+<h3>Implementation-specific macros</h3>
+<p>Some macros compute a result based on an algorithm or key type. This
+specification provides a sample implementation of these macros, which
+works for all standard types. If an implementation defines
+vendor-specific algorithms or key types, then it must provide an
+implementation for such macros that takes all relevant algorithms and
+types into account. Conversely, an implementation that does not support
+a certain algorithm or key type can define such macros in a simpler way
+that does not take unsupported argument values into account.</p>
+<p>Some macros define the minimum sufficient output buffer size for certain
+functions. In some cases, an implementation is allowed to require a
+buffer size that is larger than the theoretical minimum. An
+implementation must define minimum-size macros in such a way that it
+guarantees that the buffer of the resulting size is sufficient for the
+output of the corresponding function. Refer to each macro’s
+documentation for the applicable requirements.</p>
+</div>
+</div>
+<div class="section" id="porting-to-a-platform">
+<h2>Porting to a platform</h2>
+<div class="section" id="platform-assumptions">
+<h3>Platform assumptions</h3>
+<p>This specification is designed for a C89 platform. The interface is
+defined in terms of C macros, functions and objects.</p>
+<p>The specification assumes 8-bit bytes, and “byte” and “octet” are used
+synonymously.</p>
+</div>
+<div class="section" id="platform-specific-types">
+<h3>Platform-specific types</h3>
+<p>The specification makes use of some platform-specific types, which
+should be defined in <code class="docutils literal notranslate"><span class="pre">crypto_platform.h</span></code> or by a header included in
+this file. <code class="docutils literal notranslate"><span class="pre">crypto_platform.h</span></code> must define the following types:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">uint8_t</span></code>, <code class="docutils literal notranslate"><span class="pre">uint16_t</span></code>, <code class="docutils literal notranslate"><span class="pre">uint32_t</span></code>: unsigned integer types with
+8, 16 and 32 value bits respectively. These may be the types defined
+by the C99 header <code class="docutils literal notranslate"><span class="pre">stdint.h</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">psa_key_handle_t</span></code>: an unsigned integer type of the
+implementation’s choice.</li>
+</ul>
+</div>
+<div class="section" id="cryptographic-hardware-support">
+<h3>Cryptographic hardware support</h3>
+<p>Implementations are encouraged to make use of hardware accelerators
+where available. A future version of this specification will define a
+function interface that calls drivers for hardware accelerators and
+external cryptographic hardware.</p>
+</div>
+</div>
+<div class="section" id="security-requirements-and-recommendations">
+<h2>Security requirements and recommendations</h2>
+<div class="section" id="error-detection">
+<h3>Error detection</h3>
+<p>Implementations that provide isolation between the caller and the
+cryptography processing environment must validate parameters to ensure
+that the cryptography processing environment is protected from attacks
+caused by passing invalid parameters.</p>
+<p>Even implementations that do not provide isolation should strive to
+detect bad parameters and fail-safe as much as possible.</p>
+</div>
+<div class="section" id="memory-cleanup">
+<h3>Memory cleanup</h3>
+<p>Implementations must wipe all sensitive data from memory when it is no
+longer used. They should wipe this sensitive data as soon as possible.
+In any case, all temporary data used during the execution of a function,
+such as stack buffers, must be wiped before the function returns. All
+data associated with an object, such as a multipart operation, must be
+wiped, at the latest, when the object becomes inactive, for example,
+when a multipart operation is aborted.</p>
+<p>The rationale for this non-functional requirement is to minimize impact
+if the system is compromised. If sensitive data is wiped immediately
+after use, only data that is currently in use can be leaked. It does not
+compromise past data.</p>
+</div>
+<div class="section" id="safe-outputs-on-error">
+<h3>Safe outputs on error</h3>
+<p>Implementations must ensure that confidential data is not written to
+output parameters before validating that the disclosure of this
+confidential data is authorized. This requirement is especially
+important for implementations where the caller may share memory with
+another security context, as described in the <a class="reference external" href="#stability-of-parameters">“Stability of
+parameters”</a> section.</p>
+<p>In most cases, the specification does not define the content of output
+parameters when an error occurs. Implementations should try to ensure
+that the content of output parameters is as safe as possible, in case an
+application flaw or a data leak causes it to be used. In particular, Arm
+recommends that implementations avoid placing partial output in output
+buffers when an action is interrupted. The meaning of “safe as possible”
+depends on the implementation, as different environments require
+different compromises between implementation complexity, overall
+robustness and performance. Some common strategies are to leave output
+parameters unchanged, in case of errors, or zeroing them out.</p>
+</div>
+<div class="section" id="attack-resistance">
+<h3>Attack resistance</h3>
+<p>Cryptographic code tends to manipulate high-value secrets, from which
+other secrets can be unlocked. As such, it is a high-value target for
+attacks. There is a vast body of literature on attack types, such as
+side channel attacks and glitch attacks. Typical side channels include
+timing, cache access patterns, branch-prediction access patterns, power
+consumption, radio emissions and more.</p>
+<p>This specification does not specify particular requirements for attack
+resistance. Therefore, implementers should consider the attack
+resistance desired in each use case and design their implementation
+accordingly. Security standards for attack resistance for particular
+targets may be applicable in certain use cases.</p>
+</div>
+</div>
+<div class="section" id="other-implementation-considerations">
+<h2>Other implementation considerations</h2>
+<div class="section" id="philosophy-of-resource-management">
+<h3>Philosophy of resource management</h3>
+<p>The specification allows most functions to return
+<code class="docutils literal notranslate"><span class="pre">PSA_ERROR_INSUFFICIENT_MEMORY</span></code>. This gives implementations the
+freedom to manage memory as they please.</p>
+<p>Alternatively, the interface is also designed for conservative
+strategies of memory management. An implementation may avoid dynamic
+memory allocation altogether by obeying certain restrictions:</p>
+<ul class="simple">
+<li>Pre-allocate memory for a predefined number of keys, each with
+sufficient memory for all key types that can be stored.</li>
+<li>For multipart operations, in an implementation without isolation,
+place all the data that needs to be carried over from one step to the
+next in the operation object. The application is then fully in
+control of how memory is allocated for the operation.</li>
+<li>In an implementation with isolation, pre-allocate memory for a
+predefined number of operations inside the cryptoprocessor.</li>
+</ul>
+<!--
+#### Inclusion of algorithms
+
+Inline algorithm-generic functions into specialized functions at compile/link time
+--></div>
+</div>
+</div>
+<div class="section" id="usage-considerations">
+<h1>Usage considerations</h1>
+<div class="section" id="security-recommendations">
+<h2>Security recommendations</h2>
+<div class="section" id="always-check-for-errors">
+<h3>Always check for errors</h3>
+<p>Most functions in this API can return errors. All functions that can
+fail have the return type <code class="docutils literal notranslate"><span class="pre">psa_status_t</span></code>. A few functions cannot fail,
+and thus, return <code class="docutils literal notranslate"><span class="pre">void</span></code> or some other type.</p>
+<p>If an error occurs, unless otherwise specified, the content of the
+output parameters is undefined and must not be used.</p>
+<p>Some common causes of errors include:</p>
+<ul class="simple">
+<li>In implementations where the keys are stored and processed in a
+separate environment from the application, all functions that need to
+access the cryptography processing environment may fail due to an
+error in the communication between the two environments.</li>
+<li>If an algorithm is implemented with a hardware accelerator, which is
+logically separate from the application processor, the accelerator
+may fail, even when the application processor keeps running normally.</li>
+<li>All functions may fail due to a lack of resources. However, some
+implementations guarantee that certain functions always have
+sufficient memory.</li>
+<li>All functions that access persistent keys may fail due to a storage
+failure.</li>
+<li>All functions that require randomness may fail due to a lack of
+entropy. Implementations are encouraged to seed the random generator
+with sufficient entropy during the execution of <code class="docutils literal notranslate"><span class="pre">psa_crypto_init</span></code>.
+However, some security standards require periodic reseeding from a
+hardware random generator, which can fail.</li>
+</ul>
+</div>
+<div class="section" id="shared-memory-and-concurrency">
+<h3>Shared memory and concurrency</h3>
+<p>Some environments allow applications to be multithreaded, while others
+do not. In some environments, applications may share memory with a
+different security context. In environments with multithreaded
+applications or shared memory, applications must be written carefully to
+avoid data corruption or leakage. This specification requires the
+application to obey certain constraints.</p>
+<p>In general, this API allows either one writer or any number of
+simultaneous readers, on any given object. In other words, if two or
+more calls access the same object concurrently, then the behavior is
+only well-defined if all the calls are only reading from the object and
+do not modify it. Read accesses include reading memory by input
+parameters and reading keystore content by using a key. For more
+details, refer to the <a class="reference external" href="#concurrent-calls">“Concurrent calls”</a>
+section.</p>
+<p>If an application shares memory with another security context, it may
+pass shared memory blocks as input buffers or output buffers, but not as
+non-buffer parameters. For more details, refer to the <a class="reference external" href="#stability-of-parameters">“Stability of
+parameters”</a> section.</p>
+</div>
+<div class="section" id="cleaning-up-after-use">
+<h3>Cleaning up after use</h3>
+<p>To minimize impact if the system is compromised, applications should
+wipe all sensitive data from memory when it is no longer used. That way,
+only data that is currently in use may be leaked, and past data is not
+compromised.</p>
+<p>Wiping sensitive data includes:</p>
+<ul class="simple">
+<li>Clearing temporary buffers in the stack or on the heap.</li>
+<li>Aborting operations if they will not be finished.</li>
+<li>Destroying keys that are no longer used.</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">psa_crypto_api</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#design-goals">Design goals</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#suitable-for-constrained-devices">Suitable for constrained devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#a-keystore-interface">A keystore interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#optional-isolation">Optional isolation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#choice-of-algorithms">Choice of algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ease-of-use">Ease of use</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-use-cases">Example use cases</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#network-security-tls">Network Security (TLS)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#secure-storage">Secure Storage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#network-credentials">Network Credentials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#device-pairing">Device Pairing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#secure-boot">Secure Boot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#attestation">Attestation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#factory-provisioning">Factory Provisioning</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#functionality-overview">Functionality overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#library-management">Library management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#key-management">Key management</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#volatile-keys">Volatile keys</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#persistent-keys">Persistent keys</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#recommendations-of-minimum-standards-for-key-management">Recommendations of minimum standards for key management</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#usage-policies">Usage policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#symmetric-cryptography">Symmetric cryptography</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#multipart-operations">Multipart operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#authenticated-encryption">Authenticated encryption</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#key-derivation">Key derivation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#key-derivation-operations">Key derivation operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#key-derivation-function">Key derivation function</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#asymmetric-cryptography">Asymmetric cryptography</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#asymmetric-encryption">Asymmetric encryption</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hash-and-sign">Hash-and-sign</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#key-agreement">Key agreement</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#randomness-and-key-generation">Randomness and key generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#future-additions">Future additions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#sample-architectures">Sample architectures</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#single-partition-architecture">Single-partition architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cryptographic-token-and-single-application-processor">Cryptographic token and single-application processor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cryptoprocessor-with-no-key-storage">Cryptoprocessor with no key storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multi-client-cryptoprocessor">Multi-client cryptoprocessor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multi-cryptoprocessor-architecture">Multi-cryptoprocessor architecture</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#library-conventions">Library conventions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#error-handling">Error handling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#return-status">Return status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#behavior-on-error">Behavior on error</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#parameter-conventions">Parameter conventions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pointer-conventions">Pointer conventions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#input-buffer-sizes">Input buffer sizes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#output-buffer-sizes">Output buffer sizes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#overlap-between-parameters">Overlap between parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stability-of-parameters">Stability of parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#key-types-and-algorithms">Key types and algorithms</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#structure-of-key-and-algorithm-types">Structure of key and algorithm types</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#concurrent-calls">Concurrent calls</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#implementation-considerations">Implementation considerations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#implementation-specific-aspects-of-the-interface">Implementation-specific aspects of the interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#implementation-profile">Implementation profile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#implementation-specific-types">Implementation-specific types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#implementation-specific-macros">Implementation-specific macros</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#porting-to-a-platform">Porting to a platform</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#platform-assumptions">Platform assumptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#platform-specific-types">Platform-specific types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cryptographic-hardware-support">Cryptographic hardware support</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#security-requirements-and-recommendations">Security requirements and recommendations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#error-detection">Error detection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#memory-cleanup">Memory cleanup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#safe-outputs-on-error">Safe outputs on error</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#attack-resistance">Attack resistance</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#other-implementation-considerations">Other implementation considerations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#philosophy-of-resource-management">Philosophy of resource management</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#usage-considerations">Usage considerations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#security-recommendations">Security recommendations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#always-check-for-errors">Always check for errors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#shared-memory-and-concurrency">Shared memory and concurrency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cleaning-up-after-use">Cleaning up after use</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html">Implementation-specific definitions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#library-initialization">Library initialization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#key-attributes">Key attributes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#key-management">Key management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#key-import-and-export">Key import and export</a></li>
+<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#message-digests">Message digests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#message-authentication-codes">Message authentication codes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#symmetric-ciphers">Symmetric ciphers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#authenticated-encryption-with-associated-data-aead">Authenticated encryption with associated data (AEAD)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#asymmetric-cryptography">Asymmetric cryptography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#key-derivation-and-pseudorandom-generation">Key derivation and pseudorandom generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#random-generation">Random generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#error-codes">Error codes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#key-and-algorithm-types">Key and algorithm types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#key-lifetimes">Key lifetimes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#key-policies">Key policies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#key-derivation">Key derivation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#other-definitions">Other definitions</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">PSA Cryptography API Specification</a></li>
+      <li>Next: <a href="from_doxygen.html" title="next chapter">Implementation-specific definitions</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Arm.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/general.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
