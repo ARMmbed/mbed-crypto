@@ -186,16 +186,16 @@ typedef struct
 #endif
     uint8_t offset_in_block;
     uint8_t block_number;
-    uint8_t state : 2;
-    uint8_t info_set : 1;
-} psa_hkdf_generator_t;
+    unsigned int state : 2;
+    unsigned int info_set : 1;
+} psa_hkdf_key_derivation_t;
 #endif /* MBEDTLS_MD_C */
 
 #if defined(MBEDTLS_MD_C)
-typedef struct psa_tls12_prf_generator_s
+typedef struct psa_tls12_prf_key_derivation_s
 {
     /* The TLS 1.2 PRF uses the key for each HMAC iteration,
-     * hence we must store it for the lifetime of the generator.
+     * hence we must store it for the lifetime of the operation.
      * This is different from HKDF, where the key is only used
      * in the extraction phase, but not during expansion. */
     unsigned char *key;
@@ -219,10 +219,10 @@ typedef struct psa_tls12_prf_generator_s
     /* The 1-based number of the block. */
     uint8_t block_number;
 
-} psa_tls12_prf_generator_t;
+} psa_tls12_prf_key_derivation_t;
 #endif /* MBEDTLS_MD_C */
 
-struct psa_crypto_generator_s
+struct psa_key_derivation_s
 {
     psa_algorithm_t alg;
     size_t capacity;
@@ -234,16 +234,16 @@ struct psa_crypto_generator_s
             size_t size;
         } buffer;
 #if defined(MBEDTLS_MD_C)
-        psa_hkdf_generator_t hkdf;
-        psa_tls12_prf_generator_t tls12_prf;
+        psa_hkdf_key_derivation_t hkdf;
+        psa_tls12_prf_key_derivation_t tls12_prf;
 #endif
     } ctx;
 };
 
-#define PSA_CRYPTO_GENERATOR_INIT {0, 0, {{0, 0}}}
-static inline struct psa_crypto_generator_s psa_crypto_generator_init( void )
+#define PSA_KEY_DERIVATION_OPERATION_INIT {0, 0, {{0, 0}}}
+static inline struct psa_key_derivation_s psa_key_derivation_operation_init( void )
 {
-    const struct psa_crypto_generator_s v = PSA_CRYPTO_GENERATOR_INIT;
+    const struct psa_key_derivation_s v = PSA_KEY_DERIVATION_OPERATION_INIT;
     return( v );
 }
 
@@ -252,12 +252,126 @@ struct psa_key_policy_s
     psa_key_usage_t usage;
     psa_algorithm_t alg;
 };
+typedef struct psa_key_policy_s psa_key_policy_t;
 
 #define PSA_KEY_POLICY_INIT {0, 0}
 static inline struct psa_key_policy_s psa_key_policy_init( void )
 {
     const struct psa_key_policy_s v = PSA_KEY_POLICY_INIT;
     return( v );
+}
+
+struct psa_key_attributes_s
+{
+    psa_key_id_t id;
+    psa_key_lifetime_t lifetime;
+    psa_key_policy_t policy;
+    psa_key_type_t type;
+    size_t bits;
+    void *domain_parameters;
+    size_t domain_parameters_size;
+};
+
+#define PSA_KEY_ATTRIBUTES_INIT {0, 0, {0, 0}, 0, 0, NULL, 0}
+static inline struct psa_key_attributes_s psa_key_attributes_init( void )
+{
+    const struct psa_key_attributes_s v = PSA_KEY_ATTRIBUTES_INIT;
+    return( v );
+}
+
+static inline void psa_set_key_id(psa_key_attributes_t *attributes,
+                                  psa_key_id_t id)
+{
+    attributes->id = id;
+    if( attributes->lifetime == PSA_KEY_LIFETIME_VOLATILE )
+        attributes->lifetime = PSA_KEY_LIFETIME_PERSISTENT;
+}
+
+static inline psa_key_id_t psa_get_key_id(
+    const psa_key_attributes_t *attributes)
+{
+    return( attributes->id );
+}
+
+static inline void psa_set_key_lifetime(psa_key_attributes_t *attributes,
+                                        psa_key_lifetime_t lifetime)
+{
+    attributes->lifetime = lifetime;
+    if( lifetime == PSA_KEY_LIFETIME_VOLATILE )
+        attributes->id = 0;
+}
+
+static inline psa_key_lifetime_t psa_get_key_lifetime(
+    const psa_key_attributes_t *attributes)
+{
+    return( attributes->lifetime );
+}
+
+static inline void psa_set_key_usage_flags(psa_key_attributes_t *attributes,
+                                           psa_key_usage_t usage_flags)
+{
+    attributes->policy.usage = usage_flags;
+}
+
+static inline psa_key_usage_t psa_get_key_usage_flags(
+    const psa_key_attributes_t *attributes)
+{
+    return( attributes->policy.usage );
+}
+
+static inline void psa_set_key_algorithm(psa_key_attributes_t *attributes,
+                                         psa_algorithm_t alg)
+{
+    attributes->policy.alg = alg;
+}
+
+static inline psa_algorithm_t psa_get_key_algorithm(
+    const psa_key_attributes_t *attributes)
+{
+    return( attributes->policy.alg );
+}
+
+/* This function is declared in crypto_extra.h, which comes after this
+ * header file, but we need the function here, so repeat the declaration. */
+psa_status_t psa_set_key_domain_parameters(psa_key_attributes_t *attributes,
+                                           psa_key_type_t type,
+                                           const uint8_t *data,
+                                           size_t data_length);
+
+static inline void psa_set_key_type(psa_key_attributes_t *attributes,
+                                    psa_key_type_t type)
+{
+    if( attributes->domain_parameters == NULL )
+    {
+        /* Common case: quick path */
+        attributes->type = type;
+    }
+    else
+    {
+        /* Call the bigger function to free the old domain paramteres.
+         * Ignore any errors which may arise due to type requiring
+         * non-default domain parameters, since this function can't
+         * report errors. */
+        (void) psa_set_key_domain_parameters( attributes, type, NULL, 0 );
+    }
+}
+
+static inline psa_key_type_t psa_get_key_type(
+    const psa_key_attributes_t *attributes)
+{
+    return( attributes->type );
+}
+
+static inline void psa_set_key_bits(psa_key_attributes_t *attributes,
+                                    size_t bits)
+{
+    attributes->bits = bits;
+}
+
+static inline size_t psa_get_key_bits(
+    const psa_key_attributes_t *attributes)
+{
+    return( attributes->bits );
 }
 
 #endif /* PSA_CRYPTO_STRUCT_H */

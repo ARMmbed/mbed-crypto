@@ -27,6 +27,7 @@
 
 #if defined(MBEDTLS_PSA_CRYPTO_C)
 
+#include "psa_crypto_service_integration.h"
 #include "psa/crypto.h"
 
 #include "psa_crypto_core.h"
@@ -128,7 +129,7 @@ static psa_status_t psa_internal_allocate_key_slot( psa_key_handle_t *handle )
  *
  * \retval #PSA_SUCCESS
  * \retval #PSA_ERROR_INVALID_ARGUMENT
- * \retval #PSA_ERROR_TAMPERING_DETECTED
+ * \retval #PSA_ERROR_CORRUPTION_DETECTED
  */
 static psa_status_t psa_internal_release_key_slot( psa_key_handle_t handle )
 {
@@ -167,7 +168,32 @@ exit:
     psa_free_persistent_key_data( key_data, key_data_length );
     return( status );
 }
-#endif /* defined(MBEDTLS_PSA_CRYPTO_STORAGE_C) */
+
+/** Check whether a key identifier is acceptable.
+ *
+ * For backward compatibility, key identifiers that were valid in a
+ * past released version must remain valid, unless a migration path
+ * is provided.
+ *
+ * \param file_id       The key identifier to check.
+ * \param vendor_ok     Nonzero to allow key ids in the vendor range.
+ *                      0 to allow only key ids in the application range.
+ *
+ * \return              1 if \p file_id is acceptable, otherwise 0.
+ */
+static int psa_is_key_id_valid( psa_key_file_id_t file_id,
+                                int vendor_ok )
+{
+    psa_app_key_id_t key_id = PSA_KEY_FILE_GET_KEY_ID( file_id );
+    if( PSA_KEY_ID_USER_MIN <= key_id && key_id <= PSA_KEY_ID_USER_MAX )
+        return( 1 );
+    else if( vendor_ok &&
+             PSA_KEY_ID_VENDOR_MIN <= key_id &&
+             key_id <= PSA_KEY_ID_VENDOR_MAX )
+        return( 1 );
+    else
+        return( 0 );
+}
 
 /** Declare a slot as persistent and load it from storage.
  *
@@ -179,7 +205,7 @@ exit:
  *
  * \retval #PSA_SUCCESS
  *         The slot content was loaded successfully.
- * \retval #PSA_ERROR_EMPTY_SLOT
+ * \retval #PSA_ERROR_DOES_NOT_EXIST
  *         There is no content for this slot in persistent storage.
  * \retval #PSA_ERROR_INVALID_HANDLE
  * \retval #PSA_ERROR_INVALID_ARGUMENT
@@ -188,20 +214,10 @@ exit:
  * \retval #PSA_ERROR_STORAGE_FAILURE
  */
 static psa_status_t psa_internal_make_key_persistent( psa_key_handle_t handle,
-                                                      psa_key_id_t id )
+                                                      psa_key_file_id_t id )
 {
-#if defined(MBEDTLS_PSA_CRYPTO_STORAGE_C)
     psa_key_slot_t *slot;
     psa_status_t status;
-
-    /* Reject id=0 because by general library conventions, 0 is an invalid
-     * value wherever possible. */
-    if( id == 0 )
-        return( PSA_ERROR_INVALID_ARGUMENT );
-    /* Reject high values because the file names are reserved for the
-     * library's internal use. */
-    if( id >= PSA_MAX_PERSISTENT_KEY_IDENTIFIER )
-        return( PSA_ERROR_INVALID_ARGUMENT );
 
     status = psa_get_key_slot( handle, &slot );
     if( status != PSA_SUCCESS )
@@ -212,26 +228,45 @@ static psa_status_t psa_internal_make_key_persistent( psa_key_handle_t handle,
     status = psa_load_persistent_key_into_slot( slot );
 
     return( status );
+}
+#endif /* defined(MBEDTLS_PSA_CRYPTO_STORAGE_C) */
+
+psa_status_t psa_validate_persistent_key_parameters(
+    psa_key_lifetime_t lifetime,
+    psa_key_file_id_t id,
+    int creating )
+{
+    if( lifetime != PSA_KEY_LIFETIME_PERSISTENT )
+        return( PSA_ERROR_INVALID_ARGUMENT );
+
+#if defined(MBEDTLS_PSA_CRYPTO_STORAGE_C)
+    if( ! psa_is_key_id_valid( id, ! creating ) )
+        return( PSA_ERROR_INVALID_ARGUMENT );
+    return( PSA_SUCCESS );
 
 #else /* MBEDTLS_PSA_CRYPTO_STORAGE_C */
-    (void) handle;
     (void) id;
+    (void) creating;
     return( PSA_ERROR_NOT_SUPPORTED );
 #endif /* !MBEDTLS_PSA_CRYPTO_STORAGE_C */
 }
 
 static psa_status_t persistent_key_setup( psa_key_lifetime_t lifetime,
-                                          psa_key_id_t id,
+                                          psa_key_file_id_t id,
                                           psa_key_handle_t *handle,
-                                          psa_status_t wanted_load_status )
+                                          int creating )
 {
     psa_status_t status;
+    psa_status_t wanted_load_status =
+        ( creating ? PSA_ERROR_DOES_NOT_EXIST : PSA_SUCCESS );
 
     *handle = 0;
 
-    if( lifetime != PSA_KEY_LIFETIME_PERSISTENT )
-        return( PSA_ERROR_INVALID_ARGUMENT );
+    status = psa_validate_persistent_key_parameters( lifetime, id, creating );
+    if( status != PSA_SUCCESS )
+        return( status );
 
+#if defined(MBEDTLS_PSA_CRYPTO_STORAGE_C)
     status = psa_internal_allocate_key_slot( handle );
     if( status != PSA_SUCCESS )
         return( status );
@@ -243,27 +278,29 @@ static psa_status_t persistent_key_setup( psa_key_lifetime_t lifetime,
         *handle = 0;
     }
     return( status );
+#else /* defined(MBEDTLS_PSA_CRYPTO_STORAGE_C) */
+    (void) wanted_load_status;
+    return( PSA_ERROR_NOT_SUPPORTED );
+#endif /* !defined(MBEDTLS_PSA_CRYPTO_STORAGE_C) */
 }
 
-psa_status_t psa_open_key( psa_key_lifetime_t lifetime,
-                           psa_key_id_t id,
-                           psa_key_handle_t *handle )
+psa_status_t psa_open_key( psa_key_file_id_t id, psa_key_handle_t *handle )
 {
-    return( persistent_key_setup( lifetime, id, handle, PSA_SUCCESS ) );
+    return( persistent_key_setup( PSA_KEY_LIFETIME_PERSISTENT,
+                                  id, handle, 0 ) );
 }
 
 psa_status_t psa_create_key( psa_key_lifetime_t lifetime,
-                             psa_key_id_t id,
+                             psa_key_file_id_t id,
                              psa_key_handle_t *handle )
 {
     psa_status_t status;
 
-    status = persistent_key_setup( lifetime, id, handle,
-                                   PSA_ERROR_EMPTY_SLOT );
+    status = persistent_key_setup( lifetime, id, handle, 1 );
     switch( status )
     {
-        case PSA_SUCCESS: return( PSA_ERROR_OCCUPIED_SLOT );
-        case PSA_ERROR_EMPTY_SLOT: return( PSA_SUCCESS );
+        case PSA_SUCCESS: return( PSA_ERROR_ALREADY_EXISTS );
+        case PSA_ERROR_DOES_NOT_EXIST: return( PSA_SUCCESS );
         default: return( status );
     }
 }
