@@ -54,6 +54,15 @@ extern "C" {
                                 unsigned char *output, size_t len, size_t *olen );
 #endif
 
+#if defined(MBEDTLS_PSA_CRYPTO_C) && defined(COMPONENT_NSPE)
+/**
+ * \brief           Entropy poll callback that uses PSA SPE as an entropy
+ *                  source.
+ */
+int mbedtls_psa_entropy_poll( void *data, unsigned char *output,
+                              size_t len, size_t *olen );
+#endif
+
 #if !defined(MBEDTLS_NO_PLATFORM_ENTROPY)
 /**
  * \brief           Platform-specific entropy poll callback

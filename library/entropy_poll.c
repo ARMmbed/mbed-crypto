@@ -30,6 +30,10 @@
 #include MBEDTLS_CONFIG_FILE
 #endif
 
+#if defined(MBEDTLS_PSA_CRYPTO_C)
+#include "psa/crypto.h"
+#endif
+
 #include <string.h>
 
 #if defined(MBEDTLS_ENTROPY_C)
@@ -171,6 +175,27 @@ int mbedtls_null_entropy_poll( void *data,
         return( 0 );
 
     *olen = sizeof(unsigned char);
+
+    return( 0 );
+}
+#endif
+
+#if defined(MBEDTLS_PSA_CRYPTO_C) && defined(COMPONENT_NSPE)
+int mbedtls_psa_entropy_poll( void *data, unsigned char *output,
+                              size_t len, size_t *olen )
+{
+    (void) data;
+    psa_status_t status;
+
+    *olen = 0;
+
+    status = psa_generate_random(output, len);
+    if (status != PSA_SUCCESS)
+    {
+        return( MBEDTLS_ERR_ENTROPY_SOURCE_FAILED );
+    }
+
+    *olen = len;
 
     return( 0 );
 }

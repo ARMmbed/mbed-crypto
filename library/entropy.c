@@ -89,6 +89,15 @@ void mbedtls_entropy_init( mbedtls_entropy_context *ctx )
                                 1, MBEDTLS_ENTROPY_SOURCE_STRONG );
 #endif
 
+    /* Use PSA generate random as an entropy source for Mbed TLS DRBGs on PSA
+     * NSPE. This provides a backwards compatible (with pre-PSA Crypto API
+     * applications) source of entropy on PSA NSPE targets. */
+#if defined(MBEDTLS_PSA_CRYPTO_C) && defined(COMPONENT_NSPE)
+    mbedtls_entropy_add_source( ctx, mbedtls_psa_entropy_poll, NULL,
+                                MBEDTLS_ENTROPY_BLOCK_SIZE,
+                                MBEDTLS_ENTROPY_SOURCE_STRONG );
+#endif
+
 #if !defined(MBEDTLS_NO_DEFAULT_ENTROPY_SOURCES)
 #if !defined(MBEDTLS_NO_PLATFORM_ENTROPY)
     mbedtls_entropy_add_source( ctx, mbedtls_platform_entropy_poll, NULL,
