@@ -46,7 +46,7 @@ static int test_helper_is_psa_pristine( int line, const char *file )
      * information. Do keep the stats lookup above, because it can be
      * convenient to break on it when debugging a failure. */
     if( msg != NULL && test_info.result == TEST_RESULT_SUCCESS )
-        test_fail( msg, line, file );
+        set_test_result( msg, line, file, TEST_RESULT_FAILED );
 
     return( msg == NULL );
 }

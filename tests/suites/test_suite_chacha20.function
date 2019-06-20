@@ -43,7 +43,8 @@ void chacha20_crypt( char *hex_key_string,
     /*
      * Test the integrated API
      */
-    TEST_ASSERT( mbedtls_chacha20_crypt( key_str, nonce_str, counter, src_len, src_str, output ) == 0 );
+    TEST_ASSERT_RET(mbedtls_chacha20_crypt( key_str, nonce_str, counter,
+                                            src_len, src_str, output ), 0 );
 
     hexify( dst_str, output, src_len );
     TEST_ASSERT( strcmp( (char*) dst_str, hex_dst_string ) == 0 );
@@ -53,12 +54,12 @@ void chacha20_crypt( char *hex_key_string,
      */
     mbedtls_chacha20_init( &ctx );
 
-    TEST_ASSERT( mbedtls_chacha20_setkey( &ctx, key_str ) == 0 );
+    TEST_ASSERT_RET( mbedtls_chacha20_setkey( &ctx, key_str ), 0 );
 
-    TEST_ASSERT( mbedtls_chacha20_starts( &ctx, nonce_str, counter ) == 0 );
+    TEST_ASSERT_RET( mbedtls_chacha20_starts( &ctx, nonce_str, counter ), 0 );
 
     memset( output, 0x00, sizeof( output ) );
-    TEST_ASSERT( mbedtls_chacha20_update( &ctx, src_len, src_str, output ) == 0 );
+    TEST_ASSERT_RET( mbedtls_chacha20_update( &ctx, src_len, src_str, output ), 0 );
 
     hexify( dst_str, output, src_len );
     TEST_ASSERT( strcmp( (char*) dst_str, hex_dst_string ) == 0 );
@@ -68,12 +69,14 @@ void chacha20_crypt( char *hex_key_string,
      */
 
     /* Don't free/init the context nor set the key again,
-     * in order to test that starts() does the right thing. */
-    TEST_ASSERT( mbedtls_chacha20_starts( &ctx, nonce_str, counter ) == 0 );
+     * in order to test that starts() does the right thing.
+     */
+    TEST_ASSERT_RET( mbedtls_chacha20_starts( &ctx, nonce_str, counter ), 0 );
 
     memset( output, 0x00, sizeof( output ) );
-    TEST_ASSERT( mbedtls_chacha20_update( &ctx, 1, src_str, output ) == 0 );
-    TEST_ASSERT( mbedtls_chacha20_update( &ctx, src_len - 1, src_str + 1, output + 1 ) == 0 );
+    TEST_ASSERT_RET( mbedtls_chacha20_update( &ctx, 1, src_str, output ), 0 );
+    TEST_ASSERT_RET( mbedtls_chacha20_update( &ctx, src_len - 1, src_str + 1,
+                                              output + 1 ), 0 );
 
     hexify( dst_str, output, src_len );
     TEST_ASSERT( strcmp( (char*) dst_str, hex_dst_string ) == 0 );

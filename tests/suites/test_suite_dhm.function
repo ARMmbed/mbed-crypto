@@ -143,27 +143,33 @@ void dhm_do_dhm( int radix_P, char *input_P,
     /*
      * Set params
      */
-    TEST_ASSERT( mbedtls_mpi_read_string( &ctx_srv.P, radix_P, input_P ) == 0 );
-    TEST_ASSERT( mbedtls_mpi_read_string( &ctx_srv.G, radix_G, input_G ) == 0 );
+    TEST_ASSERT_RET( mbedtls_mpi_read_string( &ctx_srv.P, radix_P, input_P ), 0 );
+    TEST_ASSERT_RET( mbedtls_mpi_read_string( &ctx_srv.G, radix_G, input_G ), 0 );
     x_size = mbedtls_mpi_size( &ctx_srv.P );
     pub_cli_len = x_size;
 
     /*
      * First key exchange
      */
-    TEST_ASSERT( mbedtls_dhm_make_params( &ctx_srv, x_size, ske, &ske_len, &rnd_pseudo_rand, &rnd_info ) == result );
+    TEST_ASSERT_RET( mbedtls_dhm_make_params( &ctx_srv, x_size, ske, &ske_len,
+                                              &rnd_pseudo_rand, &rnd_info ),
+                                              result );
     if ( result != 0 )
         goto exit;
 
     ske[ske_len++] = 0;
     ske[ske_len++] = 0;
-    TEST_ASSERT( mbedtls_dhm_read_params( &ctx_cli, &p, ske + ske_len ) == 0 );
+    TEST_ASSERT_RET( mbedtls_dhm_read_params( &ctx_cli, &p, ske + ske_len ), 0 );
+    TEST_ASSERT_RET( mbedtls_dhm_make_public( &ctx_cli, x_size, pub_cli,
+                                              pub_cli_len, &rnd_pseudo_rand,
+                                              &rnd_info ), 0 );
+    TEST_ASSERT_RET( mbedtls_dhm_read_public( &ctx_srv, pub_cli, pub_cli_len ), 0 );
 
-    TEST_ASSERT( mbedtls_dhm_make_public( &ctx_cli, x_size, pub_cli, pub_cli_len, &rnd_pseudo_rand, &rnd_info ) == 0 );
-    TEST_ASSERT( mbedtls_dhm_read_public( &ctx_srv, pub_cli, pub_cli_len ) == 0 );
-
-    TEST_ASSERT( mbedtls_dhm_calc_secret( &ctx_srv, sec_srv, sizeof( sec_srv ), &sec_srv_len, &rnd_pseudo_rand, &rnd_info ) == 0 );
-    TEST_ASSERT( mbedtls_dhm_calc_secret( &ctx_cli, sec_cli, sizeof( sec_cli ), &sec_cli_len, NULL, NULL ) == 0 );
+    TEST_ASSERT_RET( mbedtls_dhm_calc_secret( &ctx_srv, sec_srv, sizeof( sec_srv ),
+                                              &sec_srv_len, &rnd_pseudo_rand,
+                                              &rnd_info ), 0 );
+    TEST_ASSERT_RET( mbedtls_dhm_calc_secret( &ctx_cli, sec_cli, sizeof( sec_cli ),
+                                              &sec_cli_len, NULL, NULL ), 0 );
 
     TEST_ASSERT( sec_srv_len == sec_cli_len );
     TEST_ASSERT( sec_srv_len != 0 );
@@ -173,7 +179,9 @@ void dhm_do_dhm( int radix_P, char *input_P,
     for( i = 0; i < 3; i++ )
     {
         sec_srv_len = 1000;
-        TEST_ASSERT( mbedtls_dhm_calc_secret( &ctx_srv, sec_srv, sizeof( sec_srv ), &sec_srv_len, &rnd_pseudo_rand, &rnd_info ) == 0 );
+        TEST_ASSERT_RET( mbedtls_dhm_calc_secret( &ctx_srv, sec_srv, sizeof( sec_srv ),
+                                                  &sec_srv_len, &rnd_pseudo_rand,
+                                                  &rnd_info ), 0 );
 
         TEST_ASSERT( sec_srv_len == sec_cli_len );
         TEST_ASSERT( sec_srv_len != 0 );
@@ -185,16 +193,21 @@ void dhm_do_dhm( int radix_P, char *input_P,
      */
     p = ske;
 
-    TEST_ASSERT( mbedtls_dhm_make_params( &ctx_srv, x_size, ske, &ske_len, &rnd_pseudo_rand, &rnd_info ) == 0 );
+    TEST_ASSERT_RET( mbedtls_dhm_make_params( &ctx_srv, x_size, ske, &ske_len,
+                                              &rnd_pseudo_rand, &rnd_info ), 0 );
     ske[ske_len++] = 0;
     ske[ske_len++] = 0;
-    TEST_ASSERT( mbedtls_dhm_read_params( &ctx_cli, &p, ske + ske_len ) == 0 );
+    TEST_ASSERT_RET( mbedtls_dhm_read_params( &ctx_cli, &p, ske + ske_len ), 0 );
 
-    TEST_ASSERT( mbedtls_dhm_make_public( &ctx_cli, x_size, pub_cli, pub_cli_len, &rnd_pseudo_rand, &rnd_info ) == 0 );
-    TEST_ASSERT( mbedtls_dhm_read_public( &ctx_srv, pub_cli, pub_cli_len ) == 0 );
+    TEST_ASSERT_RET( mbedtls_dhm_make_public( &ctx_cli, x_size, pub_cli, pub_cli_len,
+                                              &rnd_pseudo_rand, &rnd_info ), 0 );
+    TEST_ASSERT_RET( mbedtls_dhm_read_public( &ctx_srv, pub_cli, pub_cli_len ), 0 );
 
-    TEST_ASSERT( mbedtls_dhm_calc_secret( &ctx_srv, sec_srv, sizeof( sec_srv ), &sec_srv_len, &rnd_pseudo_rand, &rnd_info ) == 0 );
-    TEST_ASSERT( mbedtls_dhm_calc_secret( &ctx_cli, sec_cli, sizeof( sec_cli ), &sec_cli_len, NULL, NULL ) == 0 );
+    TEST_ASSERT_RET( mbedtls_dhm_calc_secret( &ctx_srv, sec_srv, sizeof( sec_srv ),
+                                              &sec_srv_len, &rnd_pseudo_rand,
+                                              &rnd_info ), 0 );
+    TEST_ASSERT_RET( mbedtls_dhm_calc_secret( &ctx_cli, sec_cli, sizeof( sec_cli ),
+                                              &sec_cli_len, NULL, NULL ), 0 );
 
     TEST_ASSERT( sec_srv_len == sec_cli_len );
     TEST_ASSERT( sec_srv_len != 0 );
@@ -215,10 +228,10 @@ void dhm_file( char * filename, char * p, char * g, int len )
     mbedtls_dhm_init( &ctx );
     mbedtls_mpi_init( &P ); mbedtls_mpi_init( &G );
 
-    TEST_ASSERT( mbedtls_mpi_read_string( &P, 16, p ) == 0 );
-    TEST_ASSERT( mbedtls_mpi_read_string( &G, 16, g ) == 0 );
+    TEST_ASSERT_RET( mbedtls_mpi_read_string( &P, 16, p ), 0 );
+    TEST_ASSERT_RET( mbedtls_mpi_read_string( &G, 16, g ), 0 );
 
-    TEST_ASSERT( mbedtls_dhm_parse_dhmfile( &ctx, filename ) == 0 );
+    TEST_ASSERT_RET( mbedtls_dhm_parse_dhmfile( &ctx, filename ), 0 );
 
     TEST_ASSERT( ctx.len == (size_t) len );
     TEST_ASSERT( mbedtls_mpi_cmp_mpi( &ctx.P, &P ) == 0 );

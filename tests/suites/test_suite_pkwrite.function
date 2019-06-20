@@ -15,7 +15,6 @@ void pk_write_pubkey_check( char * key_file )
     mbedtls_pk_context key;
     unsigned char buf[5000];
     unsigned char check_buf[5000];
-    int ret;
     FILE *f;
     size_t ilen;
 
@@ -23,10 +22,9 @@ void pk_write_pubkey_check( char * key_file )
     memset( check_buf, 0, sizeof( check_buf ) );
 
     mbedtls_pk_init( &key );
-    TEST_ASSERT( mbedtls_pk_parse_public_keyfile( &key, key_file ) == 0 );
+    TEST_ASSERT_RET( mbedtls_pk_parse_public_keyfile( &key, key_file ), 0 );
 
-    ret = mbedtls_pk_write_pubkey_pem( &key, buf, sizeof( buf ));
-    TEST_ASSERT( ret == 0 );
+    TEST_ASSERT_RET( mbedtls_pk_write_pubkey_pem( &key, buf, sizeof( buf )), 0 );
 
     f = fopen( key_file, "r" );
     TEST_ASSERT( f != NULL );
@@ -47,7 +45,6 @@ void pk_write_key_check( char * key_file )
     mbedtls_pk_context key;
     unsigned char buf[5000];
     unsigned char check_buf[5000];
-    int ret;
     FILE *f;
     size_t ilen;
 
@@ -55,10 +52,9 @@ void pk_write_key_check( char * key_file )
     memset( check_buf, 0, sizeof( check_buf ) );
 
     mbedtls_pk_init( &key );
-    TEST_ASSERT( mbedtls_pk_parse_keyfile( &key, key_file, NULL ) == 0 );
+    TEST_ASSERT_RET( mbedtls_pk_parse_keyfile( &key, key_file, NULL ), 0 );
 
-    ret = mbedtls_pk_write_key_pem( &key, buf, sizeof( buf ));
-    TEST_ASSERT( ret == 0 );
+    TEST_ASSERT_RET( mbedtls_pk_write_key_pem( &key, buf, sizeof( buf ) ), 0 );
 
     f = fopen( key_file, "r" );
     TEST_ASSERT( f != NULL );

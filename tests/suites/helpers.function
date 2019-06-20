@@ -4,9 +4,8 @@
 
 #include <stdlib.h>
 
-#if defined(MBEDTLS_PLATFORM_C)
 #include "mbedtls/platform.h"
-#else
+#if !defined(MBEDTLS_PLATFORM_C)
 #include <stdio.h>
 #define mbedtls_fprintf    fprintf
 #define mbedtls_snprintf   snprintf
@@ -69,6 +68,8 @@ typedef struct data_tag
                                                allowed */
 #define DISPATCH_UNSUPPORTED_SUITE      -5  /* Test suite not supported by the
                                                build */
+#define FEATURE_UNSUPPORTED             -6  /* Feature not supported by the
+                                               platform */
 
 typedef enum
 {
@@ -107,14 +108,52 @@ typedef enum
  *
  * \param   TEST    The test expression to be tested.
  */
-#define TEST_ASSERT( TEST )                                 \
-    do {                                                    \
-       if( ! (TEST) )                                       \
-       {                                                    \
-          test_fail( #TEST, __LINE__, __FILE__ );           \
-          goto exit;                                        \
-       }                                                    \
+
+#define TEST_ASSERT( TEST )                                                   \
+    do {                                                                      \
+        if( ! (TEST) )                                                        \
+        {                                                                     \
+            set_test_result( #TEST, __LINE__, __FILE__, TEST_RESULT_FAILED ); \
+            goto exit;                                                        \
+        }                                                                     \
     } while( 0 )
+
+/**
+ * \brief   This macro tests the expression passed to it as a test step or
+ *          individual test in a test case, comparing result to an expected
+ *          result given as parameter, and skips the test in case the underlying
+ *          alternative implementation doesn't support the feature.
+ *
+ *          It allows a library function to return a value and return an error
+ *          code that can be tested.
+ *          It receives an expected return code and:
+ *          - If the underlying alternative implementation does not support the feature,
+ *          by returning MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED, the test is skipped.
+ *          - If and fails in case the expression
+ *          results different.
+ *
+ *
+ * \param   TEST    The test expression to be tested.
+ * \param   EXP_RET The expected return code from the function
+ */
+#define TEST_ASSERT_RET( TEST, EXP_RET )                                          \
+    do {                                                                          \
+        int TEST_ASSERT_RET_ret = (TEST);                                         \
+        if( TEST_ASSERT_RET_ret != ( EXP_RET ) )                                  \
+        {                                                                         \
+            if( ( -TEST_ASSERT_RET_ret & ~0xFF80 ) ==                             \
+                -( MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED ) )                   \
+            {                                                                     \
+                set_test_result( #TEST, __LINE__, __FILE__, TEST_RESULT_SKIPPED );\
+            }                                                                     \
+            else                                                                  \
+            {                                                                     \
+                set_test_result( #TEST, __LINE__, __FILE__, TEST_RESULT_FAILED ); \
+            }                                                                     \
+            goto exit;                                                            \
+        }                                                                         \
+    } while( 0 )
+
 
 /** Evaluate two expressions and fail the test case if they have different
  * values.
@@ -205,13 +244,13 @@ typedef enum
  *
  * \param   TEST    The test expression to be tested.
  */
-#define TEST_ASSUME( TEST )                         \
-    do {                                            \
-        if( ! (TEST) )                              \
-        {                                           \
-            test_skip( #TEST, __LINE__, __FILE__ ); \
-            goto exit;                              \
-        }                                           \
+#define TEST_ASSUME( TEST )                                                   \
+    do {                                                                      \
+        if( ! (TEST) )                                                        \
+        {                                                                     \
+            set_test_result( #TEST, __LINE__, __FILE__, TEST_RESULT_SKIPPED );\
+            goto exit;                                                        \
+        }                                                                     \
     } while( 0 )
 
 #if defined(MBEDTLS_CHECK_PARAMS) && !defined(MBEDTLS_PARAM_FAILED_ALT)
@@ -235,15 +274,14 @@ typedef enum
  *
  * \param   TEST                The test expression to be tested.
  */
-#define TEST_INVALID_PARAM_RET( PARAM_ERR_VALUE, TEST )                     \
-    do {                                                                    \
-        test_info.paramfail_test_state = PARAMFAIL_TESTSTATE_PENDING;       \
-        if( (TEST) != (PARAM_ERR_VALUE) ||                                  \
-            test_info.paramfail_test_state != PARAMFAIL_TESTSTATE_CALLED )  \
-        {                                                                   \
-            test_fail( #TEST, __LINE__, __FILE__ );                         \
-            goto exit;                                                      \
-        }                                                                   \
+#define TEST_INVALID_PARAM_RET( PARAM_ERR_VALUE, TEST )                      \
+    do {                                                                     \
+        test_info.paramfail_test_state = PARAMFAIL_TESTSTATE_PENDING;        \
+        if( (TEST) != (PARAM_ERR_VALUE) ||                                   \
+            test_info.paramfail_test_state != PARAMFAIL_TESTSTATE_CALLED )   \
+        {                                                                    \
+            set_test_result( #TEST, __LINE__, __FILE__, TEST_RESULT_FAILED );\
+        }                                                                    \
    } while( 0 )
 
 /**
@@ -266,16 +304,16 @@ typedef enum
  *
  * \param   TEST                The test expression to be tested.
  */
-#define TEST_INVALID_PARAM( TEST )                                          \
-    do {                                                                    \
-        memcpy(jmp_tmp, param_fail_jmp, sizeof(jmp_buf));                   \
-        if( setjmp( param_fail_jmp ) == 0 )                                 \
-        {                                                                   \
-            TEST;                                                           \
-            test_fail( #TEST, __LINE__, __FILE__ );                         \
-            goto exit;                                                      \
-        }                                                                   \
-        memcpy(param_fail_jmp, jmp_tmp, sizeof(jmp_buf));                   \
+#define TEST_INVALID_PARAM( TEST )                                           \
+    do {                                                                     \
+        memcpy(jmp_tmp, param_fail_jmp, sizeof(jmp_buf));                    \
+        if( setjmp( param_fail_jmp ) == 0 )                                  \
+        {                                                                    \
+            TEST;                                                            \
+            set_test_result( #TEST, __LINE__, __FILE__, TEST_RESULT_FAILED );\
+            goto exit;                                                       \
+        }                                                                    \
+        memcpy(param_fail_jmp, jmp_tmp, sizeof(jmp_buf));                    \
     } while( 0 )
 #endif /* MBEDTLS_CHECK_PARAMS && !MBEDTLS_PARAM_FAILED_ALT */
 
@@ -458,17 +496,10 @@ void test_set_step( unsigned long step )
     test_info.step = step;
 }
 
-void test_fail( const char *test, int line_no, const char* filename )
+static void set_test_result( const char *test, int line_no,
+                             const char* filename, test_result_t test_result )
 {
-    test_info.result = TEST_RESULT_FAILED;
-    test_info.test = test;
-    test_info.line_no = line_no;
-    test_info.filename = filename;
-}
-
-void test_skip( const char *test, int line_no, const char* filename )
-{
-    test_info.result = TEST_RESULT_SKIPPED;
+    test_info.result = test_result;
     test_info.test = test;
     test_info.line_no = line_no;
     test_info.filename = filename;
@@ -506,8 +537,8 @@ void mbedtls_param_failed( const char *failure_condition,
 
         /* Record the location of the failure, but not as a failure yet, in case
          * it was part of the test */
-        test_fail( failure_condition, line, file );
-        test_info.result = TEST_RESULT_SUCCESS;
+
+        set_test_result( failure_condition, line, file, TEST_RESULT_SUCCESS );
 
         longjmp( param_fail_jmp, 1 );
     }

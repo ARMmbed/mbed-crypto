@@ -35,26 +35,26 @@ void mbedtls_nist_kw_mix_contexts( )
     mbedtls_nist_kw_init( &ctx1 );
     mbedtls_nist_kw_init( &ctx2 );
 
-    TEST_ASSERT( mbedtls_nist_kw_setkey( &ctx1,
-                                         MBEDTLS_CIPHER_ID_AES,
-                                         key, sizeof( key ) * 8,
-                                         1 ) == 0 );
+    TEST_ASSERT_RET( mbedtls_nist_kw_setkey( &ctx1,
+                                             MBEDTLS_CIPHER_ID_AES,
+                                             key, sizeof( key ) * 8,
+                                             1 ), 0 );
 
-    TEST_ASSERT( mbedtls_nist_kw_wrap( &ctx1, MBEDTLS_KW_MODE_KW,
-                                       plaintext, sizeof( plaintext ),
-                                       ciphertext1, &output_len,
-                                       sizeof( ciphertext1 ) ) == 0 );
+    TEST_ASSERT_RET( mbedtls_nist_kw_wrap( &ctx1, MBEDTLS_KW_MODE_KW,
+                                           plaintext, sizeof( plaintext ),
+                                           ciphertext1, &output_len,
+                                           sizeof( ciphertext1 ) ), 0 );
     TEST_ASSERT( output_len == sizeof( ciphertext1 ) );
 
-    TEST_ASSERT( mbedtls_nist_kw_setkey( &ctx2,
-                                         MBEDTLS_CIPHER_ID_AES,
-                                         key, sizeof( key ) * 8,
-                                         0 ) == 0 );
+    TEST_ASSERT_RET( mbedtls_nist_kw_setkey( &ctx2,
+                                             MBEDTLS_CIPHER_ID_AES,
+                                             key, sizeof( key ) * 8,
+                                             0 ), 0 );
 
-    TEST_ASSERT( mbedtls_nist_kw_unwrap( &ctx2, MBEDTLS_KW_MODE_KW,
-                                         ciphertext1, output_len,
-                                         plaintext, &output_len,
-                                         sizeof( plaintext ) ) == 0 );
+    TEST_ASSERT_RET( mbedtls_nist_kw_unwrap( &ctx2, MBEDTLS_KW_MODE_KW,
+                                             ciphertext1, output_len,
+                                             plaintext, &output_len,
+                                             sizeof( plaintext ) ), 0 );
 
     TEST_ASSERT( output_len == sizeof( plaintext ) );
     for( i = 0; i < sizeof( plaintext ); i++ )
@@ -71,33 +71,33 @@ void mbedtls_nist_kw_mix_contexts( )
     mbedtls_nist_kw_init( &ctx2 );
     output_len = sizeof( ciphertext1 );
 
-    TEST_ASSERT( mbedtls_nist_kw_setkey( &ctx1,
-                                         MBEDTLS_CIPHER_ID_AES,
-                                         key, sizeof( key ) * 8,
-                                         1 ) == 0 );
+    TEST_ASSERT_RET( mbedtls_nist_kw_setkey( &ctx1,
+                                             MBEDTLS_CIPHER_ID_AES,
+                                             key, sizeof( key ) * 8,
+                                             1 ), 0 );
 
-    TEST_ASSERT( mbedtls_nist_kw_wrap( &ctx1, MBEDTLS_KW_MODE_KW,
-                                       plaintext, sizeof( plaintext ),
-                                       ciphertext1, &output_len,
-                                       sizeof( ciphertext1 ) ) == 0 );
+    TEST_ASSERT_RET( mbedtls_nist_kw_wrap( &ctx1, MBEDTLS_KW_MODE_KW,
+                                           plaintext, sizeof( plaintext ),
+                                           ciphertext1, &output_len,
+                                           sizeof( ciphertext1 ) ), 0 );
     TEST_ASSERT( output_len == sizeof( ciphertext1 ) );
 
-    TEST_ASSERT( mbedtls_nist_kw_wrap( &ctx1, MBEDTLS_KW_MODE_KWP,
-                                       plaintext, sizeof( plaintext ),
-                                       ciphertext2, &output_len,
-                                       sizeof( ciphertext2 ) ) == 0 );
+    TEST_ASSERT_RET( mbedtls_nist_kw_wrap( &ctx1, MBEDTLS_KW_MODE_KWP,
+                                           plaintext, sizeof( plaintext ),
+                                           ciphertext2, &output_len,
+                                           sizeof( ciphertext2 ) ), 0 );
 
     TEST_ASSERT( output_len == sizeof( ciphertext2 ) );
 
-    TEST_ASSERT( mbedtls_nist_kw_setkey( &ctx2,
-                                         MBEDTLS_CIPHER_ID_AES,
-                                         key, sizeof( key ) * 8,
-                                         0 ) == 0 );
+    TEST_ASSERT_RET( mbedtls_nist_kw_setkey( &ctx2,
+                                             MBEDTLS_CIPHER_ID_AES,
+                                             key, sizeof( key ) * 8,
+                                             0 ), 0 );
 
-    TEST_ASSERT( mbedtls_nist_kw_unwrap( &ctx2, MBEDTLS_KW_MODE_KW,
-                                         ciphertext1, sizeof( ciphertext1 ),
-                                         plaintext, &output_len,
-                                         sizeof( plaintext ) ) == 0 );
+    TEST_ASSERT_RET( mbedtls_nist_kw_unwrap( &ctx2, MBEDTLS_KW_MODE_KW,
+                                             ciphertext1, sizeof( ciphertext1 ),
+                                             plaintext, &output_len,
+                                             sizeof( plaintext ) ), 0 );
 
     TEST_ASSERT( output_len == sizeof( plaintext ) );
 
@@ -106,10 +106,10 @@ void mbedtls_nist_kw_mix_contexts( )
         TEST_ASSERT( plaintext[i] == 0 );
     }
 
-    TEST_ASSERT( mbedtls_nist_kw_unwrap( &ctx2, MBEDTLS_KW_MODE_KWP,
-                                         ciphertext2, sizeof( ciphertext2 ),
-                                         plaintext, &output_len,
-                                         sizeof( plaintext ) ) == 0 );
+    TEST_ASSERT_RET( mbedtls_nist_kw_unwrap( &ctx2, MBEDTLS_KW_MODE_KWP,
+                                             ciphertext2, sizeof( ciphertext2 ),
+                                             plaintext, &output_len,
+                                             sizeof( plaintext ) ), 0 );
 
     TEST_ASSERT( output_len == sizeof( plaintext ) );
 
@@ -130,15 +130,14 @@ void mbedtls_nist_kw_setkey( int cipher_id, int key_size,
 {
     mbedtls_nist_kw_context ctx;
     unsigned char key[32];
-    int ret;
 
     mbedtls_nist_kw_init( &ctx );
 
     memset( key, 0x2A, sizeof( key ) );
     TEST_ASSERT( (unsigned) key_size <= 8 * sizeof( key ) );
 
-    ret = mbedtls_nist_kw_setkey( &ctx, cipher_id, key, key_size, is_wrap );
-    TEST_ASSERT( ret == result );
+    TEST_ASSERT_RET( mbedtls_nist_kw_setkey( &ctx, cipher_id, key,
+                                             key_size, is_wrap ), result );
 
 exit:
     mbedtls_nist_kw_free( &ctx );
@@ -170,12 +169,12 @@ void nist_kw_plaintext_lengths( int in_len, int out_len, int mode, int res )
         TEST_ASSERT( ciphertext != NULL );
     }
 
-    TEST_ASSERT( mbedtls_nist_kw_setkey( &ctx, MBEDTLS_CIPHER_ID_AES,
-                                         key, 8 * sizeof( key ), 1 ) == 0 );
+    TEST_ASSERT_RET( mbedtls_nist_kw_setkey( &ctx, MBEDTLS_CIPHER_ID_AES,
+                                             key, 8 * sizeof( key ), 1 ), 0 );
 
-    TEST_ASSERT( mbedtls_nist_kw_wrap( &ctx, mode, plaintext, in_len,
-                                      ciphertext, &output_len,
-                                      output_len ) == res );
+    TEST_ASSERT_RET( mbedtls_nist_kw_wrap( &ctx, mode, plaintext, in_len,
+                                           ciphertext, &output_len,
+                                           output_len ), res );
     if( res == 0 )
     {
         if( mode == MBEDTLS_KW_MODE_KWP )
@@ -221,16 +220,17 @@ void nist_kw_ciphertext_lengths( int in_len, int out_len, int mode, int res )
         TEST_ASSERT( ciphertext != NULL );
     }
 
-    TEST_ASSERT( mbedtls_nist_kw_setkey( &ctx, MBEDTLS_CIPHER_ID_AES,
-                                         key, 8 * sizeof( key ), 0 ) == 0 );
-    unwrap_ret = mbedtls_nist_kw_unwrap( &ctx, mode, ciphertext, in_len,
-                                         plaintext, &output_len,
-                                         output_len );
+    TEST_ASSERT_RET( mbedtls_nist_kw_setkey( &ctx, MBEDTLS_CIPHER_ID_AES,
+                                             key, 8 * sizeof( key ), 0 ), 0 );
 
     if( res == 0 )
-        TEST_ASSERT( unwrap_ret == MBEDTLS_ERR_CIPHER_AUTH_FAILED );
+        unwrap_ret = MBEDTLS_ERR_CIPHER_AUTH_FAILED;
     else
-        TEST_ASSERT( unwrap_ret == res );
+        unwrap_ret = res;
+
+    TEST_ASSERT_RET( mbedtls_nist_kw_unwrap( &ctx, mode, ciphertext, in_len,
+                                             plaintext, &output_len,
+                                             output_len ), unwrap_ret );
 
     TEST_ASSERT( output_len == 0 );
 
@@ -264,12 +264,13 @@ void mbedtls_nist_kw_wrap( int cipher_id, int mode,
     result_len = unhexify( expected_result, result_hex );
     output_len = sizeof( result );
 
-    TEST_ASSERT( mbedtls_nist_kw_setkey( &ctx, cipher_id, key, key_len * 8, 1 )
-                 == 0 );
+    TEST_ASSERT_RET( mbedtls_nist_kw_setkey( &ctx, cipher_id, key,
+                                             key_len * 8, 1 ), 0 );
 
     /* Test with input == output */
-    TEST_ASSERT( mbedtls_nist_kw_wrap( &ctx, mode, msg, msg_len,
-                 result, &output_len, sizeof( result ) ) == 0 );
+    TEST_ASSERT_RET( mbedtls_nist_kw_wrap( &ctx, mode, msg, msg_len,
+                                           result, &output_len,
+                                           sizeof( result ) ), 0 );
 
     TEST_ASSERT( output_len == result_len );
 
@@ -311,12 +312,13 @@ void mbedtls_nist_kw_unwrap( int cipher_id, int mode,
     result_len = unhexify( expected_result, result_hex );
     output_len = sizeof( result );
 
-    TEST_ASSERT( mbedtls_nist_kw_setkey( &ctx, cipher_id, key, key_len * 8, 0 )
-                 == 0 );
+    TEST_ASSERT_RET( mbedtls_nist_kw_setkey( &ctx, cipher_id, key,
+                                             key_len * 8, 0 ), 0 );
 
     /* Test with input == output */
-    TEST_ASSERT( mbedtls_nist_kw_unwrap( &ctx, mode, msg, msg_len,
-                 result, &output_len, sizeof( result ) ) == expected_ret );
+    TEST_ASSERT_RET( mbedtls_nist_kw_unwrap( &ctx, mode, msg, msg_len,
+                                             result, &output_len,
+                                             sizeof( result ) ), expected_ret );
     if( expected_ret == 0 )
     {
         TEST_ASSERT( output_len == result_len );

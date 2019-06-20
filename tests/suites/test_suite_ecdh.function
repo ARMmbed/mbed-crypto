@@ -198,16 +198,16 @@ void ecdh_primitive_random( int id )
     mbedtls_mpi_init( &zA ); mbedtls_mpi_init( &zB );
     memset( &rnd_info, 0x00, sizeof( rnd_pseudo_info ) );
 
-    TEST_ASSERT( mbedtls_ecp_group_load( &grp, id ) == 0 );
+    TEST_ASSERT_RET( mbedtls_ecp_group_load( &grp, id ), 0 );
 
-    TEST_ASSERT( mbedtls_ecdh_gen_public( &grp, &dA, &qA, &rnd_pseudo_rand, &rnd_info )
-                 == 0 );
-    TEST_ASSERT( mbedtls_ecdh_gen_public( &grp, &dB, &qB, &rnd_pseudo_rand, &rnd_info )
-                 == 0 );
-    TEST_ASSERT( mbedtls_ecdh_compute_shared( &grp, &zA, &qB, &dA,
-                                      &rnd_pseudo_rand, &rnd_info ) == 0 );
-    TEST_ASSERT( mbedtls_ecdh_compute_shared( &grp, &zB, &qA, &dB,
-                                      NULL, NULL ) == 0 );
+    TEST_ASSERT_RET( mbedtls_ecdh_gen_public( &grp, &dA, &qA,
+                                              &rnd_pseudo_rand, &rnd_info ), 0 );
+    TEST_ASSERT_RET( mbedtls_ecdh_gen_public( &grp, &dB, &qB,
+                                              &rnd_pseudo_rand, &rnd_info ), 0 );
+    TEST_ASSERT_RET( mbedtls_ecdh_compute_shared( &grp, &zA, &qB, &dA,
+                                                  &rnd_pseudo_rand, &rnd_info ), 0 );
+    TEST_ASSERT_RET( mbedtls_ecdh_compute_shared( &grp, &zB, &qA, &dB,
+                                                  NULL, NULL ), 0 );
 
     TEST_ASSERT( mbedtls_mpi_cmp_mpi( &zA, &zB ) == 0 );
 
@@ -234,7 +234,7 @@ void ecdh_primitive_testvec( int id, data_t * rnd_buf_A, char * xA_str,
     mbedtls_mpi_init( &dA ); mbedtls_mpi_init( &dB );
     mbedtls_mpi_init( &zA ); mbedtls_mpi_init( &zB ); mbedtls_mpi_init( &check );
 
-    TEST_ASSERT( mbedtls_ecp_group_load( &grp, id ) == 0 );
+    TEST_ASSERT_RET( mbedtls_ecp_group_load( &grp, id ), 0 );
 
     rnd_info_A.buf = rnd_buf_A->x;
     rnd_info_A.length = rnd_buf_A->len;
@@ -268,26 +268,28 @@ void ecdh_primitive_testvec( int id, data_t * rnd_buf_A, char * xA_str,
         rnd_buf_B->x[rnd_info_B.length-1] <<= shift;
     }
 
-    TEST_ASSERT( mbedtls_ecdh_gen_public( &grp, &dA, &qA,
-                                  rnd_buffer_rand, &rnd_info_A ) == 0 );
+    TEST_ASSERT_RET( mbedtls_ecdh_gen_public( &grp, &dA, &qA,
+                                              rnd_buffer_rand, &rnd_info_A ), 0 );
     TEST_ASSERT( ! mbedtls_ecp_is_zero( &qA ) );
-    TEST_ASSERT( mbedtls_mpi_read_string( &check, 16, xA_str ) == 0 );
+    TEST_ASSERT_RET( mbedtls_mpi_read_string( &check, 16, xA_str ), 0 );
     TEST_ASSERT( mbedtls_mpi_cmp_mpi( &qA.X, &check ) == 0 );
-    TEST_ASSERT( mbedtls_mpi_read_string( &check, 16, yA_str ) == 0 );
+    TEST_ASSERT_RET( mbedtls_mpi_read_string( &check, 16, yA_str ), 0 );
     TEST_ASSERT( mbedtls_mpi_cmp_mpi( &qA.Y, &check ) == 0 );
 
-    TEST_ASSERT( mbedtls_ecdh_gen_public( &grp, &dB, &qB,
-                                  rnd_buffer_rand, &rnd_info_B ) == 0 );
+    TEST_ASSERT_RET( mbedtls_ecdh_gen_public( &grp, &dB, &qB,
+                                              rnd_buffer_rand, &rnd_info_B ), 0 );
     TEST_ASSERT( ! mbedtls_ecp_is_zero( &qB ) );
-    TEST_ASSERT( mbedtls_mpi_read_string( &check, 16, xB_str ) == 0 );
+    TEST_ASSERT_RET( mbedtls_mpi_read_string( &check, 16, xB_str ), 0 );
     TEST_ASSERT( mbedtls_mpi_cmp_mpi( &qB.X, &check ) == 0 );
-    TEST_ASSERT( mbedtls_mpi_read_string( &check, 16, yB_str ) == 0 );
+    TEST_ASSERT_RET( mbedtls_mpi_read_string( &check, 16, yB_str ), 0 );
     TEST_ASSERT( mbedtls_mpi_cmp_mpi( &qB.Y, &check ) == 0 );
 
-    TEST_ASSERT( mbedtls_mpi_read_string( &check, 16, z_str ) == 0 );
-    TEST_ASSERT( mbedtls_ecdh_compute_shared( &grp, &zA, &qB, &dA, NULL, NULL ) == 0 );
+    TEST_ASSERT_RET( mbedtls_mpi_read_string( &check, 16, z_str ), 0 );
+    TEST_ASSERT_RET( mbedtls_ecdh_compute_shared( &grp, &zA, &qB, &dA,
+                                                  NULL, NULL ), 0 );
     TEST_ASSERT( mbedtls_mpi_cmp_mpi( &zA, &check ) == 0 );
-    TEST_ASSERT( mbedtls_ecdh_compute_shared( &grp, &zB, &qA, &dB, NULL, NULL ) == 0 );
+    TEST_ASSERT_RET( mbedtls_ecdh_compute_shared( &grp, &zB, &qA, &dB,
+                                                  NULL, NULL ), 0 );
     TEST_ASSERT( mbedtls_mpi_cmp_mpi( &zB, &check ) == 0 );
 
 exit:
@@ -313,22 +315,23 @@ void ecdh_exchange( int id )
     mbedtls_ecdh_init( &cli );
     memset( &rnd_info, 0x00, sizeof( rnd_pseudo_info ) );
 
-    TEST_ASSERT( mbedtls_ecdh_setup( &srv, id ) == 0 );
+    TEST_ASSERT_RET( mbedtls_ecdh_setup( &srv, id ), 0 );
 
     memset( buf, 0x00, sizeof( buf ) ); vbuf = buf;
-    TEST_ASSERT( mbedtls_ecdh_make_params( &srv, &len, buf, 1000,
-                                           &rnd_pseudo_rand, &rnd_info ) == 0 );
-    TEST_ASSERT( mbedtls_ecdh_read_params( &cli, &vbuf, buf + len ) == 0 );
+    TEST_ASSERT_RET( mbedtls_ecdh_make_params( &srv, &len, buf, 1000,
+                                               &rnd_pseudo_rand, &rnd_info ),
+                                               0 );
+    TEST_ASSERT_RET( mbedtls_ecdh_read_params( &cli, &vbuf, buf + len ), 0 );
 
     memset( buf, 0x00, sizeof( buf ) );
-    TEST_ASSERT( mbedtls_ecdh_make_public( &cli, &len, buf, 1000,
-                                           &rnd_pseudo_rand, &rnd_info ) == 0 );
-    TEST_ASSERT( mbedtls_ecdh_read_public( &srv, buf, len ) == 0 );
+    TEST_ASSERT_RET( mbedtls_ecdh_make_public( &cli, &len, buf, 1000,
+                                           &rnd_pseudo_rand, &rnd_info ), 0 );
+    TEST_ASSERT_RET( mbedtls_ecdh_read_public( &srv, buf, len ), 0 );
 
-    TEST_ASSERT( mbedtls_ecdh_calc_secret( &srv, &len, buf, 1000,
-                                           &rnd_pseudo_rand, &rnd_info ) == 0 );
-    TEST_ASSERT( mbedtls_ecdh_calc_secret( &cli, &res_len, res_buf, 1000,
-                                           NULL, NULL ) == 0 );
+    TEST_ASSERT_RET( mbedtls_ecdh_calc_secret( &srv, &len, buf, 1000,
+                                           &rnd_pseudo_rand, &rnd_info ), 0 );
+    TEST_ASSERT_RET( mbedtls_ecdh_calc_secret( &cli, &res_len, res_buf, 1000,
+                                           NULL, NULL ), 0 );
     TEST_ASSERT( len == res_len );
     TEST_ASSERT( memcmp( buf, res_buf, len ) == 0 );
 

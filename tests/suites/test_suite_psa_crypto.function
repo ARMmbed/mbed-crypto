@@ -535,7 +535,7 @@ static int exercise_signature_key( psa_key_handle_t handle,
         hash_alg = KNOWN_SUPPORTED_HASH_ALG;
         alg ^= PSA_ALG_ANY_HASH ^ hash_alg;
 #else
-        test_fail( "No hash algorithm for hash-and-sign testing", __LINE__, __FILE__ );
+        set_test_result( "No hash algorithm for hash-and-sign testing", __LINE__, __FILE__, TEST_RESULT_FAILED );
         return( 1 );
 #endif
     }
@@ -977,7 +977,7 @@ static int exported_key_sanity_check( psa_key_type_t type, size_t bits,
             mbedtls_snprintf( message, sizeof( message ),
                               "No sanity check for public key type=0x%08lx",
                               (unsigned long) type );
-            test_fail( message, __LINE__, __FILE__ );
+             set_test_result( message, __LINE__, __FILE__, TEST_RESULT_FAILED );
             (void) p;
             (void) end;
             return( 0 );
@@ -1081,7 +1081,7 @@ exit:
  * asymmetric, also check \p psa_export_public_key.
  *
  * If the key fails the tests, this function calls the test framework's
- * `test_fail` function and returns false. Otherwise this function returns
+ * `set_test_result` to failed function and returns false. Otherwise this function returns
  * true. Therefore it should be used as follows:
  * ```
  * if( ! exercise_key( ... ) ) goto exit;
@@ -1128,7 +1128,7 @@ static int exercise_key( psa_key_handle_t handle,
         mbedtls_snprintf( message, sizeof( message ),
                           "No code to exercise alg=0x%08lx",
                           (unsigned long) alg );
-        test_fail( message, __LINE__, __FILE__ );
+        set_test_result( message, __LINE__, __FILE__, TEST_RESULT_FAILED );
         ok = 0;
     }
 

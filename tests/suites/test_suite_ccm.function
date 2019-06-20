@@ -19,15 +19,13 @@ void mbedtls_ccm_setkey( int cipher_id, int key_size, int result )
 {
     mbedtls_ccm_context ctx;
     unsigned char key[32];
-    int ret;
 
     mbedtls_ccm_init( &ctx );
 
     memset( key, 0x2A, sizeof( key ) );
     TEST_ASSERT( (unsigned) key_size <= 8 * sizeof( key ) );
 
-    ret = mbedtls_ccm_setkey( &ctx, cipher_id, key, key_size );
-    TEST_ASSERT( ret == result );
+    TEST_ASSERT_RET( mbedtls_ccm_setkey( &ctx, cipher_id, key, key_size ), result );
 
 exit:
     mbedtls_ccm_free( &ctx );
@@ -44,7 +42,6 @@ void ccm_lengths( int msg_len, int iv_len, int add_len, int tag_len, int res )
     unsigned char add[10];
     unsigned char out[10];
     unsigned char tag[18];
-    int decrypt_ret;
 
     mbedtls_ccm_init( &ctx );
 
@@ -55,19 +52,16 @@ void ccm_lengths( int msg_len, int iv_len, int add_len, int tag_len, int res )
     memset( out, 0, sizeof( out ) );
     memset( tag, 0, sizeof( tag ) );
 
-    TEST_ASSERT( mbedtls_ccm_setkey( &ctx, MBEDTLS_CIPHER_ID_AES,
-                                 key, 8 * sizeof( key ) ) == 0 );
+    TEST_ASSERT_RET( mbedtls_ccm_setkey( &ctx, MBEDTLS_CIPHER_ID_AES,
+                                         key, 8 * sizeof( key ) ), 0 );
 
-    TEST_ASSERT( mbedtls_ccm_encrypt_and_tag( &ctx, msg_len, iv, iv_len, add, add_len,
-                                      msg, out, tag, tag_len ) == res );
+    TEST_ASSERT_RET( mbedtls_ccm_encrypt_and_tag( &ctx, msg_len, iv, iv_len, add, add_len,
+                                                  msg, out, tag, tag_len ), res );
 
-    decrypt_ret = mbedtls_ccm_auth_decrypt( &ctx, msg_len, iv, iv_len, add, add_len,
-                                    msg, out, tag, tag_len );
-
-    if( res == 0 )
-        TEST_ASSERT( decrypt_ret == MBEDTLS_ERR_CCM_AUTH_FAILED );
-    else
-        TEST_ASSERT( decrypt_ret == res );
+    TEST_ASSERT_RET( mbedtls_ccm_auth_decrypt( &ctx, msg_len, iv, iv_len,
+                                               add, add_len, msg, out, tag,
+                                               tag_len ),
+                                               ( res == 0 ) ? MBEDTLS_ERR_CCM_AUTH_FAILED : res );
 
 exit:
     mbedtls_ccm_free( &ctx );
@@ -96,20 +90,19 @@ void ccm_star_lengths( int msg_len, int iv_len, int add_len, int tag_len,
     memset( out, 0, sizeof( out ) );
     memset( tag, 0, sizeof( tag ) );
 
-    TEST_ASSERT( mbedtls_ccm_setkey( &ctx, MBEDTLS_CIPHER_ID_AES,
-                                 key, 8 * sizeof( key ) ) == 0 );
+    TEST_ASSERT_RET( mbedtls_ccm_setkey( &ctx, MBEDTLS_CIPHER_ID_AES,
+                                         key, 8 * sizeof( key ) ), 0 );
 
-    TEST_ASSERT( mbedtls_ccm_star_encrypt_and_tag( &ctx, msg_len, iv, iv_len,
-                 add, add_len, msg, out, tag, tag_len ) == res );
-
-    decrypt_ret = mbedtls_ccm_star_auth_decrypt( &ctx, msg_len, iv, iv_len, add,
-                  add_len, msg, out, tag, tag_len );
-
+    TEST_ASSERT_RET( mbedtls_ccm_star_encrypt_and_tag( &ctx, msg_len, iv, iv_len,
+                                                       add, add_len, msg, out, tag,
+                                                       tag_len ), res );
     if( res == 0 && tag_len != 0 )
-        TEST_ASSERT( decrypt_ret == MBEDTLS_ERR_CCM_AUTH_FAILED );
+        decrypt_ret = MBEDTLS_ERR_CCM_AUTH_FAILED;
     else
-        TEST_ASSERT( decrypt_ret == res );
-
+        decrypt_ret = res;
+    TEST_ASSERT_RET( mbedtls_ccm_star_auth_decrypt( &ctx, msg_len, iv, iv_len,
+                                                    add, add_len, msg, out, tag,
+                                                    tag_len ), decrypt_ret );
 exit:
     mbedtls_ccm_free( &ctx );
 }
@@ -131,11 +124,11 @@ void mbedtls_ccm_encrypt_and_tag( int cipher_id, data_t * key,
 
     tag_len = result->len - msg->len;
 
-    TEST_ASSERT( mbedtls_ccm_setkey( &ctx, cipher_id, key->x, key->len * 8 ) == 0 );
-
+    TEST_ASSERT_RET( mbedtls_ccm_setkey( &ctx, cipher_id, key->x, key->len * 8 ), 0 );
     /* Test with input == output */
-    TEST_ASSERT( mbedtls_ccm_encrypt_and_tag( &ctx, msg->len, iv->x, iv->len, add->x, add->len,
-                 msg_n_tag, msg_n_tag, msg_n_tag + msg->len, tag_len ) == 0 );
+    TEST_ASSERT_RET( mbedtls_ccm_encrypt_and_tag( &ctx, msg->len, iv->x, iv->len,
+                                                  add->x, add->len, msg_n_tag, msg_n_tag,
+                                                  msg_n_tag + msg->len, tag_len ), 0 );
 
     TEST_ASSERT( memcmp( msg_n_tag, result->x, result->len ) == 0 );
 
@@ -164,12 +157,12 @@ void mbedtls_ccm_auth_decrypt( int cipher_id, data_t * key,
     msg->len -= tag_len;
     memcpy( tag, msg->x + msg->len, tag_len );
 
-    TEST_ASSERT( mbedtls_ccm_setkey( &ctx, cipher_id, key->x, key->len * 8 ) == 0 );
+    TEST_ASSERT_RET( mbedtls_ccm_setkey( &ctx, cipher_id, key->x, key->len * 8 ), 0 );
 
     /* Test with input == output */
-    TEST_ASSERT( mbedtls_ccm_auth_decrypt( &ctx, msg->len, iv->x, iv->len, add->x, add->len,
-                 msg->x, msg->x, msg->x + msg->len, tag_len ) == result );
-
+    TEST_ASSERT_RET( mbedtls_ccm_auth_decrypt( &ctx, msg->len, iv->x, iv->len,
+                                               add->x, add->len, msg->x, msg->x,
+                                               msg->x + msg->len, tag_len ), result );
     if( result == 0 )
     {
         TEST_ASSERT( memcmp( msg->x, hex_msg->x, hex_msg->len ) == 0 );
@@ -206,7 +199,6 @@ void mbedtls_ccm_star_encrypt_and_tag( int cipher_id,
     unsigned char frame_counter[4];
     mbedtls_ccm_context ctx;
     size_t i, key_len, msg_len, iv_len, add_len, result_len, source_address_len, frame_counter_len, tag_len;
-    int ret;
 
     mbedtls_ccm_init( &ctx );
 
@@ -239,12 +231,12 @@ void mbedtls_ccm_star_encrypt_and_tag( int cipher_id,
     iv[source_address_len + frame_counter_len] = sec_level;
     iv_len = sizeof( iv );
 
-    TEST_ASSERT( mbedtls_ccm_setkey( &ctx, cipher_id, key, key_len * 8 ) == 0 );
+    TEST_ASSERT_RET( mbedtls_ccm_setkey( &ctx, cipher_id, key, key_len * 8 ), 0 );
 
-    ret = mbedtls_ccm_star_encrypt_and_tag( &ctx, msg_len, iv, iv_len,
-                 add, add_len, msg, msg, msg + msg_len, tag_len );
-
-    TEST_ASSERT( ret == output_ret );
+    TEST_ASSERT_RET( mbedtls_ccm_star_encrypt_and_tag( &ctx, msg_len, iv, iv_len,
+                                                       add, add_len, msg, msg,
+                                                       msg + msg_len, tag_len ),
+                                                       output_ret );
 
     TEST_ASSERT( memcmp( msg, result, result_len ) == 0 );
 
@@ -273,7 +265,6 @@ void mbedtls_ccm_star_auth_decrypt( int cipher_id,
     unsigned char frame_counter[4];
     mbedtls_ccm_context ctx;
     size_t i, key_len, msg_len, iv_len, add_len, tag_len, result_len, source_address_len, frame_counter_len;
-    int ret;
 
     mbedtls_ccm_init( &ctx );
 
@@ -310,12 +301,10 @@ void mbedtls_ccm_star_auth_decrypt( int cipher_id,
     msg_len -= tag_len;
     memcpy( tag, msg + msg_len, tag_len );
 
-    TEST_ASSERT( mbedtls_ccm_setkey( &ctx, cipher_id, key, key_len * 8 ) == 0 );
+    TEST_ASSERT_RET( mbedtls_ccm_setkey( &ctx, cipher_id, key, key_len * 8 ), 0 );
 
-    ret = mbedtls_ccm_star_auth_decrypt( &ctx, msg_len, iv, iv_len,
-                 add, add_len, msg, msg, msg + msg_len, tag_len );
-
-    TEST_ASSERT( ret == output_ret );
+    TEST_ASSERT_RET( mbedtls_ccm_star_auth_decrypt( &ctx, msg_len, iv, iv_len,
+                     add, add_len, msg, msg, msg + msg_len, tag_len ), output_ret );
 
     TEST_ASSERT( memcmp( msg, result, result_len ) == 0 );
 
