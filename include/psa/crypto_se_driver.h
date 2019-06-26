@@ -677,6 +677,49 @@ typedef struct {
 } psa_drv_se_aead_t;
 /**@}*/
 
+/** \defgroup se_slot_usage Secure element slot usage mask
+ */
+/**@{*/
+
+/** The type of slot usage data for a driver.
+ *
+ * A driver can use this data to keep track of which slot numbers are in use
+ * and which are available for new keys. The core stores this data to
+ * internal persistent storage.
+ *
+ * The representation of this type is opaque. To access it,
+ * the driver can call psa_drv_cb_find_free_slot().
+ */
+typedef struct psa_drv_se_slot_usage_s psa_drv_se_slot_usage_t;
+
+/** Callback function to find a free slot within a range.
+ *
+ * The PSA Crypto core provides this function to access the opaque
+ * data type that represents the slot usage.
+ *
+ * \param[in] slot_usage    The opaque data structure containing the
+ *                          driver's slot usage table.
+ * \param from              The start of the range.
+ *                          It is included in the search.
+ * \param before            The end of the range.
+ *                          It is not included in the search.
+ * \param[out] found        On success, a free slot number such that
+ *                          `from <= found < before`.
+ *
+ * \retval #PSA_SUCCESS
+ *         Success. \c *found contains a slot number which is between
+ *         \p from and \p before-1 inclusive and which is currently free.
+ * \retval #PSA_ERROR_INSUFFICIENT_STORAGE
+ *         All slots in the indicated range are occupied.
+ */
+psa_status_t psa_drv_cb_find_free_slot(
+    const psa_drv_se_slot_usage_t *slot_usage,
+    psa_key_slot_number_t from,
+    psa_key_slot_number_t before,
+    psa_key_slot_number_t *found);
+
+/**@}*/
+
 /** \defgroup se_key_management Secure Element Key Management
  * Currently, key management is limited to importing keys in the clear,
  * destroying keys, and exporting keys in the clear.
@@ -684,6 +727,32 @@ typedef struct {
  * on the key slot.
  */
 /**@{*/
+
+/* This type is documented in crypto.h. As far as drivers are concerned,
+ * this is an opaque type. */
+typedef struct psa_key_attributes_s psa_key_attributes_t;
+
+/** \brief A function that allocates a slot number for a key.
+ *
+ * This function is typically implemented as one or more calls to
+ * psa_drv_cb_find_free_slot(), with bounds determined by the key
+ * attributes and the secure element configuration.
+ *
+ * \param[in] attributes    Attributes of the key.
+ * \param[in] slot_usage    Slot usage data of the driver.
+ * \param[out] key_slot     Slot where the key will be stored.
+ *                          This must be a valid slot for a key of the
+ *                          chosen type. It must be unoccupied.
+ *
+ * \retval #PSA_SUCCESS
+ *         Success.
+ * \retval #PSA_ERROR_NOT_SUPPORTED
+ * \retval #PSA_ERROR_INSUFFICIENT_STORAGE
+ */
+typedef psa_status_t (*psa_drv_se_allocate_key_t)(
+    const psa_key_attributes_t *attributes,
+    const psa_drv_se_slot_usage_t *slot_usage,
+    psa_key_slot_number_t *key_slot);
 
 /** \brief A function that imports a key into a secure element in binary format
  *
@@ -815,6 +884,13 @@ typedef struct {
      * slots numbered 0 through `slot_count - 1`.
      */
     psa_key_slot_number_t slot_count;
+    /** Function that allocates a slot number.
+     *
+     * If the secure element has no constraints regarding which keys
+     * can go into which slots, this should be \c NULL. In this case
+     * the core will pick any free slot when creating a key.
+     */
+    psa_drv_se_allocate_key_t   p_allocate;
     /** Function that performs a key import operation */
     psa_drv_se_import_key_t     p_import;
     /** Function that performs a generation */

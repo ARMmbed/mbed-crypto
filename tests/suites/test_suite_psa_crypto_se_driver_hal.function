@@ -21,9 +21,12 @@ typedef struct
 } ram_slot_t;
 static ram_slot_t ram_slots[16];
 
+static uint8_t ram_min_slot = 0;
+
 static void ram_slots_reset( void )
 {
     memset( ram_slots, 0, sizeof( ram_slots ) );
+    ram_min_slot = 0;
 }
 
 static psa_status_t ram_import( psa_key_slot_number_t slot_number,
@@ -69,6 +72,16 @@ psa_status_t ram_destroy( psa_key_slot_number_t slot_number )
         return( PSA_ERROR_DETECTED_BY_DRIVER );
     memset( &ram_slots[slot_number], 0, sizeof( ram_slots[slot_number] ) );
     return( PSA_SUCCESS );
+}
+
+psa_status_t ram_allocate( const psa_key_attributes_t *attributes,
+                           const psa_drv_se_slot_usage_t *slot_usage,
+                           psa_key_slot_number_t *slot_number )
+{
+    (void) attributes;
+    return( psa_drv_cb_find_free_slot( slot_usage,
+                                       ram_min_slot, -1,
+                                       slot_number ) );
 }
 
 /* END_HEADER */
@@ -144,7 +157,7 @@ exit:
 /* END_CASE */
 
 /* BEGIN_CASE */
-void key_creation_import_export( )
+void key_creation_import_export( int min_slot )
 {
     psa_drv_se_t driver;
     psa_drv_se_key_management_t key_management;
@@ -155,7 +168,7 @@ void key_creation_import_export( )
     const uint8_t key_material[3] = {0xfa, 0xca, 0xde};
     uint8_t exported[sizeof( key_material )];
     size_t exported_length;
-    psa_key_slot_number_t expected_slot = 0;
+    psa_key_slot_number_t expected_slot = ( min_slot >= 0 ? min_slot : 0 );
 
     memset( &driver, 0, sizeof( driver ) );
     memset( &key_management, 0, sizeof( key_management ) );
@@ -165,6 +178,11 @@ void key_creation_import_export( )
     key_management.p_import = ram_import;
     key_management.p_export = ram_export;
     key_management.p_destroy = ram_destroy;
+    if( min_slot >= 0 )
+    {
+        key_management.p_allocate = ram_allocate;
+        ram_min_slot = min_slot;
+    }
 
     PSA_ASSERT( psa_register_se_driver( lifetime, &driver ) );
     PSA_ASSERT( psa_crypto_init( ) );

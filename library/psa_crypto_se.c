@@ -48,8 +48,6 @@
 /* Driver lookup */
 /****************************************************************/
 
-typedef struct psa_drv_se_slot_usage_s psa_drv_se_slot_usage_t;
-
 typedef struct psa_se_drv_table_entry_s
 {
     psa_key_lifetime_t lifetime;
@@ -177,6 +175,8 @@ psa_status_t psa_find_se_slot_for_key(
     const psa_se_drv_table_entry_t *drv,
     psa_key_slot_number_t *slot_number )
 {
+    psa_status_t status;
+
     /* The maximum possible value of the type is never a valid slot number
      * because it's too large. (0 is valid.) */
     *slot_number = -1;
@@ -188,10 +188,20 @@ psa_status_t psa_find_se_slot_for_key(
     if( drv->methods->key_management == NULL )
         return( PSA_ERROR_NOT_SUPPORTED );
 
-    return( psa_drv_cb_find_free_slot(
-                drv->slot_usage,
-                0, drv->methods->key_management->slot_count,
-                slot_number ) );
+    if( drv->methods->key_management->p_allocate == NULL )
+    {
+        status = psa_drv_cb_find_free_slot(
+            drv->slot_usage,
+            0, drv->methods->key_management->slot_count,
+            slot_number );
+    }
+    else
+    {
+        status = drv->methods->key_management->p_allocate( attributes,
+                                                           drv->slot_usage,
+                                                           slot_number );
+    }
+    return( status );
 }
 
 psa_status_t psa_update_se_slot_usage(
