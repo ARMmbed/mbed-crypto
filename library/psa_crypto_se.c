@@ -28,18 +28,33 @@
 #if defined(MBEDTLS_PSA_CRYPTO_SE_C)
 
 #include <assert.h>
+#include <limits.h>
+#include <stdint.h>
 #include <string.h>
 
+#include "psa/crypto_se_driver.h"
+
 #include "psa_crypto_se.h"
+
+#include "mbedtls/platform.h"
+#if !defined(MBEDTLS_PLATFORM_C)
+#define mbedtls_calloc calloc
+#define mbedtls_free   free
+#endif
+
+
 
 /****************************************************************/
 /* Driver lookup */
 /****************************************************************/
 
+typedef struct psa_drv_se_slot_usage_s psa_drv_se_slot_usage_t;
+
 typedef struct psa_se_drv_table_entry_s
 {
     psa_key_lifetime_t lifetime;
     const psa_drv_se_t *methods;
+    psa_drv_se_slot_usage_t *slot_usage;
 } psa_se_drv_table_entry_t;
 
 static psa_se_drv_table_entry_t driver_table[PSA_MAX_SE_DRIVERS];
@@ -73,6 +88,123 @@ const psa_drv_se_t *psa_get_se_driver( psa_key_lifetime_t lifetime )
         return( drv->methods );
 }
 
+
+
+/****************************************************************/
+/* Slot management */
+/****************************************************************/
+
+/** The type of bit vector elements. A bit vector is represented as an
+ * array of bit vector elements. */
+typedef unsigned bv_element_t;
+/* Number of bits per bit vector elements. Assumes no padding bits,
+ * which Mbed TLS checks in selftest.c. */
+#define BV_BITS_PER_ELEMENT ( sizeof( bv_element_t ) * CHAR_BIT )
+
+struct psa_drv_se_slot_usage_s
+{
+    size_t size; /** Number of elements of \c vector */
+    bv_element_t vector[1]; /* Should be vector[] but we don't allow C99 */
+};
+
+static psa_key_slot_number_t su_size(
+    const psa_drv_se_slot_usage_t *slot_usage )
+{
+    return( slot_usage->size * BV_BITS_PER_ELEMENT );
+}
+
+static int su_get( const psa_drv_se_slot_usage_t *slot_usage,
+                   psa_key_slot_number_t n )
+{
+    bv_element_t elt = slot_usage->vector[n / BV_BITS_PER_ELEMENT];
+    return( elt >> (n % BV_BITS_PER_ELEMENT) & 1 );
+}
+
+static void su_set( psa_drv_se_slot_usage_t *slot_usage,
+                    psa_key_slot_number_t n,
+                    int value )
+{
+    bv_element_t *elt = &slot_usage->vector[n / BV_BITS_PER_ELEMENT];
+    bv_element_t mask = 1 << (n % BV_BITS_PER_ELEMENT);
+    if( value )
+        *elt = *elt | mask;
+    else
+        *elt = *elt & ~mask;
+}
+
+/* Callback function for drivers */
+psa_status_t psa_drv_cb_find_free_slot(
+    const psa_drv_se_slot_usage_t *slot_usage,
+    psa_key_slot_number_t from,
+    psa_key_slot_number_t before,
+    psa_key_slot_number_t *found )
+{
+    psa_key_slot_number_t n;
+    if( from >= su_size( slot_usage ) )
+        return( PSA_ERROR_INSUFFICIENT_STORAGE );
+    if( before > su_size( slot_usage ) )
+        before = su_size( slot_usage );
+    for( n = from; n < before; n++ )
+    {
+        if( ! su_get( slot_usage, n ) )
+        {
+            *found = n;
+            return( PSA_SUCCESS );
+        }
+    }
+    return( PSA_ERROR_INSUFFICIENT_STORAGE );
+}
+
+static psa_status_t load_slot_usage( psa_se_drv_table_entry_t *drv )
+{
+    size_t n_elements = ( drv->methods->key_management->slot_count +
+                          BV_BITS_PER_ELEMENT - 1 ) / BV_BITS_PER_ELEMENT;
+    size_t size = ( sizeof( *drv->slot_usage )
+                    - sizeof( drv->slot_usage->vector )
+                    + sizeof( drv->slot_usage->vector[0] ) * n_elements );
+    drv->slot_usage = mbedtls_calloc( 1, size );
+    if( drv->slot_usage == NULL )
+        return( PSA_ERROR_INSUFFICIENT_MEMORY );
+    drv->slot_usage->size = drv->methods->key_management->slot_count;
+
+    /* TOnogrepDO: load */
+
+    return( PSA_SUCCESS );
+}
+
+psa_status_t psa_find_se_slot_for_key(
+    const psa_key_attributes_t *attributes,
+    const psa_se_drv_table_entry_t *drv,
+    psa_key_slot_number_t *slot_number )
+{
+    /* The maximum possible value of the type is never a valid slot number
+     * because it's too large. (0 is valid.) */
+    *slot_number = -1;
+
+    if( drv->lifetime != attributes->lifetime )
+        return( PSA_ERROR_CORRUPTION_DETECTED );
+
+    /* If the driver doesn't support key creation in any way, give up now. */
+    if( drv->methods->key_management == NULL )
+        return( PSA_ERROR_NOT_SUPPORTED );
+
+    return( psa_drv_cb_find_free_slot(
+                drv->slot_usage,
+                0, drv->methods->key_management->slot_count,
+                slot_number ) );
+}
+
+psa_status_t psa_update_se_slot_usage(
+    const psa_se_drv_table_entry_t *drv,
+    psa_key_slot_number_t slot_number,
+    int value )
+{
+    su_set( drv->slot_usage, slot_number, value );
+
+    /* TOnogrepDO: save */
+
+    return( PSA_SUCCESS );
+}
 
 
 
@@ -113,13 +245,30 @@ psa_status_t psa_register_se_driver(
     if( i == PSA_MAX_SE_DRIVERS )
         return( PSA_ERROR_INSUFFICIENT_MEMORY );
 
-    driver_table[i].lifetime = lifetime;
     driver_table[i].methods = methods;
+
+    if( methods->key_management != NULL )
+    {
+        psa_status_t status = load_slot_usage( &driver_table[i] );
+        if( status != PSA_SUCCESS )
+        {
+            driver_table[i].methods = NULL;
+            return( status );
+        }
+    }
+
+    driver_table[i].lifetime = lifetime;
     return( PSA_SUCCESS );
 }
 
 void psa_unregister_all_se_drivers( void )
 {
+    size_t i;
+    for( i = 0; i < PSA_MAX_SE_DRIVERS; i++ )
+    {
+        if( driver_table[i].slot_usage != NULL )
+            mbedtls_free( driver_table[i].slot_usage );
+    }
     memset( driver_table, 0, sizeof( driver_table ) );
 }
 

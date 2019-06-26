@@ -811,6 +811,10 @@ typedef psa_status_t (*psa_drv_se_generate_key_t)(psa_key_slot_number_t key_slot
  * If one of the functions is not implemented, it should be set to NULL.
  */
 typedef struct {
+    /** Number of keys that the driver can store. They are placed in
+     * slots numbered 0 through `slot_count - 1`.
+     */
+    psa_key_slot_number_t slot_count;
     /** Function that performs a key import operation */
     psa_drv_se_import_key_t     p_import;
     /** Function that performs a generation */
