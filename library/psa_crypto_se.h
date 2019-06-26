@@ -80,4 +80,34 @@ const psa_drv_se_t *psa_get_se_driver_methods(
 const psa_drv_se_t *psa_get_se_driver(
     psa_key_lifetime_t lifetime );
 
+/** Find a free slot for a key that is to be created.
+ *
+ * This function calls the relevant method in the driver to find a suitable
+ * slot for a key with the given attributes.
+ *
+ * \param[in] attributes    Metadata about the key that is about to be created.
+ * \param[in] drv           The driver table entry to query.
+ * \param[out] slot_number  On success, a slot number that is free in this
+ *                          secure element.
+ */
+psa_status_t psa_find_se_slot_for_key(
+    const psa_key_attributes_t *attributes,
+    const psa_se_drv_table_entry_t *drv,
+    psa_key_slot_number_t *slot_number );
+
+/** Update the usage of one slot.
+ *
+ * This function updates the data structure in memory and saves the changes
+ * to persistent storage.
+ *
+ * \param[in] drv           The driver table entry to update.
+ * \param slot_number       The slot number to update.
+ * \param value             0 to mark the slot as free.
+ *                          1 to mark the slot as occupied.
+ */
+psa_status_t psa_update_se_slot_usage(
+    const psa_se_drv_table_entry_t *drv,
+    psa_key_slot_number_t slot_number,
+    int value );
+
 #endif /* PSA_CRYPTO_SE_H */
