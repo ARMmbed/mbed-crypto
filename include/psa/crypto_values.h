@@ -802,7 +802,13 @@
     (((mac_alg) & PSA_ALG_MAC_TRUNCATION_MASK) >> PSA_MAC_TRUNCATION_OFFSET)
 
 #define PSA_ALG_CIPHER_MAC_BASE                 ((psa_algorithm_t)0x02c00000)
+/** The CBC-MAC construction over a block cipher
+ *
+ * \warning CBC-MAC is insecure in many cases.
+ * A more secure mode, such as #PSA_ALG_CMAC, is recommended.
+ */
 #define PSA_ALG_CBC_MAC                         ((psa_algorithm_t)0x02c00001)
+/** The CMAC construction over a block cipher */
 #define PSA_ALG_CMAC                            ((psa_algorithm_t)0x02c00002)
 #define PSA_ALG_GMAC                            ((psa_algorithm_t)0x02c00003)
 
@@ -850,8 +856,16 @@
  */
 #define PSA_ALG_CTR                             ((psa_algorithm_t)0x04c00001)
 
+/** The CFB stream cipher mode.
+ *
+ * The underlying block cipher is determined by the key type.
+ */
 #define PSA_ALG_CFB                             ((psa_algorithm_t)0x04c00002)
 
+/** The OFB stream cipher mode.
+ *
+ * The underlying block cipher is determined by the key type.
+ */
 #define PSA_ALG_OFB                             ((psa_algorithm_t)0x04c00003)
 
 /** The XTS cipher mode.
@@ -879,7 +893,16 @@
  */
 #define PSA_ALG_CBC_PKCS7                       ((psa_algorithm_t)0x04600101)
 
+/** The CCM block cipher mode.
+ *
+ * The underlying block cipher is determined by the key type.
+ */
 #define PSA_ALG_CCM                             ((psa_algorithm_t)0x06001001)
+
+/** The GCM authenticated encryption mode over a block cipher.
+ *
+ * The underlying block cipher is determined by the key type.
+ */
 #define PSA_ALG_GCM                             ((psa_algorithm_t)0x06001002)
 
 /* In the encoding of a AEAD algorithm, the bits corresponding to
