@@ -881,6 +881,7 @@ static int cmac_test_wth_cipher( int verbose,
     const mbedtls_cipher_info_t *cipher_info;
     int i, ret = 0;
     unsigned char output[MBEDTLS_CIPHER_BLKSIZE_MAX];
+    unsigned char plaintext[64];
 
     cipher_info = mbedtls_cipher_info_from_type( cipher_type );
     if( cipher_info == NULL )
@@ -895,7 +896,9 @@ static int cmac_test_wth_cipher( int verbose,
         if( verbose != 0 )
             mbedtls_printf( "  %s CMAC #%u: ", testname, i + 1 );
 
-        if( ( ret = mbedtls_cipher_cmac( cipher_info, key, keybits, messages,
+        memset( plaintext, 0, sizeof( plaintext ) );
+        memcpy( plaintext, messages, message_lengths[i] );
+        if( ( ret = mbedtls_cipher_cmac( cipher_info, key, keybits, plaintext,
                                          message_lengths[i], output ) ) != 0 )
         {
             if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
