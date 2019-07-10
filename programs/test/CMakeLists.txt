@@ -20,6 +20,9 @@ add_executable(query_compile_time_config query_compile_time_config.c)
 target_sources(query_compile_time_config PUBLIC query_config.c)
 target_link_libraries(query_compile_time_config ${libs})
 
-install(TARGETS selftest benchmark query_compile_time_config
+add_executable(mbl-crypto-storage-example-app mbl-crypto-storage-example-app.c)
+target_link_libraries(mbl-crypto-storage-example-app ${libs})
+
+install(TARGETS selftest benchmark query_compile_time_config mbl-crypto-storage-example-app
         DESTINATION "bin"
         PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)

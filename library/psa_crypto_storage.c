@@ -40,6 +40,7 @@
 #else /* Native ITS implementation */
 #include "psa/error.h"
 #include "psa/internal_trusted_storage.h"
+
 #endif
 
 #if defined(MBEDTLS_PLATFORM_C)
@@ -96,12 +97,13 @@ static psa_status_t psa_crypto_storage_load( const psa_key_file_id_t key,
     psa_status_t status;
     psa_storage_uid_t data_identifier = psa_its_identifier_of_slot( key );
     struct psa_storage_info_t data_identifier_info;
+    size_t data_length = 0;
 
     status = psa_its_get_info( data_identifier, &data_identifier_info );
     if( status  != PSA_SUCCESS )
         return( status );
 
-    status = psa_its_get( data_identifier, 0, (uint32_t) data_size, data );
+    status = psa_its_get( data_identifier, 0, data_size, data, &data_length );
 
     return( status );
 }
