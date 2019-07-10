@@ -30,6 +30,8 @@
 #include MBEDTLS_CONFIG_FILE
 #endif
 
+#include "mbedtls/platform_util.h"
+
 #include <stddef.h>
 #include <stdint.h>
 
@@ -128,11 +130,6 @@ int mbedtls_internal_ripemd160_process( mbedtls_ripemd160_context *ctx,
                                         const unsigned char data[64] );
 
 #if !defined(MBEDTLS_DEPRECATED_REMOVED)
-#if defined(MBEDTLS_DEPRECATED_WARNING)
-#define MBEDTLS_DEPRECATED      __attribute__((deprecated))
-#else
-#define MBEDTLS_DEPRECATED
-#endif
 /**
  * \brief          RIPEMD-160 context setup
  *
@@ -180,8 +177,6 @@ MBEDTLS_DEPRECATED void mbedtls_ripemd160_finish(
 MBEDTLS_DEPRECATED void mbedtls_ripemd160_process(
                                             mbedtls_ripemd160_context *ctx,
                                             const unsigned char data[64] );
-
-#undef MBEDTLS_DEPRECATED
 #endif /* !MBEDTLS_DEPRECATED_REMOVED */
 
 /**
@@ -198,11 +193,6 @@ int mbedtls_ripemd160_ret( const unsigned char *input,
                            unsigned char output[20] );
 
 #if !defined(MBEDTLS_DEPRECATED_REMOVED)
-#if defined(MBEDTLS_DEPRECATED_WARNING)
-#define MBEDTLS_DEPRECATED      __attribute__((deprecated))
-#else
-#define MBEDTLS_DEPRECATED
-#endif
 /**
  * \brief          Output = RIPEMD-160( input buffer )
  *
@@ -215,8 +205,6 @@ int mbedtls_ripemd160_ret( const unsigned char *input,
 MBEDTLS_DEPRECATED void mbedtls_ripemd160( const unsigned char *input,
                                            size_t ilen,
                                            unsigned char output[20] );
-
-#undef MBEDTLS_DEPRECATED
 #endif /* !MBEDTLS_DEPRECATED_REMOVED */
 
 #if defined(MBEDTLS_SELF_TEST)

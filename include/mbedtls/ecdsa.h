@@ -40,6 +40,7 @@
 
 #include "mbedtls/ecp.h"
 #include "mbedtls/md.h"
+#include "mbedtls/platform_util.h"
 
 /**
  * \brief           Maximum ECDSA signature size for a given curve bit size
@@ -347,11 +348,6 @@ int mbedtls_ecdsa_write_signature_restartable( mbedtls_ecdsa_context *ctx,
 
 #if defined(MBEDTLS_ECDSA_DETERMINISTIC)
 #if ! defined(MBEDTLS_DEPRECATED_REMOVED)
-#if defined(MBEDTLS_DEPRECATED_WARNING)
-#define MBEDTLS_DEPRECATED    __attribute__((deprecated))
-#else
-#define MBEDTLS_DEPRECATED
-#endif
 /**
  * \brief           This function computes an ECDSA signature and writes
  *                  it to a buffer, serialized as defined in <em>RFC-4492:
@@ -399,7 +395,6 @@ int mbedtls_ecdsa_write_signature_det( mbedtls_ecdsa_context *ctx,
                                const unsigned char *hash, size_t hlen,
                                unsigned char *sig, size_t *slen,
                                mbedtls_md_type_t md_alg ) MBEDTLS_DEPRECATED;
-#undef MBEDTLS_DEPRECATED
 #endif /* MBEDTLS_DEPRECATED_REMOVED */
 #endif /* MBEDTLS_ECDSA_DETERMINISTIC */
 

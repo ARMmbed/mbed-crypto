@@ -35,6 +35,8 @@
 #include MBEDTLS_CONFIG_FILE
 #endif
 
+#include "mbedtls/platform_util.h"
+
 #include <stddef.h>
 
 /* MBEDTLS_ERR_MD2_HW_ACCEL_FAILED is deprecated and should not be used. */
@@ -170,11 +172,6 @@ int mbedtls_md2_finish_ret( mbedtls_md2_context *ctx,
 int mbedtls_internal_md2_process( mbedtls_md2_context *ctx );
 
 #if !defined(MBEDTLS_DEPRECATED_REMOVED)
-#if defined(MBEDTLS_DEPRECATED_WARNING)
-#define MBEDTLS_DEPRECATED      __attribute__((deprecated))
-#else
-#define MBEDTLS_DEPRECATED
-#endif
 /**
  * \brief          MD2 context setup
  *
@@ -236,8 +233,6 @@ MBEDTLS_DEPRECATED void mbedtls_md2_finish( mbedtls_md2_context *ctx,
  *
  */
 MBEDTLS_DEPRECATED void mbedtls_md2_process( mbedtls_md2_context *ctx );
-
-#undef MBEDTLS_DEPRECATED
 #endif /* !MBEDTLS_DEPRECATED_REMOVED */
 
 /**
@@ -257,11 +252,6 @@ int mbedtls_md2_ret( const unsigned char *input,
                      unsigned char output[16] );
 
 #if !defined(MBEDTLS_DEPRECATED_REMOVED)
-#if defined(MBEDTLS_DEPRECATED_WARNING)
-#define MBEDTLS_DEPRECATED      __attribute__((deprecated))
-#else
-#define MBEDTLS_DEPRECATED
-#endif
 /**
  * \brief          Output = MD2( input buffer )
  *
@@ -279,8 +269,6 @@ int mbedtls_md2_ret( const unsigned char *input,
 MBEDTLS_DEPRECATED void mbedtls_md2( const unsigned char *input,
                                      size_t ilen,
                                      unsigned char output[16] );
-
-#undef MBEDTLS_DEPRECATED
 #endif /* !MBEDTLS_DEPRECATED_REMOVED */
 
 #if defined(MBEDTLS_SELF_TEST)

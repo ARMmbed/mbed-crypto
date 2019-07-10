@@ -43,6 +43,7 @@
 #endif
 
 #include "mbedtls/aes.h"
+#include "mbedtls/platform_util.h"
 
 #if defined(MBEDTLS_THREADING_C)
 #include "mbedtls/threading.h"
@@ -300,11 +301,6 @@ int mbedtls_ctr_drbg_random( void *p_rng,
 
 
 #if ! defined(MBEDTLS_DEPRECATED_REMOVED)
-#if defined(MBEDTLS_DEPRECATED_WARNING)
-#define MBEDTLS_DEPRECATED    __attribute__((deprecated))
-#else
-#define MBEDTLS_DEPRECATED
-#endif
 /**
  * \brief              This function updates the state of the CTR_DRBG context.
  *
@@ -324,7 +320,6 @@ MBEDTLS_DEPRECATED void mbedtls_ctr_drbg_update(
     mbedtls_ctr_drbg_context *ctx,
     const unsigned char *additional,
     size_t add_len );
-#undef MBEDTLS_DEPRECATED
 #endif /* !MBEDTLS_DEPRECATED_REMOVED */
 
 #if defined(MBEDTLS_FS_IO)

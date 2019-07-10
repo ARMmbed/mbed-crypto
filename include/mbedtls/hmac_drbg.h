@@ -31,6 +31,7 @@
 #endif
 
 #include "mbedtls/md.h"
+#include "mbedtls/platform_util.h"
 
 #if defined(MBEDTLS_THREADING_C)
 #include "mbedtls/threading.h"
@@ -267,11 +268,6 @@ int mbedtls_hmac_drbg_random( void *p_rng, unsigned char *output, size_t out_len
 void mbedtls_hmac_drbg_free( mbedtls_hmac_drbg_context *ctx );
 
 #if ! defined(MBEDTLS_DEPRECATED_REMOVED)
-#if defined(MBEDTLS_DEPRECATED_WARNING)
-#define MBEDTLS_DEPRECATED    __attribute__((deprecated))
-#else
-#define MBEDTLS_DEPRECATED
-#endif
 /**
  * \brief               HMAC_DRBG update state
  *
@@ -288,7 +284,6 @@ void mbedtls_hmac_drbg_free( mbedtls_hmac_drbg_context *ctx );
 MBEDTLS_DEPRECATED void mbedtls_hmac_drbg_update(
     mbedtls_hmac_drbg_context *ctx,
     const unsigned char *additional, size_t add_len );
-#undef MBEDTLS_DEPRECATED
 #endif /* !MBEDTLS_DEPRECATED_REMOVED */
 
 #if defined(MBEDTLS_FS_IO)
