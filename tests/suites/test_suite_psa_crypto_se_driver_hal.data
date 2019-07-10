@@ -32,3 +32,6 @@ mock_import:
 
 Key exporting mock test
 mock_export:
+
+Key generating mock test
+mock_generate:
