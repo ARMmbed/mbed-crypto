@@ -34,4 +34,4 @@ Key creation smoke test (p_allocate allows all slots)
 key_creation_import_export:0
 
 Key creation smoke test (p_allocate allows 1 slot)
-key_creation_import_export:ARRAY_LENGTH( ram_slots ) - 1
+key_creation_import_export:ARRAY_LENGTH( mock_slots ) - 1
