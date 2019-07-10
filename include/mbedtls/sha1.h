@@ -85,6 +85,7 @@ mbedtls_sha1_context;
  *                 This must not be \c NULL.
  *
  */
+MBEDTLS_DEPRECATED
 void mbedtls_sha1_init( mbedtls_sha1_context *ctx );
 
 /**
@@ -100,6 +101,7 @@ void mbedtls_sha1_init( mbedtls_sha1_context *ctx );
  *                 SHA-1 context.
  *
  */
+MBEDTLS_DEPRECATED
 void mbedtls_sha1_free( mbedtls_sha1_context *ctx );
 
 /**
@@ -113,6 +115,7 @@ void mbedtls_sha1_free( mbedtls_sha1_context *ctx );
  * \param src      The SHA-1 context to clone from. This must be initialized.
  *
  */
+MBEDTLS_DEPRECATED
 void mbedtls_sha1_clone( mbedtls_sha1_context *dst,
                          const mbedtls_sha1_context *src );
 
@@ -129,6 +132,7 @@ void mbedtls_sha1_clone( mbedtls_sha1_context *dst,
  * \return         A negative error code on failure.
  *
  */
+MBEDTLS_DEPRECATED
 int mbedtls_sha1_starts_ret( mbedtls_sha1_context *ctx );
 
 /**
@@ -148,6 +152,7 @@ int mbedtls_sha1_starts_ret( mbedtls_sha1_context *ctx );
  * \return         \c 0 on success.
  * \return         A negative error code on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_sha1_update_ret( mbedtls_sha1_context *ctx,
                              const unsigned char *input,
                              size_t ilen );
@@ -168,6 +173,7 @@ int mbedtls_sha1_update_ret( mbedtls_sha1_context *ctx,
  * \return         \c 0 on success.
  * \return         A negative error code on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_sha1_finish_ret( mbedtls_sha1_context *ctx,
                              unsigned char output[20] );
 
@@ -284,6 +290,7 @@ MBEDTLS_DEPRECATED void mbedtls_sha1_process( mbedtls_sha1_context *ctx,
  * \return         A negative error code on failure.
  *
  */
+MBEDTLS_DEPRECATED
 int mbedtls_sha1_ret( const unsigned char *input,
                       size_t ilen,
                       unsigned char output[20] );
@@ -329,6 +336,7 @@ MBEDTLS_DEPRECATED void mbedtls_sha1( const unsigned char *input,
  * \return         \c 1 on failure.
  *
  */
+MBEDTLS_DEPRECATED
 int mbedtls_sha1_self_test( int verbose );
 
 #endif /* MBEDTLS_SELF_TEST */

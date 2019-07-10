@@ -124,6 +124,7 @@ typedef struct mbedtls_aes_xts_context
  *
  * \param ctx      The AES context to initialize. This must not be \c NULL.
  */
+MBEDTLS_DEPRECATED
 void mbedtls_aes_init( mbedtls_aes_context *ctx );
 
 /**
@@ -133,6 +134,7 @@ void mbedtls_aes_init( mbedtls_aes_context *ctx );
  *                 If this is \c NULL, this function does nothing.
  *                 Otherwise, the context must have been at least initialized.
  */
+MBEDTLS_DEPRECATED
 void mbedtls_aes_free( mbedtls_aes_context *ctx );
 
 #if defined(MBEDTLS_CIPHER_MODE_XTS)
@@ -144,6 +146,7 @@ void mbedtls_aes_free( mbedtls_aes_context *ctx );
  *
  * \param ctx      The AES XTS context to initialize. This must not be \c NULL.
  */
+MBEDTLS_DEPRECATED
 void mbedtls_aes_xts_init( mbedtls_aes_xts_context *ctx );
 
 /**
@@ -153,6 +156,7 @@ void mbedtls_aes_xts_init( mbedtls_aes_xts_context *ctx );
  *                 If this is \c NULL, this function does nothing.
  *                 Otherwise, the context must have been at least initialized.
  */
+MBEDTLS_DEPRECATED
 void mbedtls_aes_xts_free( mbedtls_aes_xts_context *ctx );
 #endif /* MBEDTLS_CIPHER_MODE_XTS */
 
@@ -171,6 +175,7 @@ void mbedtls_aes_xts_free( mbedtls_aes_xts_context *ctx );
  * \return         \c 0 on success.
  * \return         #MBEDTLS_ERR_AES_INVALID_KEY_LENGTH on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_aes_setkey_enc( mbedtls_aes_context *ctx, const unsigned char *key,
                     unsigned int keybits );
 
@@ -189,6 +194,7 @@ int mbedtls_aes_setkey_enc( mbedtls_aes_context *ctx, const unsigned char *key,
  * \return         \c 0 on success.
  * \return         #MBEDTLS_ERR_AES_INVALID_KEY_LENGTH on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_aes_setkey_dec( mbedtls_aes_context *ctx, const unsigned char *key,
                     unsigned int keybits );
 
@@ -257,6 +263,7 @@ int mbedtls_aes_xts_setkey_dec( mbedtls_aes_xts_context *ctx,
 
  * \return         \c 0 on success.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_aes_crypt_ecb( mbedtls_aes_context *ctx,
                     int mode,
                     const unsigned char input[16],
@@ -304,6 +311,7 @@ int mbedtls_aes_crypt_ecb( mbedtls_aes_context *ctx,
  * \return         #MBEDTLS_ERR_AES_INVALID_INPUT_LENGTH
  *                 on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_aes_crypt_cbc( mbedtls_aes_context *ctx,
                     int mode,
                     size_t length,
@@ -396,6 +404,7 @@ int mbedtls_aes_crypt_xts( mbedtls_aes_xts_context *ctx,
  *
  * \return         \c 0 on success.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_aes_crypt_cfb128( mbedtls_aes_context *ctx,
                        int mode,
                        size_t length,
@@ -440,6 +449,7 @@ int mbedtls_aes_crypt_cfb128( mbedtls_aes_context *ctx,
  *
  * \return         \c 0 on success.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_aes_crypt_cfb8( mbedtls_aes_context *ctx,
                     int mode,
                     size_t length,
@@ -494,6 +504,7 @@ int mbedtls_aes_crypt_cfb8( mbedtls_aes_context *ctx,
  *
  * \return         \c 0 on success.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_aes_crypt_ofb( mbedtls_aes_context *ctx,
                        size_t length,
                        size_t *iv_off,
@@ -580,6 +591,7 @@ int mbedtls_aes_crypt_ofb( mbedtls_aes_context *ctx,
  *
  * \return                 \c 0 on success.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_aes_crypt_ctr( mbedtls_aes_context *ctx,
                        size_t length,
                        size_t *nc_off,
@@ -657,6 +669,7 @@ MBEDTLS_DEPRECATED void mbedtls_aes_decrypt( mbedtls_aes_context *ctx,
  * \return         \c 0 on success.
  * \return         \c 1 on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_aes_self_test( int verbose );
 
 #endif /* MBEDTLS_SELF_TEST */

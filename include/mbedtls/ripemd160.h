@@ -67,6 +67,7 @@ mbedtls_ripemd160_context;
  *
  * \param ctx      RIPEMD-160 context to be initialized
  */
+MBEDTLS_DEPRECATED
 void mbedtls_ripemd160_init( mbedtls_ripemd160_context *ctx );
 
 /**
@@ -74,6 +75,7 @@ void mbedtls_ripemd160_init( mbedtls_ripemd160_context *ctx );
  *
  * \param ctx      RIPEMD-160 context to be cleared
  */
+MBEDTLS_DEPRECATED
 void mbedtls_ripemd160_free( mbedtls_ripemd160_context *ctx );
 
 /**
@@ -82,6 +84,7 @@ void mbedtls_ripemd160_free( mbedtls_ripemd160_context *ctx );
  * \param dst      The destination context
  * \param src      The context to be cloned
  */
+MBEDTLS_DEPRECATED
 void mbedtls_ripemd160_clone( mbedtls_ripemd160_context *dst,
                         const mbedtls_ripemd160_context *src );
 
@@ -92,6 +95,7 @@ void mbedtls_ripemd160_clone( mbedtls_ripemd160_context *dst,
  *
  * \return         0 if successful
  */
+MBEDTLS_DEPRECATED
 int mbedtls_ripemd160_starts_ret( mbedtls_ripemd160_context *ctx );
 
 /**
@@ -103,6 +107,7 @@ int mbedtls_ripemd160_starts_ret( mbedtls_ripemd160_context *ctx );
  *
  * \return         0 if successful
  */
+MBEDTLS_DEPRECATED
 int mbedtls_ripemd160_update_ret( mbedtls_ripemd160_context *ctx,
                                   const unsigned char *input,
                                   size_t ilen );
@@ -115,6 +120,7 @@ int mbedtls_ripemd160_update_ret( mbedtls_ripemd160_context *ctx,
  *
  * \return         0 if successful
  */
+MBEDTLS_DEPRECATED
 int mbedtls_ripemd160_finish_ret( mbedtls_ripemd160_context *ctx,
                                   unsigned char output[20] );
 
@@ -188,6 +194,7 @@ MBEDTLS_DEPRECATED void mbedtls_ripemd160_process(
  *
  * \return         0 if successful
  */
+MBEDTLS_DEPRECATED
 int mbedtls_ripemd160_ret( const unsigned char *input,
                            size_t ilen,
                            unsigned char output[20] );
@@ -214,6 +221,7 @@ MBEDTLS_DEPRECATED void mbedtls_ripemd160( const unsigned char *input,
  *
  * \return         0 if successful, or 1 if the test failed
  */
+MBEDTLS_DEPRECATED
 int mbedtls_ripemd160_self_test( int verbose );
 
 #endif /* MBEDTLS_SELF_TEST */

@@ -35,6 +35,7 @@
 #endif
 
 #include "mbedtls/aes.h"
+#include "mbedtls/platform_util.h"
 
 #define MBEDTLS_ERR_PADLOCK_DATA_MISALIGNED               -0x0030  /**< Input data should be aligned. */
 
@@ -75,6 +76,7 @@ extern "C" {
  *
  * \return         1 if CPU has support for the feature, 0 otherwise
  */
+MBEDTLS_DEPRECATED
 int mbedtls_padlock_has_support( int feature );
 
 /**
@@ -90,6 +92,7 @@ int mbedtls_padlock_has_support( int feature );
  *
  * \return         0 if success, 1 if operation failed
  */
+MBEDTLS_DEPRECATED
 int mbedtls_padlock_xcryptecb( mbedtls_aes_context *ctx,
                                int mode,
                                const unsigned char input[16],
@@ -110,6 +113,7 @@ int mbedtls_padlock_xcryptecb( mbedtls_aes_context *ctx,
  *
  * \return         0 if success, 1 if operation failed
  */
+MBEDTLS_DEPRECATED
 int mbedtls_padlock_xcryptcbc( mbedtls_aes_context *ctx,
                                int mode,
                                size_t length,

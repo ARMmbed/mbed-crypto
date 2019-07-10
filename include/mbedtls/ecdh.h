@@ -41,6 +41,7 @@
 #endif
 
 #include "mbedtls/ecp.h"
+#include "mbedtls/platform_util.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -158,6 +159,7 @@ mbedtls_ecdh_context;
  * \return          Another \c MBEDTLS_ERR_ECP_XXX or
  *                  \c MBEDTLS_MPI_XXX error code on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_ecdh_gen_public( mbedtls_ecp_group *grp, mbedtls_mpi *d, mbedtls_ecp_point *Q,
                      int (*f_rng)(void *, unsigned char *, size_t),
                      void *p_rng );
@@ -196,6 +198,7 @@ int mbedtls_ecdh_gen_public( mbedtls_ecp_group *grp, mbedtls_mpi *d, mbedtls_ecp
  * \return          Another \c MBEDTLS_ERR_ECP_XXX or
  *                  \c MBEDTLS_MPI_XXX error code on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_ecdh_compute_shared( mbedtls_ecp_group *grp, mbedtls_mpi *z,
                          const mbedtls_ecp_point *Q, const mbedtls_mpi *d,
                          int (*f_rng)(void *, unsigned char *, size_t),
@@ -206,6 +209,7 @@ int mbedtls_ecdh_compute_shared( mbedtls_ecp_group *grp, mbedtls_mpi *z,
  *
  * \param ctx       The ECDH context to initialize. This must not be \c NULL.
  */
+MBEDTLS_DEPRECATED
 void mbedtls_ecdh_init( mbedtls_ecdh_context *ctx );
 
 /**
@@ -224,6 +228,7 @@ void mbedtls_ecdh_init( mbedtls_ecdh_context *ctx );
  *
  * \return          \c 0 on success.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_ecdh_setup( mbedtls_ecdh_context *ctx,
                         mbedtls_ecp_group_id grp_id );
 
@@ -234,6 +239,7 @@ int mbedtls_ecdh_setup( mbedtls_ecdh_context *ctx,
  *                  case this function does nothing. If it is not \c NULL,
  *                  it must point to an initialized ECDH context.
  */
+MBEDTLS_DEPRECATED
 void mbedtls_ecdh_free( mbedtls_ecdh_context *ctx );
 
 /**
@@ -261,6 +267,7 @@ void mbedtls_ecdh_free( mbedtls_ecdh_context *ctx );
  *                  operations was reached: see \c mbedtls_ecp_set_max_ops().
  * \return          Another \c MBEDTLS_ERR_ECP_XXX error code on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_ecdh_make_params( mbedtls_ecdh_context *ctx, size_t *olen,
                       unsigned char *buf, size_t blen,
                       int (*f_rng)(void *, unsigned char *, size_t),
@@ -290,6 +297,7 @@ int mbedtls_ecdh_make_params( mbedtls_ecdh_context *ctx, size_t *olen,
  * \return          An \c MBEDTLS_ERR_ECP_XXX error code on failure.
  *
  */
+MBEDTLS_DEPRECATED
 int mbedtls_ecdh_read_params( mbedtls_ecdh_context *ctx,
                               const unsigned char **buf,
                               const unsigned char *end );
@@ -313,6 +321,7 @@ int mbedtls_ecdh_read_params( mbedtls_ecdh_context *ctx,
  * \return          Another \c MBEDTLS_ERR_ECP_XXX error code on failure.
  *
  */
+MBEDTLS_DEPRECATED
 int mbedtls_ecdh_get_params( mbedtls_ecdh_context *ctx,
                              const mbedtls_ecp_keypair *key,
                              mbedtls_ecdh_side side );
@@ -343,6 +352,7 @@ int mbedtls_ecdh_get_params( mbedtls_ecdh_context *ctx,
  *                  operations was reached: see \c mbedtls_ecp_set_max_ops().
  * \return          Another \c MBEDTLS_ERR_ECP_XXX error code on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_ecdh_make_public( mbedtls_ecdh_context *ctx, size_t *olen,
                       unsigned char *buf, size_t blen,
                       int (*f_rng)(void *, unsigned char *, size_t),
@@ -367,6 +377,7 @@ int mbedtls_ecdh_make_public( mbedtls_ecdh_context *ctx, size_t *olen,
  * \return      \c 0 on success.
  * \return      An \c MBEDTLS_ERR_ECP_XXX error code on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_ecdh_read_public( mbedtls_ecdh_context *ctx,
                               const unsigned char *buf, size_t blen );
 
@@ -400,6 +411,7 @@ int mbedtls_ecdh_read_public( mbedtls_ecdh_context *ctx,
  *                  operations was reached: see \c mbedtls_ecp_set_max_ops().
  * \return          Another \c MBEDTLS_ERR_ECP_XXX error code on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_ecdh_calc_secret( mbedtls_ecdh_context *ctx, size_t *olen,
                       unsigned char *buf, size_t blen,
                       int (*f_rng)(void *, unsigned char *, size_t),
@@ -418,6 +430,7 @@ int mbedtls_ecdh_calc_secret( mbedtls_ecdh_context *ctx, size_t *olen,
  *
  * \param ctx       The ECDH context to use. This must be initialized.
  */
+MBEDTLS_DEPRECATED
 void mbedtls_ecdh_enable_restart( mbedtls_ecdh_context *ctx );
 #endif /* MBEDTLS_ECP_RESTARTABLE */
 

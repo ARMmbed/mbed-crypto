@@ -159,6 +159,7 @@ mbedtls_ctr_drbg_context;
  *
  * \param ctx           The CTR_DRBG context to initialize.
  */
+MBEDTLS_DEPRECATED
 void mbedtls_ctr_drbg_init( mbedtls_ctr_drbg_context *ctx );
 
 /**
@@ -180,6 +181,7 @@ void mbedtls_ctr_drbg_init( mbedtls_ctr_drbg_context *ctx );
  * \return              \c 0 on success.
  * \return              #MBEDTLS_ERR_CTR_DRBG_ENTROPY_SOURCE_FAILED on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_ctr_drbg_seed( mbedtls_ctr_drbg_context *ctx,
                    int (*f_entropy)(void *, unsigned char *, size_t),
                    void *p_entropy,
@@ -191,6 +193,7 @@ int mbedtls_ctr_drbg_seed( mbedtls_ctr_drbg_context *ctx,
  *
  * \param ctx           The CTR_DRBG context to clear.
  */
+MBEDTLS_DEPRECATED
 void mbedtls_ctr_drbg_free( mbedtls_ctr_drbg_context *ctx );
 
 /**
@@ -205,6 +208,7 @@ void mbedtls_ctr_drbg_free( mbedtls_ctr_drbg_context *ctx );
  * \param ctx           The CTR_DRBG context.
  * \param resistance    #MBEDTLS_CTR_DRBG_PR_ON or #MBEDTLS_CTR_DRBG_PR_OFF.
  */
+MBEDTLS_DEPRECATED
 void mbedtls_ctr_drbg_set_prediction_resistance( mbedtls_ctr_drbg_context *ctx,
                                          int resistance );
 
@@ -216,6 +220,7 @@ void mbedtls_ctr_drbg_set_prediction_resistance( mbedtls_ctr_drbg_context *ctx,
  * \param ctx           The CTR_DRBG context.
  * \param len           The amount of entropy to grab.
  */
+MBEDTLS_DEPRECATED
 void mbedtls_ctr_drbg_set_entropy_len( mbedtls_ctr_drbg_context *ctx,
                                size_t len );
 
@@ -226,6 +231,7 @@ void mbedtls_ctr_drbg_set_entropy_len( mbedtls_ctr_drbg_context *ctx,
  * \param ctx           The CTR_DRBG context.
  * \param interval      The reseed interval.
  */
+MBEDTLS_DEPRECATED
 void mbedtls_ctr_drbg_set_reseed_interval( mbedtls_ctr_drbg_context *ctx,
                                    int interval );
 
@@ -240,6 +246,7 @@ void mbedtls_ctr_drbg_set_reseed_interval( mbedtls_ctr_drbg_context *ctx,
  * \return              \c 0 on success.
  * \return              #MBEDTLS_ERR_CTR_DRBG_ENTROPY_SOURCE_FAILED on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_ctr_drbg_reseed( mbedtls_ctr_drbg_context *ctx,
                      const unsigned char *additional, size_t len );
 
@@ -257,6 +264,7 @@ int mbedtls_ctr_drbg_reseed( mbedtls_ctr_drbg_context *ctx,
  *                     #MBEDTLS_CTR_DRBG_MAX_SEED_INPUT.
  * \return             An error from the underlying AES cipher on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_ctr_drbg_update_ret( mbedtls_ctr_drbg_context *ctx,
                                  const unsigned char *additional,
                                  size_t add_len );
@@ -278,6 +286,7 @@ int mbedtls_ctr_drbg_update_ret( mbedtls_ctr_drbg_context *ctx,
  * \return    #MBEDTLS_ERR_CTR_DRBG_ENTROPY_SOURCE_FAILED or
  *            #MBEDTLS_ERR_CTR_DRBG_REQUEST_TOO_BIG on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_ctr_drbg_random_with_add( void *p_rng,
                               unsigned char *output, size_t output_len,
                               const unsigned char *additional, size_t add_len );
@@ -296,6 +305,7 @@ int mbedtls_ctr_drbg_random_with_add( void *p_rng,
  * \return              #MBEDTLS_ERR_CTR_DRBG_ENTROPY_SOURCE_FAILED or
  *                      #MBEDTLS_ERR_CTR_DRBG_REQUEST_TOO_BIG on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_ctr_drbg_random( void *p_rng,
                      unsigned char *output, size_t output_len );
 
@@ -334,6 +344,7 @@ MBEDTLS_DEPRECATED void mbedtls_ctr_drbg_update(
  * \return              #MBEDTLS_ERR_CTR_DRBG_ENTROPY_SOURCE_FAILED on
  *                      failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_ctr_drbg_write_seed_file( mbedtls_ctr_drbg_context *ctx, const char *path );
 
 /**
@@ -348,6 +359,7 @@ int mbedtls_ctr_drbg_write_seed_file( mbedtls_ctr_drbg_context *ctx, const char 
  * \return              #MBEDTLS_ERR_CTR_DRBG_ENTROPY_SOURCE_FAILED or
  *                      #MBEDTLS_ERR_CTR_DRBG_INPUT_TOO_BIG on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_ctr_drbg_update_seed_file( mbedtls_ctr_drbg_context *ctx, const char *path );
 #endif /* MBEDTLS_FS_IO */
 
@@ -359,11 +371,13 @@ int mbedtls_ctr_drbg_update_seed_file( mbedtls_ctr_drbg_context *ctx, const char
  * \return              \c 0 on success.
  * \return              \c 1 on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_ctr_drbg_self_test( int verbose );
 
 #endif /* MBEDTLS_SELF_TEST */
 
 /* Internal functions (do not call directly) */
+MBEDTLS_DEPRECATED
 int mbedtls_ctr_drbg_seed_entropy_len( mbedtls_ctr_drbg_context *,
                                int (*)(void *, unsigned char *, size_t), void *,
                                const unsigned char *, size_t, size_t );

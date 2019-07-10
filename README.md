@@ -22,6 +22,24 @@ The design goals of the PSA cryptography API include:
 
 Mbed Crypto is a reference implementation of the PSA cryptography API. It is written in portable C.
 
+## Relationship to Mbed TLS
+
+Mbed Crypto provides all the cryptography for Mbed TLS in one self-contained
+library. Mbed Crypto originally was part of Mbed TLS itself, but was split out
+into its own library starting with Mbed TLS 3.0.0.
+
+Today, Mbed Crypto provides two APIs: the deprecated Mbed TLS classic
+cryptography APIs and the PSA Crypo API. As Mbed TLS uses more and more of the
+PSA Crypto API for its cryptography needs, Mbed Crypto will expose less and
+less of the deprecated Mbed TLS classic cryptography APIs.
+
+The Mbed TLS classic APIs are not recommended for future use. We'd recommend
+only using non-deprecated APIs, as any deprecated APIs are subject to change or
+removal. Deprecated functions are marked with `MBEDTLS_DEPRECATED`. Note that
+headers with deprecated functions may entirely disappear from public interface
+of the library in the future. This includes constants that these headers expose
+that haven't been formally marked as deprecated.
+
 ## Documentation
 
 The Mbed Crypto library is a reference implementation of the PSA cryptography API. Please refer to the PSA Cryptography API documents for an overview of the library's interfaces and a detailed description of the types, macros and functions that it provides.

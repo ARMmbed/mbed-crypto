@@ -111,6 +111,7 @@ typedef struct mbedtls_md_context_t
  *                  message-digest enumeration #mbedtls_md_type_t.
  *                  The last entry is 0.
  */
+MBEDTLS_DEPRECATED
 const int *mbedtls_md_list( void );
 
 /**
@@ -122,6 +123,7 @@ const int *mbedtls_md_list( void );
  * \return          The message-digest information associated with \p md_name.
  * \return          NULL if the associated message-digest information is not found.
  */
+MBEDTLS_DEPRECATED
 const mbedtls_md_info_t *mbedtls_md_info_from_string( const char *md_name );
 
 /**
@@ -133,6 +135,7 @@ const mbedtls_md_info_t *mbedtls_md_info_from_string( const char *md_name );
  * \return          The message-digest information associated with \p md_type.
  * \return          NULL if the associated message-digest information is not found.
  */
+MBEDTLS_DEPRECATED
 const mbedtls_md_info_t *mbedtls_md_info_from_type( mbedtls_md_type_t md_type );
 
 /**
@@ -143,6 +146,7 @@ const mbedtls_md_info_t *mbedtls_md_info_from_type( mbedtls_md_type_t md_type );
  *                  context for mbedtls_md_setup() for binding it to a
  *                  message-digest algorithm.
  */
+MBEDTLS_DEPRECATED
 void mbedtls_md_init( mbedtls_md_context_t *ctx );
 
 /**
@@ -158,6 +162,7 @@ void mbedtls_md_init( mbedtls_md_context_t *ctx );
  *                  You must not call this function if you have not called
  *                  mbedtls_md_init().
  */
+MBEDTLS_DEPRECATED
 void mbedtls_md_free( mbedtls_md_context_t *ctx );
 
 #if ! defined(MBEDTLS_DEPRECATED_REMOVED)
@@ -201,6 +206,7 @@ int mbedtls_md_init_ctx( mbedtls_md_context_t *ctx, const mbedtls_md_info_t *md_
  *                  failure.
  * \return          #MBEDTLS_ERR_MD_ALLOC_FAILED on memory-allocation failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_md_setup( mbedtls_md_context_t *ctx, const mbedtls_md_info_t *md_info, int hmac );
 
 /**
@@ -222,6 +228,7 @@ int mbedtls_md_setup( mbedtls_md_context_t *ctx, const mbedtls_md_info_t *md_inf
  * \return          \c 0 on success.
  * \return          #MBEDTLS_ERR_MD_BAD_INPUT_DATA on parameter-verification failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_md_clone( mbedtls_md_context_t *dst,
                       const mbedtls_md_context_t *src );
 
@@ -234,6 +241,7 @@ int mbedtls_md_clone( mbedtls_md_context_t *dst,
  *
  * \return          The size of the message-digest output in Bytes.
  */
+MBEDTLS_DEPRECATED
 unsigned char mbedtls_md_get_size( const mbedtls_md_info_t *md_info );
 
 /**
@@ -245,6 +253,7 @@ unsigned char mbedtls_md_get_size( const mbedtls_md_info_t *md_info );
  *
  * \return          The type of the message digest.
  */
+MBEDTLS_DEPRECATED
 mbedtls_md_type_t mbedtls_md_get_type( const mbedtls_md_info_t *md_info );
 
 /**
@@ -256,6 +265,7 @@ mbedtls_md_type_t mbedtls_md_get_type( const mbedtls_md_info_t *md_info );
  *
  * \return          The name of the message digest.
  */
+MBEDTLS_DEPRECATED
 const char *mbedtls_md_get_name( const mbedtls_md_info_t *md_info );
 
 /**
@@ -271,6 +281,7 @@ const char *mbedtls_md_get_name( const mbedtls_md_info_t *md_info );
  * \return          #MBEDTLS_ERR_MD_BAD_INPUT_DATA on parameter-verification
  *                  failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_md_starts( mbedtls_md_context_t *ctx );
 
 /**
@@ -289,6 +300,7 @@ int mbedtls_md_starts( mbedtls_md_context_t *ctx );
  * \return          #MBEDTLS_ERR_MD_BAD_INPUT_DATA on parameter-verification
  *                  failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_md_update( mbedtls_md_context_t *ctx, const unsigned char *input, size_t ilen );
 
 /**
@@ -309,6 +321,7 @@ int mbedtls_md_update( mbedtls_md_context_t *ctx, const unsigned char *input, si
  * \return          #MBEDTLS_ERR_MD_BAD_INPUT_DATA on parameter-verification
  *                  failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_md_finish( mbedtls_md_context_t *ctx, unsigned char *output );
 
 /**
@@ -329,6 +342,7 @@ int mbedtls_md_finish( mbedtls_md_context_t *ctx, unsigned char *output );
  * \return         #MBEDTLS_ERR_MD_BAD_INPUT_DATA on parameter-verification
  *                 failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_md( const mbedtls_md_info_t *md_info, const unsigned char *input, size_t ilen,
         unsigned char *output );
 
@@ -350,6 +364,7 @@ int mbedtls_md( const mbedtls_md_info_t *md_info, const unsigned char *input, si
  *                 the file pointed by \p path.
  * \return         #MBEDTLS_ERR_MD_BAD_INPUT_DATA if \p md_info was NULL.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_md_file( const mbedtls_md_info_t *md_info, const char *path,
                      unsigned char *output );
 #endif /* MBEDTLS_FS_IO */
@@ -372,6 +387,7 @@ int mbedtls_md_file( const mbedtls_md_info_t *md_info, const char *path,
  * \return          #MBEDTLS_ERR_MD_BAD_INPUT_DATA on parameter-verification
  *                  failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_md_hmac_starts( mbedtls_md_context_t *ctx, const unsigned char *key,
                     size_t keylen );
 
@@ -394,6 +410,7 @@ int mbedtls_md_hmac_starts( mbedtls_md_context_t *ctx, const unsigned char *key,
  * \return          #MBEDTLS_ERR_MD_BAD_INPUT_DATA on parameter-verification
  *                  failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_md_hmac_update( mbedtls_md_context_t *ctx, const unsigned char *input,
                     size_t ilen );
 
@@ -415,6 +432,7 @@ int mbedtls_md_hmac_update( mbedtls_md_context_t *ctx, const unsigned char *inpu
  * \return          #MBEDTLS_ERR_MD_BAD_INPUT_DATA on parameter-verification
  *                  failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_md_hmac_finish( mbedtls_md_context_t *ctx, unsigned char *output);
 
 /**
@@ -432,6 +450,7 @@ int mbedtls_md_hmac_finish( mbedtls_md_context_t *ctx, unsigned char *output);
  * \return          #MBEDTLS_ERR_MD_BAD_INPUT_DATA on parameter-verification
  *                  failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_md_hmac_reset( mbedtls_md_context_t *ctx );
 
 /**
@@ -456,11 +475,13 @@ int mbedtls_md_hmac_reset( mbedtls_md_context_t *ctx );
  * \return         #MBEDTLS_ERR_MD_BAD_INPUT_DATA on parameter-verification
  *                 failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_md_hmac( const mbedtls_md_info_t *md_info, const unsigned char *key, size_t keylen,
                 const unsigned char *input, size_t ilen,
                 unsigned char *output );
 
 /* Internal use */
+MBEDTLS_DEPRECATED
 int mbedtls_md_process( mbedtls_md_context_t *ctx, const unsigned char *data );
 
 #ifdef __cplusplus

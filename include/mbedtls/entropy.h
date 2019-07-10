@@ -30,6 +30,7 @@
 #include MBEDTLS_CONFIG_FILE
 #endif
 
+#include "mbedtls/platform_util.h"
 #include <stddef.h>
 
 #if defined(MBEDTLS_SHA512_C) && !defined(MBEDTLS_ENTROPY_FORCE_SHA256)
@@ -147,6 +148,7 @@ mbedtls_entropy_context;
  *
  * \param ctx       Entropy context to initialize
  */
+MBEDTLS_DEPRECATED
 void mbedtls_entropy_init( mbedtls_entropy_context *ctx );
 
 /**
@@ -154,6 +156,7 @@ void mbedtls_entropy_init( mbedtls_entropy_context *ctx );
  *
  * \param ctx       Entropy context to free
  */
+MBEDTLS_DEPRECATED
 void mbedtls_entropy_free( mbedtls_entropy_context *ctx );
 
 /**
@@ -173,6 +176,7 @@ void mbedtls_entropy_free( mbedtls_entropy_context *ctx );
  *
  * \return          0 if successful or MBEDTLS_ERR_ENTROPY_MAX_SOURCES
  */
+MBEDTLS_DEPRECATED
 int mbedtls_entropy_add_source( mbedtls_entropy_context *ctx,
                         mbedtls_entropy_f_source_ptr f_source, void *p_source,
                         size_t threshold, int strong );
@@ -185,6 +189,7 @@ int mbedtls_entropy_add_source( mbedtls_entropy_context *ctx,
  *
  * \return          0 if successful, or MBEDTLS_ERR_ENTROPY_SOURCE_FAILED
  */
+MBEDTLS_DEPRECATED
 int mbedtls_entropy_gather( mbedtls_entropy_context *ctx );
 
 /**
@@ -198,6 +203,7 @@ int mbedtls_entropy_gather( mbedtls_entropy_context *ctx );
  *
  * \return          0 if successful, or MBEDTLS_ERR_ENTROPY_SOURCE_FAILED
  */
+MBEDTLS_DEPRECATED
 int mbedtls_entropy_func( void *data, unsigned char *output, size_t len );
 
 /**
@@ -210,6 +216,7 @@ int mbedtls_entropy_func( void *data, unsigned char *output, size_t len );
  *
  * \return          0 if successful
  */
+MBEDTLS_DEPRECATED
 int mbedtls_entropy_update_manual( mbedtls_entropy_context *ctx,
                            const unsigned char *data, size_t len );
 
@@ -222,6 +229,7 @@ int mbedtls_entropy_update_manual( mbedtls_entropy_context *ctx,
  *
  * \return          0 if successful
  */
+MBEDTLS_DEPRECATED
 int mbedtls_entropy_update_nv_seed( mbedtls_entropy_context *ctx );
 #endif /* MBEDTLS_ENTROPY_NV_SEED */
 
@@ -236,6 +244,7 @@ int mbedtls_entropy_update_nv_seed( mbedtls_entropy_context *ctx );
  *                      MBEDTLS_ERR_ENTROPY_FILE_IO_ERROR on file error, or
  *                      MBEDTLS_ERR_ENTROPY_SOURCE_FAILED
  */
+MBEDTLS_DEPRECATED
 int mbedtls_entropy_write_seed_file( mbedtls_entropy_context *ctx, const char *path );
 
 /**
@@ -250,6 +259,7 @@ int mbedtls_entropy_write_seed_file( mbedtls_entropy_context *ctx, const char *p
  *                      MBEDTLS_ERR_ENTROPY_FILE_IO_ERROR on file error,
  *                      MBEDTLS_ERR_ENTROPY_SOURCE_FAILED
  */
+MBEDTLS_DEPRECATED
 int mbedtls_entropy_update_seed_file( mbedtls_entropy_context *ctx, const char *path );
 #endif /* MBEDTLS_FS_IO */
 
@@ -262,6 +272,7 @@ int mbedtls_entropy_update_seed_file( mbedtls_entropy_context *ctx, const char *
  *
  * \return         0 if successful, or 1 if a test failed
  */
+MBEDTLS_DEPRECATED
 int mbedtls_entropy_self_test( int verbose );
 
 #if defined(MBEDTLS_ENTROPY_HARDWARE_ALT)
@@ -278,6 +289,7 @@ int mbedtls_entropy_self_test( int verbose );
  *
  * \return         0 if successful, or 1 if a test failed
  */
+MBEDTLS_DEPRECATED
 int mbedtls_entropy_source_self_test( int verbose );
 #endif /* MBEDTLS_ENTROPY_HARDWARE_ALT */
 #endif /* MBEDTLS_SELF_TEST */

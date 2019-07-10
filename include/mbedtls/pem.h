@@ -30,6 +30,7 @@
 #include MBEDTLS_CONFIG_FILE
 #endif
 
+#include "mbedtls/platform_util.h"
 #include <stddef.h>
 
 /**
@@ -70,6 +71,7 @@ mbedtls_pem_context;
  *
  * \param ctx   context to be initialized
  */
+MBEDTLS_DEPRECATED
 void mbedtls_pem_init( mbedtls_pem_context *ctx );
 
 /**
@@ -94,6 +96,7 @@ void mbedtls_pem_init( mbedtls_pem_context *ctx );
  *
  * \return          0 on success, or a specific PEM error code
  */
+MBEDTLS_DEPRECATED
 int mbedtls_pem_read_buffer( mbedtls_pem_context *ctx, const char *header, const char *footer,
                      const unsigned char *data,
                      const unsigned char *pwd,
@@ -104,6 +107,7 @@ int mbedtls_pem_read_buffer( mbedtls_pem_context *ctx, const char *header, const
  *
  * \param ctx   context to be freed
  */
+MBEDTLS_DEPRECATED
 void mbedtls_pem_free( mbedtls_pem_context *ctx );
 #endif /* MBEDTLS_PEM_PARSE_C */
 
@@ -124,6 +128,7 @@ void mbedtls_pem_free( mbedtls_pem_context *ctx );
  *                  MBEDTLS_ERR_BASE64_BUFFER_TOO_SMALL olen is the required
  *                  size.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_pem_write_buffer( const char *header, const char *footer,
                       const unsigned char *der_data, size_t der_len,
                       unsigned char *buf, size_t buf_len, size_t *olen );

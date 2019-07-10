@@ -30,6 +30,7 @@
 #include MBEDTLS_CONFIG_FILE
 #endif
 
+#include "mbedtls/platform_util.h"
 #include <stddef.h>
 
 #define MBEDTLS_HAVEGE_COLLECT_SIZE 1024
@@ -54,6 +55,7 @@ mbedtls_havege_state;
  *
  * \param hs       HAVEGE state to be initialized
  */
+MBEDTLS_DEPRECATED
 void mbedtls_havege_init( mbedtls_havege_state *hs );
 
 /**
@@ -61,6 +63,7 @@ void mbedtls_havege_init( mbedtls_havege_state *hs );
  *
  * \param hs       HAVEGE state to be cleared
  */
+MBEDTLS_DEPRECATED
 void mbedtls_havege_free( mbedtls_havege_state *hs );
 
 /**
@@ -72,6 +75,7 @@ void mbedtls_havege_free( mbedtls_havege_state *hs );
  *
  * \return         0
  */
+MBEDTLS_DEPRECATED
 int mbedtls_havege_random( void *p_rng, unsigned char *output, size_t len );
 
 #ifdef __cplusplus

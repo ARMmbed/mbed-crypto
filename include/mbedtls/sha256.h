@@ -76,6 +76,7 @@ mbedtls_sha256_context;
  *
  * \param ctx      The SHA-256 context to initialize. This must not be \c NULL.
  */
+MBEDTLS_DEPRECATED
 void mbedtls_sha256_init( mbedtls_sha256_context *ctx );
 
 /**
@@ -85,6 +86,7 @@ void mbedtls_sha256_init( mbedtls_sha256_context *ctx );
  *                 case this function returns immediately. If it is not \c NULL,
  *                 it must point to an initialized SHA-256 context.
  */
+MBEDTLS_DEPRECATED
 void mbedtls_sha256_free( mbedtls_sha256_context *ctx );
 
 /**
@@ -93,6 +95,7 @@ void mbedtls_sha256_free( mbedtls_sha256_context *ctx );
  * \param dst      The destination context. This must be initialized.
  * \param src      The context to clone. This must be initialized.
  */
+MBEDTLS_DEPRECATED
 void mbedtls_sha256_clone( mbedtls_sha256_context *dst,
                            const mbedtls_sha256_context *src );
 
@@ -107,6 +110,7 @@ void mbedtls_sha256_clone( mbedtls_sha256_context *dst,
  * \return         \c 0 on success.
  * \return         A negative error code on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_sha256_starts_ret( mbedtls_sha256_context *ctx, int is224 );
 
 /**
@@ -122,6 +126,7 @@ int mbedtls_sha256_starts_ret( mbedtls_sha256_context *ctx, int is224 );
  * \return         \c 0 on success.
  * \return         A negative error code on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_sha256_update_ret( mbedtls_sha256_context *ctx,
                                const unsigned char *input,
                                size_t ilen );
@@ -138,6 +143,7 @@ int mbedtls_sha256_update_ret( mbedtls_sha256_context *ctx,
  * \return         \c 0 on success.
  * \return         A negative error code on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_sha256_finish_ret( mbedtls_sha256_context *ctx,
                                unsigned char output[32] );
 
@@ -233,6 +239,7 @@ MBEDTLS_DEPRECATED void mbedtls_sha256_process( mbedtls_sha256_context *ctx,
  * \param is224    Determines which function to use. This must be
  *                 either \c 0 for SHA-256, or \c 1 for SHA-224.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_sha256_ret( const unsigned char *input,
                         size_t ilen,
                         unsigned char output[32],
@@ -273,6 +280,7 @@ MBEDTLS_DEPRECATED void mbedtls_sha256( const unsigned char *input,
  * \return         \c 0 on success.
  * \return         \c 1 on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_sha256_self_test( int verbose );
 
 #endif /* MBEDTLS_SELF_TEST */

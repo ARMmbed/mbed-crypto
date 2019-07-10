@@ -162,6 +162,7 @@ typedef void mbedtls_ecdsa_restart_ctx;
  * \return          An \c MBEDTLS_ERR_ECP_XXX
  *                  or \c MBEDTLS_MPI_XXX error code on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_ecdsa_sign( mbedtls_ecp_group *grp, mbedtls_mpi *r, mbedtls_mpi *s,
                 const mbedtls_mpi *d, const unsigned char *buf, size_t blen,
                 int (*f_rng)(void *, unsigned char *, size_t), void *p_rng );
@@ -202,6 +203,7 @@ int mbedtls_ecdsa_sign( mbedtls_ecp_group *grp, mbedtls_mpi *r, mbedtls_mpi *s,
  * \return          An \c MBEDTLS_ERR_ECP_XXX or \c MBEDTLS_MPI_XXX
  *                  error code on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_ecdsa_sign_det( mbedtls_ecp_group *grp, mbedtls_mpi *r,
                             mbedtls_mpi *s, const mbedtls_mpi *d,
                             const unsigned char *buf, size_t blen,
@@ -240,6 +242,7 @@ int mbedtls_ecdsa_sign_det( mbedtls_ecp_group *grp, mbedtls_mpi *r,
  * \return          An \c MBEDTLS_ERR_ECP_XXX or \c MBEDTLS_MPI_XXX
  *                  error code on failure for any other reason.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_ecdsa_verify( mbedtls_ecp_group *grp,
                           const unsigned char *buf, size_t blen,
                           const mbedtls_ecp_point *Q, const mbedtls_mpi *r,
@@ -292,6 +295,7 @@ int mbedtls_ecdsa_verify( mbedtls_ecp_group *grp,
  * \return          An \c MBEDTLS_ERR_ECP_XXX, \c MBEDTLS_ERR_MPI_XXX or
  *                  \c MBEDTLS_ERR_ASN1_XXX error code on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_ecdsa_write_signature( mbedtls_ecdsa_context *ctx,
                                    mbedtls_md_type_t md_alg,
                            const unsigned char *hash, size_t hlen,
@@ -338,6 +342,7 @@ int mbedtls_ecdsa_write_signature( mbedtls_ecdsa_context *ctx,
  * \return          Another \c MBEDTLS_ERR_ECP_XXX, \c MBEDTLS_ERR_MPI_XXX or
  *                  \c MBEDTLS_ERR_ASN1_XXX error code on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_ecdsa_write_signature_restartable( mbedtls_ecdsa_context *ctx,
                            mbedtls_md_type_t md_alg,
                            const unsigned char *hash, size_t hlen,
@@ -425,6 +430,7 @@ int mbedtls_ecdsa_write_signature_det( mbedtls_ecdsa_context *ctx,
  * \return          An \c MBEDTLS_ERR_ECP_XXX or \c MBEDTLS_ERR_MPI_XXX
  *                  error code on failure for any other reason.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_ecdsa_read_signature( mbedtls_ecdsa_context *ctx,
                           const unsigned char *hash, size_t hlen,
                           const unsigned char *sig, size_t slen );
@@ -460,6 +466,7 @@ int mbedtls_ecdsa_read_signature( mbedtls_ecdsa_context *ctx,
  * \return          Another \c MBEDTLS_ERR_ECP_XXX or \c MBEDTLS_ERR_MPI_XXX
  *                  error code on failure for any other reason.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_ecdsa_read_signature_restartable( mbedtls_ecdsa_context *ctx,
                           const unsigned char *hash, size_t hlen,
                           const unsigned char *sig, size_t slen,
@@ -481,6 +488,7 @@ int mbedtls_ecdsa_read_signature_restartable( mbedtls_ecdsa_context *ctx,
  * \return         \c 0 on success.
  * \return         An \c MBEDTLS_ERR_ECP_XXX code on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_ecdsa_genkey( mbedtls_ecdsa_context *ctx, mbedtls_ecp_group_id gid,
                   int (*f_rng)(void *, unsigned char *, size_t), void *p_rng );
 
@@ -499,6 +507,7 @@ int mbedtls_ecdsa_genkey( mbedtls_ecdsa_context *ctx, mbedtls_ecp_group_id gid,
  * \return          \c 0 on success.
  * \return          An \c MBEDTLS_ERR_ECP_XXX code on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_ecdsa_from_keypair( mbedtls_ecdsa_context *ctx,
                                 const mbedtls_ecp_keypair *key );
 
@@ -508,6 +517,7 @@ int mbedtls_ecdsa_from_keypair( mbedtls_ecdsa_context *ctx,
  * \param ctx       The ECDSA context to initialize.
  *                  This must not be \c NULL.
  */
+MBEDTLS_DEPRECATED
 void mbedtls_ecdsa_init( mbedtls_ecdsa_context *ctx );
 
 /**
@@ -517,6 +527,7 @@ void mbedtls_ecdsa_init( mbedtls_ecdsa_context *ctx );
  *                  in which case this function does nothing. If it
  *                  is not \c NULL, it must be initialized.
  */
+MBEDTLS_DEPRECATED
 void mbedtls_ecdsa_free( mbedtls_ecdsa_context *ctx );
 
 #if defined(MBEDTLS_ECP_RESTARTABLE)
@@ -526,6 +537,7 @@ void mbedtls_ecdsa_free( mbedtls_ecdsa_context *ctx );
  * \param ctx       The restart context to initialize.
  *                  This must not be \c NULL.
  */
+MBEDTLS_DEPRECATED
 void mbedtls_ecdsa_restart_init( mbedtls_ecdsa_restart_ctx *ctx );
 
 /**
@@ -535,6 +547,7 @@ void mbedtls_ecdsa_restart_init( mbedtls_ecdsa_restart_ctx *ctx );
  *                  in which case this function does nothing. If it
  *                  is not \c NULL, it must be initialized.
  */
+MBEDTLS_DEPRECATED
 void mbedtls_ecdsa_restart_free( mbedtls_ecdsa_restart_ctx *ctx );
 #endif /* MBEDTLS_ECP_RESTARTABLE */
 

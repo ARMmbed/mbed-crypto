@@ -34,6 +34,8 @@
 #include MBEDTLS_CONFIG_FILE
 #endif
 
+#include "mbedtls/platform_util.h"
+
 #include <stddef.h>
 
 /* MBEDTLS_ERR_ARC4_HW_ACCEL_FAILED is deprecated and should not be used. */
@@ -76,6 +78,7 @@ mbedtls_arc4_context;
  *                 instead.
  *
  */
+MBEDTLS_DEPRECATED
 void mbedtls_arc4_init( mbedtls_arc4_context *ctx );
 
 /**
@@ -88,6 +91,7 @@ void mbedtls_arc4_init( mbedtls_arc4_context *ctx );
  *                 instead.
  *
  */
+MBEDTLS_DEPRECATED
 void mbedtls_arc4_free( mbedtls_arc4_context *ctx );
 
 /**
@@ -102,6 +106,7 @@ void mbedtls_arc4_free( mbedtls_arc4_context *ctx );
  *                 instead.
  *
  */
+MBEDTLS_DEPRECATED
 void mbedtls_arc4_setup( mbedtls_arc4_context *ctx, const unsigned char *key,
                  unsigned int keylen );
 
@@ -120,6 +125,7 @@ void mbedtls_arc4_setup( mbedtls_arc4_context *ctx, const unsigned char *key,
  *                 instead.
  *
  */
+MBEDTLS_DEPRECATED
 int mbedtls_arc4_crypt( mbedtls_arc4_context *ctx, size_t length, const unsigned char *input,
                 unsigned char *output );
 
@@ -135,6 +141,7 @@ int mbedtls_arc4_crypt( mbedtls_arc4_context *ctx, size_t length, const unsigned
  *                 instead.
  *
  */
+MBEDTLS_DEPRECATED
 int mbedtls_arc4_self_test( int verbose );
 
 #endif /* MBEDTLS_SELF_TEST */

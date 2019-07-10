@@ -76,6 +76,7 @@ mbedtls_sha512_context;
  * \param ctx      The SHA-512 context to initialize. This must
  *                 not be \c NULL.
  */
+MBEDTLS_DEPRECATED
 void mbedtls_sha512_init( mbedtls_sha512_context *ctx );
 
 /**
@@ -86,6 +87,7 @@ void mbedtls_sha512_init( mbedtls_sha512_context *ctx );
  *                 is not \c NULL, it must point to an initialized
  *                 SHA-512 context.
  */
+MBEDTLS_DEPRECATED
 void mbedtls_sha512_free( mbedtls_sha512_context *ctx );
 
 /**
@@ -94,6 +96,7 @@ void mbedtls_sha512_free( mbedtls_sha512_context *ctx );
  * \param dst      The destination context. This must be initialized.
  * \param src      The context to clone. This must be initialized.
  */
+MBEDTLS_DEPRECATED
 void mbedtls_sha512_clone( mbedtls_sha512_context *dst,
                            const mbedtls_sha512_context *src );
 
@@ -108,6 +111,7 @@ void mbedtls_sha512_clone( mbedtls_sha512_context *dst,
  * \return         \c 0 on success.
  * \return         A negative error code on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_sha512_starts_ret( mbedtls_sha512_context *ctx, int is384 );
 
 /**
@@ -123,6 +127,7 @@ int mbedtls_sha512_starts_ret( mbedtls_sha512_context *ctx, int is384 );
  * \return         \c 0 on success.
  * \return         A negative error code on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_sha512_update_ret( mbedtls_sha512_context *ctx,
                     const unsigned char *input,
                     size_t ilen );
@@ -154,6 +159,7 @@ int mbedtls_sha512_finish_ret( mbedtls_sha512_context *ctx,
  * \return         \c 0 on success.
  * \return         A negative error code on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_internal_sha512_process( mbedtls_sha512_context *ctx,
                                      const unsigned char data[128] );
 #if !defined(MBEDTLS_DEPRECATED_REMOVED)
@@ -237,6 +243,7 @@ MBEDTLS_DEPRECATED void mbedtls_sha512_process(
  * \return         \c 0 on success.
  * \return         A negative error code on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_sha512_ret( const unsigned char *input,
                         size_t ilen,
                         unsigned char output[64],
@@ -277,6 +284,7 @@ MBEDTLS_DEPRECATED void mbedtls_sha512( const unsigned char *input,
  * \return         \c 0 on success.
  * \return         \c 1 on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_sha512_self_test( int verbose );
 #endif /* MBEDTLS_SELF_TEST */
 

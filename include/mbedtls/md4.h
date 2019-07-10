@@ -81,6 +81,7 @@ mbedtls_md4_context;
  *                 stronger message digests instead.
  *
  */
+MBEDTLS_DEPRECATED
 void mbedtls_md4_init( mbedtls_md4_context *ctx );
 
 /**
@@ -93,6 +94,7 @@ void mbedtls_md4_init( mbedtls_md4_context *ctx );
  *                 stronger message digests instead.
  *
  */
+MBEDTLS_DEPRECATED
 void mbedtls_md4_free( mbedtls_md4_context *ctx );
 
 /**
@@ -106,6 +108,7 @@ void mbedtls_md4_free( mbedtls_md4_context *ctx );
  *                 stronger message digests instead.
  *
  */
+MBEDTLS_DEPRECATED
 void mbedtls_md4_clone( mbedtls_md4_context *dst,
                         const mbedtls_md4_context *src );
 
@@ -120,6 +123,7 @@ void mbedtls_md4_clone( mbedtls_md4_context *dst,
  *                 constitutes a security risk. We recommend considering
  *                 stronger message digests instead.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_md4_starts_ret( mbedtls_md4_context *ctx );
 
 /**
@@ -136,6 +140,7 @@ int mbedtls_md4_starts_ret( mbedtls_md4_context *ctx );
  *                 stronger message digests instead.
  *
  */
+MBEDTLS_DEPRECATED
 int mbedtls_md4_update_ret( mbedtls_md4_context *ctx,
                             const unsigned char *input,
                             size_t ilen );
@@ -153,6 +158,7 @@ int mbedtls_md4_update_ret( mbedtls_md4_context *ctx,
  *                 stronger message digests instead.
  *
  */
+MBEDTLS_DEPRECATED
 int mbedtls_md4_finish_ret( mbedtls_md4_context *ctx,
                             unsigned char output[16] );
 
@@ -253,6 +259,7 @@ MBEDTLS_DEPRECATED void mbedtls_md4_process( mbedtls_md4_context *ctx,
  *                 stronger message digests instead.
  *
  */
+MBEDTLS_DEPRECATED
 int mbedtls_md4_ret( const unsigned char *input,
                      size_t ilen,
                      unsigned char output[16] );
@@ -290,6 +297,7 @@ MBEDTLS_DEPRECATED void mbedtls_md4( const unsigned char *input,
  *                 stronger message digests instead.
  *
  */
+MBEDTLS_DEPRECATED
 int mbedtls_md4_self_test( int verbose );
 
 #endif /* MBEDTLS_SELF_TEST */

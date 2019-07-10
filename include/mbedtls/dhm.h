@@ -71,6 +71,7 @@
 #include MBEDTLS_CONFIG_FILE
 #endif
 #include "mbedtls/bignum.h"
+#include "mbedtls/platform_util.h"
 
 /*
  * DHM Error codes
@@ -124,6 +125,7 @@ mbedtls_dhm_context;
  *
  * \param ctx      The DHM context to initialize.
  */
+MBEDTLS_DEPRECATED
 void mbedtls_dhm_init( mbedtls_dhm_context *ctx );
 
 /**
@@ -148,6 +150,7 @@ void mbedtls_dhm_init( mbedtls_dhm_context *ctx );
  * \return         \c 0 on success.
  * \return         An \c MBEDTLS_ERR_DHM_XXX error code on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_dhm_read_params( mbedtls_dhm_context *ctx,
                              unsigned char **p,
                              const unsigned char *end );
@@ -184,6 +187,7 @@ int mbedtls_dhm_read_params( mbedtls_dhm_context *ctx,
  * \return         \c 0 on success.
  * \return         An \c MBEDTLS_ERR_DHM_XXX error code on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_dhm_make_params( mbedtls_dhm_context *ctx, int x_size,
                      unsigned char *output, size_t *olen,
                      int (*f_rng)(void *, unsigned char *, size_t),
@@ -204,6 +208,7 @@ int mbedtls_dhm_make_params( mbedtls_dhm_context *ctx, int x_size,
  * \return         \c 0 if successful.
  * \return         An \c MBEDTLS_ERR_DHM_XXX error code on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_dhm_set_group( mbedtls_dhm_context *ctx,
                            const mbedtls_mpi *P,
                            const mbedtls_mpi *G );
@@ -224,6 +229,7 @@ int mbedtls_dhm_set_group( mbedtls_dhm_context *ctx,
  * \return         \c 0 on success.
  * \return         An \c MBEDTLS_ERR_DHM_XXX error code on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_dhm_read_public( mbedtls_dhm_context *ctx,
                      const unsigned char *input, size_t ilen );
 
@@ -251,6 +257,7 @@ int mbedtls_dhm_read_public( mbedtls_dhm_context *ctx,
  * \return         \c 0 on success.
  * \return         An \c MBEDTLS_ERR_DHM_XXX error code on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_dhm_make_public( mbedtls_dhm_context *ctx, int x_size,
                      unsigned char *output, size_t olen,
                      int (*f_rng)(void *, unsigned char *, size_t),
@@ -282,6 +289,7 @@ int mbedtls_dhm_make_public( mbedtls_dhm_context *ctx, int x_size,
  * \return              \c 0 on success.
  * \return              An \c MBEDTLS_ERR_DHM_XXX error code on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_dhm_calc_secret( mbedtls_dhm_context *ctx,
                      unsigned char *output, size_t output_size, size_t *olen,
                      int (*f_rng)(void *, unsigned char *, size_t),
@@ -295,6 +303,7 @@ int mbedtls_dhm_calc_secret( mbedtls_dhm_context *ctx,
  *                 in which case this function is a no-op. If it is not \c NULL,
  *                 it must point to an initialized DHM context.
  */
+MBEDTLS_DEPRECATED
 void mbedtls_dhm_free( mbedtls_dhm_context *ctx );
 
 #if defined(MBEDTLS_ASN1_PARSE_C)
@@ -312,6 +321,7 @@ void mbedtls_dhm_free( mbedtls_dhm_context *ctx );
  * \return            An \c MBEDTLS_ERR_DHM_XXX or \c MBEDTLS_ERR_PEM_XXX error
  *                    code on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_dhm_parse_dhm( mbedtls_dhm_context *dhm, const unsigned char *dhmin,
                            size_t dhminlen );
 
@@ -328,6 +338,7 @@ int mbedtls_dhm_parse_dhm( mbedtls_dhm_context *dhm, const unsigned char *dhmin,
  * \return         An \c MBEDTLS_ERR_DHM_XXX or \c MBEDTLS_ERR_PEM_XXX
  *                 error code on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_dhm_parse_dhmfile( mbedtls_dhm_context *dhm, const char *path );
 #endif /* MBEDTLS_FS_IO */
 #endif /* MBEDTLS_ASN1_PARSE_C */
@@ -340,6 +351,7 @@ int mbedtls_dhm_parse_dhmfile( mbedtls_dhm_context *dhm, const char *path );
  * \return         \c 0 on success.
  * \return         \c 1 on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_dhm_self_test( int verbose );
 
 #endif /* MBEDTLS_SELF_TEST */

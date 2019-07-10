@@ -112,6 +112,7 @@ typedef struct mbedtls_hmac_drbg_context
  *
  * \param ctx           HMAC_DRBG context to be initialized
  */
+MBEDTLS_DEPRECATED
 void mbedtls_hmac_drbg_init( mbedtls_hmac_drbg_context *ctx );
 
 /**
@@ -138,6 +139,7 @@ void mbedtls_hmac_drbg_init( mbedtls_hmac_drbg_context *ctx );
  *                      MBEDTLS_ERR_MD_ALLOC_FAILED, or
  *                      MBEDTLS_ERR_HMAC_DRBG_ENTROPY_SOURCE_FAILED.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_hmac_drbg_seed( mbedtls_hmac_drbg_context *ctx,
                     const mbedtls_md_info_t * md_info,
                     int (*f_entropy)(void *, unsigned char *, size_t),
@@ -158,6 +160,7 @@ int mbedtls_hmac_drbg_seed( mbedtls_hmac_drbg_context *ctx,
  *                      MBEDTLS_ERR_MD_BAD_INPUT_DATA, or
  *                      MBEDTLS_ERR_MD_ALLOC_FAILED.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_hmac_drbg_seed_buf( mbedtls_hmac_drbg_context *ctx,
                         const mbedtls_md_info_t * md_info,
                         const unsigned char *data, size_t data_len );
@@ -171,6 +174,7 @@ int mbedtls_hmac_drbg_seed_buf( mbedtls_hmac_drbg_context *ctx,
  * \param ctx           HMAC_DRBG context
  * \param resistance    MBEDTLS_HMAC_DRBG_PR_ON or MBEDTLS_HMAC_DRBG_PR_OFF
  */
+MBEDTLS_DEPRECATED
 void mbedtls_hmac_drbg_set_prediction_resistance( mbedtls_hmac_drbg_context *ctx,
                                           int resistance );
 
@@ -182,6 +186,7 @@ void mbedtls_hmac_drbg_set_prediction_resistance( mbedtls_hmac_drbg_context *ctx
  * \param ctx           HMAC_DRBG context
  * \param len           Amount of entropy to grab, in bytes
  */
+MBEDTLS_DEPRECATED
 void mbedtls_hmac_drbg_set_entropy_len( mbedtls_hmac_drbg_context *ctx,
                                 size_t len );
 
@@ -192,6 +197,7 @@ void mbedtls_hmac_drbg_set_entropy_len( mbedtls_hmac_drbg_context *ctx,
  * \param ctx           HMAC_DRBG context
  * \param interval      Reseed interval
  */
+MBEDTLS_DEPRECATED
 void mbedtls_hmac_drbg_set_reseed_interval( mbedtls_hmac_drbg_context *ctx,
                                     int interval );
 
@@ -208,6 +214,7 @@ void mbedtls_hmac_drbg_set_reseed_interval( mbedtls_hmac_drbg_context *ctx,
  * \note                Additional data is optional, pass NULL and 0 as second
  *                      third argument if no additional data is being used.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_hmac_drbg_update_ret( mbedtls_hmac_drbg_context *ctx,
                        const unsigned char *additional, size_t add_len );
 
@@ -221,6 +228,7 @@ int mbedtls_hmac_drbg_update_ret( mbedtls_hmac_drbg_context *ctx,
  * \return              0 if successful, or
  *                      MBEDTLS_ERR_HMAC_DRBG_ENTROPY_SOURCE_FAILED
  */
+MBEDTLS_DEPRECATED
 int mbedtls_hmac_drbg_reseed( mbedtls_hmac_drbg_context *ctx,
                       const unsigned char *additional, size_t len );
 
@@ -240,6 +248,7 @@ int mbedtls_hmac_drbg_reseed( mbedtls_hmac_drbg_context *ctx,
  *                      MBEDTLS_ERR_HMAC_DRBG_REQUEST_TOO_BIG, or
  *                      MBEDTLS_ERR_HMAC_DRBG_INPUT_TOO_BIG.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_hmac_drbg_random_with_add( void *p_rng,
                                unsigned char *output, size_t output_len,
                                const unsigned char *additional,
@@ -258,6 +267,7 @@ int mbedtls_hmac_drbg_random_with_add( void *p_rng,
  *                      MBEDTLS_ERR_HMAC_DRBG_ENTROPY_SOURCE_FAILED, or
  *                      MBEDTLS_ERR_HMAC_DRBG_REQUEST_TOO_BIG
  */
+MBEDTLS_DEPRECATED
 int mbedtls_hmac_drbg_random( void *p_rng, unsigned char *output, size_t out_len );
 
 /**
@@ -265,6 +275,7 @@ int mbedtls_hmac_drbg_random( void *p_rng, unsigned char *output, size_t out_len
  *
  * \param ctx           HMAC_DRBG context to free.
  */
+MBEDTLS_DEPRECATED
 void mbedtls_hmac_drbg_free( mbedtls_hmac_drbg_context *ctx );
 
 #if ! defined(MBEDTLS_DEPRECATED_REMOVED)
@@ -296,6 +307,7 @@ MBEDTLS_DEPRECATED void mbedtls_hmac_drbg_update(
  * \return              0 if successful, 1 on file error, or
  *                      MBEDTLS_ERR_HMAC_DRBG_ENTROPY_SOURCE_FAILED
  */
+MBEDTLS_DEPRECATED
 int mbedtls_hmac_drbg_write_seed_file( mbedtls_hmac_drbg_context *ctx, const char *path );
 
 /**
@@ -309,6 +321,7 @@ int mbedtls_hmac_drbg_write_seed_file( mbedtls_hmac_drbg_context *ctx, const cha
  *                      MBEDTLS_ERR_HMAC_DRBG_ENTROPY_SOURCE_FAILED or
  *                      MBEDTLS_ERR_HMAC_DRBG_INPUT_TOO_BIG
  */
+MBEDTLS_DEPRECATED
 int mbedtls_hmac_drbg_update_seed_file( mbedtls_hmac_drbg_context *ctx, const char *path );
 #endif /* MBEDTLS_FS_IO */
 
@@ -319,6 +332,7 @@ int mbedtls_hmac_drbg_update_seed_file( mbedtls_hmac_drbg_context *ctx, const ch
  *
  * \return              0 if successful, or 1 if the test failed
  */
+MBEDTLS_DEPRECATED
 int mbedtls_hmac_drbg_self_test( int verbose );
 #endif
 

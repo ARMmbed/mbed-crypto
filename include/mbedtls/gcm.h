@@ -40,6 +40,7 @@
 #endif
 
 #include "mbedtls/cipher.h"
+#include "mbedtls/platform_util.h"
 
 #include <stdint.h>
 
@@ -93,6 +94,7 @@ mbedtls_gcm_context;
  *
  * \param ctx       The GCM context to initialize. This must not be \c NULL.
  */
+MBEDTLS_DEPRECATED
 void mbedtls_gcm_init( mbedtls_gcm_context *ctx );
 
 /**
@@ -111,6 +113,7 @@ void mbedtls_gcm_init( mbedtls_gcm_context *ctx );
  * \return          \c 0 on success.
  * \return          A cipher-specific error code on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_gcm_setkey( mbedtls_gcm_context *ctx,
                         mbedtls_cipher_id_t cipher,
                         const unsigned char *key,
@@ -167,6 +170,7 @@ int mbedtls_gcm_setkey( mbedtls_gcm_context *ctx,
  *                  not valid or a cipher-specific error code if the encryption
  *                  or decryption failed.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_gcm_crypt_and_tag( mbedtls_gcm_context *ctx,
                        int mode,
                        size_t length,
@@ -212,6 +216,7 @@ int mbedtls_gcm_crypt_and_tag( mbedtls_gcm_context *ctx,
  *                  not valid or a cipher-specific error code if the decryption
  *                  failed.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_gcm_auth_decrypt( mbedtls_gcm_context *ctx,
                       size_t length,
                       const unsigned char *iv,
@@ -240,6 +245,7 @@ int mbedtls_gcm_auth_decrypt( mbedtls_gcm_context *ctx,
  *
  * \return          \c 0 on success.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_gcm_starts( mbedtls_gcm_context *ctx,
                 int mode,
                 const unsigned char *iv,
@@ -272,6 +278,7 @@ int mbedtls_gcm_starts( mbedtls_gcm_context *ctx,
  * \return         \c 0 on success.
  * \return         #MBEDTLS_ERR_GCM_BAD_INPUT on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_gcm_update( mbedtls_gcm_context *ctx,
                 size_t length,
                 const unsigned char *input,
@@ -293,6 +300,7 @@ int mbedtls_gcm_update( mbedtls_gcm_context *ctx,
  * \return          \c 0 on success.
  * \return          #MBEDTLS_ERR_GCM_BAD_INPUT on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_gcm_finish( mbedtls_gcm_context *ctx,
                 unsigned char *tag,
                 size_t tag_len );
@@ -304,6 +312,7 @@ int mbedtls_gcm_finish( mbedtls_gcm_context *ctx,
  * \param ctx       The GCM context to clear. If this is \c NULL, the call has
  *                  no effect. Otherwise, this must be initialized.
  */
+MBEDTLS_DEPRECATED
 void mbedtls_gcm_free( mbedtls_gcm_context *ctx );
 
 #if defined(MBEDTLS_SELF_TEST)
@@ -314,6 +323,7 @@ void mbedtls_gcm_free( mbedtls_gcm_context *ctx );
  * \return         \c 0 on success.
  * \return         \c 1 on failure.
  */
+MBEDTLS_DEPRECATED
 int mbedtls_gcm_self_test( int verbose );
 
 #endif /* MBEDTLS_SELF_TEST */
