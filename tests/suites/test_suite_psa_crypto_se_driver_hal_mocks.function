@@ -237,7 +237,8 @@ psa_status_t mock_destroy( psa_key_slot_number_t slot_number )
 /* BEGIN_CASE */
 void mock_import( int mock_alloc_return_value,
                   int mock_import_return_value,
-                  int expected_result)
+                  int import_called,
+                  int expected_import_result )
 {
     psa_drv_se_t driver;
     psa_drv_se_key_management_t key_management;
@@ -267,15 +268,15 @@ void mock_import( int mock_alloc_return_value,
     psa_set_key_type( &attributes, PSA_KEY_TYPE_RAW_DATA );
     TEST_ASSERT( psa_import_key( &attributes,
                                 key_material, sizeof( key_material ),
-                                &handle ) == expected_result );
+                                &handle ) == expected_import_result );
 
     TEST_ASSERT( mock_allocate_data.called == 1 );
-    TEST_ASSERT( mock_import_data.called ==
-                  (expected_result == PSA_SUCCESS? 1 : 0) );
+    TEST_ASSERT( mock_import_data.called == import_called );
     TEST_ASSERT( mock_import_data.type ==
-                  (expected_result == PSA_SUCCESS? PSA_KEY_TYPE_RAW_DATA : 0));
+                  ( expected_import_result == PSA_SUCCESS? PSA_KEY_TYPE_RAW_DATA
+                                                           : 0));
 
-    if( expected_result == PSA_SUCCESS )
+    if( expected_import_result == PSA_SUCCESS )
     {
         PSA_ASSERT( psa_destroy_key( handle ) );
         TEST_ASSERT( mock_destroy_data.called == 1 );
