@@ -1,7 +1,6 @@
 option(USE_STATIC_MBEDTLS_LIBRARY "Build mbed TLS static library." ON)
 option(USE_SHARED_MBEDTLS_LIBRARY "Build mbed TLS shared library." OFF)
 option(LINK_WITH_PTHREAD "Explicitly link mbed TLS library to pthread." OFF)
-option(LINK_WITH_TRUSTED_STORAGE "Explicitly link mbed TLS library to trusted_storage." ON)
 
 # Set the project root directory if it's not already defined, as may happen if
 # the library folder is included directly by a parent project, without
@@ -124,10 +123,6 @@ endif(HAIKU)
 
 if(LINK_WITH_PTHREAD)
     set(libs ${libs} pthread)
-endif()
-
-if(LINK_WITH_TRUSTED_STORAGE)
-    set(libs ${libs} trusted_storage)
 endif()
 
 if (NOT USE_STATIC_MBEDTLS_LIBRARY AND NOT USE_SHARED_MBEDTLS_LIBRARY)
