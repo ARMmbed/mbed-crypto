@@ -72,7 +72,6 @@ APPS = \
 	test/selftest$(EXEXT) \
 	test/zeroize$(EXEXT) \
 	test/query_compile_time_config$(EXEXT) \
-	test/mbl-crypto-storage-example-app$(EXEXT) \
 	util/pem2der$(EXEXT) \
 	util/strerror$(EXEXT) \
 # End of APPS
@@ -229,10 +228,6 @@ test/zeroize$(EXEXT): test/zeroize.c $(DEP)
 test/query_compile_time_config$(EXEXT): test/query_compile_time_config.c test/query_config.c $(DEP)
 	echo "  CC    test/query_compile_time_config.c"
 	$(CC) $(LOCAL_CFLAGS) $(CFLAGS) test/query_compile_time_config.c test/query_config.c $(LOCAL_LDFLAGS) $(LDFLAGS) -o $@
-
-test/mbl-crypto-storage-example-app$(EXEXT): test/mbl-crypto-storage-example-app.c $(DEP)
-	echo "  CC    test/mbl-crypto-storage-example-app.c"
-	$(CC) $(LOCAL_CFLAGS) $(CFLAGS) test/mbl-crypto-storage-example-app.c $(LOCAL_LDFLAGS) $(LDFLAGS) -o $@
 
 util/pem2der$(EXEXT): util/pem2der.c $(DEP)
 	echo "  CC    util/pem2der.c"

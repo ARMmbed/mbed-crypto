@@ -1765,7 +1765,9 @@
  *
  * Requires: MBEDTLS_FS_IO
  */
+#if ! defined(MBEDTLS_PSA_ITS_FILE_C_STORAGE_PREFIX)
 #define MBEDTLS_PSA_ITS_FILE_C_STORAGE_PREFIX ""
+#endif
 
 /**
  * \def MBEDTLS_RIPEMD160_C
