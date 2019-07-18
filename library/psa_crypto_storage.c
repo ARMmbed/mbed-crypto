@@ -103,7 +103,7 @@ static psa_status_t psa_crypto_storage_load( const psa_key_file_id_t key,
     if( status  != PSA_SUCCESS )
         return( status );
 
-    status = psa_its_get( data_identifier, 0, data_size, data, &data_length );
+    status = psa_its_get( data_identifier, 0, (uint32_t) data_size, data, &data_length );
 
     return( status );
 }
