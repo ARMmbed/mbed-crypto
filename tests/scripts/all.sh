@@ -726,6 +726,7 @@ component_test_no_platform () {
     scripts/config.pl unset MBEDTLS_FS_IO
     scripts/config.pl unset MBEDTLS_PSA_CRYPTO_STORAGE_C
     scripts/config.pl unset MBEDTLS_PSA_ITS_FILE_C
+    scripts/config.pl unset MBEDTLS_PSA_ITS_FILE_C_INCLUDE_TEST
     scripts/config.pl unset MBEDTLS_PSA_CRYPTO_STORAGE_ITS_C
     # Note, _DEFAULT_SOURCE needs to be defined for platforms using glibc version >2.19,
     # to re-enable platform integration features otherwise disabled in C99 builds
@@ -909,6 +910,7 @@ component_build_arm_none_eabi_gcc () {
     scripts/config.pl unset MBEDTLS_TIMING_C
     scripts/config.pl unset MBEDTLS_FS_IO
     scripts/config.pl unset MBEDTLS_PSA_ITS_FILE_C
+    scripts/config.pl unset MBEDTLS_PSA_ITS_FILE_C_INCLUDE_TEST
     scripts/config.pl unset MBEDTLS_PSA_CRYPTO_STORAGE_ITS_C
     scripts/config.pl unset MBEDTLS_PSA_CRYPTO_STORAGE_C
     scripts/config.pl unset MBEDTLS_ENTROPY_NV_SEED
@@ -928,6 +930,7 @@ component_build_arm_none_eabi_gcc_no_udbl_division () {
     scripts/config.pl unset MBEDTLS_TIMING_C
     scripts/config.pl unset MBEDTLS_FS_IO
     scripts/config.pl unset MBEDTLS_PSA_ITS_FILE_C
+    scripts/config.pl unset MBEDTLS_PSA_ITS_FILE_C_INCLUDE_TEST
     scripts/config.pl unset MBEDTLS_PSA_CRYPTO_STORAGE_ITS_C
     scripts/config.pl unset MBEDTLS_PSA_CRYPTO_STORAGE_C
     scripts/config.pl unset MBEDTLS_ENTROPY_NV_SEED
@@ -950,6 +953,7 @@ component_build_arm_none_eabi_gcc_no_64bit_multiplication () {
     scripts/config.pl unset MBEDTLS_TIMING_C
     scripts/config.pl unset MBEDTLS_FS_IO
     scripts/config.pl unset MBEDTLS_PSA_ITS_FILE_C
+    scripts/config.pl unset MBEDTLS_PSA_ITS_FILE_C_INCLUDE_TEST
     scripts/config.pl unset MBEDTLS_PSA_CRYPTO_STORAGE_ITS_C
     scripts/config.pl unset MBEDTLS_PSA_CRYPTO_STORAGE_C
     scripts/config.pl unset MBEDTLS_ENTROPY_NV_SEED
@@ -972,6 +976,7 @@ component_build_armcc () {
     scripts/config.pl unset MBEDTLS_TIMING_C
     scripts/config.pl unset MBEDTLS_FS_IO
     scripts/config.pl unset MBEDTLS_PSA_ITS_FILE_C
+    scripts/config.pl unset MBEDTLS_PSA_ITS_FILE_C_INCLUDE_TEST
     scripts/config.pl unset MBEDTLS_PSA_CRYPTO_STORAGE_ITS_C
     scripts/config.pl unset MBEDTLS_PSA_CRYPTO_STORAGE_C
     scripts/config.pl unset MBEDTLS_ENTROPY_NV_SEED
