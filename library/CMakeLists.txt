@@ -95,6 +95,10 @@ endif()
 
 list(APPEND src_crypto ${thirdparty_src})
 
+# Extract version from include/mbedtls/version.h
+file(STRINGS "${MBEDTLS_DIR}/include/mbedtls/version.h" MBEDTLS_VERSION_H REGEX "^#define *MBEDTLS_VERSION_STRING *\"[^\"]*\"$")
+string(REGEX REPLACE "^.*MBEDTLS_VERSION_STRING +\"([0-9.]*)\"$" "\\1" MBEDTLS_VERSION_STRING ${MBEDTLS_VERSION_H})
+
 if(CMAKE_COMPILER_IS_GNUCC)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wmissing-declarations -Wmissing-prototypes")
 endif(CMAKE_COMPILER_IS_GNUCC)
@@ -157,7 +161,7 @@ endif(USE_STATIC_MBEDTLS_LIBRARY)
 
 if(USE_SHARED_MBEDTLS_LIBRARY)
     add_library(mbedcrypto SHARED ${src_crypto})
-    set_target_properties(mbedcrypto PROPERTIES VERSION 2.17.0 SOVERSION 3)
+    set_target_properties(mbedcrypto PROPERTIES VERSION ${MBEDTLS_VERSION_STRING} SOVERSION 3)
     target_link_libraries(mbedcrypto ${libs})
     target_include_directories(mbedcrypto
         PUBLIC ${MBEDTLS_DIR}/include/
