@@ -130,6 +130,7 @@ endif(HAIKU)
 
 if(LINK_WITH_PTHREAD)
     set(libs ${libs} pthread)
+    list(APPEND mbedcrypto_PKGCONFIG_PRIVATE_LIBS -lpthread)
 endif()
 
 if(LINK_WITH_TRUSTED_STORAGE)
@@ -183,3 +184,15 @@ else()
         add_dependencies(lib mbedcrypto_static)
     endif()
 endif()
+
+include(PkgBuildConfig)
+
+set(PKG_BUILD_LIBDIR ${LIB_INSTALL_DIR})
+set(PKG_BUILD_INCLUDEDIR ${INCLUDE_INSTALL_DIR})
+pkg_build_config(NAME mbedcrypto
+    VERSION ${MBEDTLS_VERSION_STRING}
+    DESCRIPTION "The mbedTLS crypto library"
+    LIBS ${mbedcrypto_PKGCONFIG_LIBS}
+    PRIVATE_LIBS ${mbedcrypto_PKGCONFIG_PRIVATE_LIBS}
+    REQUIRES ${mbedcrypto_PKGCONFIG_REQUIRES}
+)

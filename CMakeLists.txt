@@ -5,6 +5,9 @@ else()
     project("mbed TLS" C)
 endif()
 
+# Add CMake modules to the path
+SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
+
 # Set the project root directory.
 set(MBEDTLS_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
