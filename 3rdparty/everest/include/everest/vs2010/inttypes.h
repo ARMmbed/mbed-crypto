@@ -23,14 +23,15 @@
 #ifndef _INTTYPES_H_VS2010
 #define _INTTYPES_H_VS2010
 
+#if _MSC_VER > 1600
+#else
 #include <stdint.h>
 
-#ifdef _MSC_VER
 #define inline __inline
-#endif
 
 /* VS2010 unsigned long == 8 bytes */
 
 #define PRIu64 "I64u"
 
+#endif
 #endif
