@@ -7,6 +7,12 @@
 #include <string.h>
 #include <inttypes.h>
 
+/* Some C compilers need help with the inline keyword */
+#if ( defined(__ARMCC_VERSION) || defined(_MSC_VER) ) && \
+    !defined(inline) && !defined(__cplusplus)
+#define inline __inline
+#endif
+
 /******************************************************************************/
 /* Implementing C.fst (part 2: endian-ness macros)                            */
 /******************************************************************************/
