@@ -31,6 +31,12 @@
 #  define inline __inline__
 #endif
 
+/* Some C compilers need help with the inline keyword */
+#if ( defined(__ARMCC_VERSION) || defined(_MSC_VER) ) && \
+    !defined(inline) && !defined(__cplusplus)
+#define inline __inline
+#endif
+
 /* GCC-specific attribute syntax; everyone else gets the standard C inline
  * attribute. */
 #ifdef __GNU_C__
