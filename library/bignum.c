@@ -743,9 +743,20 @@ static mbedtls_mpi_uint mpi_uint_bigendian_to_host_c( mbedtls_mpi_uint x )
 {
     uint8_t i;
     mbedtls_mpi_uint tmp = 0;
-    /* This works regardless of the endianness. */
-    for( i = 0; i < ciL; i++, x >>= 8 )
-        tmp |= ( x & 0xFF ) << ( ( ciL - 1 - i ) << 3 );
+    uint32_t endian_check = 1;
+    /* This determines the endianness. */
+    if ( ( ( uint8_t* ) &endian_check )[0] == 1 )
+    {
+        /* Little endian */
+        for( i = 0; i < ciL; i++, x >>= 8 )
+            tmp |= ( x & 0xFF ) << ( ( ciL - 1 - i ) << 3 );
+    } 
+    else 
+    {
+        /* Big endian */
+        tmp = x;
+    }
+
     return( tmp );
 }
 
