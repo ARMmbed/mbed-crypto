@@ -35,7 +35,7 @@
     do {                                                    \
        if( ! (TEST) )                                       \
        {                                                    \
-          test_fail( #TEST, __LINE__, __FILE__ );           \
+          set_test_result( #TEST, __LINE__, __FILE__, TEST_RESULT_FAILED ); \
           return( PSA_ERROR_DETECTED_BY_DRIVER );           \
        }                                                    \
     } while( 0 )
@@ -51,7 +51,7 @@
     do {                                                    \
        if( ! (TEST) )                                       \
        {                                                    \
-          test_fail( #TEST, __LINE__, __FILE__ );           \
+          set_test_result( #TEST, __LINE__, __FILE__, TEST_RESULT_FAILED ); \
           status = PSA_ERROR_DETECTED_BY_DRIVER;            \
           goto exit;                                        \
        }                                                    \
@@ -75,7 +75,7 @@
             goto exit;                                                  \
         if( PSA_ASSERT_VIA_DRIVER_status != ( expected_status ) )       \
         {                                                               \
-            test_fail( #expr, __LINE__, __FILE__ );                     \
+            set_test_result( #expr, __LINE__, __FILE__, TEST_RESULT_FAILED ); \
             goto exit;                                                  \
         }                                                               \
     } while( 0 )
