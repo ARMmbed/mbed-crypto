@@ -557,7 +557,10 @@ int mbedtls_chacha20_self_test( int verbose )
                 mbedtls_printf( "skipped\n" );
             continue;
         }
-        else ASSERT( 0 == ret, ( "error code: %i\n", ret ) );
+        else
+        {
+            ASSERT( 0 == ret, ( "error code: %i\n", ret ) );
+        }
 
         ASSERT( 0 == memcmp( output, test_output[i], test_lengths[i] ),
                 ( "failed (output)\n" ) );
