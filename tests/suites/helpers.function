@@ -496,8 +496,8 @@ void test_set_step( unsigned long step )
     test_info.step = step;
 }
 
-static void set_test_result( const char *test, int line_no,
-                             const char* filename, test_result_t test_result )
+void set_test_result( const char *test, int line_no,
+                      const char* filename, test_result_t test_result )
 {
     test_info.result = test_result;
     test_info.test = test;
