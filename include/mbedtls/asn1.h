@@ -276,6 +276,16 @@ int mbedtls_asn1_get_bitstring_null( unsigned char **p, const unsigned char *end
                              size_t *len );
 
 /**
+ * \brief          Free a heap-allocated linked list presentation of
+ *                 an ASN.1 sequence, including the first element.
+ *
+ * \param seq      The address of the first sequence component. This may
+ *                 be \c NULL, in which case this functions returns
+ *                 immediately.
+ */
+void mbedtls_asn1_sequence_free( mbedtls_asn1_sequence *seq );
+
+/**
  * \brief       This function parses and splits an ASN.1 "SEQUENCE OF <tag>"
  *              and updates the source buffer pointer to immediately behind
  *              the full sequence.
