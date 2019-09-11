@@ -938,33 +938,22 @@ int main( int argc, char *argv[] )
 
             dhm.len = mbedtls_mpi_size( &dhm.P );
             mbedtls_snprintf( title, sizeof( title ), "DHE-%d", dhm_sizes[i] );
-            ret = mbedtls_dhm_make_public( &dhm, (int) dhm.len, buf, dhm.len, myrand, NULL );
-            if( ret != 0 )
-            {
-                mbedtls_printf( HEADER_FORMAT, title );
-                if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-                {
-                    mbedtls_printf( "Feature not supported. Skipping.\n" );
-                    ret = 0;
-                    continue;
-                }
-                else
-                {
-                    mbedtls_printf( "Failed.\n");
-                    mbedtls_exit( 1 );
-                }
-            }
+            CHECK_AND_CONTINUE(  mbedtls_dhm_make_public( &dhm, (int) dhm.len, buf,
+                                                          dhm.len, myrand, NULL ) );
             if( mbedtls_mpi_copy( &dhm.GY, &dhm.GX ) != 0 )
                 mbedtls_exit( 1 );
 
             TIME_PUBLIC( title, "handshake",
-                    ret |= mbedtls_dhm_make_public( &dhm, (int) dhm.len, buf, dhm.len,
-                                            myrand, NULL );
-                    ret |= mbedtls_dhm_calc_secret( &dhm, buf, sizeof( buf ), &olen, myrand, NULL ) );
+                    CHECK_AND_BREAK( mbedtls_dhm_make_public( &dhm, (int) dhm.len,
+                                                              buf, dhm.len,
+                                                              myrand, NULL ) );
+                    CHECK_AND_BREAK(  mbedtls_dhm_calc_secret( &dhm, buf, sizeof( buf ),
+                                                               &olen, myrand, NULL ) ) );
 
             mbedtls_snprintf( title, sizeof( title ), "DH-%d", dhm_sizes[i] );
             TIME_PUBLIC( title, "handshake",
-                    ret |= mbedtls_dhm_calc_secret( &dhm, buf, sizeof( buf ), &olen, myrand, NULL ) );
+                    CHECK_AND_BREAK(  mbedtls_dhm_calc_secret( &dhm, buf, sizeof( buf ),
+                                                               &olen, myrand, NULL ) ) );
 
             mbedtls_dhm_free( &dhm );
         }
@@ -1014,7 +1003,6 @@ int main( int argc, char *argv[] )
             CHECK_AND_CONTINUE( mbedtls_ecdsa_genkey( &ecdsa, curve_info->grp_id, myrand, NULL ) );
             CHECK_AND_CONTINUE( mbedtls_ecdsa_write_signature( &ecdsa, MBEDTLS_MD_SHA256, buf, curve_info->bit_size,
                                                tmp, &sig_len, myrand, NULL ) );
-
             ecp_clear_precomputed( &ecdsa.grp );
 
             TIME_PUBLIC( title, "verify",
