@@ -1120,6 +1120,70 @@ component_test_cmake_out_of_source () {
     unset MBEDTLS_ROOT_DIR
 }
 
+component_test_basic_mbed_os_conf () {
+msg "build+test: Mbed OS default configuration"
+    scripts/config.pl unset MBEDTLS_NET_C
+    scripts/config.pl unset MBEDTLS_TIMING_C
+    scripts/config.pl unset MBEDTLS_HAVE_TIME_DATE
+    scripts/config.pl unset MBEDTLS_FS_IO
+    scripts/config.pl unset MBEDTLS_PSA_ITS_FILE_C # requires a filesystem
+    scripts/config.pl unset MBEDTLS_PSA_CRYPTO_STORAGE_C # requires PSA ITS
+    #scripts/config.pl set MBEDTLS_NO_PLATFORM_ENTROPY Need some entropy
+    scripts/config.pl unset MBEDTLS_CIPHER_MODE_CFB
+    scripts/config.pl unset MBEDTLS_CIPHER_MODE_OFB
+    scripts/config.pl unset MBEDTLS_CIPHER_MODE_CTR
+    scripts/config.pl unset MBEDTLS_CIPHER_PADDING_ONE_AND_ZEROS
+    scripts/config.pl unset MBEDTLS_CIPHER_PADDING_ZEROS_AND_LEN
+    scripts/config.pl unset MBEDTLS_CIPHER_PADDING_ZEROS
+    scripts/config.pl unset MBEDTLS_CIPHER_MODE_XTS
+    scripts/config.pl unset MBEDTLS_ECP_DP_SECP192R1_ENABLED
+    scripts/config.pl unset MBEDTLS_ECP_DP_SECP224R1_ENABLED
+    scripts/config.pl unset MBEDTLS_ECP_DP_SECP521R1_ENABLED
+    scripts/config.pl unset MBEDTLS_ECP_DP_SECP192K1_ENABLED
+    scripts/config.pl unset MBEDTLS_ECP_DP_SECP224K1_ENABLED
+    scripts/config.pl unset MBEDTLS_ECP_DP_SECP256K1_ENABLED
+    scripts/config.pl unset MBEDTLS_ECP_DP_BP256R1_ENABLED
+    scripts/config.pl unset MBEDTLS_ECP_DP_BP384R1_ENABLED
+    scripts/config.pl unset MBEDTLS_ECP_DP_BP512R1_ENABLED
+    scripts/config.pl unset MBEDTLS_PK_PARSE_EC_EXTENDED
+    scripts/config.pl unset MBEDTLS_AESNI_C
+    scripts/config.pl unset MBEDTLS_ARC4_C
+    scripts/config.pl unset MBEDTLS_BLOWFISH_C
+    scripts/config.pl unset MBEDTLS_CAMELLIA_C
+    scripts/config.pl unset MBEDTLS_DES_C
+    scripts/config.pl unset MBEDTLS_DHM_C
+    scripts/config.pl unset MBEDTLS_GENPRIME
+    scripts/config.pl unset MBEDTLS_MD5_C
+    scripts/config.pl unset MBEDTLS_PADLOCK_C
+    scripts/config.pl unset MBEDTLS_PEM_WRITE_C
+    scripts/config.pl unset MBEDTLS_PKCS5_C
+    scripts/config.pl unset MBEDTLS_PKCS12_C
+    scripts/config.pl unset MBEDTLS_RIPEMD160_C
+    scripts/config.pl unset MBEDTLS_SHA1_C
+    scripts/config.pl unset MBEDTLS_XTEA_C
+    scripts/config.pl set MBEDTLS_CMAC_C
+    scripts/config.pl set MBEDTLS_AES_ROM_TABLES
+    scripts/config.pl unset MBEDTLS_X509_RSASSA_PSS_SUPPORT
+    scripts/config.pl unset MBEDTLS_X509_CSR_PARSE_C
+    scripts/config.pl unset MBEDTLS_X509_CREATE_C
+    scripts/config.pl unset MBEDTLS_X509_CRT_WRITE_C
+    scripts/config.pl unset MBEDTLS_X509_CSR_WRITE_C
+    scripts/config.pl unset MBEDTLS_KEY_EXCHANGE_DHE_PSK_ENABLED
+    scripts/config.pl unset MBEDTLS_KEY_EXCHANGE_RSA_PSK_ENABLED
+    scripts/config.pl unset MBEDTLS_KEY_EXCHANGE_RSA_ENABLED
+    scripts/config.pl unset MBEDTLS_KEY_EXCHANGE_DHE_RSA_ENABLED
+    scripts/config.pl unset MBEDTLS_KEY_EXCHANGE_ECDH_ECDSA_ENABLED
+    scripts/config.pl unset MBEDTLS_KEY_EXCHANGE_ECDH_RSA_ENABLED
+    scripts/config.pl unset MBEDTLS_SSL_FALLBACK_SCSV
+    scripts/config.pl unset MBEDTLS_SSL_CBC_RECORD_SPLITTING
+    scripts/config.pl unset MBEDTLS_SSL_PROTO_TLS1
+    scripts/config.pl unset MBEDTLS_SSL_PROTO_TLS1_1
+    scripts/config.pl unset MBEDTLS_SSL_TRUNCATED_HMAC
+    scripts/config.pl unset MBEDTLS_PLATFORM_TIME_TYPE_MACRO
+    scripts/config.pl set MBEDTLS_MPI_MAX_SIZE     512
+    make CC=gcc CFLAGS='-Werror -O1' all test
+}
+
 component_test_cmake_as_subdirectory () {
     msg "build: cmake 'as-subdirectory' build"
     MBEDTLS_ROOT_DIR="$PWD"
