@@ -3779,6 +3779,8 @@ void sign_fail( int key_type_arg, data_t *key_data,
     size_t signature_length = 0xdeadbeef;
     psa_key_attributes_t attributes = PSA_KEY_ATTRIBUTES_INIT;
 
+    TEST_ASSERT( signature_size != 0 );
+    TEST_ASSERT( signature_size <= PSA_ASYMMETRIC_SIGNATURE_MAX_SIZE );
     ASSERT_ALLOC( signature, signature_size );
 
     PSA_ASSERT( psa_crypto_init( ) );
