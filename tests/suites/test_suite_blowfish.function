@@ -235,7 +235,6 @@ void blowfish_encrypt_cbc( data_t * key_str, data_t * iv_str,
                                                  output ), cbc_result );
     if( cbc_result == 0 )
     {
-
         TEST_ASSERT( hexcmp( output, hex_dst_string->x, src_str->len, hex_dst_string->len ) == 0 );
     }
 

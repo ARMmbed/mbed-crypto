@@ -77,7 +77,6 @@ void aes_encrypt_cbc( data_t * key_str, data_t * iv_str,
                                             iv_str->x, src_str->x, output ), cbc_result );
     if( cbc_result == 0 )
     {
-
         TEST_ASSERT( hexcmp( output, hex_dst_string->x, src_str->len, hex_dst_string->len ) == 0 );
     }
 
@@ -103,7 +102,6 @@ void aes_decrypt_cbc( data_t * key_str, data_t * iv_str,
                                             iv_str->x, src_str->x, output ), cbc_result );
     if( cbc_result == 0)
     {
-
         TEST_ASSERT( hexcmp( output, hex_dst_string->x, src_str->len, hex_dst_string->len ) == 0 );
     }
 
@@ -316,7 +314,6 @@ void aes_decrypt_cfb8( data_t * key_str, data_t * iv_str,
 {
     unsigned char output[100];
     mbedtls_aes_context ctx;
-
     memset(output, 0x00, 100);
     mbedtls_aes_init( &ctx );
 
