@@ -1907,10 +1907,7 @@ static int chacha20_setkey_wrap( void *ctx, const unsigned char *key,
     if( key_bitlen != 256U )
         return( MBEDTLS_ERR_CIPHER_BAD_INPUT_DATA );
 
-    if ( 0 != mbedtls_chacha20_setkey( (mbedtls_chacha20_context*)ctx, key ) )
-        return( MBEDTLS_ERR_CIPHER_BAD_INPUT_DATA );
-
-    return( 0 );
+    return( mbedtls_chacha20_setkey( (mbedtls_chacha20_context*)ctx, key ) );
 }
 
 static int chacha20_stream_wrap( void *ctx,  size_t length,
@@ -1992,10 +1989,7 @@ static int chachapoly_setkey_wrap( void *ctx,
     if( key_bitlen != 256U )
         return( MBEDTLS_ERR_CIPHER_BAD_INPUT_DATA );
 
-    if ( 0 != mbedtls_chachapoly_setkey( (mbedtls_chachapoly_context*)ctx, key ) )
-        return( MBEDTLS_ERR_CIPHER_BAD_INPUT_DATA );
-
-    return( 0 );
+    return( mbedtls_chachapoly_setkey( (mbedtls_chachapoly_context*)ctx, key ) );
 }
 
 static void * chachapoly_ctx_alloc( void )
