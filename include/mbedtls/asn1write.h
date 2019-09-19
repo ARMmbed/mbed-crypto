@@ -106,6 +106,23 @@ int mbedtls_asn1_write_raw_buffer( unsigned char **p, unsigned char *start,
  */
 int mbedtls_asn1_write_mpi( unsigned char **p, unsigned char *start,
                             const mbedtls_mpi *X );
+
+/**
+ * \brief           Write a arbitrary-precision number as an
+ *                  octet string (#MBEDTLS_ASN1_OCTET_STRING)
+ *                  in ASN.1 format.
+ *
+ * \note            This function works backwards in data buffer.
+ *
+ * \param p         The reference to the current position pointer.
+ * \param start     The start of the buffer, for bounds-checking.
+ * \param X         The MPI to write.
+ *
+ * \return          The number of bytes written to \p p on success.
+ * \return          A negative \c MBEDTLS_ERR_ASN1_XXX error code on failure.
+ */
+int mbedtls_asn1_write_mpi_to_octet_string( unsigned char **p, unsigned char *start,
+                                            const mbedtls_mpi *X );
 #endif /* MBEDTLS_BIGNUM_C */
 
 /**

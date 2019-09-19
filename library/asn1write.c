@@ -164,6 +164,30 @@ int mbedtls_asn1_write_mpi( unsigned char **p, unsigned char *start, const mbedt
 cleanup:
     return( ret );
 }
+
+int mbedtls_asn1_write_mpi_to_octet_string( unsigned char **p, unsigned char *start, const mbedtls_mpi *X )
+{
+    int ret;
+    size_t len = 0;
+
+    // Write the MPI
+    //
+    len = mbedtls_mpi_size( X );
+
+    if( *p < start || (size_t)( *p - start ) < len )
+        return( MBEDTLS_ERR_ASN1_BUF_TOO_SMALL );
+
+    (*p) -= len;
+    MBEDTLS_MPI_CHK( mbedtls_mpi_write_binary( X, *p, len ) );
+
+    MBEDTLS_ASN1_CHK_ADD( len, mbedtls_asn1_write_len( p, start, len ) );
+    MBEDTLS_ASN1_CHK_ADD( len, mbedtls_asn1_write_tag( p, start, MBEDTLS_ASN1_OCTET_STRING ) );
+
+    ret = (int) len;
+
+cleanup:
+    return( ret );
+}
 #endif /* MBEDTLS_BIGNUM_C */
 
 int mbedtls_asn1_write_null( unsigned char **p, unsigned char *start )
