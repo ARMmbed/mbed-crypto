@@ -119,18 +119,34 @@ typedef enum
 
 /**
  * \brief   This macro tests the expression passed to it as a test step or
- *          individual test in a test case, comparing result to an expected
- *          result given as parameter, and skips the test in case the underlying
- *          alternative implementation doesn't support the feature.
+ *          individual test in a test case.
  *
  *          It allows a library function to return a value and return an error
  *          code that can be tested.
- *          It receives an expected return code and:
- *          - If the underlying alternative implementation does not support the feature,
- *          by returning MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED, the test is skipped.
- *          - If and fails in case the expression
- *          results different.
  *
+ *          When MBEDTLS_CHECK_PARAMS is enabled, calls to the parameter failure
+ *          callback, MBEDTLS_PARAM_FAILED(), will be assumed to be a test
+ *          failure.
+ *
+ *          This macro receives the expected return code of the function,
+ *          and fails if the retuned code is not the expected return code, or
+ *          MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED.
+ *
+ *          Failing the test means:
+ *          - Mark this test case as failed.
+ *          - Print a message identifying the failure.
+ *          - Jump to the \c exit label.
+ *
+ *          In case the returned error code is MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED,
+ *          the test is skipped.
+ *
+ *          Skipping the test means:
+ *          - Mark this test case as skipped.
+ *          - Print a message that test was skipped.
+ *          - Jump to the \c exit label.
+ *
+ *          This macro expands to an instruction, not an expression.
+ *          It may jump to the \c exit label.
  *
  * \param   TEST    The test expression to be tested.
  * \param   EXP_RET The expected return code from the function

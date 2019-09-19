@@ -213,8 +213,6 @@ void aes_crypt_xts_size( int size, int retval )
      * otherwise we wouldn't get to the size check we're interested in. */
     TEST_ASSERT_RET( mbedtls_aes_crypt_xts( &ctx, MBEDTLS_AES_ENCRYPT, length,
                                             data_unit, src, output ), retval );
-exit:
-    return;
 }
 /* END_CASE */
 

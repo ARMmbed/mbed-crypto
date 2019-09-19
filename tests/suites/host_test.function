@@ -748,7 +748,7 @@ int execute_tests( int argc , const char ** argv )
                         mbedtls_fprintf( stdout, "----\n" );
                         if( 1 == option_verbose )
                         {
-                            mbedtls_fprintf( stdout, "  %s\n  Feature not supported by the platform at line %d, %s\n",
+                            mbedtls_fprintf( stdout, "  %s\n  Test is skipped at line %d, %s\n",
                                              test_info.test, test_info.line_no,
                                              test_info.filename );
                         }
@@ -757,11 +757,6 @@ int execute_tests( int argc , const char ** argv )
                     {
                         mbedtls_fprintf( stdout, "PASS\n" );
                     }
-                }
-                else if( test_info.result == TEST_RESULT_SKIPPED )
-                {
-                    mbedtls_fprintf( stdout, "----\n" );
-                    total_skipped++;
                 }
                 else
                 {
