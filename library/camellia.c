@@ -965,54 +965,21 @@ int mbedtls_camellia_self_test( int verbose )
 
         if( v == MBEDTLS_CAMELLIA_DECRYPT ) {
             ret = mbedtls_camellia_setkey_dec( &ctx, key, 128 + u * 64 );
-            if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-            {
-                if( verbose != 0 )
-                    mbedtls_printf( "skipped\n" );
-                continue;
-            }
-            else if( ret != 0 )
-            {
-                if( verbose != 0 )
-                    mbedtls_printf( "failed\n" );
+            MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
 
-                return( 1 );
-            }
             memcpy( src, camellia_test_ecb_cipher[u][i], 16 );
             memcpy( dst, camellia_test_ecb_plain[i], 16 );
         } else { /* MBEDTLS_CAMELLIA_ENCRYPT */
             ret = mbedtls_camellia_setkey_enc( &ctx, key, 128 + u * 64 );
-            if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-            {
-                if( verbose != 0 )
-                    mbedtls_printf( "skipped\n" );
-                continue;
-            }
-            else if( ret != 0 )
-            {
-                if( verbose != 0 )
-                    mbedtls_printf( "failed\n" );
+            MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
 
-                return( 1 );
-            }
             memcpy( src, camellia_test_ecb_plain[i], 16 );
             memcpy( dst, camellia_test_ecb_cipher[u][i], 16 );
         }
 
         ret = mbedtls_camellia_crypt_ecb( &ctx, v, src, buf );
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "skipped\n" );
-            continue;
-        }
-        else if( ret != 0 )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "failed\n" );
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
 
-            return( 1 );
-        }
 
         if( memcmp( buf, dst, 16 ) != 0 )
         {
@@ -1053,18 +1020,8 @@ int mbedtls_camellia_self_test( int verbose )
             ret = mbedtls_camellia_setkey_enc( &ctx, key, 128 + u * 64 );
         }
 
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            mbedtls_printf( "skipped\n" );
-            continue;
-        }
-        else if( ret != 0 )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "failed\n" );
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
 
-            return( 1 );
-        }
 
         for( i = 0; i < CAMELLIA_TESTS_CBC; i++ ) {
 
@@ -1079,18 +1036,7 @@ int mbedtls_camellia_self_test( int verbose )
             }
 
             ret = mbedtls_camellia_crypt_cbc( &ctx, v, 16, iv, src, buf );
-            if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-            {
-                mbedtls_printf( "skipped\n" );
-                continue;
-            }
-            else if( ret != 0 )
-            {
-                if( verbose != 0 )
-                    mbedtls_printf( "failed\n" );
-
-                return( 1 );
-            }
+            MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
 
             if( memcmp( buf, dst, 16 ) != 0 )
             {
@@ -1127,19 +1073,8 @@ int mbedtls_camellia_self_test( int verbose )
 
         offset = 0;
         ret = mbedtls_camellia_setkey_enc( &ctx, key, 128 );
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "skipped\n" );
-            continue;
-        }
-        else if( ret != 0 )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "failed\n" );
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
 
-            return( 1 );
-        }
 
         if( v == MBEDTLS_CAMELLIA_DECRYPT )
         {
@@ -1148,19 +1083,8 @@ int mbedtls_camellia_self_test( int verbose )
 
             ret = mbedtls_camellia_crypt_ctr( &ctx, len, &offset, nonce_counter,
                                               stream_block, buf, buf );
-            if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-            {
-                if( verbose != 0 )
-                    mbedtls_printf( "skipped\n" );
-                continue;
-            }
-            else if( ret != 0 )
-            {
-                if( verbose != 0 )
-                    mbedtls_printf( "failed\n" );
+            MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
 
-                return( 1 );
-            }
 
             if( memcmp( buf, camellia_test_ctr_pt[u], len ) != 0 )
             {
@@ -1177,19 +1101,7 @@ int mbedtls_camellia_self_test( int verbose )
 
             ret = mbedtls_camellia_crypt_ctr( &ctx, len, &offset, nonce_counter,
                                               stream_block, buf, buf );
-            if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-            {
-                if( verbose != 0 )
-                    mbedtls_printf( "skipped\n" );
-                continue;
-            }
-            else if( ret != 0 )
-            {
-                if( verbose != 0 )
-                    mbedtls_printf( "failed\n" );
-
-                return( 1 );
-            }
+            MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
 
             if( memcmp( buf, camellia_test_ctr_ct[u], len ) != 0 )
             {
@@ -1208,7 +1120,17 @@ int mbedtls_camellia_self_test( int verbose )
         mbedtls_printf( "\n" );
 #endif /* MBEDTLS_CIPHER_MODE_CTR */
 
-    return( 0 );
+exit:
+    if( ret != 0 )
+    {
+        if( verbose != 0 )
+            mbedtls_printf( "failed\n" );
+        return( 1 );
+    }
+    else
+    {
+        return( 0 );
+    }
 }
 
 #endif /* MBEDTLS_SELF_TEST */

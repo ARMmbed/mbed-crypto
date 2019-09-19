@@ -504,13 +504,9 @@ int mbedtls_chachapoly_self_test( int verbose )
         mbedtls_chachapoly_init( &ctx );
 
         ret = mbedtls_chachapoly_setkey( &ctx, test_key[i] );
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "skipped\n" );
-            continue;
-        }
-        else ASSERT( 0 == ret, ( "setkey() error code: %i\n", ret ) );
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
+
+
 
         ret = mbedtls_chachapoly_encrypt_and_tag( &ctx,
                                                   test_input_len[i],
@@ -521,14 +517,7 @@ int mbedtls_chachapoly_self_test( int verbose )
                                                   output,
                                                   mac );
 
-
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "skipped\n" );
-            continue;
-        }
-        else ASSERT( 0 == ret, ( "crypt_and_tag() error code: %i\n", ret ) );
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
 
         ASSERT( 0 == memcmp( output, test_output[i], test_input_len[i] ),
                 ( "failure (wrong output)\n" ) );
@@ -545,7 +534,17 @@ int mbedtls_chachapoly_self_test( int verbose )
     if( verbose != 0 )
         mbedtls_printf( "\n" );
 
-    return( 0 );
+exit:
+    if( ret != 0 )
+    {
+        if( verbose != 0 )
+            mbedtls_printf( "error code: %i\n", ret );
+        return( -1 );
+    }
+    else
+    {
+        return( 0 );
+    }
 }
 
 #endif /* MBEDTLS_SELF_TEST */

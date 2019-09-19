@@ -550,17 +550,7 @@ int mbedtls_chacha20_self_test( int verbose )
                                       test_input[i],
                                       output );
 
-
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "skipped\n" );
-            continue;
-        }
-        else
-        {
-            ASSERT( 0 == ret, ( "error code: %i\n", ret ) );
-        }
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
 
         ASSERT( 0 == memcmp( output, test_output[i], test_lengths[i] ),
                 ( "failed (output)\n" ) );
@@ -572,7 +562,17 @@ int mbedtls_chacha20_self_test( int verbose )
     if( verbose != 0 )
         mbedtls_printf( "\n" );
 
-    return( 0 );
+exit:
+    if( ret != 0 )
+    {
+        if( verbose != 0 )
+            mbedtls_printf( "error code: %i\n", ret );
+        return( -1 );
+    }
+    else
+    {
+        return( 0 );
+    }
 }
 
 #endif /* MBEDTLS_SELF_TEST */

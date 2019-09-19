@@ -1838,33 +1838,14 @@ int mbedtls_aes_self_test( int verbose )
             aes_tests = aes_test_ecb_enc[u];
         }
 
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "skipped\n" );
-            continue;
-        }
-        else if( ret != 0 )
-        {
-            goto exit;
-        }
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
 
         for( j = 0; j < 10000; j++ )
         {
             ret = mbedtls_aes_crypt_ecb( &ctx, mode, buf, buf );
-            if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-            {
-                break;
-            }
-            else if( ret != 0 )
-                goto exit;
+            MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_BREAK( ret, 0 );
         }
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "skipped\n" );
-            break;
-        }
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_BREAK( ret, verbose );
 
         if( memcmp( buf, aes_tests, 16 ) != 0 )
         {
@@ -1908,16 +1889,7 @@ int mbedtls_aes_self_test( int verbose )
             aes_tests = aes_test_cbc_enc[u];
         }
 
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "skipped\n" );
-            continue;
-        }
-        else if( ret != 0 )
-        {
-            goto exit;
-        }
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
 
         for( j = 0; j < 10000; j++ )
         {
@@ -1931,20 +1903,10 @@ int mbedtls_aes_self_test( int verbose )
             }
 
             ret = mbedtls_aes_crypt_cbc( &ctx, mode, 16, iv, buf, buf );
-            if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-            {
-                break;
-            }
-            else if( ret != 0 )
-                goto exit;
+            MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_BREAK( ret, 0 );
 
         }
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "skipped\n" );
-            break;
-        }
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_BREAK( ret, verbose );
 
         if( memcmp( buf, aes_tests, 16 ) != 0 )
         {
@@ -1980,16 +1942,7 @@ int mbedtls_aes_self_test( int verbose )
         offset = 0;
         ret = mbedtls_aes_setkey_enc( &ctx, key, keybits );
 
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "skipped\n" );
-            continue;
-        }
-        else if( ret != 0 )
-        {
-            goto exit;
-        }
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
 
         if( mode == MBEDTLS_AES_DECRYPT )
         {
@@ -2003,14 +1956,7 @@ int mbedtls_aes_self_test( int verbose )
         }
 
         ret = mbedtls_aes_crypt_cfb128( &ctx, mode, 64, &offset, iv, buf, buf );
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "skipped\n" );
-            break;
-        }
-        else if( ret != 0 )
-            goto exit;
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_BREAK( ret, verbose );
 
         if( memcmp( buf, aes_tests, 64 ) != 0 )
         {
@@ -2046,16 +1992,7 @@ int mbedtls_aes_self_test( int verbose )
         offset = 0;
         ret = mbedtls_aes_setkey_enc( &ctx, key, keybits );
 
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "skipped\n" );
-            continue;
-        }
-        else if( ret != 0 )
-        {
-            goto exit;
-        }
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
 
         if( mode == MBEDTLS_AES_DECRYPT )
         {
@@ -2069,14 +2006,7 @@ int mbedtls_aes_self_test( int verbose )
         }
 
         ret = mbedtls_aes_crypt_ofb( &ctx, 64, &offset, iv, buf, buf );
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "skipped\n" );
-            break;
-        }
-        else if( ret != 0 )
-            goto exit;
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_BREAK( ret, verbose );
 
         if( memcmp( buf, aes_tests, 64 ) != 0 )
         {
@@ -2128,14 +2058,7 @@ int mbedtls_aes_self_test( int verbose )
         ret = mbedtls_aes_crypt_ctr( &ctx, len, &offset, nonce_counter,
                                      stream_block, buf, buf );
 
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "skipped\n" );
-            break;
-        }
-        else if( ret != 0 )
-            goto exit;
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_BREAK( ret, verbose );
 
         if( memcmp( buf, aes_tests, len ) != 0 )
         {
@@ -2182,14 +2105,8 @@ int mbedtls_aes_self_test( int verbose )
         {
             ret = mbedtls_aes_xts_setkey_dec( &ctx_xts, key, 256 );
 
-            if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-            {
-                if( verbose != 0 )
-                    mbedtls_printf( "skipped\n" );
-                continue;
-            }
-            else if( ret != 0)
-                goto exit;
+            MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
+
             memcpy( buf, aes_test_xts_ct32[u], len );
             aes_tests = aes_test_xts_pt32[u];
         }
@@ -2197,14 +2114,8 @@ int mbedtls_aes_self_test( int verbose )
         {
             ret = mbedtls_aes_xts_setkey_enc( &ctx_xts, key, 256 );
 
-            if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-            {
-                if( verbose != 0 )
-                    mbedtls_printf( "skipped\n" );
-                continue;
-            }
-            else if( ret != 0)
-                goto exit;
+            MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
+
             memcpy( buf, aes_test_xts_pt32[u], len );
             aes_tests = aes_test_xts_ct32[u];
         }
@@ -2213,14 +2124,7 @@ int mbedtls_aes_self_test( int verbose )
         ret = mbedtls_aes_crypt_xts( &ctx_xts, mode, len, data_unit,
                                      buf, buf );
 
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "skipped\n" );
-            break;
-        }
-        else if( ret != 0 )
-            goto exit;
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_BREAK( ret, verbose );
 
         if( memcmp( buf, aes_tests, len ) != 0 )
         {
@@ -2242,8 +2146,12 @@ int mbedtls_aes_self_test( int verbose )
     ret = 0;
 
 exit:
-    if( ret != 0 && verbose != 0 )
-        mbedtls_printf( "failed\n" );
+    if( ret != 0 )
+    {
+        ret = 1;
+        if( verbose != 0 )
+            mbedtls_printf( "failed\n" );
+    }
 
     mbedtls_aes_free( &ctx );
 

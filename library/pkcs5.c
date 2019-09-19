@@ -359,6 +359,21 @@ static const unsigned char result_key_test_data[MAX_TESTS][32] =
       0xcc, 0x37, 0xd7, 0xf0, 0x34, 0x25, 0xe0, 0xc3 },
 };
 
+#define PKCS5_CHECK( RET )                        \
+    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED ) \
+    {                                                     \
+        if( verbose != 0 )                                \
+            mbedtls_printf( "skipped\n" );                \
+        ret = 0;                                          \
+    }                                                     \
+    else                                                  \
+    {                                                     \
+        if( verbose != 0 )                                \
+            mbedtls_printf( "failed\n" );                 \
+        ret = 1;                                          \
+    }                                                     \
+    goto exit;
+
 int mbedtls_pkcs5_self_test( int verbose )
 {
     mbedtls_md_context_t sha1_ctx;
@@ -377,19 +392,7 @@ int mbedtls_pkcs5_self_test( int verbose )
 
     if( ( ret = mbedtls_md_setup( &sha1_ctx, info_sha1, 1 ) ) != 0 )
     {
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "skipped\n" );
-            ret = 0;
-        }
-        else
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "failed\n" );
-            ret = 1;
-        }
-        goto exit;
+        PKCS5_CHECK( ret );
     }
 
     for( i = 0; i < MAX_TESTS; i++ )
@@ -404,18 +407,7 @@ int mbedtls_pkcs5_self_test( int verbose )
         if( ret != 0 ||
             memcmp( result_key_test_data[i], key, key_len_test_data[i] ) != 0 )
         {
-            if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-            {
-                if( verbose != 0 )
-                    mbedtls_printf( "skipped\n" );
-                ret = 0;
-            }
-            else
-            {
-                if( verbose != 0 )
-                    mbedtls_printf( "failed\n" );
-                ret = 1;
-            }
+            PKCS5_CHECK( ret );
         }
 
         if( verbose != 0 )

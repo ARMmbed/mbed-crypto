@@ -514,14 +514,9 @@ int mbedtls_ccm_self_test( int verbose )
                                            plaintext, ciphertext,
                                            ciphertext + msg_len_test_data[i],
                                            tag_len_test_data[i] );
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "skipped\n" );
-            continue;
-        }
-        else if( ret != 0 ||
-            memcmp( ciphertext, res_test_data[i],
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
+
+        if( memcmp( ciphertext, res_test_data[i],
                     msg_len_test_data[i] + tag_len_test_data[i] ) != 0 )
         {
             if( verbose != 0 )
@@ -537,14 +532,9 @@ int mbedtls_ccm_self_test( int verbose )
                                         ciphertext, plaintext,
                                         ciphertext + msg_len_test_data[i],
                                         tag_len_test_data[i] );
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "skipped\n" );
-            continue;
-        }
-        else if( ret != 0 ||
-            memcmp( plaintext, msg_test_data, msg_len_test_data[i] ) != 0 )
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
+
+        if( memcmp( plaintext, msg_test_data, msg_len_test_data[i] ) != 0 )
         {
             if( verbose != 0 )
                 mbedtls_printf( "failed\n" );
@@ -560,8 +550,18 @@ int mbedtls_ccm_self_test( int verbose )
 
     if( verbose != 0 )
         mbedtls_printf( "\n" );
+exit:
+    if( ret != 0 )
+    {
+        if( verbose != 0 )
+            mbedtls_printf( "failed\n" );
 
-    return( 0 );
+        return( 1 );
+    }
+    else
+    {
+        return( 0 );
+    }
 }
 
 #endif /* MBEDTLS_SELF_TEST && MBEDTLS_AES_C */

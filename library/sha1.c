@@ -518,17 +518,8 @@ int mbedtls_sha1_self_test( int verbose )
         if( verbose != 0 )
             mbedtls_printf( "  SHA-1 test #%d: ", i + 1 );
 
-        if( ( ret = mbedtls_sha1_starts_ret( &ctx ) ) != 0 )
-        {
-            if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-            {
-                if( verbose != 0 )
-                    mbedtls_printf( "skipped\n" );
-                ret = 0;
-                continue;
-            }
-            goto fail;
-        }
+        ret = mbedtls_sha1_starts_ret( &ctx );
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
 
         if( i == 2 )
         {
@@ -537,52 +528,23 @@ int mbedtls_sha1_self_test( int verbose )
             for( j = 0; j < 1000; j++ )
             {
                 ret = mbedtls_sha1_update_ret( &ctx, buf, buflen );
-                {
-                    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-                    {
-                        if( verbose != 0 )
-                            mbedtls_printf( "skipped\n" );
-                        ret = 0;
-                        continue;
-                    }
-                    else if( ret != 0 )
-                        goto fail;
-                }
+                MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
             }
         }
         else
         {
             ret = mbedtls_sha1_update_ret( &ctx, sha1_test_buf[i],
                                            sha1_test_buflen[i] );
-            {
-                if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-                {
-                    if( verbose != 0 )
-                        mbedtls_printf( "skipped\n" );
-                    ret = 0;
-                    continue;
-                }
-                else if( ret != 0 )
-                    goto fail;
-            }
+            MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
         }
 
-        if( ( ret = mbedtls_sha1_finish_ret( &ctx, sha1sum ) ) != 0 )
-        {
-            if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-            {
-                if( verbose != 0 )
-                    mbedtls_printf( "skipped\n" );
-                ret = 0;
-                continue;
-            }
-            else goto fail;
-        }
+        ret = mbedtls_sha1_finish_ret( &ctx, sha1sum );
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
 
         if( memcmp( sha1sum, sha1_test_sum[i], 20 ) != 0 )
         {
             ret = 1;
-            goto fail;
+            goto exit;
         }
 
         if( verbose != 0 )
@@ -592,13 +554,14 @@ int mbedtls_sha1_self_test( int verbose )
     if( verbose != 0 )
         mbedtls_printf( "\n" );
 
-    goto exit;
-
-fail:
-    if( verbose != 0 )
-        mbedtls_printf( "failed\n" );
-
 exit:
+    if( ret != 0 )
+    {
+        if( verbose != 0 )
+            mbedtls_printf( "failed\n" );
+        ret = 1;
+    }
+
     mbedtls_sha1_free( &ctx );
 
     return( ret );

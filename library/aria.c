@@ -960,27 +960,11 @@ int mbedtls_aria_self_test( int verbose )
         if( verbose )
             mbedtls_printf( "  ARIA-ECB-%d (enc): ", 128 + 64 * i );
         ret = mbedtls_aria_setkey_enc( &ctx, aria_test1_ecb_key, 128 + 64 * i );
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "skipped\n" );
-            continue;
-        }
-        else if( ret != 0 )
-        {
-            return( 1 );
-        }
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
+
         ret = mbedtls_aria_crypt_ecb( &ctx, aria_test1_ecb_pt, blk );
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose )
-                mbedtls_printf( "skipped\n" );
-            continue;
-        }
-        else if( ret != 0 )
-        {
-            return( 1 );
-        }
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
+
         if( memcmp( blk, aria_test1_ecb_ct[i], MBEDTLS_ARIA_BLOCKSIZE ) != 0 )
             ARIA_SELF_TEST_IF_FAIL;
 
@@ -988,16 +972,8 @@ int mbedtls_aria_self_test( int verbose )
         if( verbose )
             mbedtls_printf( "  ARIA-ECB-%d (dec): ", 128 + 64 * i );
         ret = mbedtls_aria_setkey_dec( &ctx, aria_test1_ecb_key, 128 + 64 * i );
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose )
-                mbedtls_printf( "skipped\n" );
-            continue;
-        }
-        else if( ret != 0 )
-        {
-            return(1);
-        }
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
+
         mbedtls_aria_crypt_ecb( &ctx, aria_test1_ecb_ct[i], blk );
         if( memcmp( blk, aria_test1_ecb_pt, MBEDTLS_ARIA_BLOCKSIZE ) != 0 )
             ARIA_SELF_TEST_IF_FAIL;
@@ -1015,30 +991,14 @@ int mbedtls_aria_self_test( int verbose )
         if( verbose )
             mbedtls_printf( "  ARIA-CBC-%d (enc): ", 128 + 64 * i );
         ret = mbedtls_aria_setkey_enc( &ctx, aria_test2_key, 128 + 64 * i );
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose )
-                mbedtls_printf( "skipped\n" );
-            continue;
-        }
-        else if( ret != 0 )
-        {
-            return(1);
-        }
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
+
         memcpy( iv, aria_test2_iv, MBEDTLS_ARIA_BLOCKSIZE );
         memset( buf, 0x55, sizeof( buf ) );
         ret = mbedtls_aria_crypt_cbc( &ctx, MBEDTLS_ARIA_ENCRYPT, 48, iv,
                                       aria_test2_pt, buf );
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose )
-                mbedtls_printf( "skipped\n" );
-            continue;
-        }
-        else if( ret != 0 )
-        {
-            return(1);
-        }
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
+
         if( memcmp( buf, aria_test2_cbc_ct[i], 48 ) != 0 )
             ARIA_SELF_TEST_IF_FAIL;
 
@@ -1046,30 +1006,14 @@ int mbedtls_aria_self_test( int verbose )
         if( verbose )
             mbedtls_printf( "  ARIA-CBC-%d (dec): ", 128 + 64 * i );
         ret = mbedtls_aria_setkey_dec( &ctx, aria_test2_key, 128 + 64 * i );
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose )
-                mbedtls_printf( "skipped\n" );
-            continue;
-        }
-        else if( ret != 0 )
-        {
-            return(1);
-        }
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
+
         memcpy( iv, aria_test2_iv, MBEDTLS_ARIA_BLOCKSIZE );
         memset( buf, 0xAA, sizeof( buf ) );
         ret = mbedtls_aria_crypt_cbc( &ctx, MBEDTLS_ARIA_DECRYPT, 48, iv,
                                       aria_test2_cbc_ct[i], buf );
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose )
-                mbedtls_printf( "skipped\n" );
-            continue;
-        }
-        else if( ret != 0 )
-        {
-            return(1);
-        }
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
+
         if( memcmp( buf, aria_test2_pt, 48 ) != 0 )
             ARIA_SELF_TEST_IF_FAIL;
     }
@@ -1085,31 +1029,15 @@ int mbedtls_aria_self_test( int verbose )
         if( verbose )
             mbedtls_printf( "  ARIA-CFB-%d (enc): ", 128 + 64 * i );
         ret = mbedtls_aria_setkey_enc( &ctx, aria_test2_key, 128 + 64 * i );
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose )
-                mbedtls_printf( "skipped\n" );
-            continue;
-        }
-        else if( ret != 0 )
-        {
-            return(1);
-        }
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
+
         memcpy( iv, aria_test2_iv, MBEDTLS_ARIA_BLOCKSIZE );
         memset( buf, 0x55, sizeof( buf ) );
         j = 0;
         ret = mbedtls_aria_crypt_cfb128( &ctx, MBEDTLS_ARIA_ENCRYPT, 48, &j, iv,
                                          aria_test2_pt, buf );
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose )
-                mbedtls_printf( "skipped\n" );
-            continue;
-        }
-        else if( ret != 0 )
-        {
-            return(1);
-        }
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
+
         if( memcmp( buf, aria_test2_cfb_ct[i], 48 ) != 0 )
             ARIA_SELF_TEST_IF_FAIL;
 
@@ -1117,31 +1045,15 @@ int mbedtls_aria_self_test( int verbose )
         if( verbose )
             mbedtls_printf( "  ARIA-CFB-%d (dec): ", 128 + 64 * i );
         ret = mbedtls_aria_setkey_enc( &ctx, aria_test2_key, 128 + 64 * i );
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose )
-                mbedtls_printf( "skipped\n" );
-            continue;
-        }
-        else if( ret != 0 )
-        {
-            return(1);
-        }
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
+
         memcpy( iv, aria_test2_iv, MBEDTLS_ARIA_BLOCKSIZE );
         memset( buf, 0xAA, sizeof( buf ) );
         j = 0;
         ret = mbedtls_aria_crypt_cfb128( &ctx, MBEDTLS_ARIA_DECRYPT, 48, &j,
                                          iv, aria_test2_cfb_ct[i], buf );
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose )
-                mbedtls_printf( "skipped\n" );
-            continue;
-        }
-        else if( ret != 0 )
-        {
-            return(1);
-        }
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
+
         if( memcmp( buf, aria_test2_pt, 48 ) != 0 )
             ARIA_SELF_TEST_IF_FAIL;
     }
@@ -1156,31 +1068,15 @@ int mbedtls_aria_self_test( int verbose )
         if( verbose )
             mbedtls_printf( "  ARIA-CTR-%d (enc): ", 128 + 64 * i );
         ret = mbedtls_aria_setkey_enc( &ctx, aria_test2_key, 128 + 64 * i );
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose )
-                mbedtls_printf( "skipped\n" );
-            continue;
-        }
-        else if( ret != 0 )
-        {
-            return(1);
-        }
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
+
         memset( iv, 0, MBEDTLS_ARIA_BLOCKSIZE );                    // IV = 0
         memset( buf, 0x55, sizeof( buf ) );
         j = 0;
         ret = mbedtls_aria_crypt_ctr( &ctx, 48, &j, iv, blk,
                                       aria_test2_pt, buf );
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose )
-                mbedtls_printf( "skipped\n" );
-            continue;
-        }
-        else if( ret != 0 )
-        {
-            return(1);
-        }
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
+
         if( memcmp( buf, aria_test2_ctr_ct[i], 48 ) != 0 )
             ARIA_SELF_TEST_IF_FAIL;
 
@@ -1188,31 +1084,15 @@ int mbedtls_aria_self_test( int verbose )
         if( verbose )
             mbedtls_printf( "  ARIA-CTR-%d (dec): ", 128 + 64 * i );
         ret = mbedtls_aria_setkey_enc( &ctx, aria_test2_key, 128 + 64 * i );
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose )
-                mbedtls_printf( "skipped\n" );
-            continue;
-        }
-        else if( ret != 0 )
-        {
-            return(1);
-        }
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
+
         memset( iv, 0, MBEDTLS_ARIA_BLOCKSIZE );                    // IV = 0
         memset( buf, 0xAA, sizeof( buf ) );
         j = 0;
         ret = mbedtls_aria_crypt_ctr( &ctx, 48, &j, iv, blk,
                                       aria_test2_ctr_ct[i], buf );
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose )
-                mbedtls_printf( "skipped\n" );
-            continue;
-        }
-        else if( ret != 0 )
-        {
-            return(1);
-        }
+        MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( ret );
+
         if( memcmp( buf, aria_test2_pt, 48 ) != 0 )
             ARIA_SELF_TEST_IF_FAIL;
     }
@@ -1220,7 +1100,15 @@ int mbedtls_aria_self_test( int verbose )
         mbedtls_printf( "\n" );
 #endif /* MBEDTLS_CIPHER_MODE_CTR */
 
-    return( 0 );
+exit:
+    if( ret != 0 )
+    {
+        return( 1 );
+    }
+    else
+    {
+        return( 0 );
+    }
 }
 
 #endif /* MBEDTLS_SELF_TEST */

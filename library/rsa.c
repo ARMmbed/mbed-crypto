@@ -2607,6 +2607,22 @@ static int myrand( void *rng_state, unsigned char *output, size_t len )
 }
 #endif /* MBEDTLS_PKCS1_V15 */
 
+#define RSA_CHECK( RET )                          \
+    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED ) \
+    {                                                     \
+        if( verbose != 0 )                                \
+            mbedtls_printf( "skipped\n" );                \
+        ret = 0;                                          \
+        goto cleanup;                                     \
+    }                                                     \
+    else  if( ret != 0 )                                  \
+    {                                                     \
+        if( verbose != 0 )                                \
+            mbedtls_printf( "failed\n" );                 \
+        ret = 1;                                          \
+        goto cleanup;                                     \
+    }
+
 /*
  * Checkup routine
  */
@@ -2630,100 +2646,26 @@ int mbedtls_rsa_self_test( int verbose )
 
     MBEDTLS_MPI_CHK( mbedtls_mpi_read_string( &K, 16, RSA_N  ) );
     ret = mbedtls_rsa_import( &rsa, &K, NULL, NULL, NULL, NULL );
-    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-    {
-        if( verbose != 0 )
-            mbedtls_printf( "skipped\n" );
-        ret = 0;
-        goto cleanup;
-    }
-    else if( ret != 0 )
-    {
-        if( verbose != 0 )
-            mbedtls_printf( "failed\n" );
-        ret = 1;
-        goto cleanup;
-    }
+    RSA_CHECK( ret );
+
     MBEDTLS_MPI_CHK( mbedtls_mpi_read_string( &K, 16, RSA_P  ) );
     ret =  mbedtls_rsa_import( &rsa, NULL, &K, NULL, NULL, NULL );
-    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-    {
-        if( verbose != 0 )
-            mbedtls_printf( "skipped\n" );
-        ret = 0;
-        goto cleanup;
-    }
-    else if( ret != 0 )
-    {
-        if( verbose != 0 )
-            mbedtls_printf( "failed\n" );
-        ret = 1;
-        goto cleanup;
-    }
+    RSA_CHECK( ret );
+
     MBEDTLS_MPI_CHK( mbedtls_mpi_read_string( &K, 16, RSA_Q  ) );
     ret = mbedtls_rsa_import( &rsa, NULL, NULL, &K, NULL, NULL );
-    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-    {
-        if( verbose != 0 )
-            mbedtls_printf( "skipped\n" );
-        ret = 0;
-        goto cleanup;
-    }
-    else if( ret != 0 )
-    {
-        if( verbose != 0 )
-            mbedtls_printf( "failed\n" );
-        ret = 1;
-        goto cleanup;
-    }
+    RSA_CHECK( ret );
+
     MBEDTLS_MPI_CHK( mbedtls_mpi_read_string( &K, 16, RSA_D  ) );
     ret = mbedtls_rsa_import( &rsa, NULL, NULL, NULL, &K, NULL );
-    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-    {
-        if( verbose != 0 )
-            mbedtls_printf( "skipped\n" );
-        ret = 0;
-        goto cleanup;
-    }
-    else if( ret != 0 )
-    {
-        if( verbose != 0 )
-            mbedtls_printf( "failed\n" );
-        ret = 1;
-        goto cleanup;
-    }
+    RSA_CHECK( ret );
+
     MBEDTLS_MPI_CHK( mbedtls_mpi_read_string( &K, 16, RSA_E  ) );
     ret = mbedtls_rsa_import( &rsa, NULL, NULL, NULL, NULL, &K );
-    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-    {
-        if( verbose != 0 )
-            mbedtls_printf( "skipped\n" );
-        ret = 0;
-        goto cleanup;
-    }
-    else if( ret != 0 )
-    {
-        if( verbose != 0 )
-            mbedtls_printf( "failed\n" );
-        ret = 1;
-        goto cleanup;
-    }
+    RSA_CHECK( ret );
 
     ret = mbedtls_rsa_complete( &rsa );
-    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-    {
-        if( verbose != 0 )
-            mbedtls_printf( "skipped\n" );
-        ret = 0;
-        goto cleanup;
-    }
-    else if( ret != 0 )
-    {
-        if( verbose != 0 )
-            mbedtls_printf( "failed\n" );
-        ret = 1;
-        goto cleanup;
-    }
+    RSA_CHECK( ret );
 
     if( verbose != 0 )
         mbedtls_printf( "  RSA key validation: " );
@@ -2731,20 +2673,7 @@ int mbedtls_rsa_self_test( int verbose )
     if( ( ret = mbedtls_rsa_check_pubkey(  &rsa ) ) != 0 ||
         ( ret = mbedtls_rsa_check_privkey( &rsa ) ) != 0 )
     {
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-           if( verbose != 0 )
-               mbedtls_printf( "skipped\n" );
-           ret = 0;
-           goto cleanup;
-        }
-        else if( ret != 0 )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "failed\n" );
-            ret = 1;
-            goto cleanup;
-        }
+        RSA_CHECK( ret );
     }
 
     if( verbose != 0 )
@@ -2756,20 +2685,7 @@ int mbedtls_rsa_self_test( int verbose )
                                            PT_LEN, rsa_plaintext,
                                            rsa_ciphertext ) ) != 0 )
     {
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "skipped\n" );
-            ret = 0;
-            goto cleanup;
-        }
-        else if( ret != 0 )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "failed\n" );
-            ret = 1;
-            goto cleanup;
-        }
+        RSA_CHECK( ret );
     }
 
     if( verbose != 0 )
@@ -2779,20 +2695,7 @@ int mbedtls_rsa_self_test( int verbose )
                                            &len, rsa_ciphertext, rsa_decrypted,
                                            sizeof(rsa_decrypted) ) ) != 0 )
     {
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "skipped\n" );
-            ret = 0;
-            goto cleanup;
-        }
-        else if( ret != 0 )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "failed\n" );
-            ret = 1;
-            goto cleanup;
-        }
+        RSA_CHECK( ret );
     }
 
     if( memcmp( rsa_decrypted, rsa_plaintext, len ) != 0 )
@@ -2813,40 +2716,14 @@ int mbedtls_rsa_self_test( int verbose )
 
     if( (ret = mbedtls_sha1_ret( rsa_plaintext, PT_LEN, sha1sum ) ) != 0 )
     {
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "skipped\n" );
-            ret = 0;
-            goto cleanup;
-        }
-        else if( ret != 0 )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "failed\n" );
-            ret = 1;
-            goto cleanup;
-        }
+        RSA_CHECK( ret );
     }
 
     if( ( ret =  mbedtls_rsa_pkcs1_sign( &rsa, myrand, NULL,
                                          MBEDTLS_RSA_PRIVATE, MBEDTLS_MD_SHA1, 0,
                                          sha1sum, rsa_ciphertext ) ) != 0 )
     {
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "skipped\n" );
-            ret = 0;
-            goto cleanup;
-        }
-        else if( ret != 0 )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "failed\n" );
-            ret = 1;
-            goto cleanup;
-        }
+        RSA_CHECK( ret );
     }
 
     if( verbose != 0 )
@@ -2856,20 +2733,7 @@ int mbedtls_rsa_self_test( int verbose )
                                           MBEDTLS_RSA_PUBLIC, MBEDTLS_MD_SHA1, 0,
                                           sha1sum, rsa_ciphertext ) ) != 0 )
     {
-        if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "skipped\n" );
-            ret = 0;
-            goto cleanup;
-        }
-        else if( ret != 0 )
-        {
-            if( verbose != 0 )
-                mbedtls_printf( "failed\n" );
-            ret = 1;
-            goto cleanup;
-        }
+        RSA_CHECK( ret );
     }
 
     if( verbose != 0 )

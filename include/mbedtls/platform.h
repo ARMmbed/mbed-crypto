@@ -50,6 +50,30 @@
 extern "C" {
 #endif
 
+#define MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_CONTINUE( RET )        \
+    if( RET == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )           \
+        {                                                           \
+            if( verbose != 0 )                                      \
+                mbedtls_printf( "skipped\n" );                      \
+            continue;                                               \
+        }                                                           \
+        else if( RET != 0 )                                         \
+        {                                                           \
+            goto exit;                                              \
+        }
+
+#define MBEDTLS_PLATFORM_SELF_TEST_CHECK_AND_BREAK( RET, VERBOSE )  \
+    if( RET == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )           \
+        {                                                           \
+            if( VERBOSE != 0 )                                      \
+                mbedtls_printf( "skipped\n" );                      \
+            break;                                                  \
+        }                                                           \
+        else if( RET != 0 )                                         \
+        {                                                           \
+            goto exit;                                              \
+        }
+
 #if defined(MBEDTLS_PLATFORM_C)
 /**
  * \name SECTION: Module settings

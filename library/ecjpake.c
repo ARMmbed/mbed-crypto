@@ -1000,6 +1000,16 @@ static int ecjpake_lgc( void *p, unsigned char *out, size_t len )
         }                   \
     } while( 0 )
 
+#define ECJPAKE_CHECK( RET )                       \
+    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )  \
+    {                                                      \
+        if( verbose != 0 )                                 \
+            mbedtls_printf( "skipped\n" );                 \
+            ret = 0;                                       \
+            goto cleanup;                                  \
+    }                                                      \
+    TEST_ASSERT( ret == 0 );
+
 /*
  * Checkup routine
  */
@@ -1021,27 +1031,13 @@ int mbedtls_ecjpake_self_test( int verbose )
                                  MBEDTLS_MD_SHA256, MBEDTLS_ECP_DP_SECP256R1,
                                  ecjpake_test_password,
                                  sizeof( ecjpake_test_password ) );
-    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-    {
-        if( verbose != 0 )
-            mbedtls_printf( "skipped\n" );
-        ret = 0;
-        goto cleanup;
-    }
-    TEST_ASSERT( ret == 0 );
+    ECJPAKE_CHECK( ret );
 
     ret = mbedtls_ecjpake_setup( &srv, MBEDTLS_ECJPAKE_SERVER,
                                  MBEDTLS_MD_SHA256, MBEDTLS_ECP_DP_SECP256R1,
                                  ecjpake_test_password,
                                  sizeof( ecjpake_test_password ) );
-    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-    {
-        if( verbose != 0 )
-            mbedtls_printf( "skipped\n" );
-        ret = 0;
-        goto cleanup;
-    }
-    TEST_ASSERT( ret == 0 );
+    ECJPAKE_CHECK( ret );
 
     if( verbose != 0 )
         mbedtls_printf( "passed\n" );
@@ -1051,109 +1047,39 @@ int mbedtls_ecjpake_self_test( int verbose )
 
     ret = mbedtls_ecjpake_write_round_one( &cli, buf, sizeof( buf ),
                                            &len, ecjpake_lgc, NULL );
-    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-    {
-        if( verbose != 0 )
-            mbedtls_printf( "skipped\n" );
-        ret = 0;
-        goto cleanup;
-    }
-    TEST_ASSERT( ret == 0 );
+    ECJPAKE_CHECK( ret );
 
     ret = mbedtls_ecjpake_read_round_one( &srv, buf, len );
-    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-    {
-        if( verbose != 0 )
-            mbedtls_printf( "skipped\n" );
-        ret = 0;
-        goto cleanup;
-    }
-    TEST_ASSERT( ret == 0 );
+    ECJPAKE_CHECK( ret );
 
     ret = mbedtls_ecjpake_write_round_one( &srv, buf, sizeof( buf ),
                                            &len, ecjpake_lgc, NULL );
-    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-    {
-        if( verbose != 0 )
-            mbedtls_printf( "skipped\n" );
-        ret = 0;
-        goto cleanup;
-    }
-    TEST_ASSERT( ret == 0 );
+    ECJPAKE_CHECK( ret );
 
     ret = mbedtls_ecjpake_read_round_one( &cli, buf, len );
-    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-    {
-        if( verbose != 0 )
-            mbedtls_printf( "skipped\n" );
-        ret = 0;
-        goto cleanup;
-    }
-    TEST_ASSERT( ret == 0 );
+    ECJPAKE_CHECK( ret );
 
     ret = mbedtls_ecjpake_write_round_two( &srv, buf, sizeof( buf ),
                                            &len, ecjpake_lgc, NULL );
-    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-    {
-        if( verbose != 0 )
-            mbedtls_printf( "skipped\n" );
-        ret = 0;
-        goto cleanup;
-    }
-    TEST_ASSERT( ret == 0 );
+    ECJPAKE_CHECK( ret );
 
     ret = mbedtls_ecjpake_read_round_two( &cli, buf, len );
-    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-    {
-        if( verbose != 0 )
-            mbedtls_printf( "skipped\n" );
-        ret = 0;
-        goto cleanup;
-    }
-    TEST_ASSERT( ret == 0 );
+    ECJPAKE_CHECK( ret );
 
     ret = mbedtls_ecjpake_derive_secret( &cli, pms, sizeof( pms ),
                                          &pmslen, ecjpake_lgc, NULL );
-    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-    {
-        if( verbose != 0 )
-            mbedtls_printf( "skipped\n" );
-        ret = 0;
-        goto cleanup;
-    }
-    TEST_ASSERT( ret == 0 );
+    ECJPAKE_CHECK( ret );
 
     ret = mbedtls_ecjpake_write_round_two( &cli, buf, sizeof( buf ),
                                            &len, ecjpake_lgc, NULL );
-    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-    {
-        if( verbose != 0 )
-            mbedtls_printf( "skipped\n" );
-        ret = 0;
-        goto cleanup;
-    }
-    TEST_ASSERT( ret == 0 );
+    ECJPAKE_CHECK( ret );
 
     ret = mbedtls_ecjpake_read_round_two( &srv, buf, len );
-    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-    {
-        if( verbose != 0 )
-            mbedtls_printf( "skipped\n" );
-        ret = 0;
-        goto cleanup;
-    }
-    TEST_ASSERT( ret == 0 );
+    ECJPAKE_CHECK( ret );
 
     ret = mbedtls_ecjpake_derive_secret( &srv, buf, sizeof( buf ),
                                          &len, ecjpake_lgc, NULL );
-    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-    {
-        if( verbose != 0 )
-            mbedtls_printf( "skipped\n" );
-        ret = 0;
-        goto cleanup;
-    }
-    TEST_ASSERT( ret == 0 );
+    ECJPAKE_CHECK( ret );
 
     TEST_ASSERT( len == pmslen );
     TEST_ASSERT( memcmp( buf, pms, len ) == 0 );
@@ -1176,55 +1102,25 @@ int mbedtls_ecjpake_self_test( int verbose )
     /* Read round one */
     ret = mbedtls_ecjpake_read_round_one( &srv, ecjpake_test_cli_one,
                                           sizeof( ecjpake_test_cli_one ) );
-    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-    {
-        if( verbose != 0 )
-            mbedtls_printf( "skipped\n" );
-        goto cleanup;
-    }
-    TEST_ASSERT( ret == 0 );
+    ECJPAKE_CHECK( ret );
 
     ret = mbedtls_ecjpake_read_round_one( &cli, ecjpake_test_srv_one,
                                           sizeof( ecjpake_test_srv_one ) );
-    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-    {
-        if( verbose != 0 )
-            mbedtls_printf( "skipped\n" );
-        goto cleanup;
-    }
-    TEST_ASSERT( ret == 0 );
+    ECJPAKE_CHECK( ret );
 
     /* Skip generation of round two, read round two */
     ret = mbedtls_ecjpake_read_round_two( &cli, ecjpake_test_srv_two,
                                           sizeof( ecjpake_test_srv_two ) );
-    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-    {
-        if( verbose != 0 )
-            mbedtls_printf( "skipped\n" );
-        goto cleanup;
-    }
-    TEST_ASSERT( ret == 0 );
+    ECJPAKE_CHECK( ret );
 
     ret = mbedtls_ecjpake_read_round_two( &srv, ecjpake_test_cli_two,
                                           sizeof( ecjpake_test_cli_two ) );
-    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-    {
-        if( verbose != 0 )
-            mbedtls_printf( "skipped\n" );
-        goto cleanup;
-    }
-    TEST_ASSERT( ret == 0 );
+    ECJPAKE_CHECK( ret );
 
     /* Server derives PMS */
     ret = mbedtls_ecjpake_derive_secret( &srv, buf, sizeof( buf ),
                                          &len, ecjpake_lgc, NULL );
-    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-    {
-        if( verbose != 0 )
-            mbedtls_printf( "skipped\n" );
-        goto cleanup;
-    }
-    TEST_ASSERT( ret == 0 );
+    ECJPAKE_CHECK( ret );
 
     TEST_ASSERT( len == sizeof( ecjpake_test_pms ) );
     TEST_ASSERT( memcmp( buf, ecjpake_test_pms, len ) == 0 );
@@ -1234,13 +1130,7 @@ int mbedtls_ecjpake_self_test( int verbose )
     /* Client derives PMS */
     ret = mbedtls_ecjpake_derive_secret( &cli, buf, sizeof( buf ),
                                          &len, ecjpake_lgc, NULL );
-    if( ret == MBEDTLS_ERR_PLATFORM_FEATURE_UNSUPPORTED )
-    {
-        if( verbose != 0 )
-            mbedtls_printf( "skipped\n" );
-        goto cleanup;
-    }
-    TEST_ASSERT( ret == 0 );
+    ECJPAKE_CHECK( ret );
 
     TEST_ASSERT( len == sizeof( ecjpake_test_pms ) );
     TEST_ASSERT( memcmp( buf, ecjpake_test_pms, len ) == 0 );
