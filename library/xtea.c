@@ -144,9 +144,9 @@ int mbedtls_xtea_crypt_cbc( mbedtls_xtea_context *ctx, int mode, size_t length,
                     unsigned char iv[8], const unsigned char *input,
                     unsigned char *output)
 {
-    int i;
+    int i, ret = 0;
     unsigned char temp[8];
-
+    unsigned char *p_out = output;
     if( length % 8 )
         return( MBEDTLS_ERR_XTEA_INVALID_INPUT_LENGTH );
 
@@ -155,7 +155,11 @@ int mbedtls_xtea_crypt_cbc( mbedtls_xtea_context *ctx, int mode, size_t length,
         while( length > 0 )
         {
             memcpy( temp, input, 8 );
-            mbedtls_xtea_crypt_ecb( ctx, mode, input, output );
+            ret = mbedtls_xtea_crypt_ecb( ctx, mode, input, output );
+            if( ret != 0 )
+            {
+                goto cleanup;
+            }
 
             for( i = 0; i < 8; i++ )
                 output[i] = (unsigned char)( output[i] ^ iv[i] );
@@ -174,7 +178,11 @@ int mbedtls_xtea_crypt_cbc( mbedtls_xtea_context *ctx, int mode, size_t length,
             for( i = 0; i < 8; i++ )
                 output[i] = (unsigned char)( input[i] ^ iv[i] );
 
-            mbedtls_xtea_crypt_ecb( ctx, mode, output, output );
+            ret = mbedtls_xtea_crypt_ecb( ctx, mode, output, output );
+            if( ret != 0 )
+            {
+                goto cleanup;
+            }
             memcpy( iv, output, 8 );
 
             input  += 8;
@@ -183,7 +191,10 @@ int mbedtls_xtea_crypt_cbc( mbedtls_xtea_context *ctx, int mode, size_t length,
         }
     }
 
-    return( 0 );
+cleanup:
+    if( ret != 0 )
+        mbedtls_platform_zeroize( p_out, length );
+    return( ret );
 }
 #endif /* MBEDTLS_CIPHER_MODE_CBC */
 #endif /* !MBEDTLS_XTEA_ALT */
