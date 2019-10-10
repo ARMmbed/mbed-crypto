@@ -163,7 +163,7 @@ int mbedtls_asn1_get_int( unsigned char **p,
     *val = 0;
     while( len-- > 0 )
     {
-        *val = ( *val << 8 ) | **p;
+        *val = ( ((unsigned int) *val) << 8 ) | **p;
         (*p)++;
     }
 
