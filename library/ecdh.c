@@ -705,6 +705,7 @@ int mbedtls_ecdh_calc_secret( mbedtls_ecdh_context *ctx, size_t *olen,
     ECDH_VALIDATE_RET( ctx != NULL );
     ECDH_VALIDATE_RET( olen != NULL );
     ECDH_VALIDATE_RET( buf != NULL );
+    ECDH_VALIDATE_RET( f_rng != NULL );
 
 #if defined(MBEDTLS_ECP_RESTARTABLE)
     restart_enabled = ctx->restart_enabled;
