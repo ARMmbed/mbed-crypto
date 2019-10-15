@@ -8,13 +8,13 @@
 <h2 id="hardware-abstraction-layer">Hardware abstraction layer</h2>
 <p>PSA includes functional specifications describing a hardware abstraction layer covering <a href="accel/">cryptographic accelerators</a>, <a href="se/">secure elements</a> and <a href="entropy/">entropy sources</a>.</p>
 <h3 id="accelerator-driver-interface">Accelerator driver interface</h3>
-<p>The accelerator interface lets you drivers for cryptographic accelerators into an implementation of the PSA Cryptography API. Cryptographic accelerators perform cryptographic operations with keys in clear text.</p>
+<p>The cryptographic accelerator driver interface lets you write drivers for hardware that performs cryptographic operations with keys in clear text. You can plug such drivers into any implementation of the PSA Cryptography API.</p>
 <p>For more information, see <a href="accel/">PSA cryptography accelerator driver interface</a>.</p>
 <h3 id="secure-element-driver-interface">Secure element driver interface</h3>
-<p>The accelerator interface lets you drivers for external cryptoprocessors into an implementation of the PSA Cryptography API. External cryptoprocessors such as secure elements and smart cards perform cryptographic operations with keys accessed via opaque handles.</p>
+<p>The secure element driver interface lets you write drivers for external cryptoprocessors such as secure elements (SE), smart cards and hardware security modules (HSM) that perform operations on keys that never leave the external processor and are accessed only through opaque handles. You can plug such drivers into any implementation of the PSA Cryptography API.</p>
 <p>For more information, see <a href="se/">PSA secure element driver interface</a>.</p>
 <h3 id="entropy-source-driver-interface">Entropy source driver interface</h3>
-<p>The accelerator interface lets you drivers for entropy sources such as Hardware Random Number Generators (HRNG), also known as True Random Number Generators (TRNG), into an implementation of the PSA Cryptography API.</p>
+<p>The entropy source driver interface lets you write drivers for Hardware Random Number Generators (HRNG), also known as True Random Number Generators (TRNG). You can plug such drivers into any implementation of the PSA Cryptography API.</p>
 <p>For more information, see <a href="entropy/">PSA entropy source driver interface</a>.</p>
 <h2 id="feedback">Feedback</h2>
-<p>Arm welcomes feedback on the design of the PSA cryptography interfaces. If you think something could be improved, please open an <a href="https://github.com/ARMmbed/mbed-crypto/labels/api-spec">issue on the Mbed Crypto Github repository</a>. Alternatively, if you prefer to provide your feedback privately, please email us at <code>mbed-crypto@arm.com</code>. All feedback received by email is treated confidentially.</p>
+<p>Arm welcomes feedback on the design of the PSA cryptography interfaces. If you think something could be improved, please open an <a href="https://github.com/ARMmbed/mbed-crypto/labels/api-spec">issue on the Mbed Crypto GitHub repository</a>. Alternatively, if you prefer to provide your feedback privately, please email us at <code>mbed-crypto@arm.com</code>. All feedback received by email is treated confidentially.</p>
