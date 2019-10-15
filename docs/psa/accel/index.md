@@ -1,6 +1,7 @@
 # PSA cryptographic accelerator interface
 
-The accelerator interface lets you drivers for cryptographic accelerators into an implementation of the [PSA Cryptography API](../#application-programming-interface). Cryptographic accelerators perform cryptographic operations with keys in clear text.
+The cryptographic accelerator driver interface lets you write drivers for hardware that performs cryptographic operations with keys in clear text.
+You can plug such drivers into any implementation of the [PSA Cryptography API](../#application-programming-interface).
 
 **Status: draft** — major changes are still likely.
 

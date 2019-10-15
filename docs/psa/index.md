@@ -21,24 +21,27 @@ PSA includes functional specifications describing a hardware abstraction layer c
 
 ### Accelerator driver interface
 
-The accelerator interface lets you drivers for cryptographic accelerators into an implementation of the PSA Cryptography API. Cryptographic accelerators perform cryptographic operations with keys in clear text.
+The cryptographic accelerator driver interface lets you write drivers for hardware that performs cryptographic operations with keys in clear text.
+You can plug such drivers into any implementation of the PSA Cryptography API.
 
 For more information, see [PSA cryptography accelerator driver interface](accel/).
 
 ### Secure element driver interface
 
-The accelerator interface lets you drivers for external cryptoprocessors into an implementation of the PSA Cryptography API. External cryptoprocessors such as secure elements and smart cards perform cryptographic operations with keys accessed via opaque handles.
+The secure element driver interface lets you write drivers for external cryptoprocessors such as secure elements (SE), smart cards and hardware security modules (HSM) that perform operations on keys that never leave the external processor and are accessed only through opaque handles.
+You can plug such drivers into any implementation of the PSA Cryptography API.
 
 For more information, see [PSA secure element driver interface](se/).
 
 ### Entropy source driver interface
 
-The accelerator interface lets you drivers for entropy sources such as Hardware Random Number Generators (HRNG), also known as True Random Number Generators (TRNG), into an implementation of the PSA Cryptography API.
+The entropy source driver interface lets you write drivers for Hardware Random Number Generators (HRNG), also known as True Random Number Generators (TRNG).
+You can plug such drivers into any implementation of the PSA Cryptography API.
 
 For more information, see [PSA entropy source driver interface](entropy/).
 
 ## Feedback
 
 Arm welcomes feedback on the design of the PSA cryptography interfaces.
-If you think something could be improved, please open an [issue on the Mbed Crypto Github repository](https://github.com/ARMmbed/mbed-crypto/labels/api-spec).
+If you think something could be improved, please open an [issue on the Mbed Crypto GitHub repository](https://github.com/ARMmbed/mbed-crypto/labels/api-spec).
 Alternatively, if you prefer to provide your feedback privately, please email us at `mbed-crypto@arm.com`. All feedback received by email is treated confidentially.

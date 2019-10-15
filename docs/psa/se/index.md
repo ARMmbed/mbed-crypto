@@ -1,6 +1,7 @@
 # PSA secure element driver interface
 
-The accelerator interface lets you drivers for external cryptoprocessors into an implementation of the [PSA Cryptography API](../#application-programming-interface). External cryptoprocessors such as secure elements and smart cards perform cryptographic operations with keys accessed via opaque handles.
+The secure element driver interface lets you write drivers for external cryptoprocessors such as secure elements (SE), smart cards and hardware security modules (HSM) that perform operations on keys that never leave the external processor and are accessed only through opaque handles.
+You can plug such drivers into any implementation of the [PSA Cryptography API](../#application-programming-interface).
 
 **Status: draft** — major changes are still likely.
 

@@ -1,6 +1,7 @@
 # PSA entropy source driver interface
 
-The accelerator interface lets you drivers for entropy sources such as Hardware Random Number Generators (HRNG), also known as True Random Number Generators (TRNG), into an implementation of the [PSA Cryptography API](../#application-programming-interface).
+The entropy source driver interface lets you write drivers for Hardware Random Number Generators (HRNG), also known as True Random Number Generators (TRNG).
+You can plug such drivers into any implementation of the [PSA Cryptography API](../#application-programming-interface).
 
 **Status: draft** — major changes are still likely.
 
