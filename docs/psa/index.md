@@ -36,3 +36,9 @@ For more information, see [PSA secure element driver interface](se/).
 The accelerator interface lets you drivers for entropy sources such as Hardware Random Number Generators (HRNG), also known as True Random Number Generators (TRNG), into an implementation of the PSA Cryptography API.
 
 For more information, see [PSA entropy source driver interface](entropy/).
+
+## Feedback
+
+Arm welcomes feedback on the design of the PSA cryptography interfaces.
+If you think something could be improved, please open an [issue on the Mbed Crypto Github repository](https://github.com/ARMmbed/mbed-crypto/labels/api-spec).
+Alternatively, if you prefer to provide your feedback privately, please email us at `mbed-crypto@arm.com`. All feedback received by email is treated confidentially.
