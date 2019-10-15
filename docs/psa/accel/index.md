@@ -6,3 +6,5 @@ The accelerator interface lets you drivers for cryptographic accelerators into a
 
 **Documentation**: for now, please see the header file:
 [`include/psa/crypto_accel_driver.h`](https://github.com/ARMmbed/mbed-crypto/blob/development/include/psa/crypto_accel_driver.h)
+
+**Mbed Crypto support status**: Not implemented yet. For now, accelerators use the [Mbed TLS alternative cryptography engine interface](https://tls.mbed.org/kb/development/hw_acc_guidelines).

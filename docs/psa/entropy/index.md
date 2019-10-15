@@ -6,3 +6,5 @@ The accelerator interface lets you drivers for entropy sources such as Hardware 
 
 **Documentation**: for now, please see the header file:
 [`include/psa/crypto_entropy_driver.h`](https://github.com/ARMmbed/mbed-crypto/blob/development/include/psa/crypto_entropy_driver.h)
+
+**Mbed Crypto support status**: Not implemented yet. For now, entropy sources use the [Mbed TLS entropy module](https://tls.mbed.org/kb/how-to/add-entropy-sources-to-entropy-pool).
