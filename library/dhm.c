@@ -127,7 +127,18 @@ cleanup:
 void mbedtls_dhm_init( mbedtls_dhm_context *ctx )
 {
     DHM_VALIDATE( ctx != NULL );
-    memset( ctx, 0, sizeof( mbedtls_dhm_context ) );
+
+    ctx->len = 0;
+    mbedtls_mpi_init( &ctx->P  );
+    mbedtls_mpi_init( &ctx->G  );
+    mbedtls_mpi_init( &ctx->X  );
+    mbedtls_mpi_init( &ctx->GX );
+    mbedtls_mpi_init( &ctx->GY );
+    mbedtls_mpi_init( &ctx->K  );
+    mbedtls_mpi_init( &ctx->RP );
+    mbedtls_mpi_init( &ctx->Vi );
+    mbedtls_mpi_init( &ctx->Vf );
+    mbedtls_mpi_init( &ctx->pX );
 }
 
 /*

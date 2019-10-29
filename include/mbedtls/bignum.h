@@ -84,6 +84,24 @@
 
 #define MBEDTLS_MPI_MAX_BITS                              ( 8 * MBEDTLS_MPI_MAX_SIZE )    /**< Maximum number of bits for usable MPIs. */
 
+#if !defined(MBEDTLS_MPI_LOCAL_LIMB_SIZE)
+/*
+ * Maximum stack storage per MPI object for limbs, expressed in bytes. MPIs
+ * which can be wholly expressed in this number of bytes will not make any
+ * heap allocation calls.
+ *
+ * Result is an array of ( MBEDTLS_MPI_LOCAL_LIMB_SIZE / sizeof(mbedtls_mpi_uint) )
+ * limbs allocated within each mbedtls_mpi structure.
+ *
+ * Note: Calculations typically need multiple MPIs to exist simultaneously,
+ * depending on the exact calculation performed. As such, this figure is
+ * related to, but does not entirely determine, the amount of required stack
+ * space a particular call requires.
+ */
+#define MBEDTLS_MPI_LOCAL_LIMB_SIZE                       32       /**< Maximum number of bytes for local limb storage. */
+#endif /* !MBEDTLS_MPI_LOCAL_LIMB_SIZE */
+
+
 /*
  * When reading from files with mbedtls_mpi_read_file() and writing to files with
  * mbedtls_mpi_write_file() the buffer should have space
@@ -176,6 +194,9 @@
     #endif /* !MBEDTLS_NO_UDBL_DIVISION */
 #endif /* !MBEDTLS_HAVE_INT64 */
 
+
+#define MBEDTLS_MPI_LOCAL_LIMBS                ( MBEDTLS_MPI_LOCAL_LIMB_SIZE / sizeof(mbedtls_mpi_uint) )  /**< Maximum number of limbs for local limb storage. */
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -185,9 +206,11 @@ extern "C" {
  */
 typedef struct mbedtls_mpi
 {
-    int s;              /*!<  integer sign      */
-    size_t n;           /*!<  total # of limbs  */
-    mbedtls_mpi_uint *p;          /*!<  pointer to limbs  */
+    int s;                /*!<  integer sign              */
+    int els;              /*!<  extenal limb storage flag */
+    size_t n;             /*!<  total # of limbs          */
+    mbedtls_mpi_uint *p;  /*!<  pointer to limbs          */
+    mbedtls_mpi_uint l[MBEDTLS_MPI_LOCAL_LIMBS]; /*!<  local limb buffer */
 }
 mbedtls_mpi;
 

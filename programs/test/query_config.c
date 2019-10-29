@@ -1644,6 +1644,14 @@ int query_config( const char *config )
     }
 #endif /* MBEDTLS_MPI_MAX_SIZE */
 
+#if defined(MBEDTLS_MPI_LOCAL_LIMB_SIZE)
+    if( strcmp( "MBEDTLS_MPI_LOCAL_LIMB_SIZE", config ) == 0 )
+    {
+        MACRO_EXPANSION_TO_STR( MBEDTLS_MPI_LOCAL_LIMB_SIZE );
+        return( 0 );
+    }
+#endif /* MBEDTLS_MPI_LOCAL_LIMB_SIZE */
+
 #if defined(MBEDTLS_CTR_DRBG_ENTROPY_LEN)
     if( strcmp( "MBEDTLS_CTR_DRBG_ENTROPY_LEN", config ) == 0 )
     {
