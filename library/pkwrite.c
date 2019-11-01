@@ -425,7 +425,7 @@ int mbedtls_pk_write_key_der( mbedtls_pk_context *key, unsigned char *buf, size_
         len += par_len;
 
         /* privateKey */
-        MBEDTLS_ASN1_CHK_ADD( len, mbedtls_asn1_write_mpi_to_octet_string( &c, buf, &ec->d ) );
+        MBEDTLS_ASN1_CHK_ADD( len, mbedtls_asn1_write_mpi_to_octet_string( &c, buf, &ec->d, ec->d.n * 4 ) );
 
         /* version */
         MBEDTLS_ASN1_CHK_ADD( len, mbedtls_asn1_write_int( &c, buf, 1 ) );
