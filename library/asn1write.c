@@ -184,7 +184,7 @@ int mbedtls_asn1_write_mpi_to_octet_string( unsigned char **p, unsigned char *st
     (*p) -= mpi_size;
     MBEDTLS_MPI_CHK( mbedtls_mpi_write_binary( X, *p, mpi_size ) );
 
-    for( i = 0; i < len - mpi_size; i++ )
+    for( i = 0; i < (int)(len - mpi_size); i++ )
     {
        (*p)--;
        **p = 0;
