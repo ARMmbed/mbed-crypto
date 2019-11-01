@@ -117,12 +117,15 @@ int mbedtls_asn1_write_mpi( unsigned char **p, unsigned char *start,
  * \param p         The reference to the current position pointer.
  * \param start     The start of the buffer, for bounds-checking.
  * \param X         The MPI to write.
+ * \param len       The intended number of octets of the resulting string.
+ *                  If the MPI results in less octets, leading zeros is
+ *                  added to fill the string.
  *
  * \return          The number of bytes written to \p p on success.
  * \return          A negative \c MBEDTLS_ERR_ASN1_XXX error code on failure.
  */
 int mbedtls_asn1_write_mpi_to_octet_string( unsigned char **p, unsigned char *start,
-                                            const mbedtls_mpi *X );
+                                            const mbedtls_mpi *X, size_t len );
 #endif /* MBEDTLS_BIGNUM_C */
 
 /**
