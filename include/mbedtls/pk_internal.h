@@ -106,6 +106,11 @@ struct mbedtls_pk_info_t
     /** Interface with the debug module */
     void (*debug_func)( const void *ctx, mbedtls_pk_debug_item *items );
 
+#if defined(MBEDTLS_PK_RSA_ALT_SUPPORT)
+    /** Write public key in ASN.1 (only used for RSA-alt keys, so far) */
+    int (*write_pubkey_func)( void *ctx, uint8_t **p, uint8_t *start);
+#endif /* MBEDTLS_PK_RSA_ALT_SUPPORT */
+
 };
 #if defined(MBEDTLS_PK_RSA_ALT_SUPPORT)
 /* Container for RSA-alt */
@@ -115,6 +120,7 @@ typedef struct
     mbedtls_pk_rsa_alt_decrypt_func decrypt_func;
     mbedtls_pk_rsa_alt_sign_func sign_func;
     mbedtls_pk_rsa_alt_key_len_func key_len_func;
+    mbedtls_pk_rsa_alt_write_pubkey_func write_pubkey_func;
 } mbedtls_rsa_alt_context;
 #endif
 

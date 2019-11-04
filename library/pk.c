@@ -190,10 +190,11 @@ int mbedtls_pk_setup_opaque( mbedtls_pk_context *ctx, const psa_key_handle_t key
 /*
  * Initialize an RSA-alt context
  */
-int mbedtls_pk_setup_rsa_alt( mbedtls_pk_context *ctx, void * key,
+int mbedtls_pk_setup_rsa_alt2( mbedtls_pk_context *ctx, void * key,
                          mbedtls_pk_rsa_alt_decrypt_func decrypt_func,
                          mbedtls_pk_rsa_alt_sign_func sign_func,
-                         mbedtls_pk_rsa_alt_key_len_func key_len_func )
+                         mbedtls_pk_rsa_alt_key_len_func key_len_func,
+                         mbedtls_pk_rsa_alt_write_pubkey_func write_pubkey_func)
 {
     mbedtls_rsa_alt_context *rsa_alt;
     const mbedtls_pk_info_t *info = &mbedtls_rsa_alt_info;
@@ -213,8 +214,16 @@ int mbedtls_pk_setup_rsa_alt( mbedtls_pk_context *ctx, void * key,
     rsa_alt->decrypt_func = decrypt_func;
     rsa_alt->sign_func = sign_func;
     rsa_alt->key_len_func = key_len_func;
+    rsa_alt->write_pubkey_func = write_pubkey_func;
 
     return( 0 );
+}
+int mbedtls_pk_setup_rsa_alt( mbedtls_pk_context *ctx, void * key,
+                         mbedtls_pk_rsa_alt_decrypt_func decrypt_func,
+                         mbedtls_pk_rsa_alt_sign_func sign_func,
+                         mbedtls_pk_rsa_alt_key_len_func key_len_func )
+{
+    return mbedtls_pk_setup_rsa_alt2(ctx, key, decrypt_func, sign_func, key_len_func, NULL);
 }
 #endif /* MBEDTLS_PK_RSA_ALT_SUPPORT */
 

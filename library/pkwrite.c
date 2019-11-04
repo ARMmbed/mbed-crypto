@@ -28,6 +28,7 @@
 #if defined(MBEDTLS_PK_WRITE_C)
 
 #include "mbedtls/pk.h"
+#include "mbedtls/pk_internal.h"
 #include "mbedtls/asn1write.h"
 #include "mbedtls/oid.h"
 #include "mbedtls/platform_util.h"
@@ -167,6 +168,11 @@ int mbedtls_pk_write_pubkey( unsigned char **p, unsigned char *start,
     PK_VALIDATE_RET( start != NULL );
     PK_VALIDATE_RET( key != NULL );
 
+#if defined(MBEDTLS_PK_RSA_ALT_SUPPORT)
+    if( key->pk_info->write_pubkey_func )
+        return key->pk_info->write_pubkey_func(key->pk_ctx, p, start);
+    else
+#endif
 #if defined(MBEDTLS_RSA_C)
     if( mbedtls_pk_get_type( key ) == MBEDTLS_PK_RSA )
         MBEDTLS_ASN1_CHK_ADD( len, pk_write_rsa_pubkey( p, start, mbedtls_pk_rsa( *key ) ) );
@@ -237,6 +243,12 @@ int mbedtls_pk_write_pubkey_der( mbedtls_pk_context *key, unsigned char *buf, si
     MBEDTLS_ASN1_CHK_ADD( len, mbedtls_asn1_write_tag( &c, buf, MBEDTLS_ASN1_BIT_STRING ) );
 
     pk_type = mbedtls_pk_get_type( key );
+#if defined(MBEDTLS_PK_RSA_ALT_SUPPORT)
+    if( pk_type == MBEDTLS_PK_RSA_ALT )
+    {
+        pk_type = MBEDTLS_PK_RSA;
+    }
+#endif /* MBEDTLS_PK_RSA_ALT_SUPPORT */
 #if defined(MBEDTLS_ECP_C)
     if( pk_type == MBEDTLS_PK_ECKEY )
     {

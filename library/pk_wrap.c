@@ -214,6 +214,9 @@ const mbedtls_pk_info_t mbedtls_rsa_info = {
     NULL,
 #endif
     rsa_debug,
+#if defined(MBEDTLS_PK_RSA_ALT_SUPPORT)
+    NULL,
+#endif
 };
 #endif /* MBEDTLS_RSA_C */
 
@@ -441,6 +444,9 @@ const mbedtls_pk_info_t mbedtls_eckey_info = {
     eckey_rs_free,
 #endif
     eckey_debug,
+#if defined(MBEDTLS_PK_RSA_ALT_SUPPORT)
+    NULL,
+#endif
 };
 
 /*
@@ -473,6 +479,9 @@ const mbedtls_pk_info_t mbedtls_eckeydh_info = {
     NULL,
 #endif
     eckey_debug,            /* Same underlying key structure */
+#if defined(MBEDTLS_PK_RSA_ALT_SUPPORT)
+    NULL,
+#endif
 };
 #endif /* MBEDTLS_ECP_C */
 
@@ -741,6 +750,9 @@ const mbedtls_pk_info_t mbedtls_ecdsa_info = {
     ecdsa_rs_free,
 #endif
     eckey_debug,        /* Compatible key structures */
+#if defined(MBEDTLS_PK_RSA_ALT_SUPPORT)
+    NULL,
+#endif
 };
 #endif /* MBEDTLS_ECDSA_C */
 
@@ -794,6 +806,14 @@ static int rsa_alt_decrypt_wrap( void *ctx,
 
     return( rsa_alt->decrypt_func( rsa_alt->key,
                 MBEDTLS_RSA_PRIVATE, olen, input, output, osize ) );
+}
+
+static int rsa_alt_write_pubkey_wrap( void *ctx, uint8_t **p, uint8_t *start)
+{
+    mbedtls_rsa_alt_context *rsa_alt = (mbedtls_rsa_alt_context *) ctx;
+    if( rsa_alt->write_pubkey_func == NULL)
+        return( MBEDTLS_ERR_PK_FEATURE_UNAVAILABLE );
+    return( rsa_alt->write_pubkey_func(rsa_alt->key, p, start) );
 }
 
 #if defined(MBEDTLS_RSA_C)
@@ -867,6 +887,7 @@ const mbedtls_pk_info_t mbedtls_rsa_alt_info = {
     NULL,
 #endif
     NULL,
+    rsa_alt_write_pubkey_wrap,
 };
 
 #endif /* MBEDTLS_PK_RSA_ALT_SUPPORT */
@@ -1049,6 +1070,9 @@ const mbedtls_pk_info_t mbedtls_pk_opaque_info = {
     NULL, /* restart free - not relevant */
 #endif
     NULL, /* debug - could be done later, or even left NULL */
+#if defined(MBEDTLS_PK_RSA_ALT_SUPPORT)
+    NULL, /* write pubkey */
+#endif
 };
 
 #endif /* MBEDTLS_USE_PSA_CRYPTO */

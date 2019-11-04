@@ -190,6 +190,8 @@ typedef int (*mbedtls_pk_rsa_alt_sign_func)( void *ctx,
                     int mode, mbedtls_md_type_t md_alg, unsigned int hashlen,
                     const unsigned char *hash, unsigned char *sig );
 typedef size_t (*mbedtls_pk_rsa_alt_key_len_func)( void *ctx );
+typedef int (*mbedtls_pk_rsa_alt_write_pubkey_func)( void *ctx, unsigned char **p,
+                    unsigned char *start );
 #endif /* MBEDTLS_PK_RSA_ALT_SUPPORT */
 
 /**
@@ -309,6 +311,29 @@ int mbedtls_pk_setup_rsa_alt( mbedtls_pk_context *ctx, void * key,
                          mbedtls_pk_rsa_alt_decrypt_func decrypt_func,
                          mbedtls_pk_rsa_alt_sign_func sign_func,
                          mbedtls_pk_rsa_alt_key_len_func key_len_func );
+
+/**
+ * \brief           Initialize an RSA-alt context, including public-key-writing function
+ *
+ * \param ctx       Context to initialize. It must not have been set
+ *                  up yet (type #MBEDTLS_PK_NONE).
+ * \param key       RSA key pointer
+ * \param decrypt_func  Decryption function
+ * \param sign_func     Signing function
+ * \param key_len_func  Function returning key length in bytes
+ * \param write_pubkey_func  Public key data-writing function (optional, may be NULL)
+ *
+ * \return          0 on success, or MBEDTLS_ERR_PK_BAD_INPUT_DATA if the
+ *                  context wasn't already initialized as RSA_ALT.
+ *
+ * \note            This function replaces \c mbedtls_pk_setup() for RSA-alt.
+ */
+int mbedtls_pk_setup_rsa_alt2( mbedtls_pk_context *ctx, void * key,
+                         mbedtls_pk_rsa_alt_decrypt_func decrypt_func,
+                         mbedtls_pk_rsa_alt_sign_func sign_func,
+                         mbedtls_pk_rsa_alt_key_len_func key_len_func,
+                         mbedtls_pk_rsa_alt_write_pubkey_func write_pubkey_func);
+
 #endif /* MBEDTLS_PK_RSA_ALT_SUPPORT */
 
 /**
