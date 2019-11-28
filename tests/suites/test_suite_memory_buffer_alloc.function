@@ -30,6 +30,46 @@ void mbedtls_memory_buffer_alloc_self_test(  )
 /* END_CASE */
 
 /* BEGIN_CASE */
+void memory_buffer_alloc_free_zero( )
+{
+    unsigned char buf[1024];
+    unsigned char *ptr_a = NULL, *ptr_b = NULL, *ptr_c = NULL;
+
+    mbedtls_memory_buffer_alloc_init( buf, sizeof( buf ) );
+
+    mbedtls_memory_buffer_set_verify( MBEDTLS_MEMORY_VERIFY_ALWAYS );
+
+    ptr_a = mbedtls_calloc( 0, sizeof(int) );
+    TEST_ASSERT( check_pointer( ptr_a ) == 0 );
+
+    ptr_b = mbedtls_calloc( 100, 0 );
+    TEST_ASSERT( check_pointer( ptr_b ) == 0 );
+
+    ptr_c = mbedtls_calloc( 0, 0 );
+    TEST_ASSERT( check_pointer( ptr_c ) == 0 );
+
+    mbedtls_free( ptr_a );
+    ptr_a = NULL;
+    TEST_ASSERT( mbedtls_memory_buffer_alloc_verify() == 0 );
+
+    mbedtls_free( ptr_b );
+    ptr_b = NULL;
+    TEST_ASSERT( mbedtls_memory_buffer_alloc_verify() == 0 );
+
+    mbedtls_free( ptr_c );
+    ptr_c = NULL;
+    TEST_ASSERT( mbedtls_memory_buffer_alloc_verify() == 0 );
+
+    ptr_a = mbedtls_calloc( 0, sizeof(char) );
+    TEST_ASSERT( check_pointer( ptr_a ) == 0 );
+
+    mbedtls_free( ptr_a );
+    ptr_a = NULL;
+    TEST_ASSERT( mbedtls_memory_buffer_alloc_verify() == 0 );
+}
+/* END_CASE */
+
+/* BEGIN_CASE */
 void memory_buffer_alloc_free_alloc( int a_bytes, int b_bytes, int c_bytes,
                                      int d_bytes, int free_a, int free_b,
                                      int free_c, int free_d, int e_bytes,

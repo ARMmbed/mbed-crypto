@@ -241,9 +241,15 @@ static void *buffer_alloc_calloc( size_t n, size_t size )
     if( heap.buf == NULL || heap.first == NULL )
         return( NULL );
 
+    if( n == 0 || size == 0 )
+    {
+        n = 1;
+        size = 1;
+    }
+
     original_len = len = n * size;
 
-    if( n == 0 || size == 0 || len / n != size )
+    if( len / n != size )
         return( NULL );
     else if( len > (size_t)-MBEDTLS_MEMORY_ALIGN_MULTIPLE )
         return( NULL );
