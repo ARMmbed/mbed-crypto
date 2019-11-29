@@ -30,6 +30,8 @@
 #include MBEDTLS_CONFIG_FILE
 #endif
 
+#include "mbedtls/export.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -66,7 +68,7 @@ extern mbedtls_time_t (*mbedtls_time)( mbedtls_time_t* time );
  *
  * \return              0
  */
-int mbedtls_platform_set_time( mbedtls_time_t (*time_func)( mbedtls_time_t* time ) );
+MBEDCRYPTO_EXPORT int mbedtls_platform_set_time( mbedtls_time_t (*time_func)( mbedtls_time_t* time ) );
 #else
 #if defined(MBEDTLS_PLATFORM_TIME_MACRO)
 #define mbedtls_time    MBEDTLS_PLATFORM_TIME_MACRO

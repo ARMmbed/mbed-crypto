@@ -162,6 +162,9 @@ if(USE_SHARED_MBEDTLS_LIBRARY)
     target_include_directories(mbedcrypto
         PUBLIC ${MBEDTLS_DIR}/include/
         PUBLIC ${MBEDTLS_DIR}/crypto/include/)
+	target_compile_definitions(mbedcrypto
+		PRIVATE MAKING_SHARED_MBEDCRYPTO
+		INTERFACE USING_SHARED_MBEDTLS)
 
     install(TARGETS mbedcrypto
             DESTINATION ${LIB_INSTALL_DIR}

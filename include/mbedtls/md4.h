@@ -35,6 +35,8 @@
 #include MBEDTLS_CONFIG_FILE
 #endif
 
+#include "mbedtls/export.h"
+
 #include <stddef.h>
 #include <stdint.h>
 
@@ -79,7 +81,7 @@ mbedtls_md4_context;
  *                 stronger message digests instead.
  *
  */
-void mbedtls_md4_init( mbedtls_md4_context *ctx );
+MBEDCRYPTO_EXPORT void mbedtls_md4_init( mbedtls_md4_context *ctx );
 
 /**
  * \brief          Clear MD4 context
@@ -91,7 +93,7 @@ void mbedtls_md4_init( mbedtls_md4_context *ctx );
  *                 stronger message digests instead.
  *
  */
-void mbedtls_md4_free( mbedtls_md4_context *ctx );
+MBEDCRYPTO_EXPORT void mbedtls_md4_free( mbedtls_md4_context *ctx );
 
 /**
  * \brief          Clone (the state of) an MD4 context
@@ -104,7 +106,7 @@ void mbedtls_md4_free( mbedtls_md4_context *ctx );
  *                 stronger message digests instead.
  *
  */
-void mbedtls_md4_clone( mbedtls_md4_context *dst,
+MBEDCRYPTO_EXPORT void mbedtls_md4_clone( mbedtls_md4_context *dst,
                         const mbedtls_md4_context *src );
 
 /**
@@ -118,7 +120,7 @@ void mbedtls_md4_clone( mbedtls_md4_context *dst,
  *                 constitutes a security risk. We recommend considering
  *                 stronger message digests instead.
  */
-int mbedtls_md4_starts_ret( mbedtls_md4_context *ctx );
+MBEDCRYPTO_EXPORT int mbedtls_md4_starts_ret( mbedtls_md4_context *ctx );
 
 /**
  * \brief          MD4 process buffer
@@ -134,7 +136,7 @@ int mbedtls_md4_starts_ret( mbedtls_md4_context *ctx );
  *                 stronger message digests instead.
  *
  */
-int mbedtls_md4_update_ret( mbedtls_md4_context *ctx,
+MBEDCRYPTO_EXPORT int mbedtls_md4_update_ret( mbedtls_md4_context *ctx,
                             const unsigned char *input,
                             size_t ilen );
 
@@ -151,7 +153,7 @@ int mbedtls_md4_update_ret( mbedtls_md4_context *ctx,
  *                 stronger message digests instead.
  *
  */
-int mbedtls_md4_finish_ret( mbedtls_md4_context *ctx,
+MBEDCRYPTO_EXPORT int mbedtls_md4_finish_ret( mbedtls_md4_context *ctx,
                             unsigned char output[16] );
 
 /**
@@ -167,7 +169,7 @@ int mbedtls_md4_finish_ret( mbedtls_md4_context *ctx,
  *                 stronger message digests instead.
  *
  */
-int mbedtls_internal_md4_process( mbedtls_md4_context *ctx,
+MBEDCRYPTO_EXPORT int mbedtls_internal_md4_process( mbedtls_md4_context *ctx,
                                   const unsigned char data[64] );
 
 #if !defined(MBEDTLS_DEPRECATED_REMOVED)
@@ -257,7 +259,7 @@ MBEDTLS_DEPRECATED void mbedtls_md4_process( mbedtls_md4_context *ctx,
  *                 stronger message digests instead.
  *
  */
-int mbedtls_md4_ret( const unsigned char *input,
+MBEDCRYPTO_EXPORT int mbedtls_md4_ret( const unsigned char *input,
                      size_t ilen,
                      unsigned char output[16] );
 
@@ -300,7 +302,7 @@ MBEDTLS_DEPRECATED void mbedtls_md4( const unsigned char *input,
  *                 stronger message digests instead.
  *
  */
-int mbedtls_md4_self_test( int verbose );
+MBEDCRYPTO_EXPORT int mbedtls_md4_self_test( int verbose );
 
 #endif /* MBEDTLS_SELF_TEST */
 

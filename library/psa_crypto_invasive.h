@@ -36,6 +36,8 @@
 #include "mbedtls/config.h"
 #endif
 
+#include "mbedtls/export.h"
+
 #include "psa/crypto.h"
 
 #include "mbedtls/entropy.h"
@@ -72,7 +74,7 @@
  * \retval PSA_ERROR_BAD_STATE
  *         The library has already been initialized.
  */
-psa_status_t mbedtls_psa_crypto_configure_entropy_sources(
+MBEDCRYPTO_EXPORT psa_status_t mbedtls_psa_crypto_configure_entropy_sources(
     void (* entropy_init )( mbedtls_entropy_context *ctx ),
     void (* entropy_free )( mbedtls_entropy_context *ctx ) );
 

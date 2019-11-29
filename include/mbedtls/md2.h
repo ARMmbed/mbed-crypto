@@ -35,6 +35,8 @@
 #include MBEDTLS_CONFIG_FILE
 #endif
 
+#include "mbedtls/export.h"
+
 #include <stddef.h>
 
 /* MBEDTLS_ERR_MD2_HW_ACCEL_FAILED is deprecated and should not be used. */
@@ -79,7 +81,7 @@ mbedtls_md2_context;
  *                 stronger message digests instead.
  *
  */
-void mbedtls_md2_init( mbedtls_md2_context *ctx );
+MBEDCRYPTO_EXPORT void mbedtls_md2_init( mbedtls_md2_context *ctx );
 
 /**
  * \brief          Clear MD2 context
@@ -91,7 +93,7 @@ void mbedtls_md2_init( mbedtls_md2_context *ctx );
  *                 stronger message digests instead.
  *
  */
-void mbedtls_md2_free( mbedtls_md2_context *ctx );
+MBEDCRYPTO_EXPORT void mbedtls_md2_free( mbedtls_md2_context *ctx );
 
 /**
  * \brief          Clone (the state of) an MD2 context
@@ -104,7 +106,7 @@ void mbedtls_md2_free( mbedtls_md2_context *ctx );
  *                 stronger message digests instead.
  *
  */
-void mbedtls_md2_clone( mbedtls_md2_context *dst,
+MBEDCRYPTO_EXPORT void mbedtls_md2_clone( mbedtls_md2_context *dst,
                         const mbedtls_md2_context *src );
 
 /**
@@ -119,7 +121,7 @@ void mbedtls_md2_clone( mbedtls_md2_context *dst,
  *                 stronger message digests instead.
  *
  */
-int mbedtls_md2_starts_ret( mbedtls_md2_context *ctx );
+MBEDCRYPTO_EXPORT int mbedtls_md2_starts_ret( mbedtls_md2_context *ctx );
 
 /**
  * \brief          MD2 process buffer
@@ -135,7 +137,7 @@ int mbedtls_md2_starts_ret( mbedtls_md2_context *ctx );
  *                 stronger message digests instead.
  *
  */
-int mbedtls_md2_update_ret( mbedtls_md2_context *ctx,
+MBEDCRYPTO_EXPORT int mbedtls_md2_update_ret( mbedtls_md2_context *ctx,
                             const unsigned char *input,
                             size_t ilen );
 
@@ -152,7 +154,7 @@ int mbedtls_md2_update_ret( mbedtls_md2_context *ctx,
  *                 stronger message digests instead.
  *
  */
-int mbedtls_md2_finish_ret( mbedtls_md2_context *ctx,
+MBEDCRYPTO_EXPORT int mbedtls_md2_finish_ret( mbedtls_md2_context *ctx,
                             unsigned char output[16] );
 
 /**
@@ -167,7 +169,7 @@ int mbedtls_md2_finish_ret( mbedtls_md2_context *ctx,
  *                 stronger message digests instead.
  *
  */
-int mbedtls_internal_md2_process( mbedtls_md2_context *ctx );
+MBEDCRYPTO_EXPORT int mbedtls_internal_md2_process( mbedtls_md2_context *ctx );
 
 #if !defined(MBEDTLS_DEPRECATED_REMOVED)
 #if defined(MBEDTLS_DEPRECATED_WARNING)
@@ -252,7 +254,7 @@ MBEDTLS_DEPRECATED void mbedtls_md2_process( mbedtls_md2_context *ctx );
  *                 stronger message digests instead.
  *
  */
-int mbedtls_md2_ret( const unsigned char *input,
+MBEDCRYPTO_EXPORT int mbedtls_md2_ret( const unsigned char *input,
                      size_t ilen,
                      unsigned char output[16] );
 
@@ -295,7 +297,7 @@ MBEDTLS_DEPRECATED void mbedtls_md2( const unsigned char *input,
  *                 stronger message digests instead.
  *
  */
-int mbedtls_md2_self_test( int verbose );
+MBEDCRYPTO_EXPORT int mbedtls_md2_self_test( int verbose );
 
 #endif /* MBEDTLS_SELF_TEST */
 

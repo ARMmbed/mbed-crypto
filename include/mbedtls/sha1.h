@@ -37,6 +37,8 @@
 #include MBEDTLS_CONFIG_FILE
 #endif
 
+#include "mbedtls/export.h"
+
 #include <stddef.h>
 #include <stdint.h>
 
@@ -83,7 +85,7 @@ mbedtls_sha1_context;
  *                 This must not be \c NULL.
  *
  */
-void mbedtls_sha1_init( mbedtls_sha1_context *ctx );
+MBEDCRYPTO_EXPORT void mbedtls_sha1_init( mbedtls_sha1_context *ctx );
 
 /**
  * \brief          This function clears a SHA-1 context.
@@ -98,7 +100,7 @@ void mbedtls_sha1_init( mbedtls_sha1_context *ctx );
  *                 SHA-1 context.
  *
  */
-void mbedtls_sha1_free( mbedtls_sha1_context *ctx );
+MBEDCRYPTO_EXPORT void mbedtls_sha1_free( mbedtls_sha1_context *ctx );
 
 /**
  * \brief          This function clones the state of a SHA-1 context.
@@ -111,7 +113,7 @@ void mbedtls_sha1_free( mbedtls_sha1_context *ctx );
  * \param src      The SHA-1 context to clone from. This must be initialized.
  *
  */
-void mbedtls_sha1_clone( mbedtls_sha1_context *dst,
+MBEDCRYPTO_EXPORT void mbedtls_sha1_clone( mbedtls_sha1_context *dst,
                          const mbedtls_sha1_context *src );
 
 /**
@@ -127,7 +129,7 @@ void mbedtls_sha1_clone( mbedtls_sha1_context *dst,
  * \return         A negative error code on failure.
  *
  */
-int mbedtls_sha1_starts_ret( mbedtls_sha1_context *ctx );
+MBEDCRYPTO_EXPORT int mbedtls_sha1_starts_ret( mbedtls_sha1_context *ctx );
 
 /**
  * \brief          This function feeds an input buffer into an ongoing SHA-1
@@ -146,7 +148,7 @@ int mbedtls_sha1_starts_ret( mbedtls_sha1_context *ctx );
  * \return         \c 0 on success.
  * \return         A negative error code on failure.
  */
-int mbedtls_sha1_update_ret( mbedtls_sha1_context *ctx,
+MBEDCRYPTO_EXPORT int mbedtls_sha1_update_ret( mbedtls_sha1_context *ctx,
                              const unsigned char *input,
                              size_t ilen );
 
@@ -166,7 +168,7 @@ int mbedtls_sha1_update_ret( mbedtls_sha1_context *ctx,
  * \return         \c 0 on success.
  * \return         A negative error code on failure.
  */
-int mbedtls_sha1_finish_ret( mbedtls_sha1_context *ctx,
+MBEDCRYPTO_EXPORT int mbedtls_sha1_finish_ret( mbedtls_sha1_context *ctx,
                              unsigned char output[20] );
 
 /**
@@ -184,7 +186,7 @@ int mbedtls_sha1_finish_ret( mbedtls_sha1_context *ctx,
  * \return         A negative error code on failure.
  *
  */
-int mbedtls_internal_sha1_process( mbedtls_sha1_context *ctx,
+MBEDCRYPTO_EXPORT int mbedtls_internal_sha1_process( mbedtls_sha1_context *ctx,
                                    const unsigned char data[64] );
 
 #if !defined(MBEDTLS_DEPRECATED_REMOVED)
@@ -289,7 +291,7 @@ MBEDTLS_DEPRECATED void mbedtls_sha1_process( mbedtls_sha1_context *ctx,
  * \return         A negative error code on failure.
  *
  */
-int mbedtls_sha1_ret( const unsigned char *input,
+MBEDCRYPTO_EXPORT int mbedtls_sha1_ret( const unsigned char *input,
                       size_t ilen,
                       unsigned char output[20] );
 
@@ -341,7 +343,7 @@ MBEDTLS_DEPRECATED void mbedtls_sha1( const unsigned char *input,
  * \return         \c 1 on failure.
  *
  */
-int mbedtls_sha1_self_test( int verbose );
+MBEDCRYPTO_EXPORT int mbedtls_sha1_self_test( int verbose );
 
 #endif /* MBEDTLS_SELF_TEST */
 

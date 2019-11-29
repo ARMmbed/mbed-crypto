@@ -29,6 +29,8 @@
 extern "C" {
 #endif
 
+#include "mbedtls/export.h"
+
 #include "psa/crypto.h"
 #include "psa/crypto_se_driver.h"
 
@@ -379,7 +381,7 @@ psa_status_t psa_crypto_stop_transaction( void );
  * \retval #PSA_ERROR_NOT_PERMITTED
  *         The entropy seed file already exists.
  */
-psa_status_t mbedtls_psa_storage_inject_entropy( const unsigned char *seed,
+MBEDCRYPTO_EXPORT psa_status_t mbedtls_psa_storage_inject_entropy( const unsigned char *seed,
                                                  size_t seed_size );
 #endif /* MBEDTLS_PSA_INJECT_ENTROPY */
 

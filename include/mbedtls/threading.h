@@ -30,6 +30,8 @@
 #include MBEDTLS_CONFIG_FILE
 #endif
 
+#include "mbedtls/export.h"
+
 #include <stdlib.h>
 
 #ifdef __cplusplus
@@ -74,7 +76,7 @@ typedef struct mbedtls_threading_mutex_t
  * \param mutex_lock    the lock function implementation
  * \param mutex_unlock  the unlock function implementation
  */
-void mbedtls_threading_set_alt( void (*mutex_init)( mbedtls_threading_mutex_t * ),
+MBEDCRYPTO_EXPORT void mbedtls_threading_set_alt( void (*mutex_init)( mbedtls_threading_mutex_t * ),
                        void (*mutex_free)( mbedtls_threading_mutex_t * ),
                        int (*mutex_lock)( mbedtls_threading_mutex_t * ),
                        int (*mutex_unlock)( mbedtls_threading_mutex_t * ) );
@@ -82,7 +84,7 @@ void mbedtls_threading_set_alt( void (*mutex_init)( mbedtls_threading_mutex_t * 
 /**
  * \brief               Free global mutexes.
  */
-void mbedtls_threading_free_alt( void );
+MBEDCRYPTO_EXPORT void mbedtls_threading_free_alt( void );
 #endif /* MBEDTLS_THREADING_ALT */
 
 #if defined(MBEDTLS_THREADING_C)

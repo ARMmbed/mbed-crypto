@@ -22,6 +22,8 @@
 #ifndef MBEDTLS_X25519_H
 #define MBEDTLS_X25519_H
 
+#include "mbedtls/export.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -52,14 +54,14 @@ typedef struct
  *
  * \param ctx       The x25519 context to initialize.
  */
-void mbedtls_x25519_init( mbedtls_x25519_context *ctx );
+MBEDCRYPTO_EXPORT void mbedtls_x25519_init( mbedtls_x25519_context *ctx );
 
 /**
  * \brief           This function frees a context.
  *
  * \param ctx       The context to free.
  */
-void mbedtls_x25519_free( mbedtls_x25519_context *ctx );
+MBEDCRYPTO_EXPORT void mbedtls_x25519_free( mbedtls_x25519_context *ctx );
 
 /**
  * \brief           This function generates a public key and a TLS
@@ -78,7 +80,7 @@ void mbedtls_x25519_free( mbedtls_x25519_context *ctx );
  * \return          \c 0 on success.
  * \return          An \c MBEDTLS_ERR_ECP_XXX error code on failure.
  */
-int mbedtls_x25519_make_params( mbedtls_x25519_context *ctx, size_t *olen,
+MBEDCRYPTO_EXPORT int mbedtls_x25519_make_params( mbedtls_x25519_context *ctx, size_t *olen,
                         unsigned char *buf, size_t blen,
                         int( *f_rng )(void *, unsigned char *, size_t),
                         void *p_rng );
@@ -96,7 +98,7 @@ int mbedtls_x25519_make_params( mbedtls_x25519_context *ctx, size_t *olen,
  * \return          An \c MBEDTLS_ERR_ECP_XXX error code on failure.
  *
  */
-int mbedtls_x25519_read_params( mbedtls_x25519_context *ctx,
+MBEDCRYPTO_EXPORT int mbedtls_x25519_read_params( mbedtls_x25519_context *ctx,
                         const unsigned char **buf, const unsigned char *end );
 
 /**
@@ -117,7 +119,7 @@ int mbedtls_x25519_read_params( mbedtls_x25519_context *ctx,
  * \return          An \c MBEDTLS_ERR_ECP_XXX error code on failure.
  *
  */
-int mbedtls_x25519_get_params( mbedtls_x25519_context *ctx, const mbedtls_ecp_keypair *key,
+MBEDCRYPTO_EXPORT int mbedtls_x25519_get_params( mbedtls_x25519_context *ctx, const mbedtls_ecp_keypair *key,
                                mbedtls_x25519_ecdh_side side );
 
 /**
@@ -137,7 +139,7 @@ int mbedtls_x25519_get_params( mbedtls_x25519_context *ctx, const mbedtls_ecp_ke
  * \return          \c 0 on success.
  * \return          An \c MBEDTLS_ERR_ECP_XXX error code on failure.
  */
-int mbedtls_x25519_calc_secret( mbedtls_x25519_context *ctx, size_t *olen,
+MBEDCRYPTO_EXPORT int mbedtls_x25519_calc_secret( mbedtls_x25519_context *ctx, size_t *olen,
                         unsigned char *buf, size_t blen,
                         int( *f_rng )(void *, unsigned char *, size_t),
                         void *p_rng );
@@ -160,7 +162,7 @@ int mbedtls_x25519_calc_secret( mbedtls_x25519_context *ctx, size_t *olen,
  * \return          \c 0 on success.
  * \return          An \c MBEDTLS_ERR_ECP_XXX error code on failure.
  */
-int mbedtls_x25519_make_public( mbedtls_x25519_context *ctx, size_t *olen,
+MBEDCRYPTO_EXPORT int mbedtls_x25519_make_public( mbedtls_x25519_context *ctx, size_t *olen,
                         unsigned char *buf, size_t blen,
                         int( *f_rng )(void *, unsigned char *, size_t),
                         void *p_rng );
@@ -180,7 +182,7 @@ int mbedtls_x25519_make_public( mbedtls_x25519_context *ctx, size_t *olen,
  * \return      \c 0 on success.
  * \return      An \c MBEDTLS_ERR_ECP_XXX error code on failure.
  */
-int mbedtls_x25519_read_public( mbedtls_x25519_context *ctx,
+MBEDCRYPTO_EXPORT int mbedtls_x25519_read_public( mbedtls_x25519_context *ctx,
                         const unsigned char *buf, size_t blen );
 
 #ifdef __cplusplus

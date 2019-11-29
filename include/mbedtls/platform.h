@@ -39,6 +39,8 @@
 #include MBEDTLS_CONFIG_FILE
 #endif
 
+#include "mbedtls/export.h"
+
 #if defined(MBEDTLS_HAVE_TIME)
 #include "mbedtls/platform_time.h"
 #endif
@@ -140,8 +142,8 @@ extern "C" {
 #else
 /* For size_t */
 #include <stddef.h>
-extern void *mbedtls_calloc( size_t n, size_t size );
-extern void mbedtls_free( void *ptr );
+MBEDCRYPTO_EXTERN void *mbedtls_calloc( size_t n, size_t size );
+MBEDCRYPTO_EXTERN void mbedtls_free( void *ptr );
 
 /**
  * \brief               This function dynamically sets the memory-management
@@ -152,7 +154,7 @@ extern void mbedtls_free( void *ptr );
  *
  * \return              \c 0.
  */
-int mbedtls_platform_set_calloc_free( void * (*calloc_func)( size_t, size_t ),
+MBEDCRYPTO_EXPORT int mbedtls_platform_set_calloc_free( void * (*calloc_func)( size_t, size_t ),
                               void (*free_func)( void * ) );
 #endif /* MBEDTLS_PLATFORM_FREE_MACRO && MBEDTLS_PLATFORM_CALLOC_MACRO */
 #else /* !MBEDTLS_PLATFORM_MEMORY */
@@ -166,7 +168,7 @@ int mbedtls_platform_set_calloc_free( void * (*calloc_func)( size_t, size_t ),
 #if defined(MBEDTLS_PLATFORM_FPRINTF_ALT)
 /* We need FILE * */
 #include <stdio.h>
-extern int (*mbedtls_fprintf)( FILE *stream, const char *format, ... );
+MBEDCRYPTO_EXTERN int (*mbedtls_fprintf)( FILE *stream, const char *format, ... );
 
 /**
  * \brief                This function dynamically configures the fprintf
@@ -177,7 +179,7 @@ extern int (*mbedtls_fprintf)( FILE *stream, const char *format, ... );
  *
  * \return               \c 0.
  */
-int mbedtls_platform_set_fprintf( int (*fprintf_func)( FILE *stream, const char *,
+MBEDCRYPTO_EXPORT int mbedtls_platform_set_fprintf( int (*fprintf_func)( FILE *stream, const char *,
                                                ... ) );
 #else
 #if defined(MBEDTLS_PLATFORM_FPRINTF_MACRO)
@@ -191,7 +193,7 @@ int mbedtls_platform_set_fprintf( int (*fprintf_func)( FILE *stream, const char 
  * The function pointers for printf
  */
 #if defined(MBEDTLS_PLATFORM_PRINTF_ALT)
-extern int (*mbedtls_printf)( const char *format, ... );
+MBEDCRYPTO_EXTERN int (*mbedtls_printf)( const char *format, ... );
 
 /**
  * \brief               This function dynamically configures the snprintf
@@ -202,7 +204,7 @@ extern int (*mbedtls_printf)( const char *format, ... );
  *
  * \return              \c 0 on success.
  */
-int mbedtls_platform_set_printf( int (*printf_func)( const char *, ... ) );
+MBEDCRYPTO_EXPORT int mbedtls_platform_set_printf( int (*printf_func)( const char *, ... ) );
 #else /* !MBEDTLS_PLATFORM_PRINTF_ALT */
 #if defined(MBEDTLS_PLATFORM_PRINTF_MACRO)
 #define mbedtls_printf     MBEDTLS_PLATFORM_PRINTF_MACRO
@@ -222,11 +224,11 @@ int mbedtls_platform_set_printf( int (*printf_func)( const char *, ... ) );
  */
 #if defined(MBEDTLS_PLATFORM_HAS_NON_CONFORMING_SNPRINTF)
 /* For Windows (inc. MSYS2), we provide our own fixed implementation */
-int mbedtls_platform_win32_snprintf( char *s, size_t n, const char *fmt, ... );
+MBEDCRYPTO_EXPORT int mbedtls_platform_win32_snprintf( char *s, size_t n, const char *fmt, ... );
 #endif
 
 #if defined(MBEDTLS_PLATFORM_SNPRINTF_ALT)
-extern int (*mbedtls_snprintf)( char * s, size_t n, const char * format, ... );
+MBEDCRYPTO_EXTERN int (*mbedtls_snprintf)( char * s, size_t n, const char * format, ... );
 
 /**
  * \brief                 This function allows configuring a custom
@@ -236,7 +238,7 @@ extern int (*mbedtls_snprintf)( char * s, size_t n, const char * format, ... );
  *
  * \return                \c 0 on success.
  */
-int mbedtls_platform_set_snprintf( int (*snprintf_func)( char * s, size_t n,
+MBEDCRYPTO_EXPORT int mbedtls_platform_set_snprintf( int (*snprintf_func)( char * s, size_t n,
                                                  const char * format, ... ) );
 #else /* MBEDTLS_PLATFORM_SNPRINTF_ALT */
 #if defined(MBEDTLS_PLATFORM_SNPRINTF_MACRO)
@@ -258,12 +260,12 @@ int mbedtls_platform_set_snprintf( int (*snprintf_func)( char * s, size_t n,
 #if defined(MBEDTLS_PLATFORM_HAS_NON_CONFORMING_VSNPRINTF)
 #include <stdarg.h>
 /* For Older Windows (inc. MSYS2), we provide our own fixed implementation */
-int mbedtls_platform_win32_vsnprintf( char *s, size_t n, const char *fmt, va_list arg );
+MBEDCRYPTO_EXPORT int mbedtls_platform_win32_vsnprintf( char *s, size_t n, const char *fmt, va_list arg );
 #endif
 
 #if defined(MBEDTLS_PLATFORM_VSNPRINTF_ALT)
 #include <stdarg.h>
-extern int (*mbedtls_vsnprintf)( char * s, size_t n, const char * format, va_list arg );
+MBEDCRYPTO_EXTERN int (*mbedtls_vsnprintf)( char * s, size_t n, const char * format, va_list arg );
 
 /**
  * \brief   Set your own snprintf function pointer
@@ -272,7 +274,7 @@ extern int (*mbedtls_vsnprintf)( char * s, size_t n, const char * format, va_lis
  *
  * \return  \c 0
  */
-int mbedtls_platform_set_vsnprintf( int (*vsnprintf_func)( char * s, size_t n,
+MBEDCRYPTO_EXPORT int mbedtls_platform_set_vsnprintf( int (*vsnprintf_func)( char * s, size_t n,
                                                  const char * format, va_list arg ) );
 #else /* MBEDTLS_PLATFORM_VSNPRINTF_ALT */
 #if defined(MBEDTLS_PLATFORM_VSNPRINTF_MACRO)
@@ -286,7 +288,7 @@ int mbedtls_platform_set_vsnprintf( int (*vsnprintf_func)( char * s, size_t n,
  * The function pointers for exit
  */
 #if defined(MBEDTLS_PLATFORM_EXIT_ALT)
-extern void (*mbedtls_exit)( int status );
+MBEDCRYPTO_EXTERN void (*mbedtls_exit)( int status );
 
 /**
  * \brief             This function dynamically configures the exit
@@ -297,7 +299,7 @@ extern void (*mbedtls_exit)( int status );
  *
  * \return            \c 0 on success.
  */
-int mbedtls_platform_set_exit( void (*exit_func)( int status ) );
+MBEDCRYPTO_EXPORT int mbedtls_platform_set_exit( void (*exit_func)( int status ) );
 #else
 #if defined(MBEDTLS_PLATFORM_EXIT_MACRO)
 #define mbedtls_exit   MBEDTLS_PLATFORM_EXIT_MACRO
@@ -329,13 +331,13 @@ int mbedtls_platform_set_exit( void (*exit_func)( int status ) );
 #if defined(MBEDTLS_ENTROPY_NV_SEED)
 #if !defined(MBEDTLS_PLATFORM_NO_STD_FUNCTIONS) && defined(MBEDTLS_FS_IO)
 /* Internal standard platform definitions */
-int mbedtls_platform_std_nv_seed_read( unsigned char *buf, size_t buf_len );
-int mbedtls_platform_std_nv_seed_write( unsigned char *buf, size_t buf_len );
+MBEDCRYPTO_EXPORT int mbedtls_platform_std_nv_seed_read( unsigned char *buf, size_t buf_len );
+MBEDCRYPTO_EXPORT int mbedtls_platform_std_nv_seed_write( unsigned char *buf, size_t buf_len );
 #endif
 
 #if defined(MBEDTLS_PLATFORM_NV_SEED_ALT)
-extern int (*mbedtls_nv_seed_read)( unsigned char *buf, size_t buf_len );
-extern int (*mbedtls_nv_seed_write)( unsigned char *buf, size_t buf_len );
+MBEDCRYPTO_EXTERN int (*mbedtls_nv_seed_read)( unsigned char *buf, size_t buf_len );
+MBEDCRYPTO_EXTERN int (*mbedtls_nv_seed_write)( unsigned char *buf, size_t buf_len );
 
 /**
  * \brief   This function allows configuring custom seed file writing and
@@ -346,7 +348,7 @@ extern int (*mbedtls_nv_seed_write)( unsigned char *buf, size_t buf_len );
  *
  * \return  \c 0 on success.
  */
-int mbedtls_platform_set_nv_seed(
+MBEDCRYPTO_EXPORT int mbedtls_platform_set_nv_seed(
             int (*nv_seed_read_func)( unsigned char *buf, size_t buf_len ),
             int (*nv_seed_write_func)( unsigned char *buf, size_t buf_len )
             );
@@ -395,7 +397,7 @@ mbedtls_platform_context;
  *
  * \return  \c 0 on success.
  */
-int mbedtls_platform_setup( mbedtls_platform_context *ctx );
+MBEDCRYPTO_EXPORT int mbedtls_platform_setup( mbedtls_platform_context *ctx );
 /**
  * \brief   This function performs any platform teardown operations.
  *
@@ -410,7 +412,7 @@ int mbedtls_platform_setup( mbedtls_platform_context *ctx );
  * \param   ctx     The platform context.
  *
  */
-void mbedtls_platform_teardown( mbedtls_platform_context *ctx );
+MBEDCRYPTO_EXPORT void mbedtls_platform_teardown( mbedtls_platform_context *ctx );
 
 #ifdef __cplusplus
 }

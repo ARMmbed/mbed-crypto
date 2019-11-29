@@ -30,6 +30,8 @@
 #include MBEDTLS_CONFIG_FILE
 #endif
 
+#include "mbedtls/export.h"
+
 #include <stddef.h>
 
 #if defined(MBEDTLS_BIGNUM_C)
@@ -191,7 +193,7 @@ mbedtls_asn1_named_data;
  *              would end beyond \p end.
  * \return      #MBEDTLS_ERR_ASN1_INVALID_LENGTH if the length is unparseable.
  */
-int mbedtls_asn1_get_len( unsigned char **p,
+MBEDCRYPTO_EXPORT int mbedtls_asn1_get_len( unsigned char **p,
                           const unsigned char *end,
                           size_t *len );
 
@@ -216,7 +218,7 @@ int mbedtls_asn1_get_len( unsigned char **p,
  *              would end beyond \p end.
  * \return      #MBEDTLS_ERR_ASN1_INVALID_LENGTH if the length is unparseable.
  */
-int mbedtls_asn1_get_tag( unsigned char **p,
+MBEDCRYPTO_EXPORT int mbedtls_asn1_get_tag( unsigned char **p,
                           const unsigned char *end,
                           size_t *len, int tag );
 
@@ -235,7 +237,7 @@ int mbedtls_asn1_get_tag( unsigned char **p,
  * \return      An ASN.1 error code if the input does not start with
  *              a valid ASN.1 BOOLEAN.
  */
-int mbedtls_asn1_get_bool( unsigned char **p,
+MBEDCRYPTO_EXPORT int mbedtls_asn1_get_bool( unsigned char **p,
                            const unsigned char *end,
                            int *val );
 
@@ -256,7 +258,7 @@ int mbedtls_asn1_get_bool( unsigned char **p,
  * \return      #MBEDTLS_ERR_ASN1_INVALID_LENGTH if the parsed value does
  *              not fit in an \c int.
  */
-int mbedtls_asn1_get_int( unsigned char **p,
+MBEDCRYPTO_EXPORT int mbedtls_asn1_get_int( unsigned char **p,
                           const unsigned char *end,
                           int *val );
 
@@ -277,7 +279,7 @@ int mbedtls_asn1_get_int( unsigned char **p,
  * \return      #MBEDTLS_ERR_ASN1_INVALID_LENGTH if the parsed value does
  *              not fit in an \c int.
  */
-int mbedtls_asn1_get_enum( unsigned char **p,
+MBEDCRYPTO_EXPORT int mbedtls_asn1_get_enum( unsigned char **p,
                            const unsigned char *end,
                            int *val );
 
@@ -298,7 +300,7 @@ int mbedtls_asn1_get_enum( unsigned char **p,
  * \return      An ASN.1 error code if the input does not start with
  *              a valid ASN.1 BIT STRING.
  */
-int mbedtls_asn1_get_bitstring( unsigned char **p, const unsigned char *end,
+MBEDCRYPTO_EXPORT int mbedtls_asn1_get_bitstring( unsigned char **p, const unsigned char *end,
                                 mbedtls_asn1_bitstring *bs );
 
 /**
@@ -319,7 +321,7 @@ int mbedtls_asn1_get_bitstring( unsigned char **p, const unsigned char *end,
  * \return      An ASN.1 error code if the input does not start with
  *              a valid ASN.1 BIT STRING.
  */
-int mbedtls_asn1_get_bitstring_null( unsigned char **p,
+MBEDCRYPTO_EXPORT int mbedtls_asn1_get_bitstring_null( unsigned char **p,
                                      const unsigned char *end,
                                      size_t *len );
 
@@ -364,7 +366,7 @@ int mbedtls_asn1_get_bitstring_null( unsigned char **p,
  * \return      An ASN.1 error code if the input does not start with
  *              a valid ASN.1 BIT STRING.
  */
-int mbedtls_asn1_get_sequence_of( unsigned char **p,
+MBEDCRYPTO_EXPORT int mbedtls_asn1_get_sequence_of( unsigned char **p,
                                   const unsigned char *end,
                                   mbedtls_asn1_sequence *cur,
                                   int tag );
@@ -388,7 +390,7 @@ int mbedtls_asn1_get_sequence_of( unsigned char **p,
  *              not fit in an \c int.
  * \return      An MPI error code if the parsed value is too large.
  */
-int mbedtls_asn1_get_mpi( unsigned char **p,
+MBEDCRYPTO_EXPORT int mbedtls_asn1_get_mpi( unsigned char **p,
                           const unsigned char *end,
                           mbedtls_mpi *X );
 #endif /* MBEDTLS_BIGNUM_C */
@@ -409,7 +411,7 @@ int mbedtls_asn1_get_mpi( unsigned char **p,
  *
  * \return      0 if successful or a specific ASN.1 or MPI error code.
  */
-int mbedtls_asn1_get_alg( unsigned char **p,
+MBEDCRYPTO_EXPORT int mbedtls_asn1_get_alg( unsigned char **p,
                   const unsigned char *end,
                   mbedtls_asn1_buf *alg, mbedtls_asn1_buf *params );
 
@@ -428,7 +430,7 @@ int mbedtls_asn1_get_alg( unsigned char **p,
  *
  * \return      0 if successful or a specific ASN.1 or MPI error code.
  */
-int mbedtls_asn1_get_alg_null( unsigned char **p,
+MBEDCRYPTO_EXPORT int mbedtls_asn1_get_alg_null( unsigned char **p,
                        const unsigned char *end,
                        mbedtls_asn1_buf *alg );
 
@@ -452,7 +454,7 @@ mbedtls_asn1_named_data *mbedtls_asn1_find_named_data( mbedtls_asn1_named_data *
  *              This function calls mbedtls_free() on
  *              `entry->oid.p` and `entry->val.p`.
  */
-void mbedtls_asn1_free_named_data( mbedtls_asn1_named_data *entry );
+MBEDCRYPTO_EXPORT void mbedtls_asn1_free_named_data( mbedtls_asn1_named_data *entry );
 
 /**
  * \brief       Free all entries in a mbedtls_asn1_named_data list.
@@ -462,7 +464,7 @@ void mbedtls_asn1_free_named_data( mbedtls_asn1_named_data *entry );
  *              mbedtls_free() on each list element and
  *              sets \c *head to \c NULL.
  */
-void mbedtls_asn1_free_named_data_list( mbedtls_asn1_named_data **head );
+MBEDCRYPTO_EXPORT void mbedtls_asn1_free_named_data_list( mbedtls_asn1_named_data **head );
 
 #ifdef __cplusplus
 }

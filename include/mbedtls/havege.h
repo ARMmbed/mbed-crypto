@@ -30,6 +30,8 @@
 #include MBEDTLS_CONFIG_FILE
 #endif
 
+#include "mbedtls/export.h"
+
 #include <stddef.h>
 #include <stdint.h>
 
@@ -55,14 +57,14 @@ mbedtls_havege_state;
  *
  * \param hs       HAVEGE state to be initialized
  */
-void mbedtls_havege_init( mbedtls_havege_state *hs );
+MBEDCRYPTO_EXPORT void mbedtls_havege_init( mbedtls_havege_state *hs );
 
 /**
  * \brief          Clear HAVEGE state
  *
  * \param hs       HAVEGE state to be cleared
  */
-void mbedtls_havege_free( mbedtls_havege_state *hs );
+MBEDCRYPTO_EXPORT void mbedtls_havege_free( mbedtls_havege_state *hs );
 
 /**
  * \brief          HAVEGE rand function
@@ -73,7 +75,7 @@ void mbedtls_havege_free( mbedtls_havege_state *hs );
  *
  * \return         0
  */
-int mbedtls_havege_random( void *p_rng, unsigned char *output, size_t len );
+MBEDCRYPTO_EXPORT int mbedtls_havege_random( void *p_rng, unsigned char *output, size_t len );
 
 #ifdef __cplusplus
 }

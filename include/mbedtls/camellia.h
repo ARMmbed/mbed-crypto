@@ -30,6 +30,8 @@
 #include MBEDTLS_CONFIG_FILE
 #endif
 
+#include "mbedtls/export.h"
+
 #include <stddef.h>
 #include <stdint.h>
 
@@ -77,7 +79,7 @@ mbedtls_camellia_context;
  * \param ctx      The CAMELLIA context to be initialized.
  *                 This must not be \c NULL.
  */
-void mbedtls_camellia_init( mbedtls_camellia_context *ctx );
+MBEDCRYPTO_EXPORT void mbedtls_camellia_init( mbedtls_camellia_context *ctx );
 
 /**
  * \brief          Clear a CAMELLIA context.
@@ -86,7 +88,7 @@ void mbedtls_camellia_init( mbedtls_camellia_context *ctx );
  *                 in which case this function returns immediately. If it is not
  *                 \c NULL, it must be initialized.
  */
-void mbedtls_camellia_free( mbedtls_camellia_context *ctx );
+MBEDCRYPTO_EXPORT void mbedtls_camellia_free( mbedtls_camellia_context *ctx );
 
 /**
  * \brief          Perform a CAMELLIA key schedule operation for encryption.
@@ -100,7 +102,7 @@ void mbedtls_camellia_free( mbedtls_camellia_context *ctx );
  * \return         \c 0 if successful.
  * \return         A negative error code on failure.
  */
-int mbedtls_camellia_setkey_enc( mbedtls_camellia_context *ctx,
+MBEDCRYPTO_EXPORT int mbedtls_camellia_setkey_enc( mbedtls_camellia_context *ctx,
                                  const unsigned char *key,
                                  unsigned int keybits );
 
@@ -116,7 +118,7 @@ int mbedtls_camellia_setkey_enc( mbedtls_camellia_context *ctx,
  * \return         \c 0 if successful.
  * \return         A negative error code on failure.
  */
-int mbedtls_camellia_setkey_dec( mbedtls_camellia_context *ctx,
+MBEDCRYPTO_EXPORT int mbedtls_camellia_setkey_dec( mbedtls_camellia_context *ctx,
                                  const unsigned char *key,
                                  unsigned int keybits );
 
@@ -135,7 +137,7 @@ int mbedtls_camellia_setkey_dec( mbedtls_camellia_context *ctx,
  * \return         \c 0 if successful.
  * \return         A negative error code on failure.
  */
-int mbedtls_camellia_crypt_ecb( mbedtls_camellia_context *ctx,
+MBEDCRYPTO_EXPORT int mbedtls_camellia_crypt_ecb( mbedtls_camellia_context *ctx,
                     int mode,
                     const unsigned char input[16],
                     unsigned char output[16] );
@@ -169,7 +171,7 @@ int mbedtls_camellia_crypt_ecb( mbedtls_camellia_context *ctx,
  * \return         \c 0 if successful.
  * \return         A negative error code on failure.
  */
-int mbedtls_camellia_crypt_cbc( mbedtls_camellia_context *ctx,
+MBEDCRYPTO_EXPORT int mbedtls_camellia_crypt_cbc( mbedtls_camellia_context *ctx,
                     int mode,
                     size_t length,
                     unsigned char iv[16],
@@ -215,7 +217,7 @@ int mbedtls_camellia_crypt_cbc( mbedtls_camellia_context *ctx,
  * \return         \c 0 if successful.
  * \return         A negative error code on failure.
  */
-int mbedtls_camellia_crypt_cfb128( mbedtls_camellia_context *ctx,
+MBEDCRYPTO_EXPORT int mbedtls_camellia_crypt_cfb128( mbedtls_camellia_context *ctx,
                        int mode,
                        size_t length,
                        size_t *iv_off,
@@ -299,7 +301,7 @@ int mbedtls_camellia_crypt_cfb128( mbedtls_camellia_context *ctx,
  * \return              \c 0 if successful.
  * \return              A negative error code on failure.
  */
-int mbedtls_camellia_crypt_ctr( mbedtls_camellia_context *ctx,
+MBEDCRYPTO_EXPORT int mbedtls_camellia_crypt_ctr( mbedtls_camellia_context *ctx,
                        size_t length,
                        size_t *nc_off,
                        unsigned char nonce_counter[16],
@@ -315,7 +317,7 @@ int mbedtls_camellia_crypt_ctr( mbedtls_camellia_context *ctx,
  *
  * \return         0 if successful, or 1 if the test failed
  */
-int mbedtls_camellia_self_test( int verbose );
+MBEDCRYPTO_EXPORT int mbedtls_camellia_self_test( int verbose );
 
 #endif /* MBEDTLS_SELF_TEST */
 

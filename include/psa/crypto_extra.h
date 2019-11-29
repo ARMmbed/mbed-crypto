@@ -30,6 +30,8 @@
 #ifndef PSA_CRYPTO_EXTRA_H
 #define PSA_CRYPTO_EXTRA_H
 
+#include "mbedtls/export.h"
+
 #include "mbedtls/platform_util.h"
 
 #ifdef __cplusplus
@@ -206,7 +208,7 @@ static inline void psa_clear_key_slot_number(
  *         It is implementation-dependent whether a failure to initialize
  *         results in this error code.
  */
-psa_status_t mbedtls_psa_register_se_key(
+MBEDCRYPTO_EXPORT psa_status_t mbedtls_psa_register_se_key(
     const psa_key_attributes_t *attributes);
 
 #endif /* MBEDTLS_PSA_CRYPTO_SE_C */
@@ -221,7 +223,7 @@ psa_status_t mbedtls_psa_register_se_key(
  *
  * This is an Mbed TLS extension.
  */
-void mbedtls_psa_crypto_free( void );
+MBEDCRYPTO_EXPORT void mbedtls_psa_crypto_free( void );
 
 /** \brief Statistics about
  * resource consumption related to the PSA keystore.
@@ -259,7 +261,7 @@ typedef struct mbedtls_psa_stats_s
  *       between the application and the keystore, the service may or
  *       may not expose this function.
  */
-void mbedtls_psa_get_stats( mbedtls_psa_stats_t *stats );
+MBEDCRYPTO_EXPORT void mbedtls_psa_get_stats( mbedtls_psa_stats_t *stats );
 
 /**
  * \brief Inject an initial entropy seed for the random generator into
@@ -328,7 +330,7 @@ void mbedtls_psa_get_stats( mbedtls_psa_stats_t *stats );
  *         The library has already been initialized. It is no longer
  *         possible to call this function.
  */
-psa_status_t mbedtls_psa_inject_entropy(const uint8_t *seed,
+MBEDCRYPTO_EXPORT psa_status_t mbedtls_psa_inject_entropy(const uint8_t *seed,
                                         size_t seed_size);
 
 /** \addtogroup crypto_types
