@@ -5402,6 +5402,30 @@ static psa_status_t psa_read_rsa_exponent( const uint8_t *domain_parameters,
 }
 #endif /* MBEDTLS_RSA_C && MBEDTLS_GENPRIME */
 
+// The weakly linked function "prepare_vendor_raw_data_slot_weak" which just returns "PSA_ERROR_NOT_SUPPORTED" will be linked if 
+// the vendor does not provide a definition for "prepare_vendor_raw_data_slot"
+psa_status_t prepare_vendor_raw_data_slot( psa_key_type_t type, size_t bits, struct raw_data *raw) __attribute__ ((weak, alias("prepare_vendor_raw_data_slot_weak")));
+psa_status_t prepare_vendor_raw_data_slot_weak( psa_key_type_t type, size_t bits, struct raw_data *raw);
+psa_status_t prepare_vendor_raw_data_slot_weak( psa_key_type_t type, size_t bits, struct raw_data *raw)
+{
+    (void)type;
+    (void)bits;
+    (void)raw;
+    return PSA_ERROR_NOT_SUPPORTED;
+}
+
+// The weakly linked function "psa_generate_vendor_symmetric_weak" which just returns "PSA_ERROR_NOT_SUPPORTED" will be linked if 
+// the vendor does not provide a definition for "psa_generate_vendor_symmetric"
+psa_status_t psa_generate_vendor_symmetric( psa_key_type_t type, uint8_t * output, size_t output_size) __attribute__ ((weak, alias("psa_generate_vendor_symmetric_weak")));
+psa_status_t psa_generate_vendor_symmetric_weak( psa_key_type_t type, uint8_t * output, size_t output_size);
+psa_status_t psa_generate_vendor_symmetric_weak( psa_key_type_t type, uint8_t * output, size_t output_size)
+{
+    (void)type;
+    (void)output;
+    (void)output_size;
+    return PSA_ERROR_NOT_SUPPORTED;
+}
+
 static psa_status_t psa_generate_key_internal(
     psa_key_slot_t *slot, size_t bits,
     const uint8_t *domain_parameters, size_t domain_parameters_size )
@@ -5414,18 +5438,31 @@ static psa_status_t psa_generate_key_internal(
     if( key_type_is_raw_bytes( type ) )
     {
         psa_status_t status;
-        status = prepare_raw_data_slot( type, bits, &slot->data.raw );
-        if( status != PSA_SUCCESS )
-            return( status );
-        status = psa_generate_random( slot->data.raw.data,
-                                      slot->data.raw.bytes );
-        if( status != PSA_SUCCESS )
-            return( status );
-#if defined(MBEDTLS_DES_C)
-        if( type == PSA_KEY_TYPE_DES )
-            psa_des_set_key_parity( slot->data.raw.data,
-                                    slot->data.raw.bytes );
-#endif /* MBEDTLS_DES_C */
+        if (PSA_KEY_TYPE_IS_VENDOR_DEFINED(type))
+        {
+            status = prepare_vendor_raw_data_slot( type, bits, &slot->data.raw );
+            if( status != PSA_SUCCESS )
+                return( status );
+            status = psa_generate_vendor_symmetric( type, slot->data.raw.data,
+                                        slot->data.raw.bytes );
+            if( status != PSA_SUCCESS )
+                return( status );
+        }
+        else
+        {
+            status = prepare_raw_data_slot( type, bits, &slot->data.raw );
+            if( status != PSA_SUCCESS )
+                return( status );
+            status = psa_generate_random( slot->data.raw.data,
+                                        slot->data.raw.bytes );
+            if( status != PSA_SUCCESS )
+                return( status );
+            #if defined(MBEDTLS_DES_C)
+            if( type == PSA_KEY_TYPE_DES )
+                psa_des_set_key_parity( slot->data.raw.data,
+                                        slot->data.raw.bytes );
+            #endif /* MBEDTLS_DES_C */
+        }
     }
     else
 

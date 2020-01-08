@@ -364,21 +364,29 @@
  * HMAC keys should generally have the same size as the underlying hash.
  * This size can be calculated with #PSA_HASH_SIZE(\c alg) where
  * \c alg is the HMAC algorithm or the underlying hash algorithm. */
-#define PSA_KEY_TYPE_HMAC                       ((psa_key_type_t)0x51000000)
+#define PSA_KEY_TYPE_HMAC ((psa_key_type_t)0x51000000)
 
 /** A secret for key derivation.
  *
  * The key policy determines which key derivation algorithm the key
  * can be used for.
  */
-#define PSA_KEY_TYPE_DERIVE                     ((psa_key_type_t)0x52000000)
+#define PSA_KEY_TYPE_DERIVE ((psa_key_type_t)0x52000000)
 
 /** Key for a cipher, AEAD or MAC algorithm based on the AES block cipher.
  *
  * The size of the key can be 16 bytes (AES-128), 24 bytes (AES-192) or
  * 32 bytes (AES-256).
  */
-#define PSA_KEY_TYPE_AES                        ((psa_key_type_t)0x40000001)
+#define PSA_KEY_TYPE_AES ((psa_key_type_t)0x40000001)
+
+/** Vendor defined Key format for a cipher, AEAD or MAC algorithm based
+ *  on the AES block cipher.
+ *
+ * The size of the key can be 16 bytes (AES-128), 24 bytes (AES-192) or
+ * 32 bytes (AES-256).
+ */
+#define PSA_KEY_TYPE_VENDOR_AES ((psa_key_type_t)0xC0000001)
 
 /** Key for a cipher or MAC algorithm based on DES or 3DES (Triple-DES).
  *

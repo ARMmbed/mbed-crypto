@@ -129,11 +129,41 @@ static inline void psa_key_slot_set_bits_in_flags( psa_key_slot_t *slot,
  * \param[in,out] slot  The key slot to modify.
  * \param mask          The mask of bits to clear.
  */
-static inline void psa_key_slot_clear_bits( psa_key_slot_t *slot,
-                                            uint16_t mask )
+static inline void psa_key_slot_clear_bits(psa_key_slot_t *slot,
+                                           uint16_t mask)
 {
     slot->attr.flags &= ~mask;
 }
+
+/**
+ * \brief Prepare a slot for vendor defined key type.
+ *
+ * \warning This function **can** fail! Callers MUST check the return status
+ *          and MUST NOT use the content of the output buffer if the return
+ *          status is not #PSA_SUCCESS.
+ *
+ * \note    This function has to be defined by the vendor.
+ *          A weakly linked version is provided by default and returns
+ *          PSA_ERROR_NOT_SUPPORTED. Do not use this function directly;
+ *          to generate a key, use psa_generate_key() instead.
+ *
+ * \param[in] type          Type of symmetric key to be generated.
+ * \param[out] output       Output buffer for the generated data.
+ * \param[out] output_size  Number of bytes to generate and output.
+ *
+ * \retval #PSA_SUCCESS
+ * \retval #PSA_ERROR_NOT_SUPPORTED
+ * \retval #PSA_ERROR_INSUFFICIENT_ENTROPY
+ * \retval #PSA_ERROR_INSUFFICIENT_MEMORY
+ * \retval #PSA_ERROR_COMMUNICATION_FAILURE
+ * \retval #PSA_ERROR_HARDWARE_FAILURE
+ * \retval #PSA_ERROR_CORRUPTION_DETECTED
+ * \retval #PSA_ERROR_BAD_STATE
+ *         The library has not been previously initialized by psa_crypto_init().
+ *         It is implementation-dependent whether a failure to initialize
+ *         results in this error code.
+ */
+psa_status_t prepare_vendor_raw_data_slot(psa_key_type_t type, size_t bits, struct raw_data *raw);
 
 /** Completely wipe a slot in memory, including its policy.
  *
