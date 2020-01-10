@@ -2428,7 +2428,6 @@ psa_status_t psa_hash_clone( const psa_hash_operation_t *source_operation,
     return( PSA_SUCCESS );
 }
 
-
 /****************************************************************/
 /* MAC */
 /****************************************************************/
@@ -2489,6 +2488,7 @@ static const mbedtls_cipher_info_t *mbedtls_cipher_info_from_psa(
     switch( key_type )
     {
         case PSA_KEY_TYPE_AES:
+        case PSA_KEY_TYPE_VENDOR_AES:
             cipher_id_tmp = MBEDTLS_CIPHER_ID_AES;
             break;
         case PSA_KEY_TYPE_DES:
@@ -3788,6 +3788,7 @@ static psa_status_t psa_cipher_setup( psa_cipher_operation_t *operation,
     if( alg == PSA_ALG_CHACHA20 )
         operation->iv_size = 12;
 #endif
+
 
 exit:
     if( status == 0 )
