@@ -3614,7 +3614,7 @@ psa_status_t psa_generate_random(uint8_t * output, size_t output_size);
  *         It is implementation-dependent whether a failure to initialize
  *         results in this error code.
  */
-psa_status_t psa_generate_vendor_symmetric(psa_key_type_t type, uint8_t * output, size_t output_size);
+psa_status_t psa_generate_vendor_symmetric(psa_key_type_t type, size_t bits, uint8_t * output, size_t output_size);
 
 /**
  * \brief Generate a key or key pair.
