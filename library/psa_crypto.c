@@ -3694,6 +3694,17 @@ static psa_status_t psa_cipher_init( psa_cipher_operation_t *operation,
     mbedtls_cipher_init( &operation->ctx.cipher );
     return( PSA_SUCCESS );
 }
+// The weakly linked function "psa_cipher_setup_vendor_weak" which returns "PSA_ERROR_NOT_SUPPORTED" will be linked if 
+// the vendor does not provide a definition for "psa_cipher_setup_vendor"
+psa_status_t psa_cipher_setup_vendor( psa_cipher_operation_t * operation, psa_key_handle_t handle, psa_algorithm_t alg) __attribute__ ((weak, alias("psa_cipher_setup_vendor_weak")));
+psa_status_t psa_cipher_setup_vendor_weak( psa_cipher_operation_t * operation, psa_key_handle_t handle, psa_algorithm_t alg);
+psa_status_t psa_cipher_setup_vendor_weak( psa_cipher_operation_t * operation, psa_key_handle_t handle, psa_algorithm_t alg)
+{
+    (void)operation;
+    (void)handle;
+    (void)alg;
+    return PSA_ERROR_NOT_SUPPORTED;
+}
 
 static psa_status_t psa_cipher_setup( psa_cipher_operation_t *operation,
                                       psa_key_handle_t handle,
@@ -3788,6 +3799,11 @@ static psa_status_t psa_cipher_setup( psa_cipher_operation_t *operation,
     if( alg == PSA_ALG_CHACHA20 )
         operation->iv_size = 12;
 #endif
+
+    if (PSA_KEY_TYPE_IS_VENDOR_DEFINED(slot->attr.type))
+    {
+        status = psa_cipher_setup_vendor(operation, handle, alg); 
+    }
 
 
 exit:
