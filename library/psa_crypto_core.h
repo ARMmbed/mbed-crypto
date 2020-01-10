@@ -163,7 +163,7 @@ static inline void psa_key_slot_clear_bits(psa_key_slot_t *slot,
  *         It is implementation-dependent whether a failure to initialize
  *         results in this error code.
  */
-psa_status_t prepare_vendor_raw_data_slot(psa_key_type_t type, size_t bits, struct raw_data *raw);
+psa_status_t prepare_raw_data_slot_vendor(psa_key_type_t type, size_t bits, struct raw_data *raw);
 
 /** Completely wipe a slot in memory, including its policy.
  *

@@ -3594,8 +3594,8 @@ psa_status_t psa_generate_random(uint8_t * output, size_t output_size);
  *          status is not #PSA_SUCCESS.
  *
  * \note    This function has to be defined by the vendor.
- *          A weakly liniked version is provided by default and returns
- *          PSA_ERROR_NOT_SUPPORTED. Do not use this function directlyu;
+ *          A weakly linked version is provided by default and returns
+ *          PSA_ERROR_NOT_SUPPORTED. Do not use this function directly;
  *          to generate a key, use psa_generate_key() instead.
  *
  * \param[in] type          Type of symmetric key to be generated.
@@ -3614,7 +3614,34 @@ psa_status_t psa_generate_random(uint8_t * output, size_t output_size);
  *         It is implementation-dependent whether a failure to initialize
  *         results in this error code.
  */
-psa_status_t psa_generate_vendor_symmetric(psa_key_type_t type, size_t bits, uint8_t * output, size_t output_size);
+psa_status_t psa_generate_symmetric_vendor(psa_key_type_t type, size_t bits, uint8_t * output, size_t output_size);
+
+/**
+ * \brief Perform vendor specific setup for cipher operations.
+ *
+ *
+ * \note    This function has to be defined by the vendor.
+ *          A weakly linked version is provided by default and returns
+ *          PSA_ERROR_NOT_SUPPORTED. Do not use this function directly;
+ *          to generate a key, use psa_generate_key() instead.
+ *
+ * \param[in] type          Type of symmetric key to be generated.
+ * \param[out] output       Output buffer for the generated data.
+ * \param[out] output_size  Number of bytes to generate and output.
+ *
+ * \retval #PSA_SUCCESS
+ * \retval #PSA_ERROR_NOT_SUPPORTED
+ * \retval #PSA_ERROR_INSUFFICIENT_ENTROPY
+ * \retval #PSA_ERROR_INSUFFICIENT_MEMORY
+ * \retval #PSA_ERROR_COMMUNICATION_FAILURE
+ * \retval #PSA_ERROR_HARDWARE_FAILURE
+ * \retval #PSA_ERROR_CORRUPTION_DETECTED
+ * \retval #PSA_ERROR_BAD_STATE
+ *         The library has not been previously initialized by psa_crypto_init().
+ *         It is implementation-dependent whether a failure to initialize
+ *         results in this error code.
+ */
+psa_status_t psa_cipher_setup_vendor(psa_cipher_operation_t * operation, psa_key_handle_t handle, psa_algorithm_t alg);
 
 /**
  * \brief Generate a key or key pair.
@@ -3654,8 +3681,7 @@ psa_status_t psa_generate_vendor_symmetric(psa_key_type_t type, size_t bits, uin
  *         It is implementation-dependent whether a failure to initialize
  *         results in this error code.
  */
-psa_status_t psa_generate_key(const psa_key_attributes_t *attributes,
-                              psa_key_handle_t *handle);
+psa_status_t psa_generate_key(const psa_key_attributes_t * attributes, psa_key_handle_t * handle);
 
 /**@}*/
 

@@ -388,6 +388,9 @@
  */
 #define PSA_KEY_TYPE_VENDOR_AES ((psa_key_type_t)0xC0000001)
 
+/** Whether a key type is AES. */
+#define PSA_KEY_TYPE_IS_AES(type) (((type)&PSA_KEY_TYPE_AES) != 0)
+
 /** Key for a cipher or MAC algorithm based on DES or 3DES (Triple-DES).
  *
  * The size of the key can be 8 bytes (single DES), 16 bytes (2-key 3DES) or
