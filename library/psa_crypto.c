@@ -3745,6 +3745,11 @@ static psa_status_t psa_cipher_setup( psa_cipher_operation_t *operation,
     ret = mbedtls_cipher_setup( &operation->ctx.cipher, cipher_info );
     if( ret != 0 )
         goto exit;
+    
+    if (PSA_KEY_TYPE_IS_VENDOR_DEFINED(slot->attr.type))
+    {
+        status = psa_cipher_setup_vendor(operation, handle, alg); 
+    }
 
 #if defined(MBEDTLS_DES_C)
     if( slot->attr.type == PSA_KEY_TYPE_DES && key_bits == 128 )
