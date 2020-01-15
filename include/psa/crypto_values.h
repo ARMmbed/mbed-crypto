@@ -386,7 +386,7 @@
  * The size of the key can be 16 bytes (AES-128), 24 bytes (AES-192) or
  * 32 bytes (AES-256).
  */
-#define PSA_KEY_TYPE_VENDOR_AES ((psa_key_type_t)0xC0000001)
+#define PSA_KEY_TYPE_AES_VENDOR ((psa_key_type_t)0xC0000001)
 
 /** Whether a key type is AES. */
 #define PSA_KEY_TYPE_IS_AES(type) (((type)&PSA_KEY_TYPE_AES) != 0)

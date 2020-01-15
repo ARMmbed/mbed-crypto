@@ -2488,7 +2488,7 @@ static const mbedtls_cipher_info_t *mbedtls_cipher_info_from_psa(
     switch( key_type )
     {
         case PSA_KEY_TYPE_AES:
-        case PSA_KEY_TYPE_VENDOR_AES:
+        case PSA_KEY_TYPE_AES_VENDOR:
             cipher_id_tmp = MBEDTLS_CIPHER_ID_AES;
             break;
         case PSA_KEY_TYPE_DES:
@@ -3997,6 +3997,16 @@ error:
     return( status );
 }
 
+// The weakly linked function "psa_cipher_abort_vendor_weak" which returns "PSA_SUCCESS" will be linked if 
+// the vendor does not provide a definition for "psa_cipher_abort_vendor"
+psa_status_t psa_cipher_abort_vendor( psa_cipher_operation_t * operation) __attribute__ ((weak, alias("psa_cipher_abort_vendor_weak")));
+psa_status_t psa_cipher_abort_vendor_weak( psa_cipher_operation_t * operation);
+psa_status_t psa_cipher_abort_vendor_weak( psa_cipher_operation_t * operation)
+{
+    (void)operation;
+    return PSA_SUCCESS;
+}
+
 psa_status_t psa_cipher_abort( psa_cipher_operation_t *operation )
 {
     if( operation->alg == 0 )
@@ -4012,6 +4022,7 @@ psa_status_t psa_cipher_abort( psa_cipher_operation_t *operation )
     if( ! PSA_ALG_IS_CIPHER( operation->alg ) )
         return( PSA_ERROR_BAD_STATE );
 
+    psa_cipher_abort_vendor(operation);
     mbedtls_cipher_free( &operation->ctx.cipher );
 
     operation->alg = 0;

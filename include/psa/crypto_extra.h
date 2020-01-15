@@ -141,9 +141,24 @@ psa_status_t psa_cipher_setup_vendor(psa_cipher_operation_t * operation, psa_key
  *          verified that the usage of the key with multiple algorithms
  *          is safe.
  */
-static inline void psa_set_key_enrollment_algorithm(
-    psa_key_attributes_t *attributes,
-    psa_algorithm_t alg2)
+
+/** Perform any vendor specific action when aborting a cipher operation.
+ *
+ * This function is called at the beginning of the psa_cipher_abort function.
+ * The vendor must provide an implementation of this function to perform any
+ * vendor specific abort operation. A weakly linked implementation of this
+ * function that does nothing is provided in the implementation.
+ *
+ * This function must not be called directly.
+ *
+ * \param[in,out] operation     Initialized cipher operation.
+ *
+ * \retval #PSA_SUCCESS
+ * \retval Implementation dependent return values.
+ */
+psa_status_t psa_cipher_abort_vendor(psa_cipher_operation_t * operation);
+
+static inline void psa_set_key_enrollment_algorithm (psa_key_attributes_t * attributes, psa_algorithm_t alg2)
 {
     attributes->core.policy.alg2 = alg2;
 }
