@@ -1283,6 +1283,31 @@ component_check_generate_test_code () {
     record_status ./tests/scripts/test_generate_test_code.py
 }
 
+component_test_tls_headers_overwrite () {
+    msg "build: cmake headers check"
+    MBEDTLS_CRYPTO_DESTROOT="${PWD}/headers-check-destroot"
+    MBEDTLS_INCLUDE='include/mbedtls'
+    MBEDTLS_CRYPTO_DESTROOT_INCLUDE="${MBEDTLS_CRYPTO_DESTROOT}/${MBEDTLS_INCLUDE}"
+    scripts/config.py full
+    cmake -DUSE_CRYPTO_SUBMODULE:Bool=ON -DCMAKE_INSTALL_PREFIX:Path="${MBEDTLS_CRYPTO_DESTROOT}" .
+    make
+
+    msg "install: cmake headers check"
+    if_build_succeeded make install
+
+    msg "test: cmake headers check"
+    if_build_succeeded not test -e "${MBEDTLS_CRYPTO_DESTROOT_INCLUDE}/compat-1.3.h"
+    if_build_succeeded not test -e "${MBEDTLS_CRYPTO_DESTROOT_INCLUDE}/config.h"
+    if_build_succeeded not test -e "${MBEDTLS_CRYPTO_DESTROOT_INCLUDE}/error.h"
+    if_build_succeeded not test -e "${MBEDTLS_CRYPTO_DESTROOT_INCLUDE}/version.h"
+}
+post_test_tls_headers_overwrite () {
+    rm -rf "${PWD}/headers-check-destroot"
+}
+support_test_tls_headers_overwrite () {
+    test -n "${USE_CRYPTO_SUBMODULE}"
+}
+
 ################################################################
 #### Termination
 ################################################################
