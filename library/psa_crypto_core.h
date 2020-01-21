@@ -46,23 +46,27 @@ typedef struct
         struct raw_data
         {
             uint8_t *data;
-            size_t bytes;
+            size_t    bytes;
         } raw;
 #if defined(MBEDTLS_RSA_C)
+
         /* RSA public key or key pair */
-        mbedtls_rsa_context *rsa;
-#endif /* MBEDTLS_RSA_C */
+        mbedtls_rsa_context * rsa;
+#endif                                 /* MBEDTLS_RSA_C */
 #if defined(MBEDTLS_ECP_C)
+
         /* EC public key or key pair */
-        mbedtls_ecp_keypair *ecp;
-#endif /* MBEDTLS_ECP_C */
+        mbedtls_ecp_keypair * ecp;
+#endif                                 /* MBEDTLS_ECP_C */
 #if defined(MBEDTLS_PSA_CRYPTO_SE_C)
+
         /* Any key type in a secure element */
         struct se
         {
             psa_key_slot_number_t slot_number;
         } se;
-#endif /* MBEDTLS_PSA_CRYPTO_SE_C */
+#endif                                 /* MBEDTLS_PSA_CRYPTO_SE_C */
+        void * vendor_context;
     } data;
 } psa_key_slot_t;
 

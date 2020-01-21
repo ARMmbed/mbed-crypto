@@ -386,7 +386,7 @@
  * The size of the key can be 16 bytes (AES-128), 24 bytes (AES-192) or
  * 32 bytes (AES-256).
  */
-#define PSA_KEY_TYPE_AES_VENDOR ((psa_key_type_t)0xC0000001)
+#define PSA_KEY_TYPE_AES_VENDOR ((psa_key_type_t)(PSA_KEY_TYPE_VENDOR_FLAG | PSA_KEY_TYPE_AES))
 
 /** Whether a key type is AES. */
 #define PSA_KEY_TYPE_IS_AES(type) (((type)&PSA_KEY_TYPE_AES) != 0)
@@ -436,8 +436,14 @@
 #define PSA_KEY_TYPE_ECC_KEY_PAIR(curve)         \
     (PSA_KEY_TYPE_ECC_KEY_PAIR_BASE | (curve))
 /** Elliptic curve public key. */
-#define PSA_KEY_TYPE_ECC_PUBLIC_KEY(curve)              \
+#define PSA_KEY_TYPE_ECC_PUBLIC_KEY(curve) \
     (PSA_KEY_TYPE_ECC_PUBLIC_KEY_BASE | (curve))
+/** Elliptic curve key pair (Vendor defined format). */
+#define PSA_KEY_TYPE_ECC_KEY_PAIR_VENDOR(curve) \
+    (PSA_KEY_TYPE_VENDOR_FLAG | PSA_KEY_TYPE_ECC_KEY_PAIR_BASE | (curve))
+/** Elliptic curve public key (Vendor defined format). */
+#define PSA_KEY_TYPE_ECC_PUBLIC_KEY_VENDOR(curve) \
+    (PSA_KEY_TYPE_VENDOR_FLAG | PSA_KEY_TYPE_ECC_PUBLIC_KEY_BASE | (curve))
 
 /** Whether a key type is an elliptic curve key (pair or public-only). */
 #define PSA_KEY_TYPE_IS_ECC(type)                                       \
@@ -449,14 +455,27 @@
      PSA_KEY_TYPE_ECC_KEY_PAIR_BASE)
 /** Whether a key type is an elliptic curve public key. */
 #define PSA_KEY_TYPE_IS_ECC_PUBLIC_KEY(type)                            \
-    (((type) & ~PSA_KEY_TYPE_ECC_CURVE_MASK) ==                         \
+    (((type) & ~PSA_KEY_TYPE_ECC_CURVE_MASK) == \
      PSA_KEY_TYPE_ECC_PUBLIC_KEY_BASE)
 
+/** Whether a key type is an elliptic curve key (pair or public-only). */
+#define PSA_KEY_TYPE_IS_ECC_VENDOR(type)          \
+    ((PSA_KEY_TYPE_PUBLIC_KEY_OF_KEY_PAIR(type) & \
+      ~PSA_KEY_TYPE_ECC_CURVE_MASK) == (PSA_KEY_TYPE_VENDOR_FLAG | PSA_KEY_TYPE_ECC_PUBLIC_KEY_BASE))
+/** Whether a key type is an elliptic curve key pair. */
+#define PSA_KEY_TYPE_IS_ECC_KEY_PAIR_VENDOR(type) \
+    (((type) & ~PSA_KEY_TYPE_ECC_CURVE_MASK) ==   \
+     (PSA_KEY_TYPE_VENDOR_FLAG | PSA_KEY_TYPE_ECC_KEY_PAIR_BASE))
+/** Whether a key type is an elliptic curve public key. */
+#define PSA_KEY_TYPE_IS_ECC_PUBLIC_KEY_VENDOR(type) \
+    (((type) & ~PSA_KEY_TYPE_ECC_CURVE_MASK) ==     \
+     (PSA_KEY_TYPE_VENDOR_FLAG | PSA_KEY_TYPE_ECC_PUBLIC_KEY_BASE))
 /** Extract the curve from an elliptic curve key type. */
-#define PSA_KEY_TYPE_GET_CURVE(type)                             \
-    ((psa_ecc_curve_t) (PSA_KEY_TYPE_IS_ECC(type) ?              \
-                        ((type) & PSA_KEY_TYPE_ECC_CURVE_MASK) : \
-                        0))
+#define PSA_KEY_TYPE_GET_CURVE(type) \
+    ((psa_ecc_curve_t)(PSA_KEY_TYPE_IS_ECC(type) ? ((type)&PSA_KEY_TYPE_ECC_CURVE_MASK) : 0))
+/** Extract the curve from an elliptic curve key type. */
+#define PSA_KEY_TYPE_GET_CURVE_VENDOR(type) \
+    ((psa_ecc_curve_t)(PSA_KEY_TYPE_IS_ECC_VENDOR(type) ? ((type)&PSA_KEY_TYPE_ECC_CURVE_MASK) : 0))
 
 /* The encoding of curve identifiers is currently aligned with the
  * TLS Supported Groups Registry (formerly known as the
