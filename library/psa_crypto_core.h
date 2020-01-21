@@ -133,11 +133,37 @@ static inline void psa_key_slot_set_bits_in_flags( psa_key_slot_t *slot,
  * \param[in,out] slot  The key slot to modify.
  * \param mask          The mask of bits to clear.
  */
-static inline void psa_key_slot_clear_bits(psa_key_slot_t *slot,
-                                           uint16_t mask)
+static inline void psa_key_slot_clear_bits (psa_key_slot_t * slot, uint16_t mask)
 {
     slot->attr.flags &= ~mask;
 }
+
+/**
+ * \brief Generate a vendor defined key or key pair.
+ *
+ * \note    This function has to be defined by the vendor.
+ *          A weakly linked version is provided by default and returns
+ *          PSA_ERROR_NOT_SUPPORTED. Do not use this function directly;
+ *          to generate a key, use psa_generate_key() instead.
+ *
+ * \param[in] slot
+ * \param[in] bits
+ * \param[in] domain_parameters
+ * \param[in] domain_parameters_size
+ *
+ *
+ * \retval #PSA_SUCCESS
+ *         Success.
+ *         If the key is persistent, the key material and the key's metadata
+ *         have been saved to persistent storage.
+ *
+ * \retval #PSA_ERROR_NOT_SUPPORTED
+ * \retval Implementation dependent.
+ */
+psa_status_t psa_generate_key_vendor(psa_key_slot_t * slot,
+                                     size_t           bits,
+                                     const uint8_t  * domain_parameters,
+                                     size_t           domain_parameters_size);
 
 /**
  * \brief Prepare a slot for vendor defined key type.
