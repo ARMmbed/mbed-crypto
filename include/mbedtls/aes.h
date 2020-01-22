@@ -51,73 +51,72 @@
 #include <stdint.h>
 
 /* padlock.c and aesni.c rely on these values! */
-#define MBEDTLS_AES_ENCRYPT 1 /**< AES encryption. */
-#define MBEDTLS_AES_DECRYPT 0 /**< AES decryption. */
+#define MBEDTLS_AES_ENCRYPT     1 /**< AES encryption. */
+#define MBEDTLS_AES_DECRYPT     0 /**< AES decryption. */
 
 /* Error codes in range 0x0020-0x0022 */
-#define MBEDTLS_ERR_AES_INVALID_KEY_LENGTH -0x0020   /**< Invalid key length. */
-#define MBEDTLS_ERR_AES_INVALID_INPUT_LENGTH -0x0022 /**< Invalid data input length. */
+#define MBEDTLS_ERR_AES_INVALID_KEY_LENGTH                -0x0020  /**< Invalid key length. */
+#define MBEDTLS_ERR_AES_INVALID_INPUT_LENGTH              -0x0022  /**< Invalid data input length. */
 
 /* Error codes in range 0x0021-0x0025 */
-#define MBEDTLS_ERR_AES_BAD_INPUT_DATA -0x0021 /**< Invalid input data. */
+#define MBEDTLS_ERR_AES_BAD_INPUT_DATA                    -0x0021  /**< Invalid input data. */
 
 /* MBEDTLS_ERR_AES_FEATURE_UNAVAILABLE is deprecated and should not be used. */
-#define MBEDTLS_ERR_AES_FEATURE_UNAVAILABLE -0x0023 /**< Feature not available. For example, an unsupported AES key size. */
+#define MBEDTLS_ERR_AES_FEATURE_UNAVAILABLE               -0x0023  /**< Feature not available. For example, an unsupported AES key size. */
 
 /* MBEDTLS_ERR_AES_HW_ACCEL_FAILED is deprecated and should not be used. */
-#define MBEDTLS_ERR_AES_HW_ACCEL_FAILED -0x0025 /**< AES hardware accelerator failed. */
+#define MBEDTLS_ERR_AES_HW_ACCEL_FAILED                   -0x0025  /**< AES hardware accelerator failed. */
 
-#if (defined(__ARMCC_VERSION) || defined(_MSC_VER)) && \
+#if ( defined(__ARMCC_VERSION) || defined(_MSC_VER) ) && \
     !defined(inline) && !defined(__cplusplus)
 #define inline __inline
 #endif
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 #if !defined(MBEDTLS_AES_ALT)
-    // Regular implementation
-    //
+// Regular implementation
+//
 
-    /**
+/**
  * \brief The AES context-type definition.
  */
-    typedef struct mbedtls_aes_context
-    {
-    int        nr;                     /*!< The number of rounds. */
-    uint32_t * rk;                     /*!< AES round keys. */
-    uint32_t   buf[68];                /*!< Unaligned data buffer. This buffer can
-                                        *       hold 32 extra Bytes, which can be used for
-                                        *       one of the following purposes:
-                                        *       <ul><li>Alignment if VIA padlock is
-                                        *               used.</li>
-                                        *       <li>Simplifying key expansion in the 256-bit
-                                        *           case by generating an extra round key.
-                                        *           </li></ul> */
-    void * vendor_ctx;                 /*!< Vendor defined context. */
-} mbedtls_aes_context;
+typedef struct mbedtls_aes_context
+{
+    int nr;                     /*!< The number of rounds. */
+    uint32_t *rk;               /*!< AES round keys. */
+    uint32_t buf[68];           /*!< Unaligned data buffer. This buffer can
+                                     hold 32 extra Bytes, which can be used for
+                                     one of the following purposes:
+                                     <ul><li>Alignment if VIA padlock is
+                                             used.</li>
+                                     <li>Simplifying key expansion in the 256-bit
+                                         case by generating an extra round key.
+                                         </li></ul> */
+    void *vendor_ctx;           /*!< Vendor defined context. */
+}
+mbedtls_aes_context;
 
-  #if defined(MBEDTLS_CIPHER_MODE_XTS)
-
+#if defined(MBEDTLS_CIPHER_MODE_XTS)
 /**
  * \brief The AES XTS context-type definition.
  */
 typedef struct mbedtls_aes_xts_context
 {
-    mbedtls_aes_context crypt;         /*!< The AES context to use for AES block
-                                        *   encryption or decryption. */
-    mbedtls_aes_context tweak;         /*!< The AES context used for tweak
-                                        *   computation. */
+    mbedtls_aes_context crypt; /*!< The AES context to use for AES block
+                                        encryption or decryption. */
+    mbedtls_aes_context tweak; /*!< The AES context used for tweak
+                                        computation. */
 } mbedtls_aes_xts_context;
-  #endif /* MBEDTLS_CIPHER_MODE_XTS */
+#endif /* MBEDTLS_CIPHER_MODE_XTS */
 
-#else /* MBEDTLS_AES_ALT */
+#else  /* MBEDTLS_AES_ALT */
 #include "aes_alt.h"
 #endif /* MBEDTLS_AES_ALT */
 
-    /**
+/**
  * \brief          This function initializes the specified AES context.
  *
  *                 It must be the first API called before using
@@ -125,19 +124,19 @@ typedef struct mbedtls_aes_xts_context
  *
  * \param ctx      The AES context to initialize. This must not be \c NULL.
  */
-    void mbedtls_aes_init(mbedtls_aes_context *ctx);
+void mbedtls_aes_init( mbedtls_aes_context *ctx );
 
-    /**
+/**
  * \brief          This function releases and clears the specified AES context.
  *
  * \param ctx      The AES context to clear.
  *                 If this is \c NULL, this function does nothing.
  *                 Otherwise, the context must have been at least initialized.
  */
-    void mbedtls_aes_free(mbedtls_aes_context *ctx);
+void mbedtls_aes_free( mbedtls_aes_context *ctx );
 
 #if defined(MBEDTLS_CIPHER_MODE_XTS)
-    /**
+/**
  * \brief          This function initializes the specified AES XTS context.
  *
  *                 It must be the first API called before using
@@ -145,19 +144,19 @@ typedef struct mbedtls_aes_xts_context
  *
  * \param ctx      The AES XTS context to initialize. This must not be \c NULL.
  */
-    void mbedtls_aes_xts_init(mbedtls_aes_xts_context *ctx);
+void mbedtls_aes_xts_init( mbedtls_aes_xts_context *ctx );
 
-    /**
+/**
  * \brief          This function releases and clears the specified AES XTS context.
  *
  * \param ctx      The AES XTS context to clear.
  *                 If this is \c NULL, this function does nothing.
  *                 Otherwise, the context must have been at least initialized.
  */
-    void mbedtls_aes_xts_free(mbedtls_aes_xts_context *ctx);
+void mbedtls_aes_xts_free( mbedtls_aes_xts_context *ctx );
 #endif /* MBEDTLS_CIPHER_MODE_XTS */
 
-    /**
+/**
  * \brief          This function sets the encryption key.
  *
  * \param ctx      The AES context to which the key should be bound.
