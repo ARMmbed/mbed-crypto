@@ -2488,7 +2488,6 @@ static const mbedtls_cipher_info_t *mbedtls_cipher_info_from_psa(
     switch( key_type )
     {
         case PSA_KEY_TYPE_AES:
-        case PSA_KEY_TYPE_AES_VENDOR:
             cipher_id_tmp = MBEDTLS_CIPHER_ID_AES;
             break;
         case PSA_KEY_TYPE_DES:
@@ -3416,9 +3415,9 @@ psa_status_t psa_asymmetric_sign( psa_key_handle_t handle,
     if (PSA_KEY_LIFETIME_IS_VENDOR_DEFINED(slot->attr.lifetime))
     {
         status = psa_asymmetric_sign_vendor(slot,alg,
-                                        hash, hash_length,
-                                        signature, signature_size,
-                                     signature_length );
+                                            hash, hash_length,
+                                            signature, signature_size,
+                                            signature_length );
     }
     else
 #if defined(MBEDTLS_RSA_C)
@@ -3540,8 +3539,8 @@ psa_status_t psa_asymmetric_verify( psa_key_handle_t handle,
 if (PSA_KEY_LIFETIME_IS_VENDOR_DEFINED(slot->attr.lifetime))
     {
         return( psa_asymmetric_verify_vendor(slot,alg,
-                                     hash, hash_length,
-                                     signature, signature_length ) );
+                                            hash, hash_length,
+                                            signature, signature_length ) );
     }
     else
 #if defined(MBEDTLS_RSA_C)
@@ -3829,6 +3828,8 @@ static psa_status_t psa_cipher_setup( psa_cipher_operation_t *operation,
     if (PSA_KEY_LIFETIME_IS_VENDOR_DEFINED(slot->attr.lifetime))
     {
         status = psa_cipher_setup_vendor(operation, handle, alg); 
+        if( status != PSA_SUCCESS )
+        goto exit;
     }
 
 #if defined(MBEDTLS_DES_C)
@@ -3884,12 +3885,6 @@ static psa_status_t psa_cipher_setup( psa_cipher_operation_t *operation,
     if( alg == PSA_ALG_CHACHA20 )
         operation->iv_size = 12;
 #endif
-
-    if (PSA_KEY_LIFETIME_IS_VENDOR_DEFINED(slot->attr.lifetime))
-    {
-        status = psa_cipher_setup_vendor(operation, handle, alg); 
-    }
-
 
 exit:
     if( status == 0 )

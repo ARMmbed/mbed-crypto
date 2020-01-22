@@ -39,7 +39,7 @@
  */
 typedef struct
 {
-     psa_core_key_attributes_t attr;
+    psa_core_key_attributes_t attr;
     union
     {
         /* Raw-data key (key_type_is_raw_bytes() in psa_crypto.c) */
