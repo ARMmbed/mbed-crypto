@@ -3584,7 +3584,8 @@ psa_status_t psa_raw_key_agreement(psa_algorithm_t alg,
  *         It is implementation-dependent whether a failure to initialize
  *         results in this error code.
  */
-psa_status_t psa_generate_random(uint8_t * output, size_t output_size);
+psa_status_t psa_generate_random(uint8_t *output,
+                                 size_t output_size);
 
 /**
  * \brief Generate a key or key pair.
@@ -3624,7 +3625,8 @@ psa_status_t psa_generate_random(uint8_t * output, size_t output_size);
  *         It is implementation-dependent whether a failure to initialize
  *         results in this error code.
  */
-psa_status_t psa_generate_key(const psa_key_attributes_t * attributes, psa_key_handle_t * handle);
+psa_status_t psa_generate_key(const psa_key_attributes_t *attributes,
+                              psa_key_handle_t *handle);
 
 /**@}*/
 

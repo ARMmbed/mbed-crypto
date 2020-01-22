@@ -39,33 +39,30 @@
  */
 typedef struct
 {
-    psa_core_key_attributes_t attr;
+     psa_core_key_attributes_t attr;
     union
     {
         /* Raw-data key (key_type_is_raw_bytes() in psa_crypto.c) */
         struct raw_data
         {
             uint8_t *data;
-            size_t    bytes;
+            size_t bytes;
         } raw;
 #if defined(MBEDTLS_RSA_C)
-
         /* RSA public key or key pair */
-        mbedtls_rsa_context * rsa;
-#endif                                 /* MBEDTLS_RSA_C */
+        mbedtls_rsa_context *rsa;
+#endif /* MBEDTLS_RSA_C */
 #if defined(MBEDTLS_ECP_C)
-
         /* EC public key or key pair */
-        mbedtls_ecp_keypair * ecp;
-#endif                                 /* MBEDTLS_ECP_C */
+        mbedtls_ecp_keypair *ecp;
+#endif /* MBEDTLS_ECP_C */
 #if defined(MBEDTLS_PSA_CRYPTO_SE_C)
-
         /* Any key type in a secure element */
         struct se
         {
             psa_key_slot_number_t slot_number;
         } se;
-#endif                                 /* MBEDTLS_PSA_CRYPTO_SE_C */
+#endif /* MBEDTLS_PSA_CRYPTO_SE_C */
         void * vendor_context;
     } data;
 } psa_key_slot_t;
@@ -133,7 +130,8 @@ static inline void psa_key_slot_set_bits_in_flags( psa_key_slot_t *slot,
  * \param[in,out] slot  The key slot to modify.
  * \param mask          The mask of bits to clear.
  */
-static inline void psa_key_slot_clear_bits (psa_key_slot_t * slot, uint16_t mask)
+static inline void psa_key_slot_clear_bits( psa_key_slot_t *slot,
+                                            uint16_t mask )
 {
     slot->attr.flags &= ~mask;
 }
@@ -176,6 +174,7 @@ psa_status_t psa_generate_key_vendor(psa_key_slot_t * slot,
  *         already fully wiped.
  * \retval PSA_ERROR_CORRUPTION_DETECTED
  */
+psa_status_t psa_wipe_key_slot( psa_key_slot_t *slot );
 
 /**
  * \brief Sign a hash or short message with a vendor defined private key.
@@ -245,8 +244,6 @@ psa_status_t psa_asymmetric_verify_vendor(psa_key_slot_t * slot,
                                           size_t           hash_length,
                                           uint8_t        * signature,
                                           size_t           signature_length);
-
-psa_status_t psa_wipe_key_slot(psa_key_slot_t * slot);
 
 /** Import key data into a slot.
  *
