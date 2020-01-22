@@ -165,36 +165,6 @@ psa_status_t psa_generate_key_vendor(psa_key_slot_t * slot,
                                      const uint8_t  * domain_parameters,
                                      size_t           domain_parameters_size);
 
-/**
- * \brief Prepare a slot for vendor defined key type.
- *
- * \warning This function **can** fail! Callers MUST check the return status
- *          and MUST NOT use the content of the output buffer if the return
- *          status is not #PSA_SUCCESS.
- *
- * \note    This function has to be defined by the vendor.
- *          A weakly linked version is provided by default and returns
- *          PSA_ERROR_NOT_SUPPORTED. Do not use this function directly;
- *          to generate a key, use psa_generate_key() instead.
- *
- * \param[in] type          Type of symmetric key to be generated.
- * \param[out] output       Output buffer for the generated data.
- * \param[out] output_size  Number of bytes to generate and output.
- *
- * \retval #PSA_SUCCESS
- * \retval #PSA_ERROR_NOT_SUPPORTED
- * \retval #PSA_ERROR_INSUFFICIENT_ENTROPY
- * \retval #PSA_ERROR_INSUFFICIENT_MEMORY
- * \retval #PSA_ERROR_COMMUNICATION_FAILURE
- * \retval #PSA_ERROR_HARDWARE_FAILURE
- * \retval #PSA_ERROR_CORRUPTION_DETECTED
- * \retval #PSA_ERROR_BAD_STATE
- *         The library has not been previously initialized by psa_crypto_init().
- *         It is implementation-dependent whether a failure to initialize
- *         results in this error code.
- */
-psa_status_t prepare_raw_data_slot_vendor(psa_key_type_t type, size_t bits, struct raw_data *raw);
-
 /** Completely wipe a slot in memory, including its policy.
  *
  * Persistent storage is not affected.
@@ -206,7 +176,77 @@ psa_status_t prepare_raw_data_slot_vendor(psa_key_type_t type, size_t bits, stru
  *         already fully wiped.
  * \retval PSA_ERROR_CORRUPTION_DETECTED
  */
-psa_status_t psa_wipe_key_slot( psa_key_slot_t *slot );
+
+/**
+ * \brief Sign a hash or short message with a vendor defined private key.
+ *
+ * Note that to perform a hash-and-sign signature algorithm, you must
+ * first calculate the hash by calling psa_hash_setup(), psa_hash_update()
+ * and psa_hash_finish(). Then pass the resulting hash as the \p hash
+ * parameter to this function. You can use #PSA_ALG_SIGN_GET_HASH(\p alg)
+ * to determine the hash algorithm to use.
+ *
+ * \param slot                  Key slot to use for the operation.
+ *                              It must be an asymmetric key pair.
+ * \param alg                   A signature algorithm that is compatible with
+ *                              the type of \p handle.
+ * \param[in] hash              The hash or message to sign.
+ * \param hash_length           Size of the \p hash buffer in bytes.
+ * \param[out] signature        Buffer where the signature is to be written.
+ * \param signature_size        Size of the \p signature buffer in bytes.
+ * \param[out] signature_length On success, the number of bytes
+ *                              that make up the returned signature value.
+ *
+ * \retval #PSA_SUCCESS
+ * \retval #PSA_ERROR_BUFFER_TOO_SMALL
+ *         The size of the \p signature buffer is too small. You can
+ *         determine a sufficient buffer size by calling
+ *         #PSA_ASYMMETRIC_SIGN_OUTPUT_SIZE(\c key_type, \c key_bits, \p alg)
+ *         where \c key_type and \c key_bits are the type and bit-size
+ *         respectively of \p handle.
+ * \retval #PSA_ERROR_NOT_SUPPORTED
+ * \retval Implementation dependent
+ */
+psa_status_t psa_asymmetric_sign_vendor(psa_key_slot_t * slot,
+                                        psa_algorithm_t  alg,
+                                        const uint8_t  * hash,
+                                        size_t           hash_length,
+                                        uint8_t        * signature,
+                                        size_t           signature_size,
+                                        size_t         * signature_length);
+
+/**
+ * \brief Verify the signature a hash or short message using a vendor defined public key.
+ *
+ * Note that to perform a hash-and-sign signature algorithm, you must
+ * first calculate the hash by calling psa_hash_setup(), psa_hash_update()
+ * and psa_hash_finish(). Then pass the resulting hash as the \p hash
+ * parameter to this function. You can use #PSA_ALG_SIGN_GET_HASH(\p alg)
+ * to determine the hash algorithm to use.
+ *
+ * \param handle            Key slot to use for the operation.
+ *                          It must be a public key or an asymmetric key pair.
+ * \param alg               A signature algorithm that is compatible with
+ *                          the type of \p handle.
+ * \param[in] hash          The hash or message whose signature is to be
+ *                          verified.
+ * \param hash_length       Size of the \p hash buffer in bytes.
+ * \param[in] signature     Buffer containing the signature to verify.
+ * \param signature_length  Size of the \p signature buffer in bytes.
+ *
+ * \retval #PSA_SUCCESS
+ *         The signature is valid.
+ * \retval #PSA_ERROR_INVALID_SIGNATURE
+ * \retval Implementation dependent
+ */
+psa_status_t psa_asymmetric_verify_vendor(psa_key_slot_t * slot,
+                                          psa_algorithm_t  alg,
+                                          const uint8_t  * hash,
+                                          size_t           hash_length,
+                                          uint8_t        * signature,
+                                          size_t           signature_length);
+
+psa_status_t psa_wipe_key_slot(psa_key_slot_t * slot);
 
 /** Import key data into a slot.
  *

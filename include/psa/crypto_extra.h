@@ -29,112 +29,43 @@
  */
 
 #ifndef PSA_CRYPTO_EXTRA_H
-#define PSA_CRYPTO_EXTRA_H
+ #define PSA_CRYPTO_EXTRA_H
 
-#include "mbedtls/platform_util.h"
+ #include "mbedtls/platform_util.h"
 
-#ifdef __cplusplus
+ #ifdef __cplusplus
 extern "C" {
-#endif
+ #endif
 
 /* UID for secure storage seed */
-#define PSA_CRYPTO_ITS_RANDOM_SEED_UID 0xFFFFFF52
+ #define PSA_CRYPTO_ITS_RANDOM_SEED_UID    0xFFFFFF52
 
 /*
  * Deprecated PSA Crypto error code definitions
  */
-#if !defined(MBEDTLS_DEPRECATED_REMOVED)
-#define PSA_ERROR_UNKNOWN_ERROR \
-    MBEDTLS_DEPRECATED_NUMERIC_CONSTANT( PSA_ERROR_GENERIC_ERROR )
-#endif
+ #if !defined(MBEDTLS_DEPRECATED_REMOVED)
+  #define PSA_ERROR_UNKNOWN_ERROR \
+    MBEDTLS_DEPRECATED_NUMERIC_CONSTANT(PSA_ERROR_GENERIC_ERROR)
+ #endif
 
-#if !defined(MBEDTLS_DEPRECATED_REMOVED)
-#define PSA_ERROR_OCCUPIED_SLOT \
-    MBEDTLS_DEPRECATED_NUMERIC_CONSTANT( PSA_ERROR_ALREADY_EXISTS )
-#endif
+ #if !defined(MBEDTLS_DEPRECATED_REMOVED)
+  #define PSA_ERROR_OCCUPIED_SLOT \
+    MBEDTLS_DEPRECATED_NUMERIC_CONSTANT(PSA_ERROR_ALREADY_EXISTS)
+ #endif
 
-#if !defined(MBEDTLS_DEPRECATED_REMOVED)
-#define PSA_ERROR_EMPTY_SLOT \
-    MBEDTLS_DEPRECATED_NUMERIC_CONSTANT( PSA_ERROR_DOES_NOT_EXIST )
-#endif
+ #if !defined(MBEDTLS_DEPRECATED_REMOVED)
+  #define PSA_ERROR_EMPTY_SLOT \
+    MBEDTLS_DEPRECATED_NUMERIC_CONSTANT(PSA_ERROR_DOES_NOT_EXIST)
+ #endif
 
-#if !defined(MBEDTLS_DEPRECATED_REMOVED)
-#define PSA_ERROR_INSUFFICIENT_CAPACITY \
-    MBEDTLS_DEPRECATED_NUMERIC_CONSTANT( PSA_ERROR_INSUFFICIENT_DATA )
-#endif
+ #if !defined(MBEDTLS_DEPRECATED_REMOVED)
+  #define PSA_ERROR_INSUFFICIENT_CAPACITY \
+    MBEDTLS_DEPRECATED_NUMERIC_CONSTANT(PSA_ERROR_INSUFFICIENT_DATA)
+ #endif
 
 /** \addtogroup attributes
  * @{
  */
-
-/**
- * \brief Sign a hash or short message with a vendor defined private key.
- *
- * Note that to perform a hash-and-sign signature algorithm, you must
- * first calculate the hash by calling psa_hash_setup(), psa_hash_update()
- * and psa_hash_finish(). Then pass the resulting hash as the \p hash
- * parameter to this function. You can use #PSA_ALG_SIGN_GET_HASH(\p alg)
- * to determine the hash algorithm to use.
- *
- * \param handle                Handle to the key to use for the operation.
- *                              It must be an asymmetric key pair.
- * \param alg                   A signature algorithm that is compatible with
- *                              the type of \p handle.
- * \param[in] hash              The hash or message to sign.
- * \param hash_length           Size of the \p hash buffer in bytes.
- * \param[out] signature        Buffer where the signature is to be written.
- * \param signature_size        Size of the \p signature buffer in bytes.
- * \param[out] signature_length On success, the number of bytes
- *                              that make up the returned signature value.
- *
- * \retval #PSA_SUCCESS
- * \retval #PSA_ERROR_BUFFER_TOO_SMALL
- *         The size of the \p signature buffer is too small. You can
- *         determine a sufficient buffer size by calling
- *         #PSA_ASYMMETRIC_SIGN_OUTPUT_SIZE(\c key_type, \c key_bits, \p alg)
- *         where \c key_type and \c key_bits are the type and bit-size
- *         respectively of \p handle.
- * \retval #PSA_ERROR_NOT_SUPPORTED
- * \retval Implementation dependent
- */
-psa_status_t psa_asymmetric_sign_vendor(psa_key_handle_t handle,
-                                        psa_algorithm_t  alg,
-                                        const uint8_t  * hash,
-                                        size_t           hash_length,
-                                        uint8_t        * signature,
-                                        size_t           signature_size,
-                                        size_t         * signature_length);
-
-/**
- * \brief Verify the signature a hash or short message using a vendor defined public key.
- *
- * Note that to perform a hash-and-sign signature algorithm, you must
- * first calculate the hash by calling psa_hash_setup(), psa_hash_update()
- * and psa_hash_finish(). Then pass the resulting hash as the \p hash
- * parameter to this function. You can use #PSA_ALG_SIGN_GET_HASH(\p alg)
- * to determine the hash algorithm to use.
- *
- * \param handle            Handle to the key to use for the operation.
- *                          It must be a public key or an asymmetric key pair.
- * \param alg               A signature algorithm that is compatible with
- *                          the type of \p handle.
- * \param[in] hash          The hash or message whose signature is to be
- *                          verified.
- * \param hash_length       Size of the \p hash buffer in bytes.
- * \param[in] signature     Buffer containing the signature to verify.
- * \param signature_length  Size of the \p signature buffer in bytes.
- *
- * \retval #PSA_SUCCESS
- *         The signature is valid.
- * \retval #PSA_ERROR_INVALID_SIGNATURE
- * \retval Implementation dependent
- */
-psa_status_t psa_asymmetric_verify_vendor(psa_key_handle_t handle,
-                                          psa_algorithm_t  alg,
-                                          const uint8_t  * hash,
-                                          size_t           hash_length,
-                                          uint8_t        * signature,
-                                          size_t         * signature_length);
 
 /**
  * \brief Generate symmetric key of vendor defined format.
@@ -237,7 +168,7 @@ static inline psa_algorithm_t psa_get_key_enrollment_algorithm(
     return( attributes->core.policy.alg2 );
 }
 
-#if defined(MBEDTLS_PSA_CRYPTO_SE_C)
+ #if defined(MBEDTLS_PSA_CRYPTO_SE_C)
 
 /** Retrieve the slot number where a key is stored.
  *
@@ -358,7 +289,7 @@ psa_status_t mbedtls_psa_register_se_key(
  *
  * This is an Mbed TLS extension.
  */
-void mbedtls_psa_crypto_free( void );
+void mbedtls_psa_crypto_free(void);
 
 /** \brief Statistics about
  * resource consumption related to the PSA keystore.
@@ -396,7 +327,7 @@ typedef struct mbedtls_psa_stats_s
  *       between the application and the keystore, the service may or
  *       may not expose this function.
  */
-void mbedtls_psa_get_stats( mbedtls_psa_stats_t *stats );
+void mbedtls_psa_get_stats(mbedtls_psa_stats_t * stats);
 
 /**
  * \brief Inject an initial entropy seed for the random generator into
@@ -479,7 +410,7 @@ psa_status_t mbedtls_psa_inject_entropy(const uint8_t *seed,
  * string. The length of the byte string is the length of the base prime `p`
  * in bytes.
  */
-#define PSA_KEY_TYPE_DSA_PUBLIC_KEY             ((psa_key_type_t)0x60020000)
+ #define PSA_KEY_TYPE_DSA_PUBLIC_KEY       ((psa_key_type_t) 0x60020000)
 
 /** DSA key pair (private and public key).
  *
@@ -497,10 +428,10 @@ psa_status_t mbedtls_psa_inject_entropy(const uint8_t *seed,
  * Add 1 to the resulting integer and use this as the private key *x*.
  *
  */
-#define PSA_KEY_TYPE_DSA_KEY_PAIR                ((psa_key_type_t)0x70020000)
+ #define PSA_KEY_TYPE_DSA_KEY_PAIR         ((psa_key_type_t) 0x70020000)
 
 /** Whether a key type is an DSA key (pair or public-only). */
-#define PSA_KEY_TYPE_IS_DSA(type)                                       \
+ #define PSA_KEY_TYPE_IS_DSA(type) \
     (PSA_KEY_TYPE_PUBLIC_KEY_OF_KEY_PAIR(type) == PSA_KEY_TYPE_DSA_PUBLIC_KEY)
 
 #define PSA_ALG_DSA_BASE                        ((psa_algorithm_t)0x10040000)
@@ -518,7 +449,7 @@ psa_status_t mbedtls_psa_inject_entropy(const uint8_t *seed,
  * \return              Unspecified if \p hash_alg is not a supported
  *                      hash algorithm.
  */
-#define PSA_ALG_DSA(hash_alg)                             \
+ #define PSA_ALG_DSA(hash_alg) \
     (PSA_ALG_DSA_BASE | ((hash_alg) & PSA_ALG_HASH_MASK))
 #define PSA_ALG_DETERMINISTIC_DSA_BASE          ((psa_algorithm_t)0x10050000)
 #define PSA_ALG_DSA_DETERMINISTIC_FLAG          ((psa_algorithm_t)0x00010000)
@@ -536,14 +467,14 @@ psa_status_t mbedtls_psa_inject_entropy(const uint8_t *seed,
  * \return              Unspecified if \p hash_alg is not a supported
  *                      hash algorithm.
  */
-#define PSA_ALG_DETERMINISTIC_DSA(hash_alg)                             \
+ #define PSA_ALG_DETERMINISTIC_DSA(hash_alg) \
     (PSA_ALG_DETERMINISTIC_DSA_BASE | ((hash_alg) & PSA_ALG_HASH_MASK))
-#define PSA_ALG_IS_DSA(alg)                                             \
-    (((alg) & ~PSA_ALG_HASH_MASK & ~PSA_ALG_DSA_DETERMINISTIC_FLAG) ==  \
+ #define PSA_ALG_IS_DSA(alg)                                           \
+    (((alg) & ~PSA_ALG_HASH_MASK & ~PSA_ALG_DSA_DETERMINISTIC_FLAG) == \
      PSA_ALG_DSA_BASE)
-#define PSA_ALG_DSA_IS_DETERMINISTIC(alg)               \
+ #define PSA_ALG_DSA_IS_DETERMINISTIC(alg) \
     (((alg) & PSA_ALG_DSA_DETERMINISTIC_FLAG) != 0)
-#define PSA_ALG_IS_DETERMINISTIC_DSA(alg)                       \
+ #define PSA_ALG_IS_DETERMINISTIC_DSA(alg) \
     (PSA_ALG_IS_DSA(alg) && PSA_ALG_DSA_IS_DETERMINISTIC(alg))
 #define PSA_ALG_IS_RANDOMIZED_DSA(alg)                          \
     (PSA_ALG_IS_DSA(alg) && !PSA_ALG_DSA_IS_DETERMINISTIC(alg))
@@ -551,9 +482,9 @@ psa_status_t mbedtls_psa_inject_entropy(const uint8_t *seed,
 
 /* We need to expand the sample definition of this macro from
  * the API definition. */
-#undef PSA_ALG_IS_HASH_AND_SIGN
-#define PSA_ALG_IS_HASH_AND_SIGN(alg)                                   \
-    (PSA_ALG_IS_RSA_PSS(alg) || PSA_ALG_IS_RSA_PKCS1V15_SIGN(alg) ||    \
+ #undef PSA_ALG_IS_HASH_AND_SIGN
+ #define PSA_ALG_IS_HASH_AND_SIGN(alg)                               \
+    (PSA_ALG_IS_RSA_PSS(alg) || PSA_ALG_IS_RSA_PKCS1V15_SIGN(alg) || \
      PSA_ALG_IS_DSA(alg) || PSA_ALG_IS_ECDSA(alg))
 
 /**@}*/
@@ -638,10 +569,10 @@ psa_status_t mbedtls_psa_inject_entropy(const uint8_t *seed,
  * \retval #PSA_ERROR_NOT_SUPPORTED
  * \retval #PSA_ERROR_INSUFFICIENT_MEMORY
  */
-psa_status_t psa_set_key_domain_parameters(psa_key_attributes_t *attributes,
-                                           psa_key_type_t type,
-                                           const uint8_t *data,
-                                           size_t data_length);
+psa_status_t psa_set_key_domain_parameters(psa_key_attributes_t * attributes,
+                                           psa_key_type_t         type,
+                                           const uint8_t        * data,
+                                           size_t                 data_length);
 
 /**
  * \brief Get domain parameters for a key.
@@ -670,7 +601,7 @@ psa_status_t psa_get_key_domain_parameters(
     const psa_key_attributes_t *attributes,
     uint8_t *data,
     size_t data_size,
-    size_t *data_length);
+                                           size_t                     * data_length);
 
 /** Safe output buffer size for psa_get_key_domain_parameters().
  *
@@ -697,20 +628,20 @@ psa_status_t psa_get_key_domain_parameters(
  *         If the parameters are not valid, the
  *         return value is unspecified.
  */
-#define PSA_KEY_DOMAIN_PARAMETERS_SIZE(key_type, key_bits)              \
-    (PSA_KEY_TYPE_IS_RSA(key_type) ? sizeof(int) :                      \
-     PSA_KEY_TYPE_IS_DH(key_type) ? PSA_DH_KEY_DOMAIN_PARAMETERS_SIZE(key_bits) : \
+ #define PSA_KEY_DOMAIN_PARAMETERS_SIZE(key_type, key_bits)                         \
+    (PSA_KEY_TYPE_IS_RSA(key_type) ? sizeof(int) :                                  \
+     PSA_KEY_TYPE_IS_DH(key_type) ? PSA_DH_KEY_DOMAIN_PARAMETERS_SIZE(key_bits) :   \
      PSA_KEY_TYPE_IS_DSA(key_type) ? PSA_DSA_KEY_DOMAIN_PARAMETERS_SIZE(key_bits) : \
      0)
-#define PSA_DH_KEY_DOMAIN_PARAMETERS_SIZE(key_bits)     \
+ #define PSA_DH_KEY_DOMAIN_PARAMETERS_SIZE(key_bits) \
     (4 + (PSA_BITS_TO_BYTES(key_bits) + 5) * 3 /*without optional parts*/)
-#define PSA_DSA_KEY_DOMAIN_PARAMETERS_SIZE(key_bits)    \
+ #define PSA_DSA_KEY_DOMAIN_PARAMETERS_SIZE(key_bits) \
     (4 + (PSA_BITS_TO_BYTES(key_bits) + 5) * 2 /*p, g*/ + 34 /*q*/)
 
 /**@}*/
 
-#ifdef __cplusplus
+ #ifdef __cplusplus
 }
-#endif
+ #endif
 
-#endif /* PSA_CRYPTO_EXTRA_H */
+#endif                                 /* PSA_CRYPTO_EXTRA_H */

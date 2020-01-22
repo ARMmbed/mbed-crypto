@@ -1493,7 +1493,7 @@ static psa_status_t psa_validate_key_attributes(
 {
     psa_status_t status;
 
-    if( attributes->core.lifetime != PSA_KEY_LIFETIME_VOLATILE )
+    if( PSA_KEY_LIFETIME_IS_PERSISTENT (attributes->core.lifetime))
     {
         status = psa_validate_persistent_key_parameters(
             attributes->core.lifetime, attributes->core.id,
@@ -3336,21 +3336,21 @@ cleanup:
 
 // The weakly linked function "psa_asymmetric_sign_vendor_weak" which returns "PSA_ERROR_NOT_SUPPORTED" will be linked if 
 // the vendor does not provide a definition for "psa_asymmetric_sign_vendor"
-psa_status_t psa_asymmetric_sign_vendor( psa_key_handle_t handle,
+psa_status_t psa_asymmetric_sign_vendor( psa_key_slot_t * slot,
                                   psa_algorithm_t alg,
                                   const uint8_t *hash,
                                   size_t hash_length,
                                   uint8_t *signature,
                                   size_t signature_size,
                                   size_t *signature_length ) __attribute__ ((weak, alias("psa_asymmetric_sign_vendor_weak")));
-psa_status_t psa_asymmetric_sign_vendor_weak( psa_key_handle_t handle,
+psa_status_t psa_asymmetric_sign_vendor_weak( psa_key_slot_t * slot,
                                   psa_algorithm_t alg,
                                   const uint8_t *hash,
                                   size_t hash_length,
                                   uint8_t *signature,
                                   size_t signature_size,
                                   size_t *signature_length );
-psa_status_t psa_asymmetric_sign_vendor_weak( psa_key_handle_t handle,
+psa_status_t psa_asymmetric_sign_vendor_weak( psa_key_slot_t * slot,
                                   psa_algorithm_t alg,
                                   const uint8_t *hash,
                                   size_t hash_length,
@@ -3358,7 +3358,7 @@ psa_status_t psa_asymmetric_sign_vendor_weak( psa_key_handle_t handle,
                                   size_t signature_size,
                                   size_t *signature_length )
 {
-    (void) handle;
+    (void) slot    ;
     (void) alg;
     (void)hash;
     (void)hash_length;
@@ -3413,11 +3413,11 @@ psa_status_t psa_asymmetric_sign( psa_key_handle_t handle,
     }
     else
 #endif /* MBEDTLS_PSA_CRYPTO_SE_C */
-if (PSA_KEY_TYPE_IS_VENDOR_DEFINED(slot->attr.type))
+    if (PSA_KEY_LIFETIME_IS_VENDOR_DEFINED(slot->attr.lifetime))
     {
-        status = psa_asymmetric_sign_vendor(handle,alg,
-                                     hash, hash_length,
-                                     signature, signature_size,
+        status = psa_asymmetric_sign_vendor(slot,alg,
+                                        hash, hash_length,
+                                        signature, signature_size,
                                      signature_length );
     }
     else
@@ -3476,26 +3476,26 @@ exit:
 }
 // The weakly linked function "psa_asymmetric_verify_vendor_weak" which returns "PSA_ERROR_NOT_SUPPORTED" will be linked if 
 // the vendor does not provide a definition for "psa_asymmetric_verify_vendor"
-psa_status_t psa_asymmetric_verify_vendor( psa_key_handle_t handle,
+psa_status_t psa_asymmetric_verify_vendor( psa_key_slot_t * slot,
                                   psa_algorithm_t alg,
                                   const uint8_t *hash,
                                   size_t hash_length,
                                   uint8_t *signature,
-                                  size_t *signature_length ) __attribute__ ((weak, alias("psa_asymmetric_verify_vendor_weak")));
-psa_status_t psa_asymmetric_verify_vendor_weak( psa_key_handle_t handle,
+                                  size_t signature_length ) __attribute__ ((weak, alias("psa_asymmetric_verify_vendor_weak")));
+psa_status_t psa_asymmetric_verify_vendor_weak( psa_key_slot_t * slot,
                                   psa_algorithm_t alg,
                                   const uint8_t *hash,
                                   size_t hash_length,
                                   uint8_t *signature,
-                                  size_t *signature_length );
-psa_status_t psa_asymmetric_verify_vendor_weak( psa_key_handle_t handle,
+                                  size_t signature_length );
+psa_status_t psa_asymmetric_verify_vendor_weak( psa_key_slot_t * slot,
                                   psa_algorithm_t alg,
                                   const uint8_t *hash,
                                   size_t hash_length,
                                   uint8_t *signature,
-                                  size_t *signature_length )
+                                  size_t signature_length )
 {
-    (void) handle;
+    (void) slot;
     (void) alg;
     (void)hash;
     (void)hash_length;
@@ -3537,11 +3537,11 @@ psa_status_t psa_asymmetric_verify( psa_key_handle_t handle,
     }
     else
 #endif /* MBEDTLS_PSA_CRYPTO_SE_C */
-if (PSA_KEY_TYPE_IS_VENDOR_DEFINED(slot->attr.type))
+if (PSA_KEY_LIFETIME_IS_VENDOR_DEFINED(slot->attr.lifetime))
     {
-        status = psa_asymmetric_verify_vendor(handle,alg,
+        return( psa_asymmetric_verify_vendor(slot,alg,
                                      hash, hash_length,
-                                     signature,                                      signature_length );
+                                     signature, signature_length ) );
     }
     else
 #if defined(MBEDTLS_RSA_C)
@@ -3826,7 +3826,7 @@ static psa_status_t psa_cipher_setup( psa_cipher_operation_t *operation,
     if( ret != 0 )
         goto exit;
     
-    if (PSA_KEY_TYPE_IS_VENDOR_DEFINED(slot->attr.type))
+    if (PSA_KEY_LIFETIME_IS_VENDOR_DEFINED(slot->attr.lifetime))
     {
         status = psa_cipher_setup_vendor(operation, handle, alg); 
     }
@@ -3885,7 +3885,7 @@ static psa_status_t psa_cipher_setup( psa_cipher_operation_t *operation,
         operation->iv_size = 12;
 #endif
 
-    if (PSA_KEY_TYPE_IS_VENDOR_DEFINED(slot->attr.type))
+    if (PSA_KEY_LIFETIME_IS_VENDOR_DEFINED(slot->attr.lifetime))
     {
         status = psa_cipher_setup_vendor(operation, handle, alg); 
     }
@@ -5660,7 +5660,7 @@ psa_status_t psa_generate_key( const psa_key_attributes_t *attributes,
     }
     else
 #endif /* MBEDTLS_PSA_CRYPTO_SE_C */
-    if (PSA_KEY_TYPE_IS_VENDOR_DEFINED(slot->attr.type))
+    if (PSA_KEY_LIFETIME_IS_VENDOR_DEFINED(slot->attr.lifetime))
     {
         status = psa_generate_key_vendor(slot, attributes->core.bits,
             attributes->domain_parameters, attributes->domain_parameters_size);
