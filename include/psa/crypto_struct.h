@@ -378,8 +378,8 @@ static inline void psa_set_key_lifetime(psa_key_attributes_t *attributes,
                                         psa_key_lifetime_t lifetime)
 {
     attributes->core.lifetime = lifetime;
-        if (PSA_KEY_LIFETIME_IS_VOLATILE(lifetime))
-        {
+    if (PSA_KEY_LIFETIME_IS_VOLATILE(lifetime))
+    {
 #ifdef MBEDTLS_PSA_CRYPTO_KEY_FILE_ID_ENCODES_OWNER
         attributes->core.id.key_id = 0;
         attributes->core.id.owner = 0;

@@ -2427,7 +2427,6 @@ psa_status_t psa_hash_clone( const psa_hash_operation_t *source_operation,
     target_operation->alg = source_operation->alg;
     return( PSA_SUCCESS );
 }
-
 /****************************************************************/
 /* MAC */
 /****************************************************************/
@@ -5526,14 +5525,14 @@ static psa_status_t psa_generate_key_internal(
         if( status != PSA_SUCCESS )
             return( status );
         status = psa_generate_random( slot->data.raw.data,
-                                    slot->data.raw.bytes );
+                                      slot->data.raw.bytes );
         if( status != PSA_SUCCESS )
             return( status );
-        #if defined(MBEDTLS_DES_C)
+#if defined(MBEDTLS_DES_C)
         if( type == PSA_KEY_TYPE_DES )
             psa_des_set_key_parity( slot->data.raw.data,
                                     slot->data.raw.bytes );
-        #endif /* MBEDTLS_DES_C */
+#endif /* MBEDTLS_DES_C */
     }
     else
 
