@@ -73,7 +73,8 @@ extern "C" {
  *          and MUST NOT use the content of the output buffer if the return
  *          status is not #PSA_SUCCESS.
  *
- * \note    This function has to be defined by the vendor.
+ * \note    This function has to be defined by the vendor if MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C 
+ *          is defined.
  *          A weakly linked version is provided by default and returns
  *          PSA_ERROR_NOT_SUPPORTED. Do not use this function directly;
  *          to generate a key, use psa_generate_key() instead.
@@ -92,7 +93,8 @@ psa_status_t psa_generate_symmetric_vendor(psa_key_type_t type, size_t bits, uin
  * \brief Perform vendor specific setup for cipher operations.
  *
  *
- * \note    This function has to be defined by the vendor.
+ * \note    This function has to be defined by the vendor if MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C 
+ *          is defined. 
  *          A weakly linked version is provided by default and returns
  *          PSA_ERROR_NOT_SUPPORTED. Do not use this function directly;
  *          to generate a key, use psa_generate_key() instead.
@@ -116,10 +118,8 @@ psa_status_t psa_cipher_setup_vendor(psa_cipher_operation_t * operation, psa_key
 
 /** Perform any vendor specific action when aborting a cipher operation.
  *
- * This function is called at the beginning of the psa_cipher_abort function.
- * The vendor must provide an implementation of this function to perform any
- * vendor specific abort operation. A weakly linked implementation of this
- * function that does nothing is provided in the implementation.
+ * This function has to be defined by the vendor if MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C 
+ * is defined. This function is called at the beginning of the psa_cipher_abort function.
  *
  * This function must not be called directly.
  *

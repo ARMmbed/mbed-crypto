@@ -139,9 +139,8 @@ static inline void psa_key_slot_clear_bits( psa_key_slot_t *slot,
 /**
  * \brief Generate a vendor defined key or key pair.
  *
- * \note    This function has to be defined by the vendor.
- *          A weakly linked version is provided by default and returns
- *          PSA_ERROR_NOT_SUPPORTED. Do not use this function directly;
+ * \note    This function has to be defined by the vendor if MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C 
+ *          is defined. Do not use this function directly;
  *          to generate a key, use psa_generate_key() instead.
  *
  * \param[in] slot
@@ -178,6 +177,8 @@ psa_status_t psa_wipe_key_slot( psa_key_slot_t *slot );
 
 /**
  * \brief Sign a hash or short message with a vendor defined private key.
+ * This function has to be defined by the vendor if MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C 
+ *is defined.
  *
  * Note that to perform a hash-and-sign signature algorithm, you must
  * first calculate the hash by calling psa_hash_setup(), psa_hash_update()
@@ -216,6 +217,8 @@ psa_status_t psa_asymmetric_sign_vendor(psa_key_slot_t * slot,
 
 /**
  * \brief Verify the signature a hash or short message using a vendor defined public key.
+ * This function has to be defined by the vendor if MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C 
+ * is defined.
  *
  * Note that to perform a hash-and-sign signature algorithm, you must
  * first calculate the hash by calling psa_hash_setup(), psa_hash_update()
