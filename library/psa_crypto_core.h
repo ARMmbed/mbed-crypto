@@ -245,7 +245,7 @@ psa_status_t psa_asymmetric_verify_vendor(psa_key_slot_t * slot,
                                           psa_algorithm_t  alg,
                                           const uint8_t  * hash,
                                           size_t           hash_length,
-                                          uint8_t        * signature,
+                                          const uint8_t  * signature,
                                           size_t           signature_length);
 
 /** Import key data into a slot.
