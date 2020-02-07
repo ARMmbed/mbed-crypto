@@ -404,7 +404,7 @@ void mbedtls_strerror( int ret, char *buf, size_t buflen )
         // END generated code
 
         if( strlen( buf ) == 0 )
-            mbedtls_snprintf( buf, buflen, "UNKNOWN ERROR CODE (%04X)", use_ret );
+            mbedtls_snprintf( buf, buflen, "UNKNOWN ERROR CODE (%04X)", (unsigned int) use_ret );
     }
 
     use_ret = ret & ~0xFF80;
@@ -703,7 +703,7 @@ void mbedtls_strerror( int ret, char *buf, size_t buflen )
     if( strlen( buf ) != 0 )
         return;
 
-    mbedtls_snprintf( buf, buflen, "UNKNOWN ERROR CODE (%04X)", use_ret );
+    mbedtls_snprintf( buf, buflen, "UNKNOWN ERROR CODE (%04X)", (unsigned int) use_ret );
 }
 
 #else /* MBEDTLS_ERROR_C */
