@@ -421,6 +421,20 @@ void mbedtls_rsa_set_padding( mbedtls_rsa_context *ctx, int padding,
 size_t mbedtls_rsa_get_len( const mbedtls_rsa_context *ctx );
 
 /**
+ * \brief          This function says if the context contains a private key.
+ *
+ * \note           This function does not check the correctness or even sanity
+ *                 of the parameters, it just tells if the private part is
+ *                 present. For more checks, see mbedtls_rsa_check_privkey().
+ *
+ * \param ctx      The initialized RSA context.
+ *
+ * \return         \c 1 if the context contains a private key.
+ *                 \c 0 if the context doesn't contain a private key.
+ */
+int mbedtls_rsa_is_private( const mbedtls_rsa_context *ctx );
+
+/**
  * \brief          This function generates an RSA keypair.
  *
  * \note           mbedtls_rsa_init() must be called before this function,

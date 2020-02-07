@@ -1784,6 +1784,28 @@ exit:
 }
 /* END_CASE */
 
+/* BEGIN_CASE */
+void rsa_is_private( int is_private, data_t *N, data_t *E,
+                     data_t *P, data_t *Q, data_t *D )
+{
+    mbedtls_rsa_context ctx;
+
+    mbedtls_rsa_init( &ctx, 0, 0 );
+
+    TEST_ASSERT( mbedtls_rsa_import_raw( &ctx,
+                               N->len ? N->x : NULL, N->len,
+                               P->len ? P->x : NULL, P->len,
+                               Q->len ? Q->x : NULL, Q->len,
+                               D->len ? D->x : NULL, D->len,
+                               E->len ? E->x : NULL, E->len ) == 0 );
+
+    TEST_EQUAL( mbedtls_rsa_is_private( &ctx ), is_private );
+
+exit:
+    mbedtls_rsa_free( &ctx );
+}
+/* END_CASE */
+
 /* BEGIN_CASE depends_on:MBEDTLS_SELF_TEST */
 void rsa_selftest(  )
 {

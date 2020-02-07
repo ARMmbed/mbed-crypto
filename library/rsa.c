@@ -398,23 +398,24 @@ cleanup:
     return( ret );
 }
 
+int mbedtls_rsa_is_private( const mbedtls_rsa_context *ctx )
+{
+    return(
+        mbedtls_mpi_cmp_int( &ctx->N, 0 ) != 0 &&
+        mbedtls_mpi_cmp_int( &ctx->P, 0 ) != 0 &&
+        mbedtls_mpi_cmp_int( &ctx->Q, 0 ) != 0 &&
+        mbedtls_mpi_cmp_int( &ctx->D, 0 ) != 0 &&
+        mbedtls_mpi_cmp_int( &ctx->E, 0 ) != 0 );
+}
+
 int mbedtls_rsa_export( const mbedtls_rsa_context *ctx,
                         mbedtls_mpi *N, mbedtls_mpi *P, mbedtls_mpi *Q,
                         mbedtls_mpi *D, mbedtls_mpi *E )
 {
     int ret = MBEDTLS_ERR_ERROR_CORRUPTION_DETECTED;
-    int is_priv;
     RSA_VALIDATE_RET( ctx != NULL );
 
-    /* Check if key is private or public */
-    is_priv =
-        mbedtls_mpi_cmp_int( &ctx->N, 0 ) != 0 &&
-        mbedtls_mpi_cmp_int( &ctx->P, 0 ) != 0 &&
-        mbedtls_mpi_cmp_int( &ctx->Q, 0 ) != 0 &&
-        mbedtls_mpi_cmp_int( &ctx->D, 0 ) != 0 &&
-        mbedtls_mpi_cmp_int( &ctx->E, 0 ) != 0;
-
-    if( !is_priv )
+    if( !mbedtls_rsa_is_private( ctx ) )
     {
         /* If we're trying to export private parameters for a public key,
          * something must be wrong. */
@@ -447,18 +448,9 @@ int mbedtls_rsa_export_crt( const mbedtls_rsa_context *ctx,
                             mbedtls_mpi *DP, mbedtls_mpi *DQ, mbedtls_mpi *QP )
 {
     int ret = MBEDTLS_ERR_ERROR_CORRUPTION_DETECTED;
-    int is_priv;
     RSA_VALIDATE_RET( ctx != NULL );
 
-    /* Check if key is private or public */
-    is_priv =
-        mbedtls_mpi_cmp_int( &ctx->N, 0 ) != 0 &&
-        mbedtls_mpi_cmp_int( &ctx->P, 0 ) != 0 &&
-        mbedtls_mpi_cmp_int( &ctx->Q, 0 ) != 0 &&
-        mbedtls_mpi_cmp_int( &ctx->D, 0 ) != 0 &&
-        mbedtls_mpi_cmp_int( &ctx->E, 0 ) != 0;
-
-    if( !is_priv )
+    if( !mbedtls_rsa_is_private( ctx ) )
         return( MBEDTLS_ERR_RSA_BAD_INPUT_DATA );
 
 #if !defined(MBEDTLS_RSA_NO_CRT)
