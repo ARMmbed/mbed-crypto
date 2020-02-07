@@ -801,9 +801,22 @@ static int pk_parse_key_pkcs1_der( mbedtls_rsa_context *rsa,
        goto cleanup;
 #endif
 
-    /* Complete the RSA private key */
-    if( ( ret = mbedtls_rsa_complete( rsa ) ) != 0 )
+    /* Complete and sanity-check the RSA private key.
+     *
+     * rsa_complete() includes some sanity checks but it guesses at the type of
+     * key, so we need to explicitly ensure that the key is private.
+     * We also test the public part for consistency with pk_get_rsapubkey().
+     */
+    if( ( ret = mbedtls_rsa_complete( rsa ) ) != 0 ||
+        ( ret = mbedtls_rsa_check_pubkey( rsa ) ) != 0 )
+    {
         goto cleanup;
+    }
+    if( !mbedtls_rsa_is_private( rsa ) )
+    {
+        ret = MBEDTLS_ERR_PK_KEY_INVALID_FORMAT;
+        goto cleanup;
+    }
 
     if( p != end )
     {

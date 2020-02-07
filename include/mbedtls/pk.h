@@ -668,7 +668,7 @@ mbedtls_pk_type_t mbedtls_pk_get_type( const mbedtls_pk_context *ctx );
  *                  with mbedtls_pk_init() or reset with mbedtls_pk_free(). If you need a
  *                  specific key type, check the result with mbedtls_pk_can_do().
  *
- * \note            The key is also checked for correctness.
+ * \note            The key is also checked for sanity.
  *
  * \return          0 if successful, or a specific PK or PEM error code
  */
