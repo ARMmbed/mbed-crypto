@@ -868,6 +868,10 @@ psa_status_t psa_export_public_key(psa_key_handle_t handle,
  * The policy on the key must have the usage flag
  * #PSA_KEY_USAGE_EXPORT_WRAPPED set.
  *
+ * \note This specification does not currently provide a way to
+ *       create a wrapping key. Many implementations provide a
+ *       predefined wrapping key #PSA_KEY_ID_WRAP_BOUND.
+ *
  * \param wrapping_key      Handle to the key to wrap with.
  * \param handle            Handle to the key to export in wrapped form.
  * \param[out] data         Buffer where the wrapped key data is to be written.
