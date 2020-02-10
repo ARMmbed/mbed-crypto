@@ -150,11 +150,12 @@ typedef uint32_t psa_key_lifetime_t;
  * scope of the PSA Cryptography specification.
  *
  * This specification defines the following values of persistence levels:
- * - #PSA_KEY_LIFETIME_PERSISTENCE_VOLATILE (\c 0): volatile key.
+ * - \c 0 = #PSA_KEY_LIFETIME_PERSISTENCE_VOLATILE: volatile key.
  *   A volatile key is automatically destroyed by the implementation when
  *   the application instance terminates. In particular, a volatile key
  *   is automatically destroyed on a power reset of the device.
- * - \c 1: persistent key with a default lifetime.
+ * - \c 1 = #PSA_KEY_LIFETIME_PERSISTENCE_PRIMARY:
+ *   persistent key with a default lifetime.
  *   Implementations should support this value if they support persistent
  *   keys at all.
  *   Applications should use this value if they have no specific needs that
@@ -167,7 +168,8 @@ typedef uint32_t psa_key_lifetime_t;
  *   implementations may choose the meaning freely.
  *   As a guideline, higher persistence levels should cause a key to survive
  *   more management events than lower levels.
- * - \c 255: read-only or write-once key.
+ * - \c 255 = #PSA_KEY_LIFETIME_PERSISTENCE_READ_ONLY:
+ *   read-only or write-once key.
  *   A key with this persistence level cannot be destroyed.
  *   Implementations that support such keys may either allow their creation
  *   through the PSA Cryptography API, preferably only to applications with
