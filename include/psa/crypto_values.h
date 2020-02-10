@@ -1581,7 +1581,7 @@
  *
  * A volatile key is automatically destroyed by the implementation when
  * the application instance terminates. In particular, a volatile key
- * is automatically on a power reset of the device.
+ * is automatically destroyed on a power reset of the device.
  *
  * A key that is not volatile is persistent. Persistent keys are
  * preserved until the application explicitly destroys them or until an

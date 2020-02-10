@@ -153,7 +153,7 @@ typedef uint32_t psa_key_lifetime_t;
  * - #PSA_KEY_LIFETIME_PERSISTENCE_VOLATILE (\c 0): volatile key.
  *   A volatile key is automatically destroyed by the implementation when
  *   the application instance terminates. In particular, a volatile key
- *   is automatically on a power reset of the device.
+ *   is automatically destroyed on a power reset of the device.
  * - \c 1: persistent key with a default lifetime.
  *   Implementations should support this value if they support persistent
  *   keys at all.
