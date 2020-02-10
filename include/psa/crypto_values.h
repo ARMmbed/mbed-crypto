@@ -1606,6 +1606,19 @@
  */
 #define PSA_KEY_USAGE_COPY                      ((psa_key_usage_t)0x00000002)
 
+/** Whether the key object may be saved outside the device in wrapped form.
+ * This is also known as key binding.
+ *
+ * This flag allows the use of psa_wrap_key_with_policy() on the given key,
+ * with any suitable wrapping key.
+ *
+ * A wrapped form of the key object preserves the confidentiality and
+ * authenticity of the key material and the authenticity of the key
+ * policy. In practical terms, the key material is encrypted, and
+ * the key data and metadata are authenticated together.
+ */
+#define PSA_KEY_USAGE_BACKUP                    ((psa_key_usage_t)0x00000020)
+
 /** Whether the key may be used to encrypt a message.
  *
  * This flag allows the key to be used for a symmetric encryption operation,

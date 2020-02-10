@@ -854,6 +854,135 @@ psa_status_t psa_export_public_key(psa_key_handle_t handle,
                                    size_t data_size,
                                    size_t *data_length);
 
+/**
+ * \brief Export a key and its metadata in wrapped form.
+ *
+ * A wrapped form of the key object preserves the confidentiality and
+ * authenticity of the key material and the authenticity of the key
+ * policy. In practical terms, the key material is encrypted, and
+ * the key data and metadata are authenticated together.
+ *
+ * The format of the wrapped data is implementation-dependent. It may depend
+ * both on the choice of wrapping key and on the type of key to wrap.
+ *
+ * The policy on the key must have the usage flag
+ * #PSA_KEY_USAGE_EXPORT_WRAPPED set.
+ *
+ * \param wrapping_key      Handle to the key to wrap with.
+ * \param handle            Handle to the key to export in wrapped form.
+ * \param[out] data         Buffer where the wrapped key data is to be written.
+ * \param data_size         Size of the \p data buffer in bytes.
+ * \param[out] data_length  On success, the number of bytes
+ *                          that make up the wrapped key data.
+ *
+ * \retval #PSA_SUCCESS
+ * \retval #PSA_ERROR_INVALID_HANDLE
+ *         One or both of \p handle and \p wrapping_key is not a valid
+ *         handle to a key.
+ * \retval #PSA_ERROR_NOT_PERMITTED
+ *         The key \p handle does not have the #PSA_KEY_USAGE_BACKUP flag.
+ * \retval #PSA_ERROR_INVALID_ARGUMENT
+ *         \p wrapping_key does not support wrapping keys with metadata.
+ * \retval #PSA_ERROR_NOT_SUPPORTED
+ *         \p wrapping_key does not support wrapping the key designated
+ *         by \p handle.
+ * \retval #PSA_ERROR_BUFFER_TOO_SMALL
+ *         The size of the \p data buffer is too small. You can determine a
+ *         sufficient buffer size by calling
+ *         #PSA_WRAP_KEY_WITH_POLICY_OUTPUT_SIZE(\c type, \c bits)
+ *         where \c type is the key type of \p handle
+ *         and \c bits is the key size of \p handle in bits.
+ * \retval #PSA_ERROR_COMMUNICATION_FAILURE
+ * \retval #PSA_ERROR_HARDWARE_FAILURE
+ * \retval #PSA_ERROR_CORRUPTION_DETECTED
+ * \retval #PSA_ERROR_STORAGE_FAILURE
+ * \retval #PSA_ERROR_INSUFFICIENT_MEMORY
+ * \retval #PSA_ERROR_BAD_STATE
+ *         The library has not been previously initialized by psa_crypto_init().
+ *         It is implementation-dependent whether a failure to initialize
+ *         results in this error code.
+ */
+psa_status_t psa_wrap_key_with_policy(psa_key_handle_t wrapping_key,
+                                      psa_key_handle_t handle,
+                                      uint8_t *data,
+                                      size_t data_size,
+                                      size_t *data_length);
+
+/**
+ * \brief Import a wrapped key with its metadata.
+ *
+ * This function supports any output from psa_wrap_key_with_policy().
+ * For symmetric wrapping, you must unwrap with the same key that was
+ * used to wrap. For asymmetric wrapping where the wrapping operation uses
+ * a public key and the unwrapping operation uses the corresponding private
+ * key, you must unwrap with the corresponding unwrapping key.
+ *
+ * \param wrapping_key      Handle to the key to unwrap with.
+ * \param[in] attributes    The attributes for the new key.
+ *                          They are used as follows:
+ *                          - The key type and size may be 0. If either is
+ *                            nonzero, it must match the corresponding
+ *                            attribute of the wrapped key data.
+ *                          - The key location (the lifetime and, for
+ *                            persistent keys, the key identifier) is
+ *                            used directly.
+ *                            If the wrapped key does not have the usage
+ *                            flag #PSA_KEY_USAGE_COPY, then the location
+ *                            must match the location embedded in \p data.
+ *                            If the wrapped key has the usage
+ *                            flag #PSA_KEY_USAGE_COPY, then the location
+ *                            embedded in \p data is ignored.
+ *                          - The policy constraints (usage flags and
+ *                            algorithm policy) are combined from
+ *                            the wrapped key data and \p attributes so that
+ *                            both sets of restrictions apply. The
+ *                            policy restrictions are calculated in the
+ *                            same way as in psa_copy_key().
+ * \param[in] data          Buffer containing the wrapped key material.
+ *                          The expected format of this buffer depends
+ *                          on the wrapping key.
+ * \param data_length       Size of the \p data buffer in bytes.
+ * \param[out] handle       On success, a handle to the newly created key.
+ *                          \c 0 on failure.
+ *
+ * \retval #PSA_SUCCESS
+ *         Success.
+ *         If the unwrapped key is persistent, the key material and the
+ *         key's metadata have been saved to persistent storage.
+ * \retval #PSA_ERROR_ALREADY_EXISTS
+ *         This is an attempt to create a persistent key, and there is
+ *         already a persistent key with the given identifier.
+ * \retval #PSA_ERROR_INVALID_ARGUMENT
+ *         The key attributes, as a whole, are invalid.
+ * \retval #PSA_ERROR_INVALID_ARGUMENT
+ *         The key data is not correctly formatted.
+ * \retval #PSA_ERROR_INVALID_ARGUMENT
+ *         The size in \p attributes is nonzero and does not match the size
+ *         of the key data.
+ * \retval #PSA_ERROR_INVALID_ARGUMENT
+ *         \p wrapping_key does not support unwrapping keys with metadata.
+ * \retval #PSA_ERROR_INVALID_SIGNATURE
+ *         \p data is not a valid wrapped key for \p wrapping_key.
+ * \retval #PSA_ERROR_NOT_SUPPORTED
+ *         Some of the metadata in either \p attributes or \p data is
+ *         not supported.
+ * \retval #PSA_ERROR_INSUFFICIENT_MEMORY
+ * \retval #PSA_ERROR_INSUFFICIENT_STORAGE
+ * \retval #PSA_ERROR_COMMUNICATION_FAILURE
+ * \retval #PSA_ERROR_STORAGE_FAILURE
+ * \retval #PSA_ERROR_HARDWARE_FAILURE
+ * \retval #PSA_ERROR_CORRUPTION_DETECTED
+ * \retval #PSA_ERROR_BAD_STATE
+ *         The library has not been previously initialized by psa_crypto_init().
+ *         It is implementation-dependent whether a failure to initialize
+ *         results in this error code.
+ */
+psa_status_t psa_unwrap_key_with_policy(psa_key_handle_t wrapping_key,
+                                        const psa_key_attributes_t *attributes,
+                                        const uint8_t *data,
+                                        size_t data_length,
+                                        psa_key_handle_t *handle);
+
 
 
 /**@}*/
