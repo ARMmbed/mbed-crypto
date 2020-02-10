@@ -641,8 +641,8 @@
  *
  * \return If the parameters are valid and supported, return
  *         a buffer size in bytes that guarantees that
- *         psa_sign_hash() will not fail with
- *         #PSA_ERROR_BUFFER_TOO_SMALL.
+ *         psa_export_key() (and psa_export_public_key() if applicable)
+           will not fail with #PSA_ERROR_BUFFER_TOO_SMALL.
  *         If the parameters are a valid combination that is not supported
  *         by the implementation, this macro shall return either a
  *         sensible size or 0.
