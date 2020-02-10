@@ -1571,6 +1571,22 @@
  */
 #define PSA_KEY_ID_VENDOR_MAX                   ((psa_app_key_id_t)0x7fffffff)
 
+/** A key wrapping key suitable for keys managed directly by the
+ * PSA Cryptography implementation.
+ *
+ * Applications may use this key with psa_wrap_key_with_policy() and
+ * psa_unwrap_key_with_policy() to back up a key that has the
+ * #PSA_KEY_USAGE_BACKUP usage flag and later restore it on the same device,
+ * if the implementation supports it.
+ *
+ * The existence of this key is optional. Implementations that support
+ * key wrapping should offer a key with this identifier if having a
+ * single wrapping key makes sense in the scenarios where this implementation
+ * is used. If this key exists, it must be private to the device, i.e. it
+ * must not be shared with any other device or entity.
+ */
+#define PSA_KEY_ID_WRAP_BOUND                   ((psa_app_key_id_t)0x80000062)
+
 /**@}*/
 
 /** \defgroup policy Key policies
