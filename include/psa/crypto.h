@@ -925,7 +925,7 @@ psa_status_t psa_wrap_key_with_policy(psa_key_handle_t wrapping_key,
  *                          They are used as follows:
  *                          - The key type and size may be 0. If either is
  *                            nonzero, it must match the corresponding
- *                            attribute of the source key.
+ *                            attribute of the wrapped key data.
  *                          - The key location (the lifetime and, for
  *                            persistent keys, the key identifier) is
  *                            used directly.
@@ -937,7 +937,7 @@ psa_status_t psa_wrap_key_with_policy(psa_key_handle_t wrapping_key,
  *                            embedded in \p data is ignored.
  *                          - The policy constraints (usage flags and
  *                            algorithm policy) are combined from
- *                            the source key and \p attributes so that
+ *                            the wrapped key data and \p attributes so that
  *                            both sets of restrictions apply. The
  *                            policy restrictions are calculated in the
  *                            same way as in psa_copy_key().
