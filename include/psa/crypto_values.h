@@ -1597,8 +1597,8 @@
     (PSA_KEY_LIFETIME_GET_PERSISTENCE(lifetime) == \
      PSA_KEY_LIFETIME_PERSISTENCE_VOLATILE)
 
-#define PSA_KEY_LOCATION_BUILT_IN    ((psa_key_lifetime_location_t)0x000000)
-#define PSA_KEY_LOCATION_VENDOR_FLAG ((psa_key_lifetime_location_t)0x800000)
+#define PSA_KEY_LIFETIME_LOCATION_BUILT_IN       ((psa_key_lifetime_location_t)0x000000)
+#define PSA_KEY_LIFETIME_LOCATION_VENDOR_FLAG    ((psa_key_lifetime_location_t)0x800000)
 
 /** The minimum value for a key identifier chosen by the application.
  */
