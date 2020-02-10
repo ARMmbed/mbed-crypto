@@ -1094,6 +1094,24 @@
     PSA_ALG_AEAD_WITH_TAG_LENGTH(ref, 0) ?                               \
     ref :
 
+/** The KW algorithm from NIST SP 800-38F, also described in RFC 3394.
+ *
+ * This algorithm may be used with any key type for a block cipher with
+ * a 128-bit block size, not just AES. The calculations are the same as
+ * described in SP 800-38F, but replacing uses of AES with the 128-bit
+ * block cipher that the key is for.
+ */
+#define PSA_ALG_NIST_KW                         ((psa_algorithm_t)0x0e401003)
+
+/** The KWP algorithm from NIST SP 800-38F.
+ *
+ * This algorithm may be used with any key type for a block cipher with
+ * a 128-bit block size, not just AES. The calculations are the same as
+ * described in SP 800-38F, but replacing uses of AES with the 128-bit
+ * block cipher that the key is for.
+ */
+#define PSA_ALG_NIST_KWP                        ((psa_algorithm_t)0x0e401005)
+
 #define PSA_ALG_RSA_PKCS1V15_SIGN_BASE          ((psa_algorithm_t)0x10020000)
 /** RSA PKCS#1 v1.5 signature with hashing.
  *
