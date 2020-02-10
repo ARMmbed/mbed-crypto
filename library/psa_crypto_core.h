@@ -23,9 +23,9 @@
 #define PSA_CRYPTO_CORE_H
 
 #if !defined(MBEDTLS_CONFIG_FILE)
-#include "mbedtls/config.h"
+ #include "mbedtls/config.h"
 #else
-#include MBEDTLS_CONFIG_FILE
+ #include MBEDTLS_CONFIG_FILE
 #endif
 
 #include "psa/crypto.h"
@@ -45,32 +45,31 @@ typedef struct
         /* Raw-data key (key_type_is_raw_bytes() in psa_crypto.c) */
         struct raw_data
         {
-            uint8_t *data;
-            size_t bytes;
+            uint8_t * data;
+            size_t    bytes;
         } raw;
 #if defined(MBEDTLS_RSA_C)
         /* RSA public key or key pair */
-        mbedtls_rsa_context *rsa;
-#endif /* MBEDTLS_RSA_C */
+        mbedtls_rsa_context * rsa;
+#endif                                 /* MBEDTLS_RSA_C */
 #if defined(MBEDTLS_ECP_C)
         /* EC public key or key pair */
-        mbedtls_ecp_keypair *ecp;
-#endif /* MBEDTLS_ECP_C */
+        mbedtls_ecp_keypair * ecp;
+#endif                                 /* MBEDTLS_ECP_C */
 #if defined(MBEDTLS_PSA_CRYPTO_SE_C)
         /* Any key type in a secure element */
         struct se
         {
             psa_key_slot_number_t slot_number;
         } se;
-#endif /* MBEDTLS_PSA_CRYPTO_SE_C */
-        void * vendor_context;
+#endif                                 /* MBEDTLS_PSA_CRYPTO_SE_C */
     } data;
 } psa_key_slot_t;
 
 /* A mask of key attribute flags used only internally.
  * Currently there aren't any. */
-#define PSA_KA_MASK_INTERNAL_ONLY (     \
-        0 )
+#define PSA_KA_MASK_INTERNAL_ONLY    ( \
+        0)
 
 /** Test whether a key slot is occupied.
  *
@@ -111,7 +110,7 @@ static inline void psa_key_slot_set_flags( psa_key_slot_t *slot,
                                            uint16_t value )
 {
     slot->attr.flags = ( ( ~mask & slot->attr.flags ) |
-                              ( mask & value ) );
+                        (mask & value));
 }
 
 /** Turn on flags in psa_key_slot_t::attr::core::flags.
@@ -173,80 +172,7 @@ psa_status_t psa_generate_key_vendor(psa_key_slot_t * slot,
  *         already fully wiped.
  * \retval PSA_ERROR_CORRUPTION_DETECTED
  */
-psa_status_t psa_wipe_key_slot( psa_key_slot_t *slot );
-
-/**
- * \brief Sign a hash or short message with a vendor defined private key.
- * This function has to be defined by the vendor if MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C 
- *is defined.
- *
- * Note that to perform a hash-and-sign signature algorithm, you must
- * first calculate the hash by calling psa_hash_setup(), psa_hash_update()
- * and psa_hash_finish(). Then pass the resulting hash as the \p hash
- * parameter to this function. You can use #PSA_ALG_SIGN_GET_HASH(\p alg)
- * to determine the hash algorithm to use.
- *
- * \param slot                  Key slot to use for the operation.
- *                              It must be an asymmetric key pair.
- * \param alg                   A signature algorithm that is compatible with
- *                              the type of \p handle.
- * \param[in] hash              The hash or message to sign.
- * \param hash_length           Size of the \p hash buffer in bytes.
- * \param[out] signature        Buffer where the signature is to be written.
- * \param signature_size        Size of the \p signature buffer in bytes.
- * \param[out] signature_length On success, the number of bytes
- *                              that make up the returned signature value.
- *
- * \retval #PSA_SUCCESS
- * \retval #PSA_ERROR_BUFFER_TOO_SMALL
- *         The size of the \p signature buffer is too small. You can
- *         determine a sufficient buffer size by calling
- *         #PSA_ASYMMETRIC_SIGN_OUTPUT_SIZE(\c key_type, \c key_bits, \p alg)
- *         where \c key_type and \c key_bits are the type and bit-size
- *         respectively of \p handle.
- * \retval #PSA_ERROR_NOT_SUPPORTED
- * \retval Implementation dependent
- */
-psa_status_t psa_asymmetric_sign_vendor(psa_key_slot_t * slot,
-                                        psa_algorithm_t  alg,
-                                        const uint8_t  * hash,
-                                        size_t           hash_length,
-                                        uint8_t        * signature,
-                                        size_t           signature_size,
-                                        size_t         * signature_length);
-
-/**
- * \brief Verify the signature a hash or short message using a vendor defined public key.
- * This function has to be defined by the vendor if MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C 
- * is defined.
- *
- * Note that to perform a hash-and-sign signature algorithm, you must
- * first calculate the hash by calling psa_hash_setup(), psa_hash_update()
- * and psa_hash_finish(). Then pass the resulting hash as the \p hash
- * parameter to this function. You can use #PSA_ALG_SIGN_GET_HASH(\p alg)
- * to determine the hash algorithm to use.
- *
- * \param handle            Key slot to use for the operation.
- *                          It must be a public key or an asymmetric key pair.
- * \param alg               A signature algorithm that is compatible with
- *                          the type of \p handle.
- * \param[in] hash          The hash or message whose signature is to be
- *                          verified.
- * \param hash_length       Size of the \p hash buffer in bytes.
- * \param[in] signature     Buffer containing the signature to verify.
- * \param signature_length  Size of the \p signature buffer in bytes.
- *
- * \retval #PSA_SUCCESS
- *         The signature is valid.
- * \retval #PSA_ERROR_INVALID_SIGNATURE
- * \retval Implementation dependent
- */
-psa_status_t psa_asymmetric_verify_vendor(psa_key_slot_t * slot,
-                                          psa_algorithm_t  alg,
-                                          const uint8_t  * hash,
-                                          size_t           hash_length,
-                                          const uint8_t  * signature,
-                                          size_t           signature_length);
+psa_status_t psa_wipe_key_slot(psa_key_slot_t * slot);
 
 /** Import key data into a slot.
  *

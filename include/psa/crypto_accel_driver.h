@@ -37,6 +37,205 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+/** Completely wipe vendor allocated items for a slot in memory.
+ *
+ * Persistent storage is not affected.
+ *
+ * \param[in,out] slot  The key slot to wipe.
+ *
+ * \retval PSA_SUCCESS
+ *         Success. This includes the case of a key slot that was
+ *         already fully wiped.
+ * \retval PSA_ERROR_CORRUPTION_DETECTED
+ */
+psa_status_t psa_remove_key_data_from_memory_vendor(psa_key_slot_t * slot);
+
+/** Import vendor defined key data into a slot.
+ *
+ * `slot->type` must have been set previously.
+ * This function assumes that the slot does not contain any key material yet.
+ * On failure, the slot content is unchanged.
+ *
+ * Persistent storage is not affected.
+ *
+ * \param[in,out] slot  The key slot to import data into.
+ *                      Its `type` field must have previously been set to
+ *                      the desired key type.
+ *                      It must not contain any key material yet.
+ * \param[in] data      Buffer containing the key material to parse and import.
+ * \param data_length   Size of \p data in bytes.
+ *
+ * \retval PSA_SUCCESS
+ * \retval PSA_ERROR_INVALID_ARGUMENT
+ * \retval PSA_ERROR_NOT_SUPPORTED
+ * \retval PSA_ERROR_INSUFFICIENT_MEMORY
+ * \retval Implementation dependent
+ */
+psa_status_t psa_import_key_into_slot_vendor( psa_key_slot_t *slot,
+                                       const uint8_t *data,
+                                       size_t data_length );
+
+/**
+ * \brief Generate a vendor defined key or key pair.
+ *
+ * \note    This function has to be defined by the vendor if MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C 
+ *          is defined. Do not use this function directly;
+ *          to generate a key, use psa_generate_key() instead.
+ *
+ * \param[in] slot
+ * \param[in] bits
+ * \param[in] domain_parameters
+ * \param[in] domain_parameters_size
+ *
+ *
+ * \retval #PSA_SUCCESS
+ *         Success.
+ *         If the key is persistent, the key material and the key's metadata
+ *         have been saved to persistent storage.
+ *
+ * \retval #PSA_ERROR_NOT_SUPPORTED
+ * \retval Implementation dependent.
+ */
+psa_status_t psa_generate_key_vendor(psa_key_slot_t * slot,
+                                     size_t           bits,
+                                     const uint8_t  * domain_parameters,
+                                     size_t           domain_parameters_size);
+
+/**
+ * \brief Sign a hash or short message with a vendor defined private key.
+ * This function has to be defined by the vendor if MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C 
+ *is defined.
+ *
+ * Note that to perform a hash-and-sign signature algorithm, you must
+ * first calculate the hash by calling psa_hash_setup(), psa_hash_update()
+ * and psa_hash_finish(). Then pass the resulting hash as the \p hash
+ * parameter to this function. You can use #PSA_ALG_SIGN_GET_HASH(\p alg)
+ * to determine the hash algorithm to use.
+ *
+ * \param slot                  Key slot to use for the operation.
+ *                              It must be an asymmetric key pair.
+ * \param alg                   A signature algorithm that is compatible with
+ *                              the type of \p handle.
+ * \param[in] hash              The hash or message to sign.
+ * \param hash_length           Size of the \p hash buffer in bytes.
+ * \param[out] signature        Buffer where the signature is to be written.
+ * \param signature_size        Size of the \p signature buffer in bytes.
+ * \param[out] signature_length On success, the number of bytes
+ *                              that make up the returned signature value.
+ *
+ * \retval #PSA_SUCCESS
+ * \retval #PSA_ERROR_BUFFER_TOO_SMALL
+ *         The size of the \p signature buffer is too small. You can
+ *         determine a sufficient buffer size by calling
+ *         #PSA_ASYMMETRIC_SIGN_OUTPUT_SIZE(\c key_type, \c key_bits, \p alg)
+ *         where \c key_type and \c key_bits are the type and bit-size
+ *         respectively of \p handle.
+ * \retval #PSA_ERROR_NOT_SUPPORTED
+ * \retval Implementation dependent
+ */
+psa_status_t psa_asymmetric_sign_vendor(psa_key_slot_t * slot,
+                                        psa_algorithm_t  alg,
+                                        const uint8_t  * hash,
+                                        size_t           hash_length,
+                                        uint8_t        * signature,
+                                        size_t           signature_size,
+                                        size_t         * signature_length);
+
+/**
+ * \brief Verify the signature a hash or short message using a vendor defined public key.
+ * This function has to be defined by the vendor if MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C 
+ * is defined.
+ *
+ * Note that to perform a hash-and-sign signature algorithm, you must
+ * first calculate the hash by calling psa_hash_setup(), psa_hash_update()
+ * and psa_hash_finish(). Then pass the resulting hash as the \p hash
+ * parameter to this function. You can use #PSA_ALG_SIGN_GET_HASH(\p alg)
+ * to determine the hash algorithm to use.
+ *
+ * \param handle            Key slot to use for the operation.
+ *                          It must be a public key or an asymmetric key pair.
+ * \param alg               A signature algorithm that is compatible with
+ *                          the type of \p handle.
+ * \param[in] hash          The hash or message whose signature is to be
+ *                          verified.
+ * \param hash_length       Size of the \p hash buffer in bytes.
+ * \param[in] signature     Buffer containing the signature to verify.
+ * \param signature_length  Size of the \p signature buffer in bytes.
+ *
+ * \retval #PSA_SUCCESS
+ *         The signature is valid.
+ * \retval #PSA_ERROR_INVALID_SIGNATURE
+ * \retval Implementation dependent
+ */
+psa_status_t psa_asymmetric_verify_vendor(psa_key_slot_t * slot,
+                                          psa_algorithm_t  alg,
+                                          const uint8_t  * hash,
+                                          size_t           hash_length,
+                                          const uint8_t  * signature,
+                                          size_t           signature_length);
+/**
+ * \brief Generate symmetric key of vendor defined format.
+ *
+ * \warning This function **can** fail! Callers MUST check the return status
+ *          and MUST NOT use the content of the output buffer if the return
+ *          status is not #PSA_SUCCESS.
+ *
+ * \note    This function has to be defined by the vendor if MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C 
+ *          is defined.
+ *          A weakly linked version is provided by default and returns
+ *          PSA_ERROR_NOT_SUPPORTED. Do not use this function directly;
+ *          to generate a key, use psa_generate_key() instead.
+ *
+ * \param[in] type          Type of symmetric key to be generated.
+ * \param[out] output       Output buffer for the generated data.
+ * \param[out] output_size  Number of bytes to generate and output.
+ *
+ * \retval #PSA_SUCCESS
+ * \retval #PSA_ERROR_NOT_SUPPORTED
+ * \retval Implementation dependent
+ */
+psa_status_t psa_generate_symmetric_vendor(psa_key_type_t type, size_t bits, uint8_t * output, size_t output_size);
+
+/**
+ * \brief Perform vendor specific setup for cipher operations.
+ *
+ *
+ * \note    This function has to be defined by the vendor if MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C 
+ *          is defined. 
+ *          A weakly linked version is provided by default and returns
+ *          PSA_ERROR_NOT_SUPPORTED. Do not use this function directly;
+ *          to generate a key, use psa_generate_key() instead.
+ *
+ * \param[in,out] operation     The operation object to set up. It must have
+ *                              been initialized as per the documentation for
+ *                              #psa_cipher_operation_t and not yet in use.
+ * \param handle                Handle to the key to use for the operation.
+ *                              It must remain valid until the operation
+ *                              terminates.
+ * \param alg                   The cipher algorithm to compute
+ *                              (\c PSA_ALG_XXX value such that
+ *                              #PSA_ALG_IS_CIPHER(\p alg) is true).
+ *
+ * \retval #PSA_SUCCESS
+ *         Success.
+ * \retval #PSA_ERROR_NOT_SUPPORTED
+ * .
+ */
+psa_status_t psa_cipher_setup_vendor(psa_cipher_operation_t * operation, psa_key_handle_t handle, psa_algorithm_t alg, mbedtls_operation_t cipher_operation);
+
+/** Perform any vendor specific action when aborting a cipher operation.
+ *
+ * This function has to be defined by the vendor if MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C 
+ * is defined. This function is called at the beginning of the psa_cipher_abort function.
+ *
+ * This function must not be called directly.
+ *
+ * \param[in,out] operation     Initialized cipher operation.
+ *
+ * \retval #PSA_SUCCESS
+ * \retval Implementation dependent return values.
+ */
+psa_status_t psa_cipher_abort_vendor(psa_cipher_operation_t * operation);
 
 /** \defgroup driver_digest Hardware-Accelerated Message Digests
  *
