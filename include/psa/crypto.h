@@ -348,7 +348,9 @@ static size_t psa_get_key_bits(const psa_key_attributes_t *attributes);
  *       you must call psa_reset_key_attributes() to free these resources.
  *
  * \param[in] handle            Handle to the key to query.
- * \param[in,out] attributes    On success, the attributes of the key.
+ * \param[in,out] attributes    On entry, this structure must be in a
+ *                              valid state.
+ *                              On success, the attributes of the key.
  *                              On failure, equivalent to a
  *                              freshly-initialized structure.
  *
