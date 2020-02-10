@@ -615,6 +615,7 @@
 #define PSA_ALG_CATEGORY_MAC                    ((psa_algorithm_t)0x02000000)
 #define PSA_ALG_CATEGORY_CIPHER                 ((psa_algorithm_t)0x04000000)
 #define PSA_ALG_CATEGORY_AEAD                   ((psa_algorithm_t)0x06000000)
+#define PSA_ALG_CATEGORY_WRAP                   ((psa_algorithm_t)0x0e000000)
 #define PSA_ALG_CATEGORY_SIGN                   ((psa_algorithm_t)0x10000000)
 #define PSA_ALG_CATEGORY_ASYMMETRIC_ENCRYPTION  ((psa_algorithm_t)0x12000000)
 #define PSA_ALG_CATEGORY_KEY_DERIVATION         ((psa_algorithm_t)0x20000000)
@@ -671,6 +672,17 @@
  */
 #define PSA_ALG_IS_AEAD(alg)                                            \
     (((alg) & PSA_ALG_CATEGORY_MASK) == PSA_ALG_CATEGORY_AEAD)
+
+/** Whether the specified algorithm is a key wrapping algorithm.
+ *
+ * \param alg An algorithm identifier (value of type #psa_algorithm_t).
+ *
+ * \return 1 if \p alg is a key wrapping algorithm, 0 otherwise.
+ *         This macro may return either 0 or 1 if \p alg is not a supported
+ *         algorithm identifier.
+ */
+#define PSA_ALG_IS_KEY_WRAP(alg)                                        \
+    (((alg) & PSA_ALG_CATEGORY_MASK) == PSA_ALG_CATEGORY_WRAP)
 
 /** Whether the specified algorithm is a public-key signature algorithm.
  *
@@ -1621,6 +1633,29 @@
  * is sufficient to permit the copy.
  */
 #define PSA_KEY_USAGE_COPY                      ((psa_key_usage_t)0x00000002)
+
+/** Whether the key material may be exported in wrapped form.
+ *
+ * This flag allows the use of psa_wrap_key_material() on the given key,
+ * with any suitable wrapping key.
+ *
+ * A wrapped form of the key material preserves the confidentiality
+ * and authenticity of the key material. In practical terms, the key
+ * material is encrypted and authenticated.
+ *
+ * A wrapped form does not preserve the key metadata in general, so it is up
+ * to the application to ensure that the key is unwrapped with the correct
+ * type and policy.
+ *
+ * \note Given that a wrapped key can be unwrapped with a different policy,
+ *       which may include #PSA_KEY_USAGE_EXPORT, there is often no
+ *       security advantage to allowing the key usage
+ *       #PSA_KEY_USAGE_EXPORT_WRAPPED but not #PSA_KEY_USAGE_EXPORT.
+ *       However implementations may impose restrictions on keys that
+ *       are created through unwrapping with a particular key, in which
+ *       case unwrapping could preserve the non-extractibility of a key.
+ */
+#define PSA_KEY_USAGE_EXPORT_WRAPPED            ((psa_key_usage_t)0x00000010)
 
 /** Whether the key object may be saved outside the device in wrapped form.
  * This is also known as key binding.

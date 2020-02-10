@@ -684,4 +684,30 @@
 #define PSA_WRAP_KEY_WITH_POLICY_OUTPUT_SIZE(key_type, key_bits)        \
     0u /*not implemented yet*/
 
+/** Sufficient output buffer size for psa_wrap_key_material().
+ *
+ * This macro returns a compile-time constant if its arguments are
+ * compile-time constants.
+ *
+ * \warning This function may call its arguments multiple times or
+ *          zero times, so you should not pass arguments that contain
+ *          side effects.
+ *
+ * \param alg       The key wrapping algorithm.
+ * \param key_type  A supported key type.
+ * \param key_bits  The size of the key in bits.
+ *
+ * \return If the parameters are valid and supported, return
+ *         a buffer size in bytes that guarantees that
+ *         psa_wrap_key_material() will not fail with
+ *         #PSA_ERROR_BUFFER_TOO_SMALL.
+ *         If the parameters are a valid combination that is not supported
+ *         by the implementation, this macro shall return either a
+ *         sensible size or 0.
+ *         If the parameters are not valid, the
+ *         return value is unspecified.
+ */
+#define PSA_WRAP_KEY_MATERIAL_OUTPUT_SIZE(alg, key_type, key_bits)       \
+    0u /*not implemented yet*/
+
 #endif /* PSA_CRYPTO_SIZES_H */
