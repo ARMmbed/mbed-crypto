@@ -986,6 +986,49 @@ psa_status_t psa_unwrap_key_with_policy(psa_key_handle_t wrapping_key,
                                         size_t data_length,
                                         psa_key_handle_t *handle);
 
+/** Read the attributes of a wrapped key blob.
+ *
+ * This function is typically used before psa_unwrap_key_with_policy()
+ * to unwrap a key with its original attributes, in particular with its
+ * original policy.
+ * The following code snippet illustrates this typical usage,
+ * with error checking omitted.
+ * \code{c}
+ * psa_key_attributes_t attributes = PSA_KEY_ATTRIBUTES_INIT;
+ * psa_get_wrapped_key_attributes(wrapped_data, wrapped_data_length,
+ *                                &attributes);
+ * // Here attributes contains the policy, location and other attributes
+ * // of the key.
+ * // To unwrap the key to a different location,
+ * // call psa_set_key_lifetime() and psa_set_key_id() here.
+ * psa_unwrap_key_with_policy(wrapping_key, &attributes,
+ *                            wrapped_data, wrapped_data_length,
+ *                            &handle)
+ * psa_reset_key_attributes(&attributes);
+ * \endcode
+ *
+ * \warning This function does not check the authenticity of the input data.
+ *          It may return incorrect or invalid attributes.
+ *
+ * \param[in] data              Buffer containing the wrapped key material.
+ * \param data_length           Size of the \p data buffer in bytes.
+ * \param[in,out] attributes    On entry, this structure must be in a
+ *                              valid state.
+ *                              On success, the attributes of the key.
+ *                              On failure, equivalent to a
+ *                              freshly-initialized structure.
+ *
+ * \retval #PSA_SUCCESS
+ * \retval #PSA_ERROR_INVALID_ARGUMENT
+ * \retval #PSA_ERROR_NOT_SUPPORTED
+ * \retval #PSA_ERROR_INSUFFICIENT_MEMORY
+ * \retval #PSA_ERROR_COMMUNICATION_FAILURE
+ * \retval #PSA_ERROR_CORRUPTION_DETECTED
+ */
+psa_status_t psa_get_wrapped_key_attributes(const uint8_t *data,
+                                            size_t data_length,
+                                            psa_key_attributes_t *attributes);
+
 
 
 /**@}*/
