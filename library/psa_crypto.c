@@ -3136,7 +3136,7 @@ static psa_status_t psa_rsa_decode_md_type( psa_algorithm_t alg,
     return( PSA_SUCCESS );
 }
 
-static psa_status_t psa_rsa_sign( mbedtls_rsa_context *rsa,
+psa_status_t psa_rsa_sign( mbedtls_rsa_context *rsa,
                                   psa_algorithm_t alg,
                                   const uint8_t *hash,
                                   size_t hash_length,
@@ -3195,7 +3195,7 @@ static psa_status_t psa_rsa_sign( mbedtls_rsa_context *rsa,
     return( mbedtls_to_psa_error( ret ) );
 }
 
-static psa_status_t psa_rsa_verify( mbedtls_rsa_context *rsa,
+psa_status_t psa_rsa_verify( mbedtls_rsa_context *rsa,
                                     psa_algorithm_t alg,
                                     const uint8_t *hash,
                                     size_t hash_length,
