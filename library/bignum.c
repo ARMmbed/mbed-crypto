@@ -1354,6 +1354,9 @@ static void mpi_sub_hlp( size_t n, mbedtls_mpi_uint *s, mbedtls_mpi_uint *d )
 int mbedtls_mpi_sub_abs( mbedtls_mpi *X, const mbedtls_mpi *A, const mbedtls_mpi *B )
 {
     int ret = MBEDTLS_ERR_ERROR_CORRUPTION_DETECTED;
+    size_t i, width;
+    mbedtls_mpi_uint c = 0;
+
     MPI_VALIDATE_RET( X != NULL );
     MPI_VALIDATE_RET( A != NULL );
     MPI_VALIDATE_RET( B != NULL );
@@ -1368,10 +1371,7 @@ int mbedtls_mpi_sub_abs( mbedtls_mpi *X, const mbedtls_mpi *A, const mbedtls_mpi
     ret = 0;
 
     MBEDTLS_MPI_CHK( mbedtls_mpi_grow( X, A->n ) );
-
-    size_t width = A->n > B->n ? B->n : A->n;
-    size_t i;
-    mbedtls_mpi_uint c = 0;
+    width = A->n > B->n ? B->n : A->n;
 
     for( i = 0; i < width; i++ )
     {
