@@ -23,9 +23,9 @@
 #define PSA_CRYPTO_CORE_H
 
 #if !defined(MBEDTLS_CONFIG_FILE)
- #include "mbedtls/config.h"
+#include "mbedtls/config.h"
 #else
- #include MBEDTLS_CONFIG_FILE
+#include MBEDTLS_CONFIG_FILE
 #endif
 
 #include "psa/crypto.h"
@@ -45,31 +45,31 @@ typedef struct
         /* Raw-data key (key_type_is_raw_bytes() in psa_crypto.c) */
         struct raw_data
         {
-            uint8_t * data;
-            size_t    bytes;
+            uint8_t *data;
+            size_t bytes;
         } raw;
 #if defined(MBEDTLS_RSA_C)
         /* RSA public key or key pair */
-        mbedtls_rsa_context * rsa;
-#endif                                 /* MBEDTLS_RSA_C */
+        mbedtls_rsa_context *rsa;
+#endif /* MBEDTLS_RSA_C */
 #if defined(MBEDTLS_ECP_C)
         /* EC public key or key pair */
-        mbedtls_ecp_keypair * ecp;
-#endif                                 /* MBEDTLS_ECP_C */
+        mbedtls_ecp_keypair *ecp;
+#endif /* MBEDTLS_ECP_C */
 #if defined(MBEDTLS_PSA_CRYPTO_SE_C)
         /* Any key type in a secure element */
         struct se
         {
             psa_key_slot_number_t slot_number;
         } se;
-#endif                                 /* MBEDTLS_PSA_CRYPTO_SE_C */
+#endif /* MBEDTLS_PSA_CRYPTO_SE_C */
     } data;
 } psa_key_slot_t;
 
 /* A mask of key attribute flags used only internally.
  * Currently there aren't any. */
-#define PSA_KA_MASK_INTERNAL_ONLY    ( \
-        0)
+#define PSA_KA_MASK_INTERNAL_ONLY (     \
+        0 )
 
 /** Test whether a key slot is occupied.
  *
@@ -110,7 +110,7 @@ static inline void psa_key_slot_set_flags( psa_key_slot_t *slot,
                                            uint16_t value )
 {
     slot->attr.flags = ( ( ~mask & slot->attr.flags ) |
-                        (mask & value));
+                              ( mask & value ) );
 }
 
 /** Turn on flags in psa_key_slot_t::attr::core::flags.
@@ -135,32 +135,6 @@ static inline void psa_key_slot_clear_bits( psa_key_slot_t *slot,
     slot->attr.flags &= ~mask;
 }
 
-/**
- * \brief Generate a vendor defined key or key pair.
- *
- * \note    This function has to be defined by the vendor if MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C 
- *          is defined. Do not use this function directly;
- *          to generate a key, use psa_generate_key() instead.
- *
- * \param[in] slot
- * \param[in] bits
- * \param[in] domain_parameters
- * \param[in] domain_parameters_size
- *
- *
- * \retval #PSA_SUCCESS
- *         Success.
- *         If the key is persistent, the key material and the key's metadata
- *         have been saved to persistent storage.
- *
- * \retval #PSA_ERROR_NOT_SUPPORTED
- * \retval Implementation dependent.
- */
-psa_status_t psa_generate_key_vendor(psa_key_slot_t * slot,
-                                     size_t           bits,
-                                     const uint8_t  * domain_parameters,
-                                     size_t           domain_parameters_size);
-
 /** Completely wipe a slot in memory, including its policy.
  *
  * Persistent storage is not affected.
@@ -172,7 +146,7 @@ psa_status_t psa_generate_key_vendor(psa_key_slot_t * slot,
  *         already fully wiped.
  * \retval PSA_ERROR_CORRUPTION_DETECTED
  */
-psa_status_t psa_wipe_key_slot(psa_key_slot_t * slot);
+psa_status_t psa_wipe_key_slot( psa_key_slot_t *slot );
 
 /** Import key data into a slot.
  *

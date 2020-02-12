@@ -37,6 +37,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 /** Completely wipe vendor allocated items for a slot in memory.
  *
  * Persistent storage is not affected.
