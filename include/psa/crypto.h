@@ -1054,8 +1054,10 @@ psa_status_t psa_unwrap_key_to_alternate_lifetime(
  * and authenticity of the key material. In practical terms, the key
  * material is encrypted and authenticated.
  *
- * The policy on the key must have the usage flag
+ * The policy on the key to wrap must have the usage flag
  * #PSA_KEY_USAGE_EXPORT_WRAPPED set.
+ * The policy on the wrapping key must have the usage flag
+ * #PSA_KEY_USAGE_WRAP_OTHER_KEY set.
  *
  * \param wrapping_key      Handle to the key to wrap with.
  * \param alg               The key wrapping algorithm to compute
@@ -1074,6 +1076,9 @@ psa_status_t psa_unwrap_key_to_alternate_lifetime(
  *         handle to a key.
  * \retval #PSA_ERROR_NOT_PERMITTED
  *         The key \p handle does not have the #PSA_KEY_USAGE_BACKUP flag.
+ * \retval #PSA_ERROR_NOT_PERMITTED
+ *         The key \p wrapping_key does not have the
+ *         #PSA_KEY_USAGE_WRAP_OTHER_KEY flag.
  * \retval #PSA_ERROR_INVALID_ARGUMENT
  *         \p wrapping_key does not support wrapping key material.
  * \retval #PSA_ERROR_NOT_SUPPORTED
@@ -1105,6 +1110,9 @@ psa_status_t psa_wrap_key_material(psa_key_handle_t wrapping_key,
 /**
  * \brief Import wrapped key material.
  *
+ * The policy on the wrapping key must have the usage flag
+ * #PSA_KEY_USAGE_UNWRAP_OTHER_KEY set.
+ *
  * \param wrapping_key      Handle to the key to unwrap with.
  * \param alg               The key unwrapping algorithm to compute
  *                          (\c PSA_ALG_XXX value such that
@@ -1126,6 +1134,9 @@ psa_status_t psa_wrap_key_material(psa_key_handle_t wrapping_key,
  * \retval #PSA_ERROR_ALREADY_EXISTS
  *         This is an attempt to create a persistent key, and there is
  *         already a persistent key with the given identifier.
+ * \retval #PSA_ERROR_NOT_PERMITTED
+ *         The key \p wrapping_key does not have the
+ *         #PSA_KEY_USAGE_UNWRAP_OTHER_KEY flag.
  * \retval #PSA_ERROR_INVALID_ARGUMENT
  *         The key attributes, as a whole, are invalid.
  * \retval #PSA_ERROR_INVALID_ARGUMENT

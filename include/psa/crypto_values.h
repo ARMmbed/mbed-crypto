@@ -1694,6 +1694,24 @@
  */
 #define PSA_KEY_USAGE_BACKUP                    ((psa_key_usage_t)0x00000020)
 
+/** Whether the key may be used to wrap another key.
+ *
+ * This flag allows the key to be used as a wrapping key with
+ * psa_wrap_key_material().
+ *
+ * For a key pair, this concerns the public key.
+ */
+#define PSA_KEY_USAGE_WRAP_OTHER_KEY            ((psa_key_usage_t)0x00000040)
+
+/** Whether the key may be used to unwrap another key.
+ *
+ * This flag allows the key to be used as a wrapping key with
+ * psa_unwrap_key_material().
+ *
+ * For a key pair, this concerns the private key.
+ */
+#define PSA_KEY_USAGE_UNWRAP_OTHER_KEY          ((psa_key_usage_t)0x00000080)
+
 /** Whether the key may be used to encrypt a message.
  *
  * This flag allows the key to be used for a symmetric encryption operation,
