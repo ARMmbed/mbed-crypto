@@ -1649,6 +1649,9 @@
  * For keys with the lifetime #PSA_KEY_LIFETIME_VOLATILE or
  * #PSA_KEY_LIFETIME_PERSISTENT, the usage flag #PSA_KEY_USAGE_COPY
  * is sufficient to permit the copy.
+ *
+ * When combined with #PSA_KEY_USAGE_BACKUP, this flag allows the use
+ * of psa_unwrap_key_to_alternate_lifetime() on a wrapped key data.
  */
 #define PSA_KEY_USAGE_COPY                      ((psa_key_usage_t)0x00000002)
 
@@ -1679,7 +1682,10 @@
  * This is also known as key binding.
  *
  * This flag allows the use of psa_wrap_key_with_policy() on the given key,
- * with any suitable wrapping key.
+ * with any suitable wrapping key, and the subsequent use of
+ * psa_unwrap_key_with_policy() on the resulting data.
+ * When combined with #PSA_KEY_USAGE_COPY, this flag also allows the use
+ * of psa_unwrap_key_to_alternate_lifetime() to unwrap the resulting data.
  *
  * A wrapped form of the key object preserves the confidentiality and
  * authenticity of the key material and the authenticity of the key

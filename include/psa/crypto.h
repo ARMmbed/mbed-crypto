@@ -921,27 +921,12 @@ psa_status_t psa_wrap_key_with_policy(psa_key_handle_t wrapping_key,
  * a public key and the unwrapping operation uses the corresponding private
  * key, you must unwrap with the corresponding unwrapping key.
  *
+ * The resulting key object has the same attributes as the original key:
+ * same lifetime, same identifier if persistent, same usage policy.
+ * To restore a key to a different location or with a different policy,
+ * use psa_unwrap_key_to_alternate_lifetime().
+ *
  * \param wrapping_key      Handle to the key to unwrap with.
- * \param[in] attributes    The attributes for the new key.
- *                          They are used as follows:
- *                          - The key type and size may be 0. If either is
- *                            nonzero, it must match the corresponding
- *                            attribute of the wrapped key data.
- *                          - The key location (the lifetime and, for
- *                            persistent keys, the key identifier) is
- *                            used directly.
- *                            If the wrapped key does not have the usage
- *                            flag #PSA_KEY_USAGE_COPY, then the location
- *                            must match the location embedded in \p data.
- *                            If the wrapped key has the usage
- *                            flag #PSA_KEY_USAGE_COPY, then the location
- *                            embedded in \p data is ignored.
- *                          - The policy constraints (usage flags and
- *                            algorithm policy) are combined from
- *                            the wrapped key data and \p attributes so that
- *                            both sets of restrictions apply. The
- *                            policy restrictions are calculated in the
- *                            same way as in psa_copy_key().
  * \param[in] data          Buffer containing the wrapped key material.
  *                          The expected format of this buffer depends
  *                          on the wrapping key.
@@ -957,19 +942,16 @@ psa_status_t psa_wrap_key_with_policy(psa_key_handle_t wrapping_key,
  *         This is an attempt to create a persistent key, and there is
  *         already a persistent key with the given identifier.
  * \retval #PSA_ERROR_INVALID_ARGUMENT
- *         The key attributes, as a whole, are invalid.
- * \retval #PSA_ERROR_INVALID_ARGUMENT
  *         The key data is not correctly formatted.
- * \retval #PSA_ERROR_INVALID_ARGUMENT
- *         The size in \p attributes is nonzero and does not match the size
- *         of the key data.
  * \retval #PSA_ERROR_INVALID_ARGUMENT
  *         \p wrapping_key does not support unwrapping keys with metadata.
  * \retval #PSA_ERROR_INVALID_SIGNATURE
  *         \p data is not a valid wrapped key for \p wrapping_key.
  * \retval #PSA_ERROR_NOT_SUPPORTED
- *         Some of the metadata in either \p attributes or \p data is
- *         not supported.
+ *         Some of the metadata encoded in \p data is not supported.
+ *         This can only happen when attempting to unwrap a key that
+ *         was wrapped under a different implementation or a
+ *         differently-configured implementation.
  * \retval #PSA_ERROR_INSUFFICIENT_MEMORY
  * \retval #PSA_ERROR_INSUFFICIENT_STORAGE
  * \retval #PSA_ERROR_COMMUNICATION_FAILURE
@@ -982,10 +964,88 @@ psa_status_t psa_wrap_key_with_policy(psa_key_handle_t wrapping_key,
  *         results in this error code.
  */
 psa_status_t psa_unwrap_key_with_policy(psa_key_handle_t wrapping_key,
-                                        const psa_key_attributes_t *attributes,
                                         const uint8_t *data,
                                         size_t data_length,
                                         psa_key_handle_t *handle);
+
+/**
+ * \brief Import a wrapped key with its metadata to volatile memory.
+ *
+ * This function supports any output from psa_wrap_key_with_policy()
+ * where the wrapped key has the usage flag #PSA_KEY_USAGE_COPY set.
+ * For symmetric wrapping, you must unwrap with the same key that was
+ * used to wrap. For asymmetric wrapping where the wrapping operation uses
+ * a public key and the unwrapping operation uses the corresponding private
+ * key, you must unwrap with the corresponding unwrapping key.
+ *
+ * The resulting key object has the same attributes as the original key
+ * apart from its lifetime, in particular it has the same usage policy.
+ * To unwrap a key and give it a more restrictive policy or place it
+ * in a different location:
+ * -# Call psa_unwrap_key_to_alternate_lifetime() to unwrap the key to a
+ *    volatile location.
+ * -# If desired, call psa_get_key_attributes() to retrieve the
+ *    attributes of the key, then modify them as desired for the
+ *    subsequent copy.
+ * -# Call psa_copy_key() to copy the key to its desired location
+ *    (volatile or persistent) and with the desired policy.
+ * -# Call psa_destroy_key() to destroy the intermediate volatile key.
+ *
+ * The resulting key does not have a persistent identifier, therefore
+ * the target lifetime must be volatile.
+ *
+ * \param wrapping_key      Handle to the key to unwrap with.
+ * \param lifetime          The lifetime to unwrap to.
+ *                          This must be a volatile lifetime.
+ *                          The wrapping key may constrain which lifetimes
+ *                          are permitted; such constraints are
+ *                          implementation-defined. As a guideline,
+ *                          implementations should allow unwrapping a key
+ *                          to a lifetime that is in the same location
+ *                          as the original key.
+ * \param[in] data          Buffer containing the wrapped key material.
+ *                          The expected format of this buffer depends
+ *                          on the wrapping key.
+ * \param data_length       Size of the \p data buffer in bytes.
+ * \param[out] handle       On success, a handle to the newly created key.
+ *                          \c 0 on failure.
+ *
+ * \retval #PSA_SUCCESS
+ *         Success.
+ *         If the unwrapped key is persistent, the key material and the
+ *         key's metadata have been saved to persistent storage.
+ * \retval #PSA_ERROR_INVALID_ARGUMENT
+ *         \p lifetime is not a volatile lifetime.
+ * \retval #PSA_ERROR_INVALID_ARGUMENT
+ *         The key data is not correctly formatted.
+ * \retval #PSA_ERROR_INVALID_ARGUMENT
+ *         \p wrapping_key does not support unwrapping keys with metadata.
+ * \retval #PSA_ERROR_INVALID_SIGNATURE
+ *         \p data is not a valid wrapped key for \p wrapping_key.
+ * \retval #PSA_ERROR_NOT_SUPPORTED
+ *         Some of the metadata encoded in \p data is not supported.
+ *         This can only happen when attempting to unwrap a key that
+ *         was wrapped under a different implementation or a
+ *         differently-configured implementation.
+ * \retval #PSA_ERROR_NOT_PERMITTED
+ *         The wrapped key does not have the #PSA_KEY_USAGE_COPY flag.
+ * \retval #PSA_ERROR_INSUFFICIENT_MEMORY
+ * \retval #PSA_ERROR_INSUFFICIENT_STORAGE
+ * \retval #PSA_ERROR_COMMUNICATION_FAILURE
+ * \retval #PSA_ERROR_STORAGE_FAILURE
+ * \retval #PSA_ERROR_HARDWARE_FAILURE
+ * \retval #PSA_ERROR_CORRUPTION_DETECTED
+ * \retval #PSA_ERROR_BAD_STATE
+ *         The library has not been previously initialized by psa_crypto_init().
+ *         It is implementation-dependent whether a failure to initialize
+ *         results in this error code.
+ */
+psa_status_t psa_unwrap_key_to_alternate_lifetime(
+    psa_key_handle_t wrapping_key,
+    psa_key_lifetime_t lifetime,
+    const uint8_t *data,
+    size_t data_length,
+    psa_key_handle_t *handle);
 
 /**
  * \brief Export key material in wrapped form.
