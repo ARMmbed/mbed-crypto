@@ -87,7 +87,8 @@ int mbedtls_base64_encode( unsigned char *dst, size_t dlen, size_t *olen,
         return( 0 );
     }
 
-    n = slen / 3 + ( slen % 3 != 0 );
+    i = ( slen % 3 );
+    n = slen / 3 + ( i != 0 );
 
     if( n > ( BASE64_SIZE_T_MAX - 1 ) / 4 )
     {
@@ -103,37 +104,35 @@ int mbedtls_base64_encode( unsigned char *dst, size_t dlen, size_t *olen,
         return( MBEDTLS_ERR_BASE64_BUFFER_TOO_SMALL );
     }
 
-    n = ( slen / 3 ) * 3;
+    /* move pointers to the end of both src and dst buffers: processing from 
+     * back to front allows safe inplace buffers encoding.  
+     */
+    src = src + slen - 1;
+    p = dst + n;
 
-    for( i = 0, p = dst; i < n; i += 3 )
-    {
-        C1 = *src++;
-        C2 = *src++;
-        C3 = *src++;
+    *olen = n;
+    *p-- = 0;
 
-        *p++ = base64_enc_map[(C1 >> 2) & 0x3F];
-        *p++ = base64_enc_map[(((C1 &  3) << 4) + (C2 >> 4)) & 0x3F];
-        *p++ = base64_enc_map[(((C2 & 15) << 2) + (C3 >> 6)) & 0x3F];
-        *p++ = base64_enc_map[C3 & 0x3F];
+    if ( i > 0 ) {
+        C2 = ( i > 1 ) ? *src-- : 0;
+        C1 = *src--;
+        
+        *p-- = '=';
+        *p-- = ( i > 1 ) ? base64_enc_map[((C2 & 15) << 2) & 0x3F] : '=';
+        *p-- = base64_enc_map[(((C1 & 3) << 4) + (C2 >> 4)) & 0x3F];
+        *p-- = base64_enc_map[(C1 >> 2) & 0x3F];
     }
 
-    if( i < slen )
-    {
-        C1 = *src++;
-        C2 = ( ( i + 1 ) < slen ) ? *src++ : 0;
+    for ( ; p>dst; ) {
+        C3 = *src--;
+        C2 = *src--;
+        C1 = *src--;
 
-        *p++ = base64_enc_map[(C1 >> 2) & 0x3F];
-        *p++ = base64_enc_map[(((C1 & 3) << 4) + (C2 >> 4)) & 0x3F];
-
-        if( ( i + 1 ) < slen )
-             *p++ = base64_enc_map[((C2 & 15) << 2) & 0x3F];
-        else *p++ = '=';
-
-        *p++ = '=';
+        *p-- = base64_enc_map[C3 & 0x3F];
+        *p-- = base64_enc_map[(((C2 & 15) << 2) + (C3 >> 6)) & 0x3F];
+        *p-- = base64_enc_map[(((C1 &  3) << 4) + (C2 >> 4)) & 0x3F];
+        *p-- = base64_enc_map[(C1 >> 2) & 0x3F];
     }
-
-    *olen = p - dst;
-    *p = 0;
 
     return( 0 );
 }
@@ -257,7 +256,9 @@ int mbedtls_base64_self_test( int verbose )
     if( verbose != 0 )
         mbedtls_printf( "  Base64 encoding test: " );
 
-    src = base64_test_dec;
+    /* test inplace encoding: src points to buffer, input is copied to buffer */
+    memcpy(buffer, base64_test_dec, 64);
+    src = (const unsigned char *)buffer;
 
     if( mbedtls_base64_encode( buffer, sizeof( buffer ), &len, src, 64 ) != 0 ||
          memcmp( base64_test_enc, buffer, 88 ) != 0 )
@@ -271,7 +272,9 @@ int mbedtls_base64_self_test( int verbose )
     if( verbose != 0 )
         mbedtls_printf( "passed\n  Base64 decoding test: " );
 
-    src = base64_test_enc;
+    /* test inplace decoding: src points to buffer, input is copied to buffer */
+    memcpy(buffer, base64_test_enc, 88);
+    src = (const unsigned char *)buffer;
 
     if( mbedtls_base64_decode( buffer, sizeof( buffer ), &len, src, 88 ) != 0 ||
          memcmp( base64_test_dec, buffer, 64 ) != 0 )
