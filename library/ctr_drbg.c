@@ -474,7 +474,8 @@ int mbedtls_ctr_drbg_seed( mbedtls_ctr_drbg_context *ctx,
                   (size_t) ctx->reseed_counter :
                   good_nonce_len( ctx->entropy_len ) );
 
-    ctx->reseed_interval = MBEDTLS_CTR_DRBG_RESEED_INTERVAL;
+    if ( ctx->reseed_interval == 0 )
+        ctx->reseed_interval = MBEDTLS_CTR_DRBG_RESEED_INTERVAL;
 
     /* Initialize with an empty key. */
     if( ( ret = mbedtls_aes_setkey_enc( &ctx->aes_ctx, key,

@@ -220,49 +220,57 @@ void mbedtls_ctr_drbg_init( mbedtls_ctr_drbg_context *ctx );
  * \brief               This function seeds and sets up the CTR_DRBG
  *                      entropy source for future reseeds.
  *
- * A typical choice for the \p f_entropy and \p p_entropy parameters is
- * to use the entropy module:
- * - \p f_entropy is mbedtls_entropy_func();
- * - \p p_entropy is an instance of ::mbedtls_entropy_context initialized
- *   with mbedtls_entropy_init() (which registers the platform's default
- *   entropy sources).
+ *                      A typical choice for the \p f_entropy and \p p_entropy
+ *                      parameters is to use the entropy module:
+ *                      - \p f_entropy is mbedtls_entropy_func();
+ *                      - \p p_entropy is an instance of
+ *                        ::mbedtls_entropy_context initialized with
+ *                        mbedtls_entropy_init() (which registers the
+ *                        platform's default entropy sources).
  *
- * The entropy length is #MBEDTLS_CTR_DRBG_ENTROPY_LEN by default.
- * You can override it by calling mbedtls_ctr_drbg_set_entropy_len().
+ *                      The entropy length is #MBEDTLS_CTR_DRBG_ENTROPY_LEN by
+ *                      default. You can override it by calling
+ *                      mbedtls_ctr_drbg_set_entropy_len().
  *
- * The entropy nonce length is:
- * - \c 0 if the entropy length is at least 3/2 times the entropy length,
- *   which guarantees that the security strength is the maximum permitted
- *   by the key size and entropy length according to NIST SP 800-90A §10.2.1;
- * - Half the entropy length otherwise.
- * You can override it by calling mbedtls_ctr_drbg_set_nonce_len().
- * With the default entropy length, the entropy nonce length is
- * #MBEDTLS_CTR_DRBG_ENTROPY_NONCE_LEN.
+ *                      The entropy nonce length is:
+ *                      - \c 0 if the entropy length is at least 3/2 times the
+ *                        entropy length, which guarantees that the security
+ *                        strength is the maximum permitted by the key size
+ *                        and entropy length according to NIST SP 800-90A
+ *                        §10.2.1;
+ *                      - Half the entropy length otherwise. You can override
+ *                        it by calling mbedtls_ctr_drbg_set_nonce_len(). With
+ *                        the default entropy length, the entropy nonce length
+ *                        is #MBEDTLS_CTR_DRBG_ENTROPY_NONCE_LEN.
  *
- * You can provide a nonce and personalization string in addition to the
- * entropy source, to make this instantiation as unique as possible.
- * See SP 800-90A §8.6.7 for more details about nonces.
+ *                      You can provide a nonce and personalization string in
+ *                      addition to the entropy source, to make this
+ *                      instantiation as unique as possible. See SP 800-90A
+ *                      §8.6.7 for more details about nonces.
  *
- * The _seed_material_ value passed to the derivation function in
- * the CTR_DRBG Instantiate Process described in NIST SP 800-90A §10.2.1.3.2
- * is the concatenation of the following strings:
- * - A string obtained by calling \p f_entropy function for the entropy
- *   length.
+ *                      The _seed_material_ value passed to the derivation
+ *                      function in the CTR_DRBG Instantiate Process described
+ *                      in NIST SP 800-90A §10.2.1.3.2 is the concatenation of
+ *                      the following strings:
+ *                      - A string obtained by calling \p f_entropy function
+ *                        for the entropy length.
  */
 #if MBEDTLS_CTR_DRBG_ENTROPY_NONCE_LEN == 0
 /**
- * - If mbedtls_ctr_drbg_set_nonce_len() has been called, a string
- *   obtained by calling \p f_entropy function for the specified length.
+ *                      - If mbedtls_ctr_drbg_set_nonce_len() has been called,
+ *                        a string obtained by calling \p f_entropy function
+ *                        for the specified length.
  */
 #else
 /**
- * - A string obtained by calling \p f_entropy function for the entropy nonce
- *   length. If the entropy nonce length is \c 0, this function does not
- *   make a second call to \p f_entropy.
+ *                      - A string obtained by calling \p f_entropy function
+ *                        for the entropy nonce length. If the entropy nonce
+ *                        length is \c 0, this function does not make a second
+ *                        call to \p f_entropy.
  */
 #endif
 /**
- * - The \p custom string.
+ *                      - The \p custom string.
  *
  * \note                To achieve the nominal security strength permitted
  *                      by CTR_DRBG, the entropy length must be:
@@ -278,6 +286,11 @@ void mbedtls_ctr_drbg_init( mbedtls_ctr_drbg_context *ctx );
  *                      (maximum achievable strength when using AES-128);
  *                      - at least 48 bytes for a 256-bit strength
  *                      (maximum achievable strength when using AES-256).
+ *
+ * \note                The reseed interval is
+ *                      #MBEDTLS_CTR_DRBG_RESEED_INTERVAL by default.
+ *                      You can override it by calling
+ *                      mbedtls_ctr_drbg_set_reseed_interval().
  *
  * \param ctx           The CTR_DRBG context to seed.
  *                      It must have been initialized with
@@ -364,8 +377,9 @@ void mbedtls_ctr_drbg_set_entropy_len( mbedtls_ctr_drbg_context *ctx,
  * \brief               This function sets the amount of entropy grabbed
  *                      as a nonce for the initial seeding.
  *
- * Call this function before calling mbedtls_ctr_drbg_seed() to read
- * a nonce from the entropy source during the initial seeding.
+ *                      Call this function before calling
+ *                      mbedtls_ctr_drbg_seed() to read a nonce from the
+ *                      entropy source during the initial seeding.
  *
  * \param ctx           The CTR_DRBG context.
  * \param len           The amount of entropy to grab for the nonce, in bytes.
