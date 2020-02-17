@@ -148,6 +148,10 @@ void mbedtls_hmac_drbg_init( mbedtls_hmac_drbg_context *ctx );
  * \note                During the initial seeding, this function calls
  *                      the entropy source to obtain a nonce
  *                      whose length is half the entropy length.
+ * 
+ * \note                The reseed interval is MBEDTLS_HMAC_DRBG_RESEED_INTERVAL
+ *                      by default. Override this value by calling
+ *                      mbedtls_hmac_drbg_set_reseed_interval().
  *
  * \param ctx           HMAC_DRBG context to be seeded.
  * \param md_info       MD algorithm to use for HMAC_DRBG.
@@ -185,8 +189,8 @@ int mbedtls_hmac_drbg_seed( mbedtls_hmac_drbg_context *ctx,
 /**
  * \brief               Initilisation of simpified HMAC_DRBG (never reseeds).
  *
- * This function is meant for use in algorithms that need a pseudorandom
- * input such as deterministic ECDSA.
+ *                      This function is meant for use in algorithms that need
+ *                      a pseudorandom input such as deterministic ECDSA.
  *
  * \param ctx           HMAC_DRBG context to be initialised.
  * \param md_info       MD algorithm to use for HMAC_DRBG.

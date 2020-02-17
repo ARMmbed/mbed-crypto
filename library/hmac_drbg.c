@@ -272,7 +272,8 @@ int mbedtls_hmac_drbg_seed( mbedtls_hmac_drbg_context *ctx,
     ctx->f_entropy = f_entropy;
     ctx->p_entropy = p_entropy;
 
-    ctx->reseed_interval = MBEDTLS_HMAC_DRBG_RESEED_INTERVAL;
+    if ( ctx->reseed_interval == 0 ) 
+        ctx->reseed_interval = MBEDTLS_HMAC_DRBG_RESEED_INTERVAL;
 
     if( ctx->entropy_len == 0 )
     {
