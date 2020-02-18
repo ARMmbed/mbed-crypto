@@ -533,7 +533,7 @@ static psa_status_t psa_check_rsa_key_byte_aligned(
     return( status );
 }
 
-static psa_status_t psa_import_rsa_key( psa_key_type_t type,
+psa_status_t psa_import_rsa_key( psa_key_type_t type,
                                         const uint8_t *data,
                                         size_t data_length,
                                         mbedtls_rsa_context **p_rsa )
