@@ -1330,48 +1330,11 @@ cleanup:
 /*
  * Helper for mbedtls_mpi subtraction
  */
-static void mpi_sub_hlp( size_t n, mbedtls_mpi_uint *s, mbedtls_mpi_uint *d )
+static void mpi_sub_hlp( const mbedtls_mpi *X, const mbedtls_mpi *A, const mbedtls_mpi *B )
 {
     size_t i;
-    mbedtls_mpi_uint c, z;
-
-    for( i = c = 0; i < n; i++, s++, d++ )
-    {
-        z = ( *d <  c );     *d -=  c;
-        c = ( *d < *s ) + z; *d -= *s;
-    }
-
-    while( c != 0 )
-    {
-        z = ( *d < c ); *d -= c;
-        c = z; d++;
-    }
-}
-
-/*
- * Unsigned subtraction: X = |A| - |B|  (HAC 14.9)
- */
-int mbedtls_mpi_sub_abs( mbedtls_mpi *X, const mbedtls_mpi *A, const mbedtls_mpi *B )
-{
-    int ret = MBEDTLS_ERR_ERROR_CORRUPTION_DETECTED;
-    size_t i, width;
     mbedtls_mpi_uint c = 0;
-
-    MPI_VALIDATE_RET( X != NULL );
-    MPI_VALIDATE_RET( A != NULL );
-    MPI_VALIDATE_RET( B != NULL );
-
-    if( mbedtls_mpi_cmp_abs( A, B ) < 0 )
-        return( MBEDTLS_ERR_MPI_NEGATIVE_VALUE );
-
-    /*
-     * X should always be positive as a result of unsigned subtractions.
-     */
-    X->s = 1;
-    ret = 0;
-
-    MBEDTLS_MPI_CHK( mbedtls_mpi_grow( X, A->n ) );
-    width = A->n > B->n ? B->n : A->n;
+    size_t width = A->n > B->n ? B->n : A->n;
 
     for( i = 0; i < width; i++ )
     {
@@ -1401,6 +1364,30 @@ int mbedtls_mpi_sub_abs( mbedtls_mpi *X, const mbedtls_mpi *A, const mbedtls_mpi
     {
         X->p[i] = 0;
     }
+}
+
+/*
+ * Unsigned subtraction: X = |A| - |B|  (HAC 14.9)
+ */
+int mbedtls_mpi_sub_abs( mbedtls_mpi *X, const mbedtls_mpi *A, const mbedtls_mpi *B )
+{
+    int ret = MBEDTLS_ERR_ERROR_CORRUPTION_DETECTED;
+
+    MPI_VALIDATE_RET( X != NULL );
+    MPI_VALIDATE_RET( A != NULL );
+    MPI_VALIDATE_RET( B != NULL );
+
+    if( mbedtls_mpi_cmp_abs( A, B ) < 0 )
+        return( MBEDTLS_ERR_MPI_NEGATIVE_VALUE );
+
+    /*
+     * X should always be positive as a result of unsigned subtractions.
+     */
+    X->s = 1;
+    ret = 0;
+
+    MBEDTLS_MPI_CHK( mbedtls_mpi_grow( X, A->n ) );
+    mpi_sub_hlp( X, A, B );
 
 cleanup:
     return( ret );
@@ -2022,10 +2009,10 @@ static int mpi_montmul( mbedtls_mpi *A, const mbedtls_mpi *B, const mbedtls_mpi 
     memcpy( A->p, d, ( n + 1 ) * ciL );
 
     if( mbedtls_mpi_cmp_abs( A, N ) >= 0 )
-        mpi_sub_hlp( n, N->p, A->p );
+        mpi_sub_hlp( A, A, N );
     else
         /* prevent timing attacks */
-        mpi_sub_hlp( n, A->p, T->p );
+        mpi_sub_hlp( T, T, A );
 
     return( 0 );
 }
