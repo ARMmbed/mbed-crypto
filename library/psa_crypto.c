@@ -953,14 +953,6 @@ static psa_status_t psa_get_transparent_key( psa_key_handle_t handle,
 /** Wipe key data from a slot. Preserve metadata such as the policy. */
 static psa_status_t psa_remove_key_data_from_memory( psa_key_slot_t *slot )
 {
- #if defined (MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C)
-    if (PSA_KEY_LIFETIME_IS_VENDOR_DEFINED(slot->attr.lifetime))
-    {
-        psa_remove_key_data_from_memory_vendor(slot);
-    }
-    else
-#endif /* MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C */
-
 #if defined(MBEDTLS_PSA_CRYPTO_SE_C)
     if( psa_key_slot_is_external( slot ) )
     {
@@ -3394,16 +3386,6 @@ psa_status_t psa_asymmetric_sign( psa_key_handle_t handle,
     }
     else
 #endif /* MBEDTLS_PSA_CRYPTO_SE_C */
-#if defined (MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C)
-    if (PSA_KEY_LIFETIME_IS_VENDOR_DEFINED(slot->attr.lifetime))
-    {
-        status = psa_asymmetric_sign_vendor(slot,alg,
-                                            hash, hash_length,
-                                            signature, signature_size,
-                                            signature_length );
-    }
-    else
-#endif /* MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C */
 #if defined(MBEDTLS_RSA_C)
     if( slot->attr.type == PSA_KEY_TYPE_RSA_KEY_PAIR )
     {
@@ -3490,15 +3472,6 @@ psa_status_t psa_asymmetric_verify( psa_key_handle_t handle,
     }
     else
 #endif /* MBEDTLS_PSA_CRYPTO_SE_C */
-#if defined (MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C)
-if (PSA_KEY_LIFETIME_IS_VENDOR_DEFINED(slot->attr.lifetime))
-    {
-        return( psa_asymmetric_verify_vendor(slot,alg,
-                                            hash, hash_length,
-                                            signature, signature_length ) );
-    }
-    else
-#endif /* MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C */
 #if defined(MBEDTLS_RSA_C)
     if( PSA_KEY_TYPE_IS_RSA( slot->attr.type ) )
     {
@@ -4032,9 +4005,6 @@ psa_status_t psa_cipher_abort( psa_cipher_operation_t *operation )
      * always have been initialized to a valid value). */
     if( ! PSA_ALG_IS_CIPHER( operation->alg ) )
         return( PSA_ERROR_BAD_STATE );
-#if defined (MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C)
-    psa_cipher_abort_vendor(operation);
-#endif //MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C
     mbedtls_cipher_free( &operation->ctx.cipher );
 
     operation->alg = 0;
