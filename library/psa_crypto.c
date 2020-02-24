@@ -5555,6 +5555,7 @@ psa_status_t psa_generate_key( const psa_key_attributes_t *attributes,
     {
         status = psa_generate_key_vendor(slot, attributes->core.bits,
             attributes->domain_parameters, attributes->domain_parameters_size);
+            goto exit;
     }
     else
 #endif /* MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C */
