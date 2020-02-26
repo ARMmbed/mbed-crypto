@@ -1647,7 +1647,7 @@ psa_status_t psa_finish_key_creation(
     (void) driver;
 
 #if defined(MBEDTLS_PSA_CRYPTO_STORAGE_C)
-    if (!PSA_KEY_LIFETIME_IS_VOLATILE(slot->attr.lifetime ))
+    if (PSA_KEY_LIFETIME_IS_PERSISTENT(slot->attr.lifetime ))
     {
 #if defined(MBEDTLS_PSA_CRYPTO_SE_C)
         if( driver != NULL )
