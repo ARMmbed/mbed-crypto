@@ -381,7 +381,7 @@
 #define PSA_KEY_TYPE_AES                        ((psa_key_type_t)0x40000001)
 
 /** Whether a key type is AES. */
-#define PSA_KEY_TYPE_IS_AES(type) (((type)&PSA_KEY_TYPE_AES) != 0)
+#define PSA_KEY_TYPE_IS_AES(type) (((type) == PSA_KEY_TYPE_AES) != 0)
 
 /** Key for a cipher or MAC algorithm based on DES or 3DES (Triple-DES).
  *
