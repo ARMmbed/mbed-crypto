@@ -56,8 +56,13 @@
 #define TEST_CLASSIFICATION_MACRO( flag, alg, flags )           \
     TEST_ASSERT( PSA_##flag( alg ) == !! ( ( flags ) & flag ) )
 
-/* Check the parity of value.
- * Return 0 if value has even parity and a nonzero value otherwise. */
+/* Test the parity of value.
+ * Numerical encodings of key types and related values such as EC curves and
+ * DH groups should all have the same parity. This guarantees that a
+ * single-bit error will be detected.
+ * The expected parity is even because this makes all-bits-zero valid.
+ * The function returns a nonzero value if the parity is even, zero otherwise.
+ */
 int test_parity( uint32_t value )
 {
     value ^= value >> 16;
