@@ -38,6 +38,107 @@
 extern "C" {
 #endif
 
+/** Import vendor defined key data into a slot.
+ *
+ * `slot->type` must have been set previously.
+ * This function assumes that the slot does not contain any key material yet.
+ * On failure, the slot content is unchanged.
+ *
+ * Persistent storage is not affected.
+ *
+ * \param[in,out] slot  The key slot to import data into.
+ *                      Its `type` field must have previously been set to
+ *                      the desired key type.
+ *                      It must not contain any key material yet.
+ * \param[in] data      Buffer containing the key material to parse and import.
+ * \param data_length   Size of \p data in bytes.
+ *
+ * \retval PSA_SUCCESS
+ * \retval PSA_ERROR_INVALID_ARGUMENT
+ * \retval PSA_ERROR_NOT_SUPPORTED
+ * \retval PSA_ERROR_INSUFFICIENT_MEMORY
+ * \retval Implementation dependent
+ */
+psa_status_t psa_import_key_into_slot_vendor( psa_key_slot_t *slot,
+                                       const uint8_t *data,
+                                       size_t data_length );
+
+/**
+ * \brief Generate a vendor defined key or key pair.
+ *
+ * \note    This function has to be defined by the vendor if MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C 
+ *          is defined. Do not use this function directly;
+ *          to generate a key, use psa_generate_key() instead.
+ *
+ * \param[in] slot
+ * \param[in] bits
+ * \param[in] domain_parameters
+ * \param[in] domain_parameters_size
+ *
+ *
+ * \retval #PSA_SUCCESS
+ *         Success.
+ *         If the key is persistent, the key material and the key's metadata
+ *         have been saved to persistent storage.
+ *
+ * \retval #PSA_ERROR_NOT_SUPPORTED
+ * \retval Implementation dependent.
+ */
+psa_status_t psa_generate_key_vendor(psa_key_slot_t * slot,
+                                     size_t           bits,
+                                     const uint8_t  * domain_parameters,
+                                     size_t           domain_parameters_size);
+
+/**
+ * \brief Generate symmetric key of vendor defined format.
+ *
+ * \warning This function **can** fail! Callers MUST check the return status
+ *          and MUST NOT use the content of the output buffer if the return
+ *          status is not #PSA_SUCCESS.
+ *
+ * \note    This function has to be defined by the vendor if MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C 
+ *          is defined.
+ *          A weakly linked version is provided by default and returns
+ *          PSA_ERROR_NOT_SUPPORTED. Do not use this function directly;
+ *          to generate a key, use psa_generate_key() instead.
+ *
+ * \param[in] type          Type of symmetric key to be generated.
+ * \param[out] output       Output buffer for the generated data.
+ * \param[out] output_size  Number of bytes to generate and output.
+ *
+ * \retval #PSA_SUCCESS
+ * \retval #PSA_ERROR_NOT_SUPPORTED
+ * \retval Implementation dependent
+ */
+psa_status_t psa_generate_symmetric_vendor(psa_key_type_t type, size_t bits, uint8_t * output, size_t output_size);
+
+/**
+ * \brief Perform vendor specific setup for cipher operations.
+ *
+ *
+ * \note    This function has to be defined by the vendor if MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C 
+ *          is defined. 
+ *          A weakly linked version is provided by default and returns
+ *          PSA_ERROR_NOT_SUPPORTED. Do not use this function directly;
+ *          to generate a key, use psa_generate_key() instead.
+ *
+ * \param[in,out] operation     The operation object to set up. It must have
+ *                              been initialized as per the documentation for
+ *                              #psa_cipher_operation_t and not yet in use.
+ * \param handle                Handle to the key to use for the operation.
+ *                              It must remain valid until the operation
+ *                              terminates.
+ * \param alg                   The cipher algorithm to compute
+ *                              (\c PSA_ALG_XXX value such that
+ *                              #PSA_ALG_IS_CIPHER(\p alg) is true).
+ *
+ * \retval #PSA_SUCCESS
+ *         Success.
+ * \retval #PSA_ERROR_NOT_SUPPORTED
+ * .
+ */
+psa_status_t psa_cipher_setup_vendor(psa_cipher_operation_t * operation, psa_key_handle_t handle, psa_algorithm_t alg, mbedtls_operation_t cipher_operation);
+
 /** \defgroup driver_digest Hardware-Accelerated Message Digests
  *
  * Generation and authentication of Message Digests (aka hashes) must be done

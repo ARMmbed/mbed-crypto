@@ -380,6 +380,9 @@
  */
 #define PSA_KEY_TYPE_AES                        ((psa_key_type_t)0x40000001)
 
+/** Whether a key type is AES. */
+#define PSA_KEY_TYPE_IS_AES(type) (((type) == PSA_KEY_TYPE_AES) != 0)
+
 /** Key for a cipher or MAC algorithm based on DES or 3DES (Triple-DES).
  *
  * The size of the key can be 8 bytes (single DES), 16 bytes (2-key 3DES) or
@@ -1500,7 +1503,18 @@
  * by other lifetime values as implementation-specific extensions.
  */
 #define PSA_KEY_LIFETIME_PERSISTENT             ((psa_key_lifetime_t)0x00000001)
+#define PSA_KEY_LIFETIME_PERSISTENT_FLAG        ((psa_key_lifetime_t)PSA_KEY_LIFETIME_PERSISTENT)
+#define PSA_KEY_LIFETIME_IS_VOLATILE(lifetime)  (((lifetime) & PSA_KEY_LIFETIME_PERSISTENT_FLAG) == 0)
 
+#define PSA_KEY_LIFETIME_IS_PERSISTENT(lifetime) \
+    (((lifetime) & PSA_KEY_LIFETIME_PERSISTENT) != 0)
+
+#define PSA_KEY_LIFETIME_VENDOR_FLAG ((psa_key_lifetime_t)0x80000000)
+#define PSA_KEY_LIFETIME_PERSISTENT_VENDOR (PSA_KEY_LIFETIME_VENDOR_FLAG | PSA_KEY_LIFETIME_PERSISTENT)
+#define PSA_KEY_LIFETIME_VOLATILE_VENDOR (PSA_KEY_LIFETIME_VENDOR_FLAG | PSA_KEY_LIFETIME_VOLATILE)
+
+#define PSA_KEY_LIFETIME_IS_VENDOR_DEFINED(lifetime) \
+    (((lifetime) & PSA_KEY_LIFETIME_VENDOR_FLAG) != 0)
 /** The minimum value for a key identifier chosen by the application.
  */
 #define PSA_KEY_ID_USER_MIN                     ((psa_app_key_id_t)0x00000001)
