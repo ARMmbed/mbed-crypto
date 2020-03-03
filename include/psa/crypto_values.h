@@ -1503,19 +1503,18 @@
  * by other lifetime values as implementation-specific extensions.
  */
 #define PSA_KEY_LIFETIME_PERSISTENT             ((psa_key_lifetime_t)0x00000001)
-
-#define PSA_KEY_LIFETIME_IS_VOLATILE(lifetime) \
-    (((lifetime)&PSA_KEY_LIFETIME_VOLATILE) != 0)
+#define PSA_KEY_LIFETIME_PERSISTENT_FLAG        ((psa_key_lifetime_t)PSA_KEY_LIFETIME_PERSISTENT)
+#define PSA_KEY_LIFETIME_IS_VOLATILE(lifetime)  (((lifetime) & PSA_KEY_LIFETIME_PERSISTENT_FLAG) == 0)
 
 #define PSA_KEY_LIFETIME_IS_PERSISTENT(lifetime) \
-    (((lifetime)&PSA_KEY_LIFETIME_PERSISTENT) != 0)
+    (((lifetime) & PSA_KEY_LIFETIME_PERSISTENT) != 0)
 
 #define PSA_KEY_LIFETIME_VENDOR_FLAG ((psa_key_lifetime_t)0x80000000)
 #define PSA_KEY_LIFETIME_PERSISTENT_VENDOR (PSA_KEY_LIFETIME_VENDOR_FLAG | PSA_KEY_LIFETIME_PERSISTENT)
 #define PSA_KEY_LIFETIME_VOLATILE_VENDOR (PSA_KEY_LIFETIME_VENDOR_FLAG | PSA_KEY_LIFETIME_VOLATILE)
 
 #define PSA_KEY_LIFETIME_IS_VENDOR_DEFINED(lifetime) \
-    (((lifetime)&PSA_KEY_LIFETIME_VENDOR_FLAG) != 0)
+    (((lifetime) & PSA_KEY_LIFETIME_VENDOR_FLAG) != 0)
 /** The minimum value for a key identifier chosen by the application.
  */
 #define PSA_KEY_ID_USER_MIN                     ((psa_app_key_id_t)0x00000001)
