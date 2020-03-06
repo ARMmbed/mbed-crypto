@@ -42,9 +42,9 @@ extern "C" {
 /**
  * \brief          Encode a buffer into base64 format
  *
- * \param dst      destination buffer (can be NULL for checking size, also src
- *                 and dst buffers may overlap: int this case inplace encoding
- *                 takes place and src buffer is overwritten)
+ * \param dst      destination buffer (can be \c NULL for checking size, also
+ *                 \p src and \p dst buffers may fully overlap: in this case
+ *                 inplace encoding takes place and \p src buffer is overwritten)
  * \param dlen     size of the destination buffer
  * \param olen     number of bytes written
  * \param src      source buffer
@@ -66,9 +66,9 @@ int mbedtls_base64_encode( unsigned char *dst, size_t dlen, size_t *olen,
 /**
  * \brief          Decode a base64-formatted buffer
  *
- * \param dst      destination buffer (can be NULL for checking size, also src
- *                 and dst buffers may overlap: int this case inplace decoding
- *                 takes place and src buffer is overwritten)
+ * \param dst      destination buffer (can be \c NULL for checking size, also
+ *                 \p src and \p dst buffers may fully overlap: int this case
+ *                 inplace decoding takes place and \p src buffer is overwritten)
  * \param dlen     size of the destination buffer
  * \param olen     number of bytes written
  * \param src      source buffer
