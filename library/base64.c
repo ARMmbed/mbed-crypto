@@ -104,8 +104,8 @@ int mbedtls_base64_encode( unsigned char *dst, size_t dlen, size_t *olen,
         return( MBEDTLS_ERR_BASE64_BUFFER_TOO_SMALL );
     }
 
-    /* move pointers to the end of both src and dst buffers: processing from 
-     * back to front allows safe inplace buffers encoding.  
+    /* move pointers to the end of both src and dst buffers: processing from
+     * back to front allows safe inplace buffers encoding.
      */
     src = src + slen - 1;
     p = dst + n;
@@ -116,7 +116,7 @@ int mbedtls_base64_encode( unsigned char *dst, size_t dlen, size_t *olen,
     if ( i > 0 ) {
         C2 = ( i > 1 ) ? *src-- : 0;
         C1 = *src--;
-        
+
         *p-- = '=';
         *p-- = ( i > 1 ) ? base64_enc_map[((C2 & 15) << 2) & 0x3F] : '=';
         *p-- = base64_enc_map[(((C1 & 3) << 4) + (C2 >> 4)) & 0x3F];
