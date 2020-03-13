@@ -1709,7 +1709,7 @@ psa_status_t psa_finish_key_creation(
     (void) driver;
 
 #if defined(MBEDTLS_PSA_CRYPTO_STORAGE_C)
-    if (PSA_KEY_LIFETIME_IS_PERSISTENT(slot->attr.lifetime ))
+    if( PSA_KEY_LIFETIME_IS_PERSISTENT(slot->attr.lifetime ))
     {
 #if defined(MBEDTLS_PSA_CRYPTO_SE_C)
         if( driver != NULL )
@@ -3852,7 +3852,7 @@ static psa_status_t psa_cipher_setup( psa_cipher_operation_t *operation,
     ret = mbedtls_cipher_setup( &operation->ctx.cipher, cipher_info );
     if( ret != 0 )
         goto exit;
-    
+
 #if defined(MBEDTLS_DES_C)
     if( slot->attr.type == PSA_KEY_TYPE_DES && key_bits == 128 )
     {
@@ -4107,6 +4107,7 @@ psa_status_t psa_cipher_abort( psa_cipher_operation_t *operation )
      * always have been initialized to a valid value). */
     if( ! PSA_ALG_IS_CIPHER( operation->alg ) )
         return( PSA_ERROR_BAD_STATE );
+
     mbedtls_cipher_free( &operation->ctx.cipher );
 
     operation->alg = 0;
