@@ -580,7 +580,7 @@
 #define PSA_DH_GROUP_RFC7919            ((psa_dh_group_t) 0x03)
 
 #define PSA_GET_KEY_TYPE_BLOCK_SIZE_EXPONENT(type)      \
-    (((type) >> 8u) & 7u)
+    (((type) >> 8) & 7)
 /** The block size of a block cipher.
  *
  * \param type  A cipher key type (value of type #psa_key_type_t).
