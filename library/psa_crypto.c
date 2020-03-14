@@ -1929,7 +1929,7 @@ psa_status_t psa_import_key( const psa_key_attributes_t *attributes,
 #if defined (MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C)
     if (PSA_KEY_LIFETIME_IS_VENDOR_DEFINED(slot->attr.lifetime))
     {
-        status = psa_import_key_into_slot_vendor( slot, data, data_length);
+        status = psa_import_key_into_slot_vendor( slot, data, data_length, true);
             goto exit;
     }
     else

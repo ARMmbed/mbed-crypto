@@ -52,6 +52,7 @@ extern "C" {
  *                      It must not contain any key material yet.
  * \param[in] data      Buffer containing the key material to parse and import.
  * \param data_length   Size of \p data in bytes.
+ * \param write_to_persistent_memory   Specify if the imported key needs to be written to persistent memory.
  *
  * \retval PSA_SUCCESS
  * \retval PSA_ERROR_INVALID_ARGUMENT
@@ -61,7 +62,8 @@ extern "C" {
  */
 psa_status_t psa_import_key_into_slot_vendor( psa_key_slot_t *slot,
                                        const uint8_t *data,
-                                       size_t data_length );
+                                       size_t data_length, 
+                                       bool write_to_persistent_memory);
 
 /**
  * \brief Generate a vendor defined key or key pair.
