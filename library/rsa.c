@@ -204,7 +204,7 @@ static int rsa_check_context( mbedtls_rsa_context const *ctx, int is_priv,
      */
 
     /* Always need E for public key operations */
-    if( mbedtls_mpi_cmp_int( &ctx->E, 0 ) <= 0 )
+    if( !is_priv && mbedtls_mpi_cmp_int( &ctx->E, 0 ) <= 0 )
         return( MBEDTLS_ERR_RSA_BAD_INPUT_DATA );
 
 #if defined(MBEDTLS_RSA_NO_CRT)
