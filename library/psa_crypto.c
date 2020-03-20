@@ -1321,7 +1321,7 @@ static int pk_write_pubkey_simple( mbedtls_pk_context *key,
 }
 #endif /* defined(MBEDTLS_RSA_C) || defined(MBEDTLS_ECP_C) */
 
-static psa_status_t psa_internal_export_key( const psa_key_slot_t *slot,
+psa_status_t psa_internal_export_key( const psa_key_slot_t *slot,
                                              uint8_t *data,
                                              size_t data_size,
                                              size_t *data_length,
@@ -1732,6 +1732,13 @@ psa_status_t psa_finish_key_creation(
         }
         else
 #endif /* MBEDTLS_PSA_CRYPTO_SE_C */
+#if defined (MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C)
+    if (PSA_KEY_LIFETIME_IS_VENDOR_DEFINED(slot->attr.lifetime))
+    {
+        status = psa_finish_key_creation_vendor( slot );
+    }
+    else
+#endif /* MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C */
         {
             size_t buffer_size =
                 PSA_KEY_EXPORT_MAX_SIZE( slot->attr.type,
