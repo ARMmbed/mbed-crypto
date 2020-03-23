@@ -204,7 +204,11 @@ static int rsa_check_context( mbedtls_rsa_context const *ctx, int is_priv,
      */
 
     /* Always need E for public key operations */
+#ifdef MBEDTLS_RSA_PRIVATE_NO_E_CHECKING
     if( !is_priv && mbedtls_mpi_cmp_int( &ctx->E, 0 ) <= 0 )
+#else
+    if(mbedtls_mpi_cmp_int( &ctx->E, 0 ) <= 0 )
+#endif
         return( MBEDTLS_ERR_RSA_BAD_INPUT_DATA );
 
 #if defined(MBEDTLS_RSA_NO_CRT)
@@ -1016,6 +1020,7 @@ int mbedtls_rsa_private( mbedtls_rsa_context *ctx,
         MBEDTLS_MPI_CHK( mbedtls_mpi_mod_mpi( &T, &T, &ctx->N ) );
     }
 
+#ifndef MBEDTLS_RSA_PRIVATE_NO_E_CHECKING
     /* Verify the result to prevent glitching attacks. */
     MBEDTLS_MPI_CHK( mbedtls_mpi_exp_mod( &C, &T, &ctx->E,
                                           &ctx->N, &ctx->RN ) );
@@ -1024,6 +1029,7 @@ int mbedtls_rsa_private( mbedtls_rsa_context *ctx,
         ret = MBEDTLS_ERR_RSA_VERIFY_FAILED;
         goto cleanup;
     }
+#endif
 
     olen = ctx->len;
     MBEDTLS_MPI_CHK( mbedtls_mpi_write_binary( &T, output, olen ) );
