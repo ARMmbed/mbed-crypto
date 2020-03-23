@@ -1328,7 +1328,8 @@ cleanup:
 }
 
 /*
- * Helper for mbedtls_mpi subtraction
+ * Helper for mbedtls_mpi subtraction.
+ * This function assumes that X->n >= A->n.
  */
 static void mpi_sub_hlp( const mbedtls_mpi *X, const mbedtls_mpi *A, const mbedtls_mpi *B )
 {
