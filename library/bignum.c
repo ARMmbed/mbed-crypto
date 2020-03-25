@@ -1331,7 +1331,7 @@ cleanup:
  * Helper for mbedtls_mpi subtraction.
  * This function assumes that X->n >= A->n.
  */
-static void mpi_sub_hlp( const mbedtls_mpi *X, const mbedtls_mpi *A, const mbedtls_mpi *B )
+static void mpi_sub_hlp( mbedtls_mpi *X, const mbedtls_mpi *A, const mbedtls_mpi *B )
 {
     size_t i;
     mbedtls_mpi_uint c = 0;
@@ -1979,7 +1979,7 @@ static void mpi_montg_init( mbedtls_mpi_uint *mm, const mbedtls_mpi *N )
  * Montgomery multiplication: A = A * B * R^-1 mod N  (HAC 14.36)
  */
 static int mpi_montmul( mbedtls_mpi *A, const mbedtls_mpi *B, const mbedtls_mpi *N, mbedtls_mpi_uint mm,
-                         const mbedtls_mpi *T )
+                         mbedtls_mpi *T )
 {
     size_t i, n, m;
     mbedtls_mpi_uint u0, u1, *d;
@@ -2022,7 +2022,7 @@ static int mpi_montmul( mbedtls_mpi *A, const mbedtls_mpi *B, const mbedtls_mpi 
  * Montgomery reduction: A = A * R^-1 mod N
  */
 static int mpi_montred( mbedtls_mpi *A, const mbedtls_mpi *N,
-                        mbedtls_mpi_uint mm, const mbedtls_mpi *T )
+                        mbedtls_mpi_uint mm, mbedtls_mpi *T )
 {
     mbedtls_mpi_uint z = 1;
     mbedtls_mpi U;
