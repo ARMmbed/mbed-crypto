@@ -56,8 +56,13 @@
 #define TEST_CLASSIFICATION_MACRO( flag, alg, flags )           \
     TEST_ASSERT( PSA_##flag( alg ) == !! ( ( flags ) & flag ) )
 
-/* Check the parity of value.
- * Return 0 if value has even parity and a nonzero value otherwise. */
+/* Test the parity of value.
+ * Numerical encodings of key types and related values such as EC curves and
+ * DH groups should all have the same parity. This guarantees that a
+ * single-bit error will be detected.
+ * The expected parity is even because this makes all-bits-zero valid.
+ * The function returns a nonzero value if the parity is even, zero otherwise.
+ */
 int test_parity( uint32_t value )
 {
     value ^= value >> 16;
@@ -65,8 +70,6 @@ int test_parity( uint32_t value )
     value ^= value >> 4;
     return( 0x9669 & 1 << ( value & 0xf ) );
 }
-#define TEST_PARITY( value )                    \
-    TEST_ASSERT( test_parity( value ) )
 
 void algorithm_classification( psa_algorithm_t alg, unsigned flags )
 {
@@ -125,7 +128,7 @@ void key_type_classification( psa_key_type_t type, unsigned flags )
                 ( PSA_KEY_TYPE_IS_DH( type ) &&
                   PSA_KEY_TYPE_IS_PUBLIC_KEY( type ) ) );
 
-    TEST_PARITY( type );
+    TEST_ASSERT( test_parity( type ) );
 
 exit: ;
 }
@@ -497,7 +500,7 @@ void ecc_key_family( int curve_arg )
     psa_key_type_t public_type = PSA_KEY_TYPE_ECC_PUBLIC_KEY( curve );
     psa_key_type_t pair_type = PSA_KEY_TYPE_ECC_KEY_PAIR( curve );
 
-    test_parity( curve );
+    TEST_ASSERT( test_parity( curve ) );
 
     test_key_type( public_type, KEY_TYPE_IS_ECC | KEY_TYPE_IS_PUBLIC_KEY );
     test_key_type( pair_type, KEY_TYPE_IS_ECC | KEY_TYPE_IS_KEY_PAIR );
@@ -514,7 +517,7 @@ void dh_key_family( int group_arg )
     psa_key_type_t public_type = PSA_KEY_TYPE_DH_PUBLIC_KEY( group );
     psa_key_type_t pair_type = PSA_KEY_TYPE_DH_KEY_PAIR( group );
 
-    test_parity( group );
+    TEST_ASSERT( test_parity( group ) );
 
     test_key_type( public_type, KEY_TYPE_IS_DH | KEY_TYPE_IS_PUBLIC_KEY );
     test_key_type( pair_type, KEY_TYPE_IS_DH | KEY_TYPE_IS_KEY_PAIR );
