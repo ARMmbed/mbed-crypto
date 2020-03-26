@@ -959,10 +959,26 @@ void mbedtls_mpi_sub_abs( int radix_X, char * input_X, int radix_Y,
     TEST_ASSERT( mbedtls_mpi_read_string( &Y, radix_Y, input_Y ) == 0 );
     TEST_ASSERT( mbedtls_mpi_read_string( &A, radix_A, input_A ) == 0 );
 
+    /* Z = X - Y */
     res = mbedtls_mpi_sub_abs( &Z, &X, &Y );
     TEST_ASSERT( res == sub_result );
     if( res == 0 )
         TEST_ASSERT( mbedtls_mpi_cmp_mpi( &Z, &A ) == 0 );
+
+    /* X = X - Y */
+    test_set_step( 1 );
+    res = mbedtls_mpi_sub_abs( &X, &X, &Y );
+    TEST_ASSERT( res == sub_result );
+    if( res == 0 )
+        TEST_ASSERT( mbedtls_mpi_cmp_mpi( &X, &A ) == 0 );
+    TEST_ASSERT( mbedtls_mpi_read_string( &X, radix_X, input_X ) == 0 );
+
+    /* Y = X - Y */
+    test_set_step( 2 );
+    res = mbedtls_mpi_sub_abs( &Y, &X, &Y );
+    TEST_ASSERT( res == sub_result );
+    if( res == 0 )
+        TEST_ASSERT( mbedtls_mpi_cmp_mpi( &Y, &A ) == 0 );
 
 exit:
     mbedtls_mpi_free( &X ); mbedtls_mpi_free( &Y ); mbedtls_mpi_free( &Z ); mbedtls_mpi_free( &A );

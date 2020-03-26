@@ -1328,23 +1328,42 @@ cleanup:
 }
 
 /*
- * Helper for mbedtls_mpi subtraction
+ * Helper for mbedtls_mpi subtraction.
+ * This function assumes that X->n >= A->n.
  */
-static void mpi_sub_hlp( size_t n, mbedtls_mpi_uint *s, mbedtls_mpi_uint *d )
+static void mpi_sub_hlp( mbedtls_mpi *X, const mbedtls_mpi *A, const mbedtls_mpi *B )
 {
     size_t i;
-    mbedtls_mpi_uint c, z;
+    mbedtls_mpi_uint c = 0;
+    size_t width = A->n > B->n ? B->n : A->n;
 
-    for( i = c = 0; i < n; i++, s++, d++ )
+    for( i = 0; i < width; i++ )
     {
-        z = ( *d <  c );     *d -=  c;
-        c = ( *d < *s ) + z; *d -= *s;
+        mbedtls_mpi_uint a = A->p[i];
+        mbedtls_mpi_uint b = B->p[i];
+        mbedtls_mpi_uint z = a < c;
+
+        X->p[i] = a - c;
+        c = ( X->p[i] <  b ) + z;
+        X->p[i] -= b;
     }
 
-    while( c != 0 )
+    for( ; i < A->n && c > 0; i++ )
     {
-        z = ( *d < c ); *d -= c;
-        c = z; d++;
+        mbedtls_mpi_uint a = A->p[i];
+        mbedtls_mpi_uint z = a < c;
+        X->p[i] = a - c;
+        c = z;
+    }
+
+    for( ; i < A->n; i++ )
+    {
+        X->p[i] = A->p[i];
+    }
+
+    for( ; i < X->n; i++ )
+    {
+        X->p[i] = 0;
     }
 }
 
@@ -1353,9 +1372,8 @@ static void mpi_sub_hlp( size_t n, mbedtls_mpi_uint *s, mbedtls_mpi_uint *d )
  */
 int mbedtls_mpi_sub_abs( mbedtls_mpi *X, const mbedtls_mpi *A, const mbedtls_mpi *B )
 {
-    mbedtls_mpi TB;
     int ret = MBEDTLS_ERR_ERROR_CORRUPTION_DETECTED;
-    size_t n;
+
     MPI_VALIDATE_RET( X != NULL );
     MPI_VALIDATE_RET( A != NULL );
     MPI_VALIDATE_RET( B != NULL );
@@ -1363,34 +1381,16 @@ int mbedtls_mpi_sub_abs( mbedtls_mpi *X, const mbedtls_mpi *A, const mbedtls_mpi
     if( mbedtls_mpi_cmp_abs( A, B ) < 0 )
         return( MBEDTLS_ERR_MPI_NEGATIVE_VALUE );
 
-    mbedtls_mpi_init( &TB );
-
-    if( X == B )
-    {
-        MBEDTLS_MPI_CHK( mbedtls_mpi_copy( &TB, B ) );
-        B = &TB;
-    }
-
-    if( X != A )
-        MBEDTLS_MPI_CHK( mbedtls_mpi_copy( X, A ) );
-
     /*
      * X should always be positive as a result of unsigned subtractions.
      */
     X->s = 1;
-
     ret = 0;
 
-    for( n = B->n; n > 0; n-- )
-        if( B->p[n - 1] != 0 )
-            break;
-
-    mpi_sub_hlp( n, B->p, X->p );
+    MBEDTLS_MPI_CHK( mbedtls_mpi_grow( X, A->n ) );
+    mpi_sub_hlp( X, A, B );
 
 cleanup:
-
-    mbedtls_mpi_free( &TB );
-
     return( ret );
 }
 
@@ -1979,7 +1979,7 @@ static void mpi_montg_init( mbedtls_mpi_uint *mm, const mbedtls_mpi *N )
  * Montgomery multiplication: A = A * B * R^-1 mod N  (HAC 14.36)
  */
 static int mpi_montmul( mbedtls_mpi *A, const mbedtls_mpi *B, const mbedtls_mpi *N, mbedtls_mpi_uint mm,
-                         const mbedtls_mpi *T )
+                         mbedtls_mpi *T )
 {
     size_t i, n, m;
     mbedtls_mpi_uint u0, u1, *d;
@@ -2010,10 +2010,10 @@ static int mpi_montmul( mbedtls_mpi *A, const mbedtls_mpi *B, const mbedtls_mpi 
     memcpy( A->p, d, ( n + 1 ) * ciL );
 
     if( mbedtls_mpi_cmp_abs( A, N ) >= 0 )
-        mpi_sub_hlp( n, N->p, A->p );
+        mpi_sub_hlp( A, A, N );
     else
         /* prevent timing attacks */
-        mpi_sub_hlp( n, A->p, T->p );
+        mpi_sub_hlp( T, T, A );
 
     return( 0 );
 }
@@ -2022,7 +2022,7 @@ static int mpi_montmul( mbedtls_mpi *A, const mbedtls_mpi *B, const mbedtls_mpi 
  * Montgomery reduction: A = A * R^-1 mod N
  */
 static int mpi_montred( mbedtls_mpi *A, const mbedtls_mpi *N,
-                        mbedtls_mpi_uint mm, const mbedtls_mpi *T )
+                        mbedtls_mpi_uint mm, mbedtls_mpi *T )
 {
     mbedtls_mpi_uint z = 1;
     mbedtls_mpi U;
