@@ -1946,12 +1946,12 @@ static int ecp_comb_recode_scalar( const mbedtls_ecp_group *grp,
     int ret = MBEDTLS_ERR_ERROR_CORRUPTION_DETECTED;
     mbedtls_mpi M, mm;
 
+    /* N is always odd (see above), just make extra sure */
+    if( mbedtls_mpi_get_bit( &grp->N, 0 ) == 0 )
+        return( MBEDTLS_ERR_ECP_BAD_INPUT_DATA );
+
     mbedtls_mpi_init( &M );
     mbedtls_mpi_init( &mm );
-
-    /* N is always odd (see above), just make extra sure */
-    if( mbedtls_mpi_get_bit( &grp->N, 0 ) != 1 )
-        return( MBEDTLS_ERR_ECP_BAD_INPUT_DATA );
 
     /* do we need the parity trick? */
     *parity_trick = ( mbedtls_mpi_get_bit( m, 0 ) == 0 );
