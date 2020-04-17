@@ -1,0 +1,36 @@
+Introduction
+------------
+
+Arm’s Platform Security Architecture (PSA) is a holistic set of threat models,
+security analyses, hardware and firmware architecture specifications, an
+open source firmware reference implementation, and an independent evaluation
+and certification scheme. PSA provides a recipe, based on
+industry best practice, that allows security to be consistently designed in, at
+both a hardware and firmware level.
+
+The PSA Cryptographic API (Crypto API) described in this document is an
+important PSA component that provides an interface to cryptographic operations
+on resource-constrained devices. The interface is user-friendly, while still
+providing access to the low-level primitives used in modern cryptography. It
+does not require that the user has access to the key material. Instead, it uses
+opaque key identifiers.
+
+This document is part of the PSA family of specifications. It defines an
+interface for cryptographic services, including cryptography primitives and a
+key storage functionality.
+
+This document includes:
+
+-  A `rationale <design-goals>` for the design.
+-  A `high-level overview of the functionality <functionality-overview>`
+   provided by the interface.
+-  A `description of typical architectures <architectures>` of
+   implementations for this specification.
+-  General considerations `for implementers <implementation-considerations>`
+   of this specification and `for applications <usage-considerations>` that
+   use the interface defined in this specification.
+-  A `detailed definition <api-reference>` of the API.
+
+Companion documents will define *profiles* for this specification. A profile is
+a minimum mandatory subset of the interface that a compliant implementation must
+provide.

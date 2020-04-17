@@ -1,0 +1,171 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Usage considerations &#8212; PSA Crypto API 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Library management reference" href="../api/library/index.html" />
+    <link rel="prev" title="Implementation considerations" href="implementation.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="usage-considerations">
+<span id="id1"></span><h1>Usage considerations</h1>
+<div class="section" id="security-recommendations">
+<h2>Security recommendations</h2>
+<div class="section" id="always-check-for-errors">
+<h3>Always check for errors</h3>
+<p>Most functions in this API can return errors. All functions that can fail have
+the return type <a class="reference internal" href="../api/library/status.html#c.psa_status_t" title="psa_status_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_status_t</span></code></a>. A few functions cannot fail, and thus, return
+<code class="docutils literal"><span class="pre">void</span></code> or some other type.</p>
+<p>If an error occurs, unless otherwise specified, the content of the output
+parameters is undefined and must not be used.</p>
+<p>Some common causes of errors include:</p>
+<ul class="simple">
+<li>In implementations where the keys are stored and processed in a separate
+environment from the application, all functions that need to access the
+cryptography processing environment might fail due to an error in the
+communication between the two environments.</li>
+<li>If an algorithm is implemented with a hardware accelerator, which is
+logically separate from the application processor, the accelerator might fail,
+even when the application processor keeps running normally.</li>
+<li>Most functions might fail due to a lack of resources. However, some
+implementations guarantee that certain functions always have sufficient
+memory.</li>
+<li>All functions that access persistent keys might fail due to a storage failure.</li>
+<li>All functions that require randomness might fail due to a lack of entropy.
+Implementations are encouraged to seed the random generator with sufficient
+entropy during the execution of <a class="reference internal" href="../api/library/library.html#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_crypto_init()</span></code></a>. However, some security
+standards require periodic reseeding from a hardware random generator, which
+can fail.</li>
+</ul>
+</div>
+<div class="section" id="shared-memory-and-concurrency">
+<h3>Shared memory and concurrency</h3>
+<p>Some environments allow applications to be multithreaded, while others do not.
+In some environments, applications can share memory with a different security
+context. In environments with multithreaded applications or shared memory,
+applications must be written carefully to avoid data corruption or leakage. This
+specification requires the application to obey certain constraints.</p>
+<p>In general, this API allows either one writer or any number of simultaneous
+readers, on any given object. In other words, if two or more calls access the
+same object concurrently, then the behavior is only well-defined if all the
+calls are only reading from the object and do not modify it. Read accesses
+include reading memory by input parameters and reading keystore content by using
+a key. For more details, refer to the <a class="reference internal" href="conventions.html#concurrency"><span class="std std-ref">Concurrent calls</span></a>
+section.</p>
+<p>If an application shares memory with another security context, it can pass
+shared memory blocks as input buffers or output buffers, but not as non-buffer
+parameters. For more details, refer to the <em><a class="reference internal" href="conventions.html#stability-of-parameters"><span class="std std-ref">Stability of parameters</span></a></em> section.</p>
+</div>
+<div class="section" id="cleaning-up-after-use">
+<h3>Cleaning up after use</h3>
+<p>To minimize impact if the system is compromised, it is recommended that
+applications wipe all sensitive data from memory when it is no longer used. That
+way, only data that is currently in use can be leaked, and past data is not
+compromised.</p>
+<p>Wiping sensitive data includes:</p>
+<ul class="simple">
+<li>Clearing temporary buffers in the stack or on the heap.</li>
+<li>Aborting operations if they will not be finished.</li>
+<li>Destroying keys that are no longer used.</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Usage considerations</a><ul>
+<li><a class="reference internal" href="#security-recommendations">Security recommendations</a><ul>
+<li><a class="reference internal" href="#always-check-for-errors">Always check for errors</a></li>
+<li><a class="reference internal" href="#shared-memory-and-concurrency">Shared memory and concurrency</a></li>
+<li><a class="reference internal" href="#cleaning-up-after-use">Cleaning up after use</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="implementation.html" title="previous chapter">Implementation considerations</a></li>
+      <li>Next: <a href="../api/library/index.html" title="next chapter">Library management reference</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/overview/usage.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy; 2019-2020, Arm Limited or its affiliates. All rights reserved.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../_sources/overview/usage.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

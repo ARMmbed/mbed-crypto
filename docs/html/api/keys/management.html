@@ -1,0 +1,670 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Key management functions &#8212; PSA Crypto API 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Cryptographic operation reference" href="../ops/index.html" />
+    <link rel="prev" title="Algorithms" href="algorithms.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="key-management-functions">
+<h1>Key management functions</h1>
+<div class="section" id="key-creation">
+<span id="id1"></span><h2>Key creation</h2>
+<div class="section" id="psa_import_key">
+<span id="c.psa_import_key"></span><h3><code class="docutils literal"><span class="pre">psa_import_key</span></code> (function)</h3>
+<p>Import a key in binary format.</p>
+<pre class="literal-block">
+<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_import_key" title="psa_import_key">psa_import_key</a>(const <a class="reference internal" href="attributes.html#c.psa_key_attributes_t" title="psa_key_attributes_t">psa_key_attributes_t</a> * attributes,
+                            const uint8_t * data,
+                            size_t data_length,
+                            <a class="reference internal" href="attributes.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> * key);
+</pre>
+<p class="rubric">Parameters</p>
+<dl class="docutils">
+<dt> <code class="docutils literal"><span class="pre">attributes</span></code></dt>
+<dd>The attributes for the new key. The key size is always determined from the <code class="docutils literal"><span class="pre">data</span></code> buffer. If the key size in <code class="docutils literal"><span class="pre">attributes</span></code> is nonzero, it must be equal to the size from <code class="docutils literal"><span class="pre">data</span></code>.</dd>
+<dt> <code class="docutils literal"><span class="pre">data</span></code></dt>
+<dd>Buffer containing the key data.
+The content of this buffer is interpreted according to the type declared in <code class="docutils literal"><span class="pre">attributes</span></code>.
+All implementations must support at least the format described in the documentation of <a class="reference internal" href="#c.psa_export_key" title="psa_export_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_export_key()</span></code></a> or <a class="reference internal" href="#c.psa_export_public_key" title="psa_export_public_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_export_public_key()</span></code></a> for the chosen type.
+Implementations can support other formats, but be conservative in interpreting the key data: it is recommended that implementations reject content if it might be erroneous, for example, if it is the wrong type or is truncated.</dd>
+<dt> <code class="docutils literal"><span class="pre">data_length</span></code></dt>
+<dd>Size of the <code class="docutils literal"><span class="pre">data</span></code> buffer in bytes.</dd>
+<dt> <code class="docutils literal"><span class="pre">key</span></code></dt>
+<dd>On success, an identifier for the newly created key. <a class="reference internal" href="locations.html#c.PSA_KEY_ID_NULL" title="PSA_KEY_ID_NULL"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_ID_NULL</span></code></a> on failure.</dd>
+</dl>
+<p class="rubric">Returns: <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t"><code class="docutils literal"><span class="pre">psa_status_t</span></code></a></p>
+<dl class="docutils">
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS"><code class="docutils literal"><span class="pre">PSA_SUCCESS</span></code></a></dt>
+<dd>Success. If the key is persistent, the key material and the key’s metadata have been saved to persistent storage.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_ALREADY_EXISTS" title="PSA_ERROR_ALREADY_EXISTS"><code class="docutils literal"><span class="pre">PSA_ERROR_ALREADY_EXISTS</span></code></a></dt>
+<dd>This is an attempt to create a persistent key, and there is already a persistent key with the given identifier.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_SUPPORTED" title="PSA_ERROR_NOT_SUPPORTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_SUPPORTED</span></code></a></dt>
+<dd>The key type or key size is not supported, either by the implementation in general or in this particular persistent location.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
+<dd>The key attributes, as a whole, are invalid.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
+<dd>The key data is not correctly formatted.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
+<dd>The size in <code class="docutils literal"><span class="pre">attributes</span></code> is nonzero and does not match the size of the key data.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INSUFFICIENT_MEMORY" title="PSA_ERROR_INSUFFICIENT_MEMORY"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_MEMORY</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INSUFFICIENT_STORAGE" title="PSA_ERROR_INSUFFICIENT_STORAGE"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_STORAGE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_COMMUNICATION_FAILURE" title="PSA_ERROR_COMMUNICATION_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_COMMUNICATION_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_STORAGE_FAILURE" title="PSA_ERROR_STORAGE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_STORAGE_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_DATA_CORRUPT" title="PSA_ERROR_DATA_CORRUPT"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_CORRUPT</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_DATA_INVALID" title="PSA_ERROR_DATA_INVALID"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_INVALID</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_HARDWARE_FAILURE" title="PSA_ERROR_HARDWARE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_HARDWARE_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_CORRUPTION_DETECTED" title="PSA_ERROR_CORRUPTION_DETECTED"><code class="docutils literal"><span class="pre">PSA_ERROR_CORRUPTION_DETECTED</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
+<dd>The library has not been previously initialized by <a class="reference internal" href="../library/library.html#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_crypto_init()</span></code></a>. It is implementation-dependent whether a failure to initialize results in this error code.</dd>
+</dl>
+<p class="rubric">Description</p>
+<p>This function supports any output from <a class="reference internal" href="#c.psa_export_key" title="psa_export_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_export_key()</span></code></a>. Refer to the documentation of <a class="reference internal" href="#c.psa_export_public_key" title="psa_export_public_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_export_public_key()</span></code></a> for the format of public keys and to the documentation of <a class="reference internal" href="#c.psa_export_key" title="psa_export_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_export_key()</span></code></a> for the format for other key types.</p>
+<p>The key data determines the key size. The attributes can optionally specify a key size; in this case it must match the size determined from the key data. A key size of <code class="docutils literal"><span class="pre">0</span></code> in <code class="docutils literal"><span class="pre">attributes</span></code> indicates that the key size is solely determined by the key data.</p>
+<p>Implementations must reject an attempt to import a key of size <code class="docutils literal"><span class="pre">0</span></code>.</p>
+<p>This specification defines a single format for each key type. Implementations can optionally support other formats in addition to the standard format. It is recommended that implementations that support other formats ensure that the formats are clearly unambiguous, to minimize the risk that an invalid input is accidentally interpreted according to a different format.</p>
+</div>
+<div class="section" id="psa_generate_key">
+<span id="c.psa_generate_key"></span><h3><code class="docutils literal"><span class="pre">psa_generate_key</span></code> (function)</h3>
+<p>Generate a key or key pair.</p>
+<pre class="literal-block">
+<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_generate_key" title="psa_generate_key">psa_generate_key</a>(const <a class="reference internal" href="attributes.html#c.psa_key_attributes_t" title="psa_key_attributes_t">psa_key_attributes_t</a> * attributes,
+                              <a class="reference internal" href="attributes.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> * key);
+</pre>
+<p class="rubric">Parameters</p>
+<dl class="docutils">
+<dt> <code class="docutils literal"><span class="pre">attributes</span></code></dt>
+<dd>The attributes for the new key.</dd>
+<dt> <code class="docutils literal"><span class="pre">key</span></code></dt>
+<dd>On success, an identifier for the newly created key. <a class="reference internal" href="locations.html#c.PSA_KEY_ID_NULL" title="PSA_KEY_ID_NULL"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_ID_NULL</span></code></a> on failure.</dd>
+</dl>
+<p class="rubric">Returns: <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t"><code class="docutils literal"><span class="pre">psa_status_t</span></code></a></p>
+<dl class="docutils">
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS"><code class="docutils literal"><span class="pre">PSA_SUCCESS</span></code></a></dt>
+<dd>Success. If the key is persistent, the key material and the key’s metadata have been saved to persistent storage.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_ALREADY_EXISTS" title="PSA_ERROR_ALREADY_EXISTS"><code class="docutils literal"><span class="pre">PSA_ERROR_ALREADY_EXISTS</span></code></a></dt>
+<dd>This is an attempt to create a persistent key, and there is already a persistent key with the given identifier.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_SUPPORTED" title="PSA_ERROR_NOT_SUPPORTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_SUPPORTED</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INSUFFICIENT_MEMORY" title="PSA_ERROR_INSUFFICIENT_MEMORY"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_MEMORY</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INSUFFICIENT_ENTROPY" title="PSA_ERROR_INSUFFICIENT_ENTROPY"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_ENTROPY</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_COMMUNICATION_FAILURE" title="PSA_ERROR_COMMUNICATION_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_COMMUNICATION_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_HARDWARE_FAILURE" title="PSA_ERROR_HARDWARE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_HARDWARE_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_CORRUPTION_DETECTED" title="PSA_ERROR_CORRUPTION_DETECTED"><code class="docutils literal"><span class="pre">PSA_ERROR_CORRUPTION_DETECTED</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INSUFFICIENT_STORAGE" title="PSA_ERROR_INSUFFICIENT_STORAGE"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_STORAGE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_STORAGE_FAILURE" title="PSA_ERROR_STORAGE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_STORAGE_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_DATA_CORRUPT" title="PSA_ERROR_DATA_CORRUPT"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_CORRUPT</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_DATA_INVALID" title="PSA_ERROR_DATA_INVALID"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_INVALID</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
+<dd>The library has not been previously initialized by <a class="reference internal" href="../library/library.html#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_crypto_init()</span></code></a>. It is implementation-dependent whether a failure to initialize results in this error code.</dd>
+</dl>
+<p class="rubric">Description</p>
+<p>The key is generated randomly. Its location, usage policy, type and size are taken from <code class="docutils literal"><span class="pre">attributes</span></code>.</p>
+<p>Implementations must reject an attempt to generate a key of size <code class="docutils literal"><span class="pre">0</span></code>.</p>
+<p>The following type-specific considerations apply:</p>
+<ul class="simple">
+<li>For RSA keys (<a class="reference internal" href="types.html#c.PSA_KEY_TYPE_RSA_KEY_PAIR" title="PSA_KEY_TYPE_RSA_KEY_PAIR"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_RSA_KEY_PAIR</span></code></a>), the public exponent is 65537. The modulus is a product of two probabilistic primes between 2^{n-1} and 2^n where n is the bit size specified in the attributes.</li>
+</ul>
+</div>
+<div class="section" id="psa_copy_key">
+<span id="c.psa_copy_key"></span><h3><code class="docutils literal"><span class="pre">psa_copy_key</span></code> (function)</h3>
+<p>Make a copy of a key.</p>
+<pre class="literal-block">
+<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_copy_key" title="psa_copy_key">psa_copy_key</a>(<a class="reference internal" href="attributes.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> source_key,
+                          const <a class="reference internal" href="attributes.html#c.psa_key_attributes_t" title="psa_key_attributes_t">psa_key_attributes_t</a> * attributes,
+                          <a class="reference internal" href="attributes.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> * target_key);
+</pre>
+<p class="rubric">Parameters</p>
+<dl class="docutils">
+<dt> <code class="docutils literal"><span class="pre">source_key</span></code></dt>
+<dd>The key to copy.
+It must allow the usage <a class="reference internal" href="usage.html#c.PSA_KEY_USAGE_COPY" title="PSA_KEY_USAGE_COPY"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_COPY</span></code></a>.
+If a private or secret key is being copied outside of a secure element it must also allow <a class="reference internal" href="usage.html#c.PSA_KEY_USAGE_EXPORT" title="PSA_KEY_USAGE_EXPORT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_EXPORT</span></code></a>.</dd>
+<dt> <code class="docutils literal"><span class="pre">attributes</span></code></dt>
+<dd><p class="first">The attributes for the new key. They are used as follows:</p>
+<ul class="last simple">
+<li>The key type and size can be <code class="docutils literal"><span class="pre">0</span></code>. If either is nonzero, it must match the corresponding attribute of the source key.</li>
+<li>The key location (the lifetime and, for persistent keys, the key identifier) is used directly.</li>
+<li>The policy constraints (usage flags and algorithm policy) are combined from the source key and <code class="docutils literal"><span class="pre">attributes</span></code> so that both sets of restrictions apply, as described in the documentation of this function.</li>
+</ul>
+</dd>
+<dt> <code class="docutils literal"><span class="pre">target_key</span></code></dt>
+<dd>On success, an identifier for the newly created key. <a class="reference internal" href="locations.html#c.PSA_KEY_ID_NULL" title="PSA_KEY_ID_NULL"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_ID_NULL</span></code></a> on failure.</dd>
+</dl>
+<p class="rubric">Returns: <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t"><code class="docutils literal"><span class="pre">psa_status_t</span></code></a></p>
+<dl class="docutils">
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS"><code class="docutils literal"><span class="pre">PSA_SUCCESS</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_HANDLE" title="PSA_ERROR_INVALID_HANDLE"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_HANDLE</span></code></a></dt>
+<dd><code class="docutils literal"><span class="pre">source_key</span></code> is invalid.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_ALREADY_EXISTS" title="PSA_ERROR_ALREADY_EXISTS"><code class="docutils literal"><span class="pre">PSA_ERROR_ALREADY_EXISTS</span></code></a></dt>
+<dd>This is an attempt to create a persistent key, and there is already a persistent key with the given identifier.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
+<dd>The lifetime or identifier in <code class="docutils literal"><span class="pre">attributes</span></code> are invalid.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
+<dd>The policy constraints on <code class="docutils literal"><span class="pre">source_key</span></code> and specified in <code class="docutils literal"><span class="pre">attributes</span></code> are incompatible.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
+<dd><code class="docutils literal"><span class="pre">attributes</span></code> specifies a key type or key size which does not match the attributes of <code class="docutils literal"><span class="pre">source</span> <span class="pre">key</span></code>.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_PERMITTED" title="PSA_ERROR_NOT_PERMITTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_PERMITTED</span></code></a></dt>
+<dd><code class="docutils literal"><span class="pre">source_key</span></code> does not have the <a class="reference internal" href="usage.html#c.PSA_KEY_USAGE_COPY" title="PSA_KEY_USAGE_COPY"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_COPY</span></code></a> usage flag.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_PERMITTED" title="PSA_ERROR_NOT_PERMITTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_PERMITTED</span></code></a></dt>
+<dd><code class="docutils literal"><span class="pre">source_key</span></code> does not have the <a class="reference internal" href="usage.html#c.PSA_KEY_USAGE_EXPORT" title="PSA_KEY_USAGE_EXPORT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_EXPORT</span></code></a> usage flag and its lifetime does not allow copying it to the target’s lifetime.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INSUFFICIENT_MEMORY" title="PSA_ERROR_INSUFFICIENT_MEMORY"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_MEMORY</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INSUFFICIENT_STORAGE" title="PSA_ERROR_INSUFFICIENT_STORAGE"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_STORAGE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_COMMUNICATION_FAILURE" title="PSA_ERROR_COMMUNICATION_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_COMMUNICATION_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_HARDWARE_FAILURE" title="PSA_ERROR_HARDWARE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_HARDWARE_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_STORAGE_FAILURE" title="PSA_ERROR_STORAGE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_STORAGE_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_DATA_CORRUPT" title="PSA_ERROR_DATA_CORRUPT"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_CORRUPT</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_DATA_INVALID" title="PSA_ERROR_DATA_INVALID"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_INVALID</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_CORRUPTION_DETECTED" title="PSA_ERROR_CORRUPTION_DETECTED"><code class="docutils literal"><span class="pre">PSA_ERROR_CORRUPTION_DETECTED</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
+<dd>The library has not been previously initialized by <a class="reference internal" href="../library/library.html#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_crypto_init()</span></code></a>. It is implementation-dependent whether a failure to initialize results in this error code.</dd>
+</dl>
+<p class="rubric">Description</p>
+<p>Copy key material from one location to another.</p>
+<p>This function is primarily useful to copy a key from one location to another, as it populates a key using the material from another key which can have a different lifetime.</p>
+<p>This function can be used to share a key with a different party, subject to implementation-defined restrictions on key sharing.</p>
+<p>The policy on the source key must have the usage flag <a class="reference internal" href="usage.html#c.PSA_KEY_USAGE_COPY" title="PSA_KEY_USAGE_COPY"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_COPY</span></code></a> set. This flag is sufficient to permit the copy if the key has the lifetime <a class="reference internal" href="locations.html#c.PSA_KEY_LIFETIME_VOLATILE" title="PSA_KEY_LIFETIME_VOLATILE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_LIFETIME_VOLATILE</span></code></a> or <a class="reference internal" href="locations.html#c.PSA_KEY_LIFETIME_PERSISTENT" title="PSA_KEY_LIFETIME_PERSISTENT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_LIFETIME_PERSISTENT</span></code></a>. Some secure elements do not provide a way to copy a key without making it extractable from the secure element. If a key is located in such a secure element, then the key must have both usage flags <a class="reference internal" href="usage.html#c.PSA_KEY_USAGE_COPY" title="PSA_KEY_USAGE_COPY"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_COPY</span></code></a> and <a class="reference internal" href="usage.html#c.PSA_KEY_USAGE_EXPORT" title="PSA_KEY_USAGE_EXPORT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_EXPORT</span></code></a> in order to make a copy of the key outside the secure element.</p>
+<p>The resulting key can only be used in a way that conforms to both the policy of the original key and the policy specified in the <code class="docutils literal"><span class="pre">attributes</span></code> parameter:</p>
+<ul class="simple">
+<li>The usage flags on the resulting key are the bitwise-and of the usage flags on the source policy and the usage flags in <code class="docutils literal"><span class="pre">attributes</span></code>.</li>
+<li>If both allow the same algorithm or wildcard-based algorithm policy, the resulting key has the same algorithm policy.</li>
+<li>If either of the policies allows an algorithm and the other policy allows a wildcard-based algorithm policy that includes this algorithm, the resulting key allows the same algorithm.</li>
+<li>If the policies do not allow any algorithm in common, this function fails with the status <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a>.</li>
+</ul>
+<p>The effect of this function on implementation-defined attributes is implementation-defined.</p>
+</div>
+</div>
+<div class="section" id="key-destruction">
+<span id="id2"></span><h2>Key destruction</h2>
+<div class="section" id="psa_destroy_key">
+<span id="c.psa_destroy_key"></span><h3><code class="docutils literal"><span class="pre">psa_destroy_key</span></code> (function)</h3>
+<p>Destroy a key.</p>
+<pre class="literal-block">
+<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_destroy_key" title="psa_destroy_key">psa_destroy_key</a>(<a class="reference internal" href="attributes.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> key);
+</pre>
+<p class="rubric">Parameters</p>
+<dl class="docutils">
+<dt> <code class="docutils literal"><span class="pre">key</span></code></dt>
+<dd>Identifier of the key to erase.
+If this is <a class="reference internal" href="locations.html#c.PSA_KEY_ID_NULL" title="PSA_KEY_ID_NULL"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_ID_NULL</span></code></a>, do nothing and return <a class="reference internal" href="../library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_SUCCESS</span></code></a>.</dd>
+</dl>
+<p class="rubric">Returns: <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t"><code class="docutils literal"><span class="pre">psa_status_t</span></code></a></p>
+<dl class="docutils">
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS"><code class="docutils literal"><span class="pre">PSA_SUCCESS</span></code></a></dt>
+<dd><code class="docutils literal"><span class="pre">key</span></code> was a valid key identifier and the key material that it referred to has been erased.
+Alternatively, <code class="docutils literal"><span class="pre">key</span></code> is <a class="reference internal" href="locations.html#c.PSA_KEY_ID_NULL" title="PSA_KEY_ID_NULL"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_ID_NULL</span></code></a>.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_PERMITTED" title="PSA_ERROR_NOT_PERMITTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_PERMITTED</span></code></a></dt>
+<dd>The key cannot be erased because it is read-only, either due to a policy or due to physical restrictions.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_HANDLE" title="PSA_ERROR_INVALID_HANDLE"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_HANDLE</span></code></a></dt>
+<dd><code class="docutils literal"><span class="pre">key</span></code> is not a valid handle nor <a class="reference internal" href="locations.html#c.PSA_KEY_ID_NULL" title="PSA_KEY_ID_NULL"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_ID_NULL</span></code></a>.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_COMMUNICATION_FAILURE" title="PSA_ERROR_COMMUNICATION_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_COMMUNICATION_FAILURE</span></code></a></dt>
+<dd>There was an failure in communication with the cryptoprocessor. The key material might still be present in the cryptoprocessor.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_STORAGE_FAILURE" title="PSA_ERROR_STORAGE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_STORAGE_FAILURE</span></code></a></dt>
+<dd>The storage operation failed. Implementations must make a best effort to erase key material even in this situation, however, it might be impossible to guarantee that the key material is not recoverable in such cases.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_DATA_CORRUPT" title="PSA_ERROR_DATA_CORRUPT"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_CORRUPT</span></code></a></dt>
+<dd>The storage is corrupted. Implementations must make a best effort to erase key material even in this situation, however, it might be impossible to guarantee that the key material is not recoverable in such cases.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_DATA_INVALID" title="PSA_ERROR_DATA_INVALID"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_INVALID</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_CORRUPTION_DETECTED" title="PSA_ERROR_CORRUPTION_DETECTED"><code class="docutils literal"><span class="pre">PSA_ERROR_CORRUPTION_DETECTED</span></code></a></dt>
+<dd>An unexpected condition which is not a storage corruption or a communication failure occurred. The cryptoprocessor might have been compromised.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
+<dd>The library has not been previously initialized by <a class="reference internal" href="../library/library.html#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_crypto_init()</span></code></a>. It is implementation-dependent whether a failure to initialize results in this error code.</dd>
+</dl>
+<p class="rubric">Description</p>
+<p>This function destroys a key from both volatile memory and, if applicable, non-volatile storage. Implementations must make a best effort to ensure that that the key material cannot be recovered.</p>
+<p>This function also erases any metadata such as policies and frees resources associated with the key.</p>
+<p>Destroying the key makes the key identifier invalid, and the key identifier must not be used again by the application.</p>
+<p>If a key is currently in use in a multi-part operation, then destroying the key will cause the multi-part operation to fail.</p>
+</div>
+<div class="section" id="psa_purge_key">
+<span id="c.psa_purge_key"></span><h3><code class="docutils literal"><span class="pre">psa_purge_key</span></code> (function)</h3>
+<p>Remove non-essential copies of key material from memory.</p>
+<pre class="literal-block">
+<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_purge_key" title="psa_purge_key">psa_purge_key</a>(<a class="reference internal" href="attributes.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> key);
+</pre>
+<p class="rubric">Parameters</p>
+<dl class="docutils">
+<dt> <code class="docutils literal"><span class="pre">key</span></code></dt>
+<dd>Identifier of the key to purge.</dd>
+</dl>
+<p class="rubric">Returns: <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t"><code class="docutils literal"><span class="pre">psa_status_t</span></code></a></p>
+<dl class="docutils">
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS"><code class="docutils literal"><span class="pre">PSA_SUCCESS</span></code></a></dt>
+<dd>The key material will have been removed from memory if it is not currently required.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_HANDLE" title="PSA_ERROR_INVALID_HANDLE"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_HANDLE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_COMMUNICATION_FAILURE" title="PSA_ERROR_COMMUNICATION_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_COMMUNICATION_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_STORAGE_FAILURE" title="PSA_ERROR_STORAGE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_STORAGE_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_DATA_CORRUPT" title="PSA_ERROR_DATA_CORRUPT"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_CORRUPT</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_DATA_INVALID" title="PSA_ERROR_DATA_INVALID"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_INVALID</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_CORRUPTION_DETECTED" title="PSA_ERROR_CORRUPTION_DETECTED"><code class="docutils literal"><span class="pre">PSA_ERROR_CORRUPTION_DETECTED</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
+<dd>The library has not been previously initialized by <a class="reference internal" href="../library/library.html#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_crypto_init()</span></code></a>. It is implementation-dependent whether a failure to initialize results in this error code.</dd>
+</dl>
+<p class="rubric">Description</p>
+<p>An implementation is permitted to make additional copies of key material
+For keys that have been created with the <a class="reference internal" href="usage.html#c.PSA_KEY_USAGE_CACHE" title="PSA_KEY_USAGE_CACHE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_CACHE</span></code></a> policy, an implementation is permitted to make additional copies of the key material that are not in storage and not for the purpose of ongoing operations.</p>
+<p>This function will remove these extra copies of the key material from memory.</p>
+<p>This function is not required to remove key material from memory in any of the following situations:</p>
+<ul class="simple">
+<li>The key is currently in use in a cryptographic operation.</li>
+<li>The key is volatile.</li>
+</ul>
+<p>See also <em><a class="reference internal" href="../../overview/implementation.html#key-material"><span class="std std-ref">Managing key material</span></a></em>.</p>
+</div>
+</div>
+<div class="section" id="key-export">
+<span id="id3"></span><h2>Key export</h2>
+<div class="section" id="psa_export_key">
+<span id="c.psa_export_key"></span><h3><code class="docutils literal"><span class="pre">psa_export_key</span></code> (function)</h3>
+<p>Export a key in binary format.</p>
+<pre class="literal-block">
+<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_export_key" title="psa_export_key">psa_export_key</a>(<a class="reference internal" href="attributes.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> key,
+                            uint8_t * data,
+                            size_t data_size,
+                            size_t * data_length);
+</pre>
+<p class="rubric">Parameters</p>
+<dl class="docutils">
+<dt> <code class="docutils literal"><span class="pre">key</span></code></dt>
+<dd>Identifier of the key to export.
+It must allow the usage <a class="reference internal" href="usage.html#c.PSA_KEY_USAGE_EXPORT" title="PSA_KEY_USAGE_EXPORT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_EXPORT</span></code></a>, unless it is a public key.</dd>
+<dt> <code class="docutils literal"><span class="pre">data</span></code></dt>
+<dd>Buffer where the key data is to be written.</dd>
+<dt> <code class="docutils literal"><span class="pre">data_size</span></code></dt>
+<dd><p class="first">Size of the <code class="docutils literal"><span class="pre">data</span></code> buffer in bytes.
+This must be appropriate for the key:</p>
+<ul class="last simple">
+<li>The required output size is <a class="reference internal" href="#c.PSA_EXPORT_KEY_OUTPUT_SIZE" title="PSA_EXPORT_KEY_OUTPUT_SIZE"><code class="docutils literal"><span class="pre">PSA_EXPORT_KEY_OUTPUT_SIZE</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">type</span></code><code class="docutils literal"><span class="pre">,</span> </code><code class="docutils literal"><span class="pre">bits</span></code><code class="docutils literal"><span class="pre">)</span></code> where <code class="docutils literal"><span class="pre">type</span></code> is the key type and <code class="docutils literal"><span class="pre">bits</span></code> is the key size in bits.</li>
+<li>For asymmetric keys, <a class="reference internal" href="#c.PSA_EXPORT_KEY_PAIR_MAX_SIZE" title="PSA_EXPORT_KEY_PAIR_MAX_SIZE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_EXPORT_KEY_PAIR_MAX_SIZE</span></code></a> evaluates to the maximum output size of any supported public key or key pair.</li>
+</ul>
+</dd>
+<dt> <code class="docutils literal"><span class="pre">data_length</span></code></dt>
+<dd>On success, the number of bytes that make up the key data.</dd>
+</dl>
+<p class="rubric">Returns: <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t"><code class="docutils literal"><span class="pre">psa_status_t</span></code></a></p>
+<dl class="docutils">
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS"><code class="docutils literal"><span class="pre">PSA_SUCCESS</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_HANDLE" title="PSA_ERROR_INVALID_HANDLE"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_HANDLE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_PERMITTED" title="PSA_ERROR_NOT_PERMITTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_PERMITTED</span></code></a></dt>
+<dd>The key does not have the <a class="reference internal" href="usage.html#c.PSA_KEY_USAGE_EXPORT" title="PSA_KEY_USAGE_EXPORT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_EXPORT</span></code></a> flag.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_SUPPORTED" title="PSA_ERROR_NOT_SUPPORTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_SUPPORTED</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BUFFER_TOO_SMALL" title="PSA_ERROR_BUFFER_TOO_SMALL"><code class="docutils literal"><span class="pre">PSA_ERROR_BUFFER_TOO_SMALL</span></code></a></dt>
+<dd>The size of the <code class="docutils literal"><span class="pre">data</span></code> buffer is too small.
+<a class="reference internal" href="#c.PSA_EXPORT_KEY_OUTPUT_SIZE" title="PSA_EXPORT_KEY_OUTPUT_SIZE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_EXPORT_KEY_OUTPUT_SIZE()</span></code></a> or <a class="reference internal" href="#c.PSA_EXPORT_KEY_PAIR_MAX_SIZE" title="PSA_EXPORT_KEY_PAIR_MAX_SIZE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_EXPORT_KEY_PAIR_MAX_SIZE</span></code></a> can be used to determine the required buffer size.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_COMMUNICATION_FAILURE" title="PSA_ERROR_COMMUNICATION_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_COMMUNICATION_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_HARDWARE_FAILURE" title="PSA_ERROR_HARDWARE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_HARDWARE_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_CORRUPTION_DETECTED" title="PSA_ERROR_CORRUPTION_DETECTED"><code class="docutils literal"><span class="pre">PSA_ERROR_CORRUPTION_DETECTED</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_STORAGE_FAILURE" title="PSA_ERROR_STORAGE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_STORAGE_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_DATA_CORRUPT" title="PSA_ERROR_DATA_CORRUPT"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_CORRUPT</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_DATA_INVALID" title="PSA_ERROR_DATA_INVALID"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_INVALID</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INSUFFICIENT_MEMORY" title="PSA_ERROR_INSUFFICIENT_MEMORY"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_MEMORY</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
+<dd>The library has not been previously initialized by <a class="reference internal" href="../library/library.html#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_crypto_init()</span></code></a>. It is implementation-dependent whether a failure to initialize results in this error code.</dd>
+</dl>
+<p class="rubric">Description</p>
+<p>The output of this function can be passed to <a class="reference internal" href="#c.psa_import_key" title="psa_import_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_import_key()</span></code></a> to create an equivalent object.</p>
+<p>If the implementation of <a class="reference internal" href="#c.psa_import_key" title="psa_import_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_import_key()</span></code></a> supports other formats beyond the format specified here, the output from <a class="reference internal" href="#c.psa_export_key" title="psa_export_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_export_key()</span></code></a> must use the representation specified here, not the original representation.</p>
+<p>For standard key types, the output format is as follows:</p>
+<ul class="simple">
+<li>For symmetric keys, including MAC keys, the format is the raw bytes of the key.</li>
+<li>For DES, the key data consists of 8 bytes. The parity bits must be correct.</li>
+<li>For Triple-DES, the format is the concatenation of the two or three DES keys.</li>
+<li>For RSA key pairs, with key type <a class="reference internal" href="types.html#c.PSA_KEY_TYPE_RSA_KEY_PAIR" title="PSA_KEY_TYPE_RSA_KEY_PAIR"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_RSA_KEY_PAIR</span></code></a>, the format is the non-encrypted DER encoding of the representation defined by PKCS#1 in <a class="reference external" href="https://tools.ietf.org/html/rfc8017.html">RFC 8017</a> as <code class="docutils literal"><span class="pre">RSAPrivateKey</span></code>, version <code class="docutils literal"><span class="pre">0</span></code>.</li>
+<li>For elliptic curve key pairs, with key types for which <a class="reference internal" href="types.html#c.PSA_KEY_TYPE_IS_ECC_KEY_PAIR" title="PSA_KEY_TYPE_IS_ECC_KEY_PAIR"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_IS_ECC_KEY_PAIR()</span></code></a> is true, the format is a representation of the private value.<ul>
+<li>For Weierstrass curve families <code class="docutils literal"><span class="pre">PSA_ECC_FAMILY_SECT_XX</span></code>, <code class="docutils literal"><span class="pre">PSA_ECC_FAMILY_SECP_XX</span></code>, <a class="reference internal" href="types.html#c.PSA_ECC_FAMILY_FRP" title="PSA_ECC_FAMILY_FRP"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ECC_FAMILY_FRP</span></code></a> and <a class="reference internal" href="types.html#c.PSA_ECC_FAMILY_BRAINPOOL_P_R1" title="PSA_ECC_FAMILY_BRAINPOOL_P_R1"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ECC_FAMILY_BRAINPOOL_P_R1</span></code></a>, the content of the <code class="docutils literal"><span class="pre">privateKey</span></code> field of the <code class="docutils literal"><span class="pre">ECPrivateKey</span></code> format defined by <a class="reference external" href="https://tools.ietf.org/html/rfc5915.html">RFC 5915</a>. This is a <code class="docutils literal"><span class="pre">ceiling(m/8)</span></code>-byte string in big-endian order where <code class="docutils literal"><span class="pre">m</span></code> is the key size in bits.</li>
+<li>For curve family <a class="reference internal" href="types.html#c.PSA_ECC_FAMILY_MONTGOMERY" title="PSA_ECC_FAMILY_MONTGOMERY"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ECC_FAMILY_MONTGOMERY</span></code></a>, the scalar value of the ‘private key’ in little-endian order as defined by <a class="reference external" href="https://tools.ietf.org/html/rfc7748.html#section-6">RFC 7748 §6</a>. This is a <code class="docutils literal"><span class="pre">ceiling(m/8)</span></code>-byte string where <code class="docutils literal"><span class="pre">m</span></code> is the key size in bits. This is 32 bytes for Curve25519, and 56 bytes for Curve448.</li>
+</ul>
+</li>
+<li>For Diffie-Hellman key exchange key pairs, with key types for which <a class="reference internal" href="types.html#c.PSA_KEY_TYPE_IS_DH_KEY_PAIR" title="PSA_KEY_TYPE_IS_DH_KEY_PAIR"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_IS_DH_KEY_PAIR()</span></code></a> is true, the format is the representation of the private key <code class="docutils literal"><span class="pre">x</span></code> as a big-endian byte string. The length of the byte string is the private key size in bytes, and leading zeroes are not stripped.</li>
+<li>For public keys, with key types for which <a class="reference internal" href="types.html#c.PSA_KEY_TYPE_IS_PUBLIC_KEY" title="PSA_KEY_TYPE_IS_PUBLIC_KEY"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_IS_PUBLIC_KEY()</span></code></a> is true, the format is the same as for <a class="reference internal" href="#c.psa_export_public_key" title="psa_export_public_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_export_public_key()</span></code></a>.</li>
+</ul>
+<p>The policy on the key must have the usage flag <a class="reference internal" href="usage.html#c.PSA_KEY_USAGE_EXPORT" title="PSA_KEY_USAGE_EXPORT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_EXPORT</span></code></a> set.</p>
+</div>
+<div class="section" id="psa_export_public_key">
+<span id="c.psa_export_public_key"></span><h3><code class="docutils literal"><span class="pre">psa_export_public_key</span></code> (function)</h3>
+<p>Export a public key or the public part of a key pair in binary format.</p>
+<pre class="literal-block">
+<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_export_public_key" title="psa_export_public_key">psa_export_public_key</a>(<a class="reference internal" href="attributes.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> key,
+                                   uint8_t * data,
+                                   size_t data_size,
+                                   size_t * data_length);
+</pre>
+<p class="rubric">Parameters</p>
+<dl class="docutils">
+<dt> <code class="docutils literal"><span class="pre">key</span></code></dt>
+<dd>Identifier of the key to export.</dd>
+<dt> <code class="docutils literal"><span class="pre">data</span></code></dt>
+<dd>Buffer where the key data is to be written.</dd>
+<dt> <code class="docutils literal"><span class="pre">data_size</span></code></dt>
+<dd><p class="first">Size of the <code class="docutils literal"><span class="pre">data</span></code> buffer in bytes.
+This must be appropriate for the key:</p>
+<ul class="last simple">
+<li>The required output size is <a class="reference internal" href="#c.PSA_EXPORT_PUBLIC_KEY_OUTPUT_SIZE" title="PSA_EXPORT_PUBLIC_KEY_OUTPUT_SIZE"><code class="docutils literal"><span class="pre">PSA_EXPORT_PUBLIC_KEY_OUTPUT_SIZE</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">type</span></code><code class="docutils literal"><span class="pre">,</span> </code><code class="docutils literal"><span class="pre">bits</span></code><code class="docutils literal"><span class="pre">)</span></code> where <code class="docutils literal"><span class="pre">type</span></code> is the key type and <code class="docutils literal"><span class="pre">bits</span></code> is the key size in bits.</li>
+<li><a class="reference internal" href="#c.PSA_EXPORT_PUBLIC_KEY_MAX_SIZE" title="PSA_EXPORT_PUBLIC_KEY_MAX_SIZE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_EXPORT_PUBLIC_KEY_MAX_SIZE</span></code></a> evaluates to the maximum output size of any supported public key or public part of a key pair.</li>
+</ul>
+</dd>
+<dt> <code class="docutils literal"><span class="pre">data_length</span></code></dt>
+<dd>On success, the number of bytes that make up the key data.</dd>
+</dl>
+<p class="rubric">Returns: <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t"><code class="docutils literal"><span class="pre">psa_status_t</span></code></a></p>
+<dl class="docutils">
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS"><code class="docutils literal"><span class="pre">PSA_SUCCESS</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_HANDLE" title="PSA_ERROR_INVALID_HANDLE"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_HANDLE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
+<dd>The key is neither a public key nor a key pair.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_SUPPORTED" title="PSA_ERROR_NOT_SUPPORTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_SUPPORTED</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BUFFER_TOO_SMALL" title="PSA_ERROR_BUFFER_TOO_SMALL"><code class="docutils literal"><span class="pre">PSA_ERROR_BUFFER_TOO_SMALL</span></code></a></dt>
+<dd>The size of the <code class="docutils literal"><span class="pre">data</span></code> buffer is too small.
+<a class="reference internal" href="#c.PSA_EXPORT_PUBLIC_KEY_OUTPUT_SIZE" title="PSA_EXPORT_PUBLIC_KEY_OUTPUT_SIZE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_EXPORT_PUBLIC_KEY_OUTPUT_SIZE()</span></code></a> or <a class="reference internal" href="#c.PSA_EXPORT_PUBLIC_KEY_MAX_SIZE" title="PSA_EXPORT_PUBLIC_KEY_MAX_SIZE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_EXPORT_PUBLIC_KEY_MAX_SIZE</span></code></a> can be used to determine the required buffer size.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_COMMUNICATION_FAILURE" title="PSA_ERROR_COMMUNICATION_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_COMMUNICATION_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_HARDWARE_FAILURE" title="PSA_ERROR_HARDWARE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_HARDWARE_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_CORRUPTION_DETECTED" title="PSA_ERROR_CORRUPTION_DETECTED"><code class="docutils literal"><span class="pre">PSA_ERROR_CORRUPTION_DETECTED</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_STORAGE_FAILURE" title="PSA_ERROR_STORAGE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_STORAGE_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_DATA_CORRUPT" title="PSA_ERROR_DATA_CORRUPT"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_CORRUPT</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_DATA_INVALID" title="PSA_ERROR_DATA_INVALID"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_INVALID</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INSUFFICIENT_MEMORY" title="PSA_ERROR_INSUFFICIENT_MEMORY"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_MEMORY</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
+<dd>The library has not been previously initialized by <a class="reference internal" href="../library/library.html#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_crypto_init()</span></code></a>. It is implementation-dependent whether a failure to initialize results in this error code.</dd>
+</dl>
+<p class="rubric">Description</p>
+<p>The output of this function can be passed to <a class="reference internal" href="#c.psa_import_key" title="psa_import_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_import_key()</span></code></a> to create an object that is equivalent to the public key.</p>
+<p>If the implementation of <a class="reference internal" href="#c.psa_import_key" title="psa_import_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_import_key()</span></code></a> supports other formats beyond the format specified here, the output from <a class="reference internal" href="#c.psa_export_public_key" title="psa_export_public_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_export_public_key()</span></code></a> must use the representation specified here, not the original representation.</p>
+<p>For standard key types, the output format is as follows:</p>
+<ul class="simple">
+<li>For RSA public keys, with key type <a class="reference internal" href="types.html#c.PSA_KEY_TYPE_RSA_PUBLIC_KEY" title="PSA_KEY_TYPE_RSA_PUBLIC_KEY"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_RSA_PUBLIC_KEY</span></code></a>, the DER encoding of the representation defined by <a class="reference external" href="https://tools.ietf.org/html/rfc3279.html#section-2.3.1">RFC 3279 §2.3.1</a> as <code class="docutils literal"><span class="pre">RSAPublicKey</span></code>.</li>
+<li>For elliptic curve key pairs, with key types for which <a class="reference internal" href="types.html#c.PSA_KEY_TYPE_IS_ECC_PUBLIC_KEY" title="PSA_KEY_TYPE_IS_ECC_PUBLIC_KEY"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_IS_ECC_PUBLIC_KEY()</span></code></a> is true, the format depends on the key family:<ul>
+<li>For Weierstrass curve families <code class="docutils literal"><span class="pre">PSA_ECC_FAMILY_SECT_XX</span></code>, <code class="docutils literal"><span class="pre">PSA_ECC_FAMILY_SECP_XX</span></code>, <a class="reference internal" href="types.html#c.PSA_ECC_FAMILY_FRP" title="PSA_ECC_FAMILY_FRP"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ECC_FAMILY_FRP</span></code></a> and <a class="reference internal" href="types.html#c.PSA_ECC_FAMILY_BRAINPOOL_P_R1" title="PSA_ECC_FAMILY_BRAINPOOL_P_R1"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ECC_FAMILY_BRAINPOOL_P_R1</span></code></a>, the uncompressed representation defined by <em>Standards for Efficient Cryptography</em>, <a class="reference external" href="https://www.secg.org/sec1-v2.pdf"><em>SEC 1: Elliptic Curve Cryptography</em></a> §2.3.3 as the content of an <code class="docutils literal"><span class="pre">ECPoint</span></code>. If <code class="docutils literal"><span class="pre">m</span></code> is the bit size associated with the curve, i.e. the bit size of <code class="docutils literal"><span class="pre">q</span></code> for a curve over <code class="docutils literal"><span class="pre">F_q</span></code>. The representation consists of:<ul>
+<li>The byte <code class="docutils literal"><span class="pre">0x04</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">x_P</span></code> as a <code class="docutils literal"><span class="pre">ceiling(m/8)</span></code>-byte string, big-endian;</li>
+<li><code class="docutils literal"><span class="pre">y_P</span></code> as a <code class="docutils literal"><span class="pre">ceiling(m/8)</span></code>-byte string, big-endian.</li>
+</ul>
+</li>
+<li>For curve family <a class="reference internal" href="types.html#c.PSA_ECC_FAMILY_MONTGOMERY" title="PSA_ECC_FAMILY_MONTGOMERY"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ECC_FAMILY_MONTGOMERY</span></code></a>, the scalar value of the ‘public key’ in little-endian order as defined by <a class="reference external" href="https://tools.ietf.org/html/rfc7748.html#section-6">RFC 7748 §6</a>. This is a <code class="docutils literal"><span class="pre">ceiling(m/8)</span></code>-byte string where <code class="docutils literal"><span class="pre">m</span></code> is the key size in bits.<ul>
+<li>This is 32 bytes for Curve25519, computed as <code class="docutils literal"><span class="pre">X25519(private_key,</span> <span class="pre">9)</span></code>.</li>
+<li>This is 56 bytes for Curve448, computed as <code class="docutils literal"><span class="pre">X448(private_key,</span> <span class="pre">5)</span></code>.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>For Diffie-Hellman key exchange public keys, with key types for which <a class="reference internal" href="types.html#c.PSA_KEY_TYPE_IS_DH_PUBLIC_KEY" title="PSA_KEY_TYPE_IS_DH_PUBLIC_KEY"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_IS_DH_PUBLIC_KEY</span></code></a> is true, the format is the representation of the public key <code class="docutils literal"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">g^x</span> <span class="pre">mod</span> <span class="pre">p</span></code> as a big-endian byte string. The length of the byte string is the length of the base prime <code class="docutils literal"><span class="pre">p</span></code> in bytes.</li>
+</ul>
+<p>Exporting a public key object or the public part of a key pair is always permitted, regardless of the key’s usage flags.</p>
+</div>
+<div class="section" id="PSA_EXPORT_KEY_OUTPUT_SIZE">
+<span id="c.PSA_EXPORT_KEY_OUTPUT_SIZE"></span><h3><code class="docutils literal"><span class="pre">PSA_EXPORT_KEY_OUTPUT_SIZE</span></code> (macro)</h3>
+<p>Sufficient output buffer size for <a class="reference internal" href="#c.psa_export_key" title="psa_export_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_export_key()</span></code></a>.</p>
+<pre class="literal-block">
+#define <a class="reference internal" href="#c.PSA_EXPORT_KEY_OUTPUT_SIZE" title="PSA_EXPORT_KEY_OUTPUT_SIZE">PSA_EXPORT_KEY_OUTPUT_SIZE</a>(key_type, key_bits) \
+    <em><a class="reference internal" href="../../overview/implementation.html#implementation-defined-value"><span class="std std-ref">/* implementation-defined value */</span></a></em>
+</pre>
+<p class="rubric">Parameters</p>
+<dl class="docutils">
+<dt> <code class="docutils literal"><span class="pre">key_type</span></code></dt>
+<dd>A supported key type.</dd>
+<dt> <code class="docutils literal"><span class="pre">key_bits</span></code></dt>
+<dd>The size of the key in bits.</dd>
+</dl>
+<p class="rubric">Returns</p>
+<p>If the parameters are valid and supported, return a buffer size in bytes that guarantees that <a class="reference internal" href="#c.psa_export_key" title="psa_export_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_export_key()</span></code></a> or <a class="reference internal" href="#c.psa_export_public_key" title="psa_export_public_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_export_public_key()</span></code></a> will not fail with <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BUFFER_TOO_SMALL" title="PSA_ERROR_BUFFER_TOO_SMALL"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_BUFFER_TOO_SMALL</span></code></a>. If the parameters are a valid combination that is not supported by the implementation, this macro must return either a sensible size or <code class="docutils literal"><span class="pre">0</span></code>. If the parameters are not valid, the return value is unspecified.</p>
+<p class="rubric">Description</p>
+<p>This macro returns a compile-time constant if its arguments are compile-time constants.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This function can evaluate its arguments multiple times or zero times. Providing arguments that have side effects will result in implementation-specific behavior, and is non-portable.</p>
+</div>
+<p>The following code illustrates how to allocate enough memory to export a key by querying the key type and size at runtime.</p>
+<pre class="literal-block">
+<a class="reference internal" href="attributes.html#c.psa_key_attributes_t" title="psa_key_attributes_t">psa_key_attributes_t</a> attributes = <a class="reference internal" href="attributes.html#c.PSA_KEY_ATTRIBUTES_INIT" title="PSA_KEY_ATTRIBUTES_INIT">PSA_KEY_ATTRIBUTES_INIT</a>;
+<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> status;
+status = <a class="reference internal" href="attributes.html#c.psa_get_key_attributes" title="psa_get_key_attributes">psa_get_key_attributes</a>(key, &amp;attributes);
+if (status != <a class="reference internal" href="../library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS">PSA_SUCCESS</a>)
+    handle_error(...);
+<a class="reference internal" href="attributes.html#c.psa_key_type_t" title="psa_key_type_t">psa_key_type_t</a> key_type = <a class="reference internal" href="types.html#c.psa_get_key_type" title="psa_get_key_type">psa_get_key_type</a>(&amp;attributes);
+size_t key_bits = <a class="reference internal" href="types.html#c.psa_get_key_bits" title="psa_get_key_bits">psa_get_key_bits</a>(&amp;attributes);
+size_t buffer_size = <a class="reference internal" href="#c.PSA_EXPORT_KEY_OUTPUT_SIZE" title="PSA_EXPORT_KEY_OUTPUT_SIZE">PSA_EXPORT_KEY_OUTPUT_SIZE</a>(key_type, key_bits);
+<a class="reference internal" href="attributes.html#c.psa_reset_key_attributes" title="psa_reset_key_attributes">psa_reset_key_attributes</a>(&amp;attributes);
+uint8_t *buffer = malloc(buffer_size);
+if (buffer == NULL)
+    handle_error(...);
+size_t buffer_length;
+status = <a class="reference internal" href="#c.psa_export_key" title="psa_export_key">psa_export_key</a>(key, buffer, buffer_size, &amp;buffer_length);
+if (status != <a class="reference internal" href="../library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS">PSA_SUCCESS</a>)
+    handle_error(...);
+</pre>
+<p>See also <a class="reference internal" href="#c.PSA_EXPORT_KEY_PAIR_MAX_SIZE" title="PSA_EXPORT_KEY_PAIR_MAX_SIZE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_EXPORT_KEY_PAIR_MAX_SIZE</span></code></a> and <a class="reference internal" href="#c.PSA_EXPORT_PUBLIC_KEY_MAX_SIZE" title="PSA_EXPORT_PUBLIC_KEY_MAX_SIZE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_EXPORT_PUBLIC_KEY_MAX_SIZE</span></code></a>.</p>
+</div>
+<div class="section" id="PSA_EXPORT_PUBLIC_KEY_OUTPUT_SIZE">
+<span id="c.PSA_EXPORT_PUBLIC_KEY_OUTPUT_SIZE"></span><h3><code class="docutils literal"><span class="pre">PSA_EXPORT_PUBLIC_KEY_OUTPUT_SIZE</span></code> (macro)</h3>
+<p>Sufficient output buffer size for <a class="reference internal" href="#c.psa_export_public_key" title="psa_export_public_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_export_public_key()</span></code></a>.</p>
+<pre class="literal-block">
+#define <a class="reference internal" href="#c.PSA_EXPORT_PUBLIC_KEY_OUTPUT_SIZE" title="PSA_EXPORT_PUBLIC_KEY_OUTPUT_SIZE">PSA_EXPORT_PUBLIC_KEY_OUTPUT_SIZE</a>(key_type, key_bits) \
+    <em><a class="reference internal" href="../../overview/implementation.html#implementation-defined-value"><span class="std std-ref">/* implementation-defined value */</span></a></em>
+</pre>
+<p class="rubric">Parameters</p>
+<dl class="docutils">
+<dt> <code class="docutils literal"><span class="pre">key_type</span></code></dt>
+<dd>A public key or key pair key type.</dd>
+<dt> <code class="docutils literal"><span class="pre">key_bits</span></code></dt>
+<dd>The size of the key in bits.</dd>
+</dl>
+<p class="rubric">Returns</p>
+<p>If the parameters are valid and supported, return a buffer size in bytes that guarantees that <a class="reference internal" href="#c.psa_export_public_key" title="psa_export_public_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_export_public_key()</span></code></a> will not fail with <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BUFFER_TOO_SMALL" title="PSA_ERROR_BUFFER_TOO_SMALL"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_BUFFER_TOO_SMALL</span></code></a>. If the parameters are a valid combination that is not supported by the implementation, this macro must return either a sensible size or <code class="docutils literal"><span class="pre">0</span></code>. If the parameters are not valid, the return value is unspecified.</p>
+<p>If the parameters are valid and supported, it is recommended that this macro returns the same result as <a class="reference internal" href="#c.PSA_EXPORT_KEY_OUTPUT_SIZE" title="PSA_EXPORT_KEY_OUTPUT_SIZE"><code class="docutils literal"><span class="pre">PSA_EXPORT_KEY_OUTPUT_SIZE</span></code></a><code class="docutils literal"><span class="pre">(</span></code><a class="reference internal" href="types.html#c.PSA_KEY_TYPE_PUBLIC_KEY_OF_KEY_PAIR" title="PSA_KEY_TYPE_PUBLIC_KEY_OF_KEY_PAIR"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_PUBLIC_KEY_OF_KEY_PAIR</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">key_type</span></code><code class="docutils literal"><span class="pre">),</span> </code><code class="docutils literal"><span class="pre">key_bits</span></code><code class="docutils literal"><span class="pre">)</span></code>.</p>
+<p class="rubric">Description</p>
+<p>This macro returns a compile-time constant if its arguments are compile-time constants.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This function can evaluate its arguments multiple times or zero times. Providing arguments that have side effects will result in implementation-specific behavior, and is non-portable.</p>
+</div>
+<p>The following code illustrates how to allocate enough memory to export a public key by querying the key type and size at runtime.</p>
+<pre class="literal-block">
+<a class="reference internal" href="attributes.html#c.psa_key_attributes_t" title="psa_key_attributes_t">psa_key_attributes_t</a> attributes = <a class="reference internal" href="attributes.html#c.PSA_KEY_ATTRIBUTES_INIT" title="PSA_KEY_ATTRIBUTES_INIT">PSA_KEY_ATTRIBUTES_INIT</a>;
+<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> status;
+status = <a class="reference internal" href="attributes.html#c.psa_get_key_attributes" title="psa_get_key_attributes">psa_get_key_attributes</a>(key, &amp;attributes);
+if (status != <a class="reference internal" href="../library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS">PSA_SUCCESS</a>)
+    handle_error(...);
+<a class="reference internal" href="attributes.html#c.psa_key_type_t" title="psa_key_type_t">psa_key_type_t</a> key_type = <a class="reference internal" href="types.html#c.psa_get_key_type" title="psa_get_key_type">psa_get_key_type</a>(&amp;attributes);
+size_t key_bits = <a class="reference internal" href="types.html#c.psa_get_key_bits" title="psa_get_key_bits">psa_get_key_bits</a>(&amp;attributes);
+size_t buffer_size = <a class="reference internal" href="#c.PSA_EXPORT_PUBLIC_KEY_OUTPUT_SIZE" title="PSA_EXPORT_PUBLIC_KEY_OUTPUT_SIZE">PSA_EXPORT_PUBLIC_KEY_OUTPUT_SIZE</a>(key_type, key_bits);
+<a class="reference internal" href="attributes.html#c.psa_reset_key_attributes" title="psa_reset_key_attributes">psa_reset_key_attributes</a>(&amp;attributes);
+uint8_t *buffer = malloc(buffer_size);
+if (buffer == NULL)
+    handle_error(...);
+size_t buffer_length;
+status = <a class="reference internal" href="#c.psa_export_public_key" title="psa_export_public_key">psa_export_public_key</a>(key, buffer, buffer_size, &amp;buffer_length);
+if (status != <a class="reference internal" href="../library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS">PSA_SUCCESS</a>)
+    handle_error(...);
+</pre>
+<p>See also <a class="reference internal" href="#c.PSA_EXPORT_PUBLIC_KEY_MAX_SIZE" title="PSA_EXPORT_PUBLIC_KEY_MAX_SIZE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_EXPORT_PUBLIC_KEY_MAX_SIZE</span></code></a>.</p>
+</div>
+<div class="section" id="PSA_EXPORT_KEY_PAIR_MAX_SIZE">
+<span id="c.PSA_EXPORT_KEY_PAIR_MAX_SIZE"></span><h3><code class="docutils literal"><span class="pre">PSA_EXPORT_KEY_PAIR_MAX_SIZE</span></code> (macro)</h3>
+<p>Sufficient buffer size for exporting any asymmetric key pair.</p>
+<pre class="literal-block">
+#define <a class="reference internal" href="#c.PSA_EXPORT_KEY_PAIR_MAX_SIZE" title="PSA_EXPORT_KEY_PAIR_MAX_SIZE">PSA_EXPORT_KEY_PAIR_MAX_SIZE</a> <em><a class="reference internal" href="../../overview/implementation.html#implementation-defined-value"><span class="std std-ref">/* implementation-defined value */</span></a></em>
+</pre>
+<p>This macro must expand to a compile-time constant integer.
+This value must be a sufficient buffer size when calling <a class="reference internal" href="#c.psa_export_key" title="psa_export_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_export_key()</span></code></a> to export any asymmetric key pair that is supported by the implementation, regardless of the exact key type and key size.</p>
+<p>See also <a class="reference internal" href="#c.PSA_EXPORT_KEY_OUTPUT_SIZE" title="PSA_EXPORT_KEY_OUTPUT_SIZE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_EXPORT_KEY_OUTPUT_SIZE()</span></code></a>.</p>
+</div>
+<div class="section" id="PSA_EXPORT_PUBLIC_KEY_MAX_SIZE">
+<span id="c.PSA_EXPORT_PUBLIC_KEY_MAX_SIZE"></span><h3><code class="docutils literal"><span class="pre">PSA_EXPORT_PUBLIC_KEY_MAX_SIZE</span></code> (macro)</h3>
+<p>Sufficient buffer size for exporting any asymmetric public key.</p>
+<pre class="literal-block">
+#define <a class="reference internal" href="#c.PSA_EXPORT_PUBLIC_KEY_MAX_SIZE" title="PSA_EXPORT_PUBLIC_KEY_MAX_SIZE">PSA_EXPORT_PUBLIC_KEY_MAX_SIZE</a> <em><a class="reference internal" href="../../overview/implementation.html#implementation-defined-value"><span class="std std-ref">/* implementation-defined value */</span></a></em>
+</pre>
+<p>This macro must expand to a compile-time constant integer.
+This value must be a sufficient buffer size when calling <a class="reference internal" href="#c.psa_export_key" title="psa_export_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_export_key()</span></code></a> or <a class="reference internal" href="#c.psa_export_public_key" title="psa_export_public_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_export_public_key()</span></code></a> to export any asymmetric public key that is supported by the implementation, regardless of the exact key type and key size.</p>
+<p>See also <a class="reference internal" href="#c.PSA_EXPORT_PUBLIC_KEY_OUTPUT_SIZE" title="PSA_EXPORT_PUBLIC_KEY_OUTPUT_SIZE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_EXPORT_PUBLIC_KEY_OUTPUT_SIZE()</span></code></a>.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Key management functions</a><ul>
+<li><a class="reference internal" href="#key-creation">Key creation</a><ul>
+<li><a class="reference internal" href="#psa_import_key"><code class="docutils literal"><span class="pre">psa_import_key</span></code> (function)</a></li>
+<li><a class="reference internal" href="#psa_generate_key"><code class="docutils literal"><span class="pre">psa_generate_key</span></code> (function)</a></li>
+<li><a class="reference internal" href="#psa_copy_key"><code class="docutils literal"><span class="pre">psa_copy_key</span></code> (function)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#key-destruction">Key destruction</a><ul>
+<li><a class="reference internal" href="#psa_destroy_key"><code class="docutils literal"><span class="pre">psa_destroy_key</span></code> (function)</a></li>
+<li><a class="reference internal" href="#psa_purge_key"><code class="docutils literal"><span class="pre">psa_purge_key</span></code> (function)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#key-export">Key export</a><ul>
+<li><a class="reference internal" href="#psa_export_key"><code class="docutils literal"><span class="pre">psa_export_key</span></code> (function)</a></li>
+<li><a class="reference internal" href="#psa_export_public_key"><code class="docutils literal"><span class="pre">psa_export_public_key</span></code> (function)</a></li>
+<li><a class="reference internal" href="#PSA_EXPORT_KEY_OUTPUT_SIZE"><code class="docutils literal"><span class="pre">PSA_EXPORT_KEY_OUTPUT_SIZE</span></code> (macro)</a></li>
+<li><a class="reference internal" href="#PSA_EXPORT_PUBLIC_KEY_OUTPUT_SIZE"><code class="docutils literal"><span class="pre">PSA_EXPORT_PUBLIC_KEY_OUTPUT_SIZE</span></code> (macro)</a></li>
+<li><a class="reference internal" href="#PSA_EXPORT_KEY_PAIR_MAX_SIZE"><code class="docutils literal"><span class="pre">PSA_EXPORT_KEY_PAIR_MAX_SIZE</span></code> (macro)</a></li>
+<li><a class="reference internal" href="#PSA_EXPORT_PUBLIC_KEY_MAX_SIZE"><code class="docutils literal"><span class="pre">PSA_EXPORT_PUBLIC_KEY_MAX_SIZE</span></code> (macro)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Key management reference</a><ul>
+      <li>Previous: <a href="algorithms.html" title="previous chapter">Algorithms</a></li>
+      <li>Next: <a href="../ops/index.html" title="next chapter">Cryptographic operation reference</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/api/keys/management.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy; 2019-2020, Arm Limited or its affiliates. All rights reserved.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../../_sources/api/keys/management.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

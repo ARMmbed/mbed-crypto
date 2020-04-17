@@ -1,0 +1,220 @@
+.. _pke:
+
+Asymmetric encryption
+=====================
+
+.. _asymmetric-encryption-algorithms:
+
+Asymmetric encryption algorithms
+--------------------------------
+
+.. macro:: PSA_ALG_RSA_PKCS1V15_CRYPT
+    :definition: ((psa_algorithm_t)0x07000200)
+
+    .. summary::
+        RSA PKCS#1 v1.5 encryption.
+
+.. macro:: PSA_ALG_RSA_OAEP
+    :definition: /* specification-defined value */
+
+    .. summary::
+        RSA OAEP encryption.
+
+    .. param:: hash_alg
+        The hash algorithm (``PSA_ALG_XXX`` value such that :code:`PSA_ALG_IS_HASH(hash_alg)` is true) to use for MGF1.
+
+    .. return::
+        The corresponding RSA OAEP signature algorithm.
+
+        Unspecified if ``hash_alg`` is not a supported hash algorithm.
+
+    This is the encryption scheme defined by :RFC:`8017` (PKCS#1: RSA Cryptography Specifications) under the name RSAES-OAEP, with the message generation function MGF1.
+
+Asymmetric encryption functions
+-------------------------------
+
+.. function:: psa_asymmetric_encrypt
+
+    .. summary::
+        Encrypt a short message with a public key.
+
+    .. param:: psa_key_id_t key
+        Identifer of the key to use for the operation. It must be a public key or an asymmetric key pair.
+        It must allow the usage `PSA_KEY_USAGE_ENCRYPT`.
+    .. param:: psa_algorithm_t alg
+        An asymmetric encryption algorithm that is compatible with the type of ``key``.
+    .. param:: const uint8_t * input
+        The message to encrypt.
+    .. param:: size_t input_length
+        Size of the ``input`` buffer in bytes.
+    .. param:: const uint8_t * salt
+        A salt or label, if supported by the encryption algorithm. If the algorithm does not support a salt, pass ``NULL``. If the algorithm supports an optional salt, pass ``NULL`` to indicate that there is no salt.
+    .. param:: size_t salt_length
+        Size of the ``salt`` buffer in bytes. If ``salt`` is ``NULL``, pass ``0``.
+    .. param:: uint8_t * output
+        Buffer where the encrypted message is to be written.
+    .. param:: size_t output_size
+        Size of the ``output`` buffer in bytes.
+        This must be appropriate for the selected algorithm and key:
+
+        * The required output size is :code:`PSA_ASYMMETRIC_ENCRYPT_OUTPUT_SIZE(key_type, key_bits, alg)` where ``key_type`` and ``key_bits`` are the type and bit-size respectively of ``key``.
+        * `PSA_ASYMMETRIC_ENCRYPT_OUTPUT_MAX_SIZE` evaluates to the maximum output size of any supported asymmetric encryption.
+
+    .. param:: size_t * output_length
+        On success, the number of bytes that make up the returned output.
+
+    .. return:: psa_status_t
+    .. retval:: PSA_SUCCESS
+    .. retval:: PSA_ERROR_INVALID_HANDLE
+    .. retval:: PSA_ERROR_NOT_PERMITTED
+        The key does not have the `PSA_KEY_USAGE_ENCRYPT` flag, or it does not permit the requested algorithm.
+    .. retval:: PSA_ERROR_BUFFER_TOO_SMALL
+        The size of the ``output`` buffer is too small.
+        `PSA_ASYMMETRIC_ENCRYPT_OUTPUT_SIZE()` or `PSA_ASYMMETRIC_ENCRYPT_OUTPUT_MAX_SIZE` can be used to determine the required buffer size.
+    .. retval:: PSA_ERROR_NOT_SUPPORTED
+    .. retval:: PSA_ERROR_INVALID_ARGUMENT
+    .. retval:: PSA_ERROR_INSUFFICIENT_MEMORY
+    .. retval:: PSA_ERROR_COMMUNICATION_FAILURE
+    .. retval:: PSA_ERROR_HARDWARE_FAILURE
+    .. retval:: PSA_ERROR_CORRUPTION_DETECTED
+    .. retval:: PSA_ERROR_STORAGE_FAILURE
+    .. retval:: PSA_ERROR_DATA_CORRUPT
+    .. retval:: PSA_ERROR_DATA_INVALID
+    .. retval:: PSA_ERROR_INSUFFICIENT_ENTROPY
+    .. retval:: PSA_ERROR_BAD_STATE
+        The library has not been previously initialized by `psa_crypto_init()`. It is implementation-dependent whether a failure to initialize results in this error code.
+
+    * For `PSA_ALG_RSA_PKCS1V15_CRYPT`, no salt is supported.
+
+.. function:: psa_asymmetric_decrypt
+
+    .. summary::
+        Decrypt a short message with a private key.
+
+    .. param:: psa_key_id_t key
+        Identifier of the key to use for the operation. It must be an asymmetric key pair.
+        It must allow the usage `PSA_KEY_USAGE_DECRYPT`.
+    .. param:: psa_algorithm_t alg
+        An asymmetric encryption algorithm that is compatible with the type of ``key``.
+    .. param:: const uint8_t * input
+        The message to decrypt.
+    .. param:: size_t input_length
+        Size of the ``input`` buffer in bytes.
+    .. param:: const uint8_t * salt
+        A salt or label, if supported by the encryption algorithm. If the algorithm does not support a salt, pass ``NULL``. If the algorithm supports an optional salt, pass ``NULL`` to indicate that there is no salt.
+    .. param:: size_t salt_length
+        Size of the ``salt`` buffer in bytes. If ``salt`` is ``NULL``, pass ``0``.
+    .. param:: uint8_t * output
+        Buffer where the decrypted message is to be written.
+    .. param:: size_t output_size
+        Size of the ``output`` buffer in bytes.
+        This must be appropriate for the selected algorithm and key:
+
+        * The required output size is :code:`PSA_ASYMMETRIC_DECRYPT_OUTPUT_SIZE(key_type, key_bits, alg)` where ``key_type`` and ``key_bits`` are the type and bit-size respectively of ``key``.
+        * `PSA_ASYMMETRIC_DECRYPT_OUTPUT_MAX_SIZE` evaluates to the maximum output size of any supported asymmetric decryption.
+
+    .. param:: size_t * output_length
+        On success, the number of bytes that make up the returned output.
+
+    .. return:: psa_status_t
+    .. retval:: PSA_SUCCESS
+    .. retval:: PSA_ERROR_INVALID_HANDLE
+    .. retval:: PSA_ERROR_NOT_PERMITTED
+        The key does not have the `PSA_KEY_USAGE_DECRYPT` flag, or it does not permit the requested algorithm.
+    .. retval:: PSA_ERROR_BUFFER_TOO_SMALL
+        The size of the ``output`` buffer is too small.
+        `PSA_ASYMMETRIC_DECRYPT_OUTPUT_SIZE()` or `PSA_ASYMMETRIC_DECRYPT_OUTPUT_MAX_SIZE` can be used to determine the required buffer size.
+    .. retval:: PSA_ERROR_NOT_SUPPORTED
+    .. retval:: PSA_ERROR_INVALID_ARGUMENT
+    .. retval:: PSA_ERROR_INSUFFICIENT_MEMORY
+    .. retval:: PSA_ERROR_COMMUNICATION_FAILURE
+    .. retval:: PSA_ERROR_HARDWARE_FAILURE
+    .. retval:: PSA_ERROR_CORRUPTION_DETECTED
+    .. retval:: PSA_ERROR_STORAGE_FAILURE
+    .. retval:: PSA_ERROR_DATA_CORRUPT
+    .. retval:: PSA_ERROR_DATA_INVALID
+    .. retval:: PSA_ERROR_INSUFFICIENT_ENTROPY
+    .. retval:: PSA_ERROR_INVALID_PADDING
+    .. retval:: PSA_ERROR_BAD_STATE
+        The library has not been previously initialized by `psa_crypto_init()`. It is implementation-dependent whether a failure to initialize results in this error code.
+
+    * For `PSA_ALG_RSA_PKCS1V15_CRYPT`, no salt is supported.
+
+Support macros
+--------------
+
+.. macro:: PSA_ALG_IS_RSA_OAEP
+    :definition: /* specification-defined value */
+
+    .. summary::
+        Whether the specified algorithm is an RSA OAEP encryption algorithm.
+
+    .. param:: alg
+        An algorithm identifier (value of type `psa_algorithm_t`).
+
+    .. return::
+        ``1`` if ``alg`` is an RSA OAEP algorithm, ``0`` otherwise.
+
+        This macro can return either ``0`` or ``1`` if ``alg`` is not a supported algorithm identifier.
+
+.. macro:: PSA_ASYMMETRIC_ENCRYPT_OUTPUT_SIZE
+    :definition: /* implementation-defined value */
+
+    .. summary::
+        Sufficient output buffer size for `psa_asymmetric_encrypt()`.
+
+    .. param:: key_type
+        An asymmetric key type, either a key pair or a public key.
+    .. param:: key_bits
+        The size of the key in bits.
+    .. param:: alg
+        The signature algorithm.
+
+    .. return::
+        If the parameters are valid and supported, return a buffer size in bytes that guarantees that `psa_asymmetric_encrypt()` will not fail with `PSA_ERROR_BUFFER_TOO_SMALL`. If the parameters are a valid combination that is not supported by the implementation, this macro must return either a sensible size or ``0``. If the parameters are not valid, the return value is unspecified.
+
+    This macro returns a sufficient buffer size for a ciphertext produced using a key of the specified type and size, with the specified algorithm. Note that the actual size of the ciphertext might be smaller, depending on the algorithm.
+
+    .. warning::
+        This function might evaluate its arguments multiple times or zero times. Providing arguments that have side effects will result in implementation-specific behavior, and is non-portable.
+
+    See also `PSA_ASYMMETRIC_ENCRYPT_OUTPUT_MAX_SIZE`.
+
+.. macro:: PSA_ASYMMETRIC_ENCRYPT_OUTPUT_MAX_SIZE
+    :definition: /* implementation-defined value */
+
+    .. summary::
+        A sufficient output buffer size for `psa_asymmetric_encrypt()`, for any supported asymmetric encryption.
+
+    See also `PSA_ASYMMETRIC_ENCRYPT_OUTPUT_SIZE()`.
+
+.. macro:: PSA_ASYMMETRIC_DECRYPT_OUTPUT_SIZE
+    :definition: /* implementation-defined value */
+
+    .. summary::
+        Sufficient output buffer size for `psa_asymmetric_decrypt()`.
+
+    .. param:: key_type
+        An asymmetric key type, either a key pair or a public key.
+    .. param:: key_bits
+        The size of the key in bits.
+    .. param:: alg
+        The signature algorithm.
+
+    .. return::
+        If the parameters are valid and supported, return a buffer size in bytes that guarantees that `psa_asymmetric_decrypt()` will not fail with `PSA_ERROR_BUFFER_TOO_SMALL`. If the parameters are a valid combination that is not supported by the implementation, this macro must return either a sensible size or ``0``. If the parameters are not valid, the return value is unspecified.
+
+    This macro returns a sufficient buffer size for a ciphertext produced using a key of the specified type and size, with the specified algorithm. Note that the actual size of the ciphertext might be smaller, depending on the algorithm.
+
+    .. warning::
+        This function might evaluate its arguments multiple times or zero times. Providing arguments that have side effects will result in implementation-specific behavior, and is non-portable.
+
+    See also `PSA_ASYMMETRIC_DECRYPT_OUTPUT_MAX_SIZE`.
+
+.. macro:: PSA_ASYMMETRIC_DECRYPT_OUTPUT_MAX_SIZE
+    :definition: /* implementation-defined value */
+
+    .. summary::
+        A sufficient output buffer size for `psa_asymmetric_decrypt()`, for any supported asymmetric decryption.
+
+    See also `PSA_ASYMMETRIC_DECRYPT_OUTPUT_SIZE()`.

@@ -1,0 +1,276 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Key management reference &#8212; PSA Crypto API 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Key attributes" href="attributes.html" />
+    <link rel="prev" title="PSA Crypto library" href="../library/library.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="key-management-reference">
+<span id="key-management"></span><h1>Key management reference</h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="attributes.html">Key attributes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="attributes.html#attribute-types">Attribute types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="attributes.html#psa_key_lifetime_t"><code class="docutils literal"><span class="pre">psa_key_lifetime_t</span></code> (type)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="attributes.html#psa_key_id_t"><code class="docutils literal"><span class="pre">psa_key_id_t</span></code> (type)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="attributes.html#psa_key_type_t"><code class="docutils literal"><span class="pre">psa_key_type_t</span></code> (type)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="attributes.html#psa_key_usage_t"><code class="docutils literal"><span class="pre">psa_key_usage_t</span></code> (type)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="attributes.html#psa_algorithm_t"><code class="docutils literal"><span class="pre">psa_algorithm_t</span></code> (type)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="attributes.html#managing-attributes">Managing attributes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="attributes.html#psa_key_attributes_t"><code class="docutils literal"><span class="pre">psa_key_attributes_t</span></code> (type)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="attributes.html#PSA_KEY_ATTRIBUTES_INIT"><code class="docutils literal"><span class="pre">PSA_KEY_ATTRIBUTES_INIT</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="attributes.html#psa_key_attributes_init"><code class="docutils literal"><span class="pre">psa_key_attributes_init</span></code> (function)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="attributes.html#psa_get_key_attributes"><code class="docutils literal"><span class="pre">psa_get_key_attributes</span></code> (function)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="attributes.html#psa_reset_key_attributes"><code class="docutils literal"><span class="pre">psa_reset_key_attributes</span></code> (function)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="locations.html">Key locations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="locations.html#key-lifetimes">Key lifetimes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="locations.html#PSA_KEY_LIFETIME_VOLATILE"><code class="docutils literal"><span class="pre">PSA_KEY_LIFETIME_VOLATILE</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="locations.html#PSA_KEY_LIFETIME_PERSISTENT"><code class="docutils literal"><span class="pre">PSA_KEY_LIFETIME_PERSISTENT</span></code> (macro)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="locations.html#key-identifiers">Key identifiers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="locations.html#PSA_KEY_ID_NULL"><code class="docutils literal"><span class="pre">PSA_KEY_ID_NULL</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="locations.html#PSA_KEY_ID_USER_MIN"><code class="docutils literal"><span class="pre">PSA_KEY_ID_USER_MIN</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="locations.html#PSA_KEY_ID_USER_MAX"><code class="docutils literal"><span class="pre">PSA_KEY_ID_USER_MAX</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="locations.html#PSA_KEY_ID_VENDOR_MIN"><code class="docutils literal"><span class="pre">PSA_KEY_ID_VENDOR_MIN</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="locations.html#PSA_KEY_ID_VENDOR_MAX"><code class="docutils literal"><span class="pre">PSA_KEY_ID_VENDOR_MAX</span></code> (macro)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="locations.html#attribute-accessors">Attribute accessors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="locations.html#psa_set_key_lifetime"><code class="docutils literal"><span class="pre">psa_set_key_lifetime</span></code> (function)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="locations.html#psa_get_key_lifetime"><code class="docutils literal"><span class="pre">psa_get_key_lifetime</span></code> (function)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="locations.html#psa_set_key_id"><code class="docutils literal"><span class="pre">psa_set_key_id</span></code> (function)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="locations.html#psa_get_key_id"><code class="docutils literal"><span class="pre">psa_get_key_id</span></code> (function)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="types.html">Key types</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="types.html#key-categories">Key categories</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_KEY_TYPE_NONE"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_NONE</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_KEY_TYPE_IS_UNSTRUCTURED"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_IS_UNSTRUCTURED</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_KEY_TYPE_IS_ASYMMETRIC"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_IS_ASYMMETRIC</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_KEY_TYPE_IS_PUBLIC_KEY"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_IS_PUBLIC_KEY</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_KEY_TYPE_IS_KEY_PAIR"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_IS_KEY_PAIR</span></code> (macro)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="types.html#symmetric-keys">Symmetric keys</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_KEY_TYPE_RAW_DATA"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_RAW_DATA</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_KEY_TYPE_HMAC"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_HMAC</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_KEY_TYPE_DERIVE"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_DERIVE</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_KEY_TYPE_AES"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_AES</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_KEY_TYPE_DES"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_DES</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_KEY_TYPE_CAMELLIA"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_CAMELLIA</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_KEY_TYPE_ARC4"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_ARC4</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_KEY_TYPE_CHACHA20"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_CHACHA20</span></code> (macro)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="types.html#rsa-keys">RSA keys</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_KEY_TYPE_RSA_PUBLIC_KEY"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_RSA_PUBLIC_KEY</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_KEY_TYPE_RSA_KEY_PAIR"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_RSA_KEY_PAIR</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_KEY_TYPE_IS_RSA"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_IS_RSA</span></code> (macro)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="types.html#elliptic-curve-keys">Elliptic Curve keys</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="types.html#psa_ecc_family_t"><code class="docutils literal"><span class="pre">psa_ecc_family_t</span></code> (type)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_KEY_TYPE_ECC_KEY_PAIR"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_ECC_KEY_PAIR</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_KEY_TYPE_ECC_PUBLIC_KEY"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_ECC_PUBLIC_KEY</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_ECC_FAMILY_SECP_K1"><code class="docutils literal"><span class="pre">PSA_ECC_FAMILY_SECP_K1</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_ECC_FAMILY_SECP_R1"><code class="docutils literal"><span class="pre">PSA_ECC_FAMILY_SECP_R1</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_ECC_FAMILY_SECP_R2"><code class="docutils literal"><span class="pre">PSA_ECC_FAMILY_SECP_R2</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_ECC_FAMILY_SECT_K1"><code class="docutils literal"><span class="pre">PSA_ECC_FAMILY_SECT_K1</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_ECC_FAMILY_SECT_R1"><code class="docutils literal"><span class="pre">PSA_ECC_FAMILY_SECT_R1</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_ECC_FAMILY_SECT_R2"><code class="docutils literal"><span class="pre">PSA_ECC_FAMILY_SECT_R2</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_ECC_FAMILY_BRAINPOOL_P_R1"><code class="docutils literal"><span class="pre">PSA_ECC_FAMILY_BRAINPOOL_P_R1</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_ECC_FAMILY_FRP"><code class="docutils literal"><span class="pre">PSA_ECC_FAMILY_FRP</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_ECC_FAMILY_MONTGOMERY"><code class="docutils literal"><span class="pre">PSA_ECC_FAMILY_MONTGOMERY</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_KEY_TYPE_IS_ECC"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_IS_ECC</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_KEY_TYPE_IS_ECC_KEY_PAIR"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_IS_ECC_KEY_PAIR</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_KEY_TYPE_IS_ECC_PUBLIC_KEY"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_IS_ECC_PUBLIC_KEY</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_KEY_TYPE_ECC_GET_FAMILY"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_ECC_GET_FAMILY</span></code> (macro)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="types.html#diffie-hellman-keys">Diffie Hellman keys</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="types.html#psa_dh_family_t"><code class="docutils literal"><span class="pre">psa_dh_family_t</span></code> (type)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_KEY_TYPE_DH_KEY_PAIR"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_DH_KEY_PAIR</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_KEY_TYPE_DH_PUBLIC_KEY"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_DH_PUBLIC_KEY</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_DH_FAMILY_RFC7919"><code class="docutils literal"><span class="pre">PSA_DH_FAMILY_RFC7919</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_KEY_TYPE_KEY_PAIR_OF_PUBLIC_KEY"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_KEY_PAIR_OF_PUBLIC_KEY</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_KEY_TYPE_PUBLIC_KEY_OF_KEY_PAIR"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_PUBLIC_KEY_OF_KEY_PAIR</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_KEY_TYPE_IS_DH"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_IS_DH</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_KEY_TYPE_IS_DH_KEY_PAIR"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_IS_DH_KEY_PAIR</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_KEY_TYPE_IS_DH_PUBLIC_KEY"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_IS_DH_PUBLIC_KEY</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#PSA_KEY_TYPE_DH_GET_FAMILY"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_DH_GET_FAMILY</span></code> (macro)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="types.html#attribute-accessors">Attribute accessors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="types.html#psa_set_key_type"><code class="docutils literal"><span class="pre">psa_set_key_type</span></code> (function)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#psa_get_key_type"><code class="docutils literal"><span class="pre">psa_get_key_type</span></code> (function)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#psa_get_key_bits"><code class="docutils literal"><span class="pre">psa_get_key_bits</span></code> (function)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.html#psa_set_key_bits"><code class="docutils literal"><span class="pre">psa_set_key_bits</span></code> (function)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Key policies</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#key-usage-flags">Key usage flags</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#PSA_KEY_USAGE_EXPORT"><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_EXPORT</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#PSA_KEY_USAGE_COPY"><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_COPY</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#PSA_KEY_USAGE_CACHE"><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_CACHE</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#PSA_KEY_USAGE_ENCRYPT"><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_ENCRYPT</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#PSA_KEY_USAGE_DECRYPT"><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_DECRYPT</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#PSA_KEY_USAGE_SIGN_MESSAGE"><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_SIGN_MESSAGE</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#PSA_KEY_USAGE_VERIFY_MESSAGE"><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_VERIFY_MESSAGE</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#PSA_KEY_USAGE_SIGN_HASH"><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_SIGN_HASH</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#PSA_KEY_USAGE_VERIFY_HASH"><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_VERIFY_HASH</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#PSA_KEY_USAGE_DERIVE"><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_DERIVE</span></code> (macro)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#attribute-accessors">Attribute accessors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#psa_set_key_usage_flags"><code class="docutils literal"><span class="pre">psa_set_key_usage_flags</span></code> (function)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#psa_get_key_usage_flags"><code class="docutils literal"><span class="pre">psa_get_key_usage_flags</span></code> (function)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="algorithms.html">Algorithms</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="algorithms.html#algorithm-categories">Algorithm categories</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="algorithms.html#PSA_ALG_NONE"><code class="docutils literal"><span class="pre">PSA_ALG_NONE</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="algorithms.html#PSA_ALG_IS_HASH"><code class="docutils literal"><span class="pre">PSA_ALG_IS_HASH</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="algorithms.html#PSA_ALG_IS_MAC"><code class="docutils literal"><span class="pre">PSA_ALG_IS_MAC</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="algorithms.html#PSA_ALG_IS_CIPHER"><code class="docutils literal"><span class="pre">PSA_ALG_IS_CIPHER</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="algorithms.html#PSA_ALG_IS_AEAD"><code class="docutils literal"><span class="pre">PSA_ALG_IS_AEAD</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="algorithms.html#PSA_ALG_IS_SIGN"><code class="docutils literal"><span class="pre">PSA_ALG_IS_SIGN</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="algorithms.html#PSA_ALG_IS_ASYMMETRIC_ENCRYPTION"><code class="docutils literal"><span class="pre">PSA_ALG_IS_ASYMMETRIC_ENCRYPTION</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="algorithms.html#PSA_ALG_IS_KEY_AGREEMENT"><code class="docutils literal"><span class="pre">PSA_ALG_IS_KEY_AGREEMENT</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="algorithms.html#PSA_ALG_IS_KEY_DERIVATION"><code class="docutils literal"><span class="pre">PSA_ALG_IS_KEY_DERIVATION</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="algorithms.html#PSA_ALG_IS_WILDCARD"><code class="docutils literal"><span class="pre">PSA_ALG_IS_WILDCARD</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="algorithms.html#PSA_ALG_GET_HASH"><code class="docutils literal"><span class="pre">PSA_ALG_GET_HASH</span></code> (macro)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="algorithms.html#attribute-accessors">Attribute accessors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="algorithms.html#psa_set_key_algorithm"><code class="docutils literal"><span class="pre">psa_set_key_algorithm</span></code> (function)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="algorithms.html#psa_get_key_algorithm"><code class="docutils literal"><span class="pre">psa_get_key_algorithm</span></code> (function)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="management.html">Key management functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="management.html#key-creation">Key creation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="management.html#psa_import_key"><code class="docutils literal"><span class="pre">psa_import_key</span></code> (function)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="management.html#psa_generate_key"><code class="docutils literal"><span class="pre">psa_generate_key</span></code> (function)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="management.html#psa_copy_key"><code class="docutils literal"><span class="pre">psa_copy_key</span></code> (function)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="management.html#key-destruction">Key destruction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="management.html#psa_destroy_key"><code class="docutils literal"><span class="pre">psa_destroy_key</span></code> (function)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="management.html#psa_purge_key"><code class="docutils literal"><span class="pre">psa_purge_key</span></code> (function)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="management.html#key-export">Key export</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="management.html#psa_export_key"><code class="docutils literal"><span class="pre">psa_export_key</span></code> (function)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="management.html#psa_export_public_key"><code class="docutils literal"><span class="pre">psa_export_public_key</span></code> (function)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="management.html#PSA_EXPORT_KEY_OUTPUT_SIZE"><code class="docutils literal"><span class="pre">PSA_EXPORT_KEY_OUTPUT_SIZE</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="management.html#PSA_EXPORT_PUBLIC_KEY_OUTPUT_SIZE"><code class="docutils literal"><span class="pre">PSA_EXPORT_PUBLIC_KEY_OUTPUT_SIZE</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="management.html#PSA_EXPORT_KEY_PAIR_MAX_SIZE"><code class="docutils literal"><span class="pre">PSA_EXPORT_KEY_PAIR_MAX_SIZE</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="management.html#PSA_EXPORT_PUBLIC_KEY_MAX_SIZE"><code class="docutils literal"><span class="pre">PSA_EXPORT_PUBLIC_KEY_MAX_SIZE</span></code> (macro)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../library/library.html" title="previous chapter">PSA Crypto library</a></li>
+      <li>Next: <a href="attributes.html" title="next chapter">Key attributes</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/api/keys/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy; 2019-2020, Arm Limited or its affiliates. All rights reserved.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../../_sources/api/keys/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

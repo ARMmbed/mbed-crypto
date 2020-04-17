@@ -1,0 +1,11 @@
+..  _api-reference:
+..  _library-management:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Library management reference
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. toctree::
+
+    status
+    library

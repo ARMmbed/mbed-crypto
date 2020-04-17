@@ -1,0 +1,149 @@
+.. _key-locations:
+
+Key locations
+=============
+
+Key lifetimes
+-------------
+
+.. macro:: PSA_KEY_LIFETIME_VOLATILE
+    :definition: ((psa_key_lifetime_t)0x00000000)
+
+    .. summary::
+        A lifetime value that indicates a volatile key.
+
+    A volatile key only exists as long as the identifier to it is not destroyed.
+
+    The key material is guaranteed to be erased on a power reset.
+
+.. macro:: PSA_KEY_LIFETIME_PERSISTENT
+    :definition: ((psa_key_lifetime_t)0x00000001)
+
+    .. summary::
+        The default storage area for persistent keys.
+
+    A persistent key remains in storage until it is explicitly destroyed or until the corresponding storage area is wiped. This specification does not define any mechanism to wipe a storage area. Implementations are permitted to provide their own mechanism, for example, to perform a factory reset, to prepare for device refurbishment, or to uninstall an application.
+
+    This lifetime value is the default storage area for the calling application. Implementations can offer other storage areas designated by other lifetime values as implementation-specific extensions.
+
+.. _key_identifiers:
+
+Key identifiers
+---------------
+
+.. macro:: PSA_KEY_ID_NULL
+    :definition: ((psa_key_id_t)0)
+
+    .. summary::
+        The null key identifier.
+
+    The null key identifier is always invalid, except when used without in a call to `psa_destroy_key()` which will return `PSA_SUCCESS`.
+
+.. macro:: PSA_KEY_ID_USER_MIN
+    :definition: ((psa_key_id_t)0x00000001)
+
+    .. summary::
+        The minimum value for a key identifier chosen by the application.
+
+.. macro:: PSA_KEY_ID_USER_MAX
+    :definition: ((psa_key_id_t)0x3fffffff)
+
+    .. summary::
+        The maximum value for a key identifier chosen by the application.
+
+.. macro:: PSA_KEY_ID_VENDOR_MIN
+    :definition: ((psa_key_id_t)0x40000000)
+
+    .. summary::
+        The minimum value for a key identifier chosen by the implementation.
+
+.. macro:: PSA_KEY_ID_VENDOR_MAX
+    :definition: ((psa_key_id_t)0x7fffffff)
+
+    .. summary::
+        The maximum value for a key identifier chosen by the implementation.
+
+Attribute accessors
+-------------------
+
+.. function:: psa_set_key_lifetime
+
+    .. summary::
+        Set the location of a persistent key.
+
+    .. param:: psa_key_attributes_t * attributes
+        The attribute object to write to.
+    .. param:: psa_key_lifetime_t lifetime
+        The lifetime for the key. If this is `PSA_KEY_LIFETIME_VOLATILE`, the key will be volatile, and the key identifier attribute is reset to `PSA_KEY_ID_NULL`.
+
+    .. return:: void
+
+    To make a key persistent, give it a persistent key identifier by using `psa_set_key_id()`. By default, a key that has a persistent identifier is stored in the default storage area identifier by `PSA_KEY_LIFETIME_PERSISTENT`. Call this function to choose a storage area, or to explicitly declare the key as volatile.
+
+    This function does not access storage, it merely stores the given value in the attribute object. The persistent key will be written to storage when the attribute object is passed to a key creation function such as `psa_import_key()`, `psa_generate_key()`, `psa_key_derivation_output_key()` or `psa_copy_key()`.
+
+    .. admonition:: Implementation note
+
+        This is a simple accessor function that is not required to validate its inputs. The following approaches can be used to provide an efficient implementation:
+
+        - This function can be declared as ``static`` or ``inline``, instead of using the default external linkage.
+        - This function can be provided as a function-like macro. In this form, the macro must evaluate each of its arguments exactly once, as if it was a function call.
+
+.. function:: psa_get_key_lifetime
+
+    .. summary::
+        Retrieve the lifetime from key attributes.
+
+    .. param:: const psa_key_attributes_t * attributes
+        The key attribute object to query.
+
+    .. return:: psa_key_lifetime_t
+        The lifetime value stored in the attribute object.
+
+    .. admonition:: Implementation note
+
+        This is a simple accessor function that is not required to validate its inputs. The following approaches can be used to provide an efficient implementation:
+
+        - This function can be declared as ``static`` or ``inline``, instead of using the default external linkage.
+        - This function can be provided as a function-like macro. In this form, the macro must evaluate each of its arguments exactly once, as if it was a function call.
+
+.. function:: psa_set_key_id
+
+    .. summary::
+        Declare a key as persistent and set its key identifier.
+
+    .. param:: psa_key_attributes_t * attributes
+        The attribute object to write to.
+    .. param:: psa_key_id_t id
+        The persistent identifier for the key.
+
+    .. return:: void
+
+    If the attribute object currently declares the key as volatile, which is the default lifetime of an attribute object, this function sets the lifetime attribute to `PSA_KEY_LIFETIME_PERSISTENT`.
+
+    This function does not access storage, it merely stores the given value in the attribute object. The persistent key will be written to storage when the attribute object is passed to a key creation function such as `psa_import_key()`, `psa_generate_key()`, `psa_key_derivation_output_key()` or `psa_copy_key()`.
+
+    .. admonition:: Implementation note
+
+        This is a simple accessor function that is not required to validate its inputs. The following approaches can be used to provide an efficient implementation:
+
+        - This function can be declared as ``static`` or ``inline``, instead of using the default external linkage.
+        - This function can be provided as a function-like macro. In this form, the macro must evaluate each of its arguments exactly once, as if it was a function call.
+
+.. function:: psa_get_key_id
+
+    .. summary::
+        Retrieve the key identifier from key attributes.
+
+    .. param:: const psa_key_attributes_t * attributes
+        The key attribute object to query.
+
+    .. return:: psa_key_id_t
+        The persistent identifier stored in the attribute object. This value is unspecified if the attribute object declares the key as volatile.
+
+    .. admonition:: Implementation note
+
+        This is a simple accessor function that is not required to validate its inputs. The following approaches can be used to provide an efficient implementation:
+
+        - This function can be declared as ``static`` or ``inline``, instead of using the default external linkage.
+        - This function can be provided as a function-like macro. In this form, the macro must evaluate each of its arguments exactly once, as if it was a function call.

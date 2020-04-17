@@ -1,0 +1,309 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Key policies &#8212; PSA Crypto API 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Algorithms" href="algorithms.html" />
+    <link rel="prev" title="Key types" href="types.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="key-policies">
+<span id="key-usage"></span><h1>Key policies</h1>
+<div class="section" id="key-usage-flags">
+<h2>Key usage flags</h2>
+<div class="section" id="PSA_KEY_USAGE_EXPORT">
+<span id="c.PSA_KEY_USAGE_EXPORT"></span><h3><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_EXPORT</span></code> (macro)</h3>
+<p>Permission to export the key.</p>
+<pre class="literal-block">
+#define <a class="reference internal" href="#c.PSA_KEY_USAGE_EXPORT" title="PSA_KEY_USAGE_EXPORT">PSA_KEY_USAGE_EXPORT</a> ((<a class="reference internal" href="attributes.html#c.psa_key_usage_t" title="psa_key_usage_t">psa_key_usage_t</a>)0x00000001)
+</pre>
+<p>This flag allows the use of <a class="reference internal" href="management.html#c.psa_export_key" title="psa_export_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_export_key()</span></code></a> to export a key from the cryptoprocessor. A public key or the public part of a key pair can always be exported regardless of the value of this permission flag.</p>
+<p>This flag can also be required to copy a key using <a class="reference internal" href="management.html#c.psa_copy_key" title="psa_copy_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_copy_key()</span></code></a> outside of a secure element. See also <a class="reference internal" href="#c.PSA_KEY_USAGE_COPY" title="PSA_KEY_USAGE_COPY"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_COPY</span></code></a>.</p>
+<p>If a key does not have export permission, implementations must not allow the key to be exported in plain form from the cryptoprocessor, whether through <a class="reference internal" href="management.html#c.psa_export_key" title="psa_export_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_export_key()</span></code></a> or through a proprietary interface. The key might still be exportable in a wrapped form, i.e. in a form where it is encrypted by another key.</p>
+</div>
+<div class="section" id="PSA_KEY_USAGE_COPY">
+<span id="c.PSA_KEY_USAGE_COPY"></span><h3><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_COPY</span></code> (macro)</h3>
+<p>Permission to copy the key.</p>
+<pre class="literal-block">
+#define <a class="reference internal" href="#c.PSA_KEY_USAGE_COPY" title="PSA_KEY_USAGE_COPY">PSA_KEY_USAGE_COPY</a> ((<a class="reference internal" href="attributes.html#c.psa_key_usage_t" title="psa_key_usage_t">psa_key_usage_t</a>)0x00000002)
+</pre>
+<p>This flag allows the use of <a class="reference internal" href="management.html#c.psa_copy_key" title="psa_copy_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_copy_key()</span></code></a> to make a copy of the key with the same policy or a more restrictive policy.</p>
+<p>For lifetimes for which the key is located in a secure element which enforce the non-exportability of keys, copying a key outside the secure element also requires the usage flag <a class="reference internal" href="#c.PSA_KEY_USAGE_EXPORT" title="PSA_KEY_USAGE_EXPORT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_EXPORT</span></code></a>. Copying the key inside the secure element is permitted with just <a class="reference internal" href="#c.PSA_KEY_USAGE_COPY" title="PSA_KEY_USAGE_COPY"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_COPY</span></code></a> if the secure element supports it. For keys with the lifetime <a class="reference internal" href="locations.html#c.PSA_KEY_LIFETIME_VOLATILE" title="PSA_KEY_LIFETIME_VOLATILE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_LIFETIME_VOLATILE</span></code></a> or <a class="reference internal" href="locations.html#c.PSA_KEY_LIFETIME_PERSISTENT" title="PSA_KEY_LIFETIME_PERSISTENT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_LIFETIME_PERSISTENT</span></code></a>, the usage flag <a class="reference internal" href="#c.PSA_KEY_USAGE_COPY" title="PSA_KEY_USAGE_COPY"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_COPY</span></code></a> is sufficient to permit the copy.</p>
+</div>
+<div class="section" id="PSA_KEY_USAGE_CACHE">
+<span id="c.PSA_KEY_USAGE_CACHE"></span><h3><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_CACHE</span></code> (macro)</h3>
+<p>Permission for the implementation to cache the key.</p>
+<pre class="literal-block">
+#define <a class="reference internal" href="#c.PSA_KEY_USAGE_CACHE" title="PSA_KEY_USAGE_CACHE">PSA_KEY_USAGE_CACHE</a> ((<a class="reference internal" href="attributes.html#c.psa_key_usage_t" title="psa_key_usage_t">psa_key_usage_t</a>)0x00000004)
+</pre>
+<p>This flag allows the implementation to make additional copies of the key material that are not in storage and not for the purpose of an ongoing operation. Applications can use it as a hint to keep the key around for repeated access.</p>
+<p>An application can request that cached key material is removed from memory by calling <a class="reference internal" href="management.html#c.psa_purge_key" title="psa_purge_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_purge_key()</span></code></a>.</p>
+<p>The presence of this key policy when creating a key is a hint:</p>
+<ul class="simple">
+<li>An implementation is not required to cache keys that have this policy.</li>
+<li>An implementation must not report an error if it does not cache keys.</li>
+</ul>
+<p>If this key policy is not present, the implementation must ensure key material is removed from memory as soon as it is not required for an operation or for maintenance of a volatile key.</p>
+<p>This flag must be preserved when reading back the attributes for all keys, regardless of key type or implementation behavior.</p>
+<p>See also <em><a class="reference internal" href="../../overview/implementation.html#key-material"><span class="std std-ref">Managing key material</span></a></em>.</p>
+</div>
+<div class="section" id="PSA_KEY_USAGE_ENCRYPT">
+<span id="c.PSA_KEY_USAGE_ENCRYPT"></span><h3><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_ENCRYPT</span></code> (macro)</h3>
+<p>Permission to encrypt a message with the key.</p>
+<pre class="literal-block">
+#define <a class="reference internal" href="#c.PSA_KEY_USAGE_ENCRYPT" title="PSA_KEY_USAGE_ENCRYPT">PSA_KEY_USAGE_ENCRYPT</a> ((<a class="reference internal" href="attributes.html#c.psa_key_usage_t" title="psa_key_usage_t">psa_key_usage_t</a>)0x00000100)
+</pre>
+<p>This flag allows the key to be used for a symmetric encryption operation, for an AEAD encryption-and-authentication operation, or for an asymmetric encryption operation, if otherwise permitted by the key’s type and policy. The flag must be present on keys used with the following APIs:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../ops/ciphers.html#c.psa_cipher_encrypt" title="psa_cipher_encrypt"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_encrypt()</span></code></a></li>
+<li><a class="reference internal" href="../ops/ciphers.html#c.psa_cipher_encrypt_setup" title="psa_cipher_encrypt_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_encrypt_setup()</span></code></a></li>
+<li><a class="reference internal" href="../ops/aead.html#c.psa_aead_encrypt" title="psa_aead_encrypt"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_encrypt()</span></code></a></li>
+<li><a class="reference internal" href="../ops/aead.html#c.psa_aead_encrypt_setup" title="psa_aead_encrypt_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_encrypt_setup()</span></code></a></li>
+<li><a class="reference internal" href="../ops/pke.html#c.psa_asymmetric_encrypt" title="psa_asymmetric_encrypt"><code class="xref any c c-func docutils literal"><span class="pre">psa_asymmetric_encrypt()</span></code></a></li>
+</ul>
+<p>For a key pair, this concerns the public key.</p>
+</div>
+<div class="section" id="PSA_KEY_USAGE_DECRYPT">
+<span id="c.PSA_KEY_USAGE_DECRYPT"></span><h3><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_DECRYPT</span></code> (macro)</h3>
+<p>Permission to decrypt a message with the key.</p>
+<pre class="literal-block">
+#define <a class="reference internal" href="#c.PSA_KEY_USAGE_DECRYPT" title="PSA_KEY_USAGE_DECRYPT">PSA_KEY_USAGE_DECRYPT</a> ((<a class="reference internal" href="attributes.html#c.psa_key_usage_t" title="psa_key_usage_t">psa_key_usage_t</a>)0x00000200)
+</pre>
+<p>This flag allows the key to be used for a symmetric decryption operation, for an AEAD decryption-and-verification operation, or for an asymmetric decryption operation, if otherwise permitted by the key’s type and policy. The flag must be present on keys used with the following APIs:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../ops/ciphers.html#c.psa_cipher_decrypt" title="psa_cipher_decrypt"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_decrypt()</span></code></a></li>
+<li><a class="reference internal" href="../ops/ciphers.html#c.psa_cipher_decrypt_setup" title="psa_cipher_decrypt_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_decrypt_setup()</span></code></a></li>
+<li><a class="reference internal" href="../ops/aead.html#c.psa_aead_decrypt" title="psa_aead_decrypt"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_decrypt()</span></code></a></li>
+<li><a class="reference internal" href="../ops/aead.html#c.psa_aead_decrypt_setup" title="psa_aead_decrypt_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_decrypt_setup()</span></code></a></li>
+<li><a class="reference internal" href="../ops/pke.html#c.psa_asymmetric_decrypt" title="psa_asymmetric_decrypt"><code class="xref any c c-func docutils literal"><span class="pre">psa_asymmetric_decrypt()</span></code></a></li>
+</ul>
+<p>For a key pair, this concerns the private key.</p>
+</div>
+<div class="section" id="PSA_KEY_USAGE_SIGN_MESSAGE">
+<span id="c.PSA_KEY_USAGE_SIGN_MESSAGE"></span><h3><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_SIGN_MESSAGE</span></code> (macro)</h3>
+<p>Permission to sign a message with the key.</p>
+<pre class="literal-block">
+#define <a class="reference internal" href="#c.PSA_KEY_USAGE_SIGN_MESSAGE" title="PSA_KEY_USAGE_SIGN_MESSAGE">PSA_KEY_USAGE_SIGN_MESSAGE</a> ((<a class="reference internal" href="attributes.html#c.psa_key_usage_t" title="psa_key_usage_t">psa_key_usage_t</a>)0x00000400)
+</pre>
+<p>This flag allows the key to be used for a MAC calculation operation or for an asymmetric message signature operation, if otherwise permitted by the key’s type and policy. The flag must be present on keys used with the following APIs:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../ops/macs.html#c.psa_mac_compute" title="psa_mac_compute"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_compute()</span></code></a></li>
+<li><a class="reference internal" href="../ops/macs.html#c.psa_mac_sign_setup" title="psa_mac_sign_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_sign_setup()</span></code></a></li>
+<li><a class="reference internal" href="../ops/sign.html#c.psa_sign_message" title="psa_sign_message"><code class="xref any c c-func docutils literal"><span class="pre">psa_sign_message()</span></code></a></li>
+</ul>
+<p>For a key pair, this concerns the private key.</p>
+</div>
+<div class="section" id="PSA_KEY_USAGE_VERIFY_MESSAGE">
+<span id="c.PSA_KEY_USAGE_VERIFY_MESSAGE"></span><h3><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_VERIFY_MESSAGE</span></code> (macro)</h3>
+<p>Permission to verify a message signature with the key.</p>
+<pre class="literal-block">
+#define <a class="reference internal" href="#c.PSA_KEY_USAGE_VERIFY_MESSAGE" title="PSA_KEY_USAGE_VERIFY_MESSAGE">PSA_KEY_USAGE_VERIFY_MESSAGE</a> ((<a class="reference internal" href="attributes.html#c.psa_key_usage_t" title="psa_key_usage_t">psa_key_usage_t</a>)0x00000800)
+</pre>
+<p>This flag allows the key to be used for a MAC verification operation or for an asymmetric message signature verification operation, if otherwise permitted by the key’s type and policy. The flag must be present on keys used with the following APIs:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../ops/macs.html#c.psa_mac_verify" title="psa_mac_verify"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_verify()</span></code></a></li>
+<li><a class="reference internal" href="../ops/macs.html#c.psa_mac_verify_setup" title="psa_mac_verify_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_verify_setup()</span></code></a></li>
+<li><a class="reference internal" href="../ops/sign.html#c.psa_verify_message" title="psa_verify_message"><code class="xref any c c-func docutils literal"><span class="pre">psa_verify_message()</span></code></a></li>
+</ul>
+<p>For a key pair, this concerns the public key.</p>
+</div>
+<div class="section" id="PSA_KEY_USAGE_SIGN_HASH">
+<span id="c.PSA_KEY_USAGE_SIGN_HASH"></span><h3><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_SIGN_HASH</span></code> (macro)</h3>
+<p>Permission to sign a message hash with the key.</p>
+<pre class="literal-block">
+#define <a class="reference internal" href="#c.PSA_KEY_USAGE_SIGN_HASH" title="PSA_KEY_USAGE_SIGN_HASH">PSA_KEY_USAGE_SIGN_HASH</a> ((<a class="reference internal" href="attributes.html#c.psa_key_usage_t" title="psa_key_usage_t">psa_key_usage_t</a>)0x00001000)
+</pre>
+<p>This flag allows the key to be used to sign a message hash as part of an asymmetric signature operation, if otherwise permitted by the key’s type and policy. The flag must be present on keys used when calling <a class="reference internal" href="../ops/sign.html#c.psa_sign_hash" title="psa_sign_hash"><code class="xref any c c-func docutils literal"><span class="pre">psa_sign_hash()</span></code></a>.</p>
+<p>This flag automatically sets <a class="reference internal" href="#c.PSA_KEY_USAGE_SIGN_MESSAGE" title="PSA_KEY_USAGE_SIGN_MESSAGE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_SIGN_MESSAGE</span></code></a>: if an application sets the flag <a class="reference internal" href="#c.PSA_KEY_USAGE_SIGN_HASH" title="PSA_KEY_USAGE_SIGN_HASH"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_SIGN_HASH</span></code></a> when creating a key, then the key always has the permissions conveyed by <a class="reference internal" href="#c.PSA_KEY_USAGE_SIGN_MESSAGE" title="PSA_KEY_USAGE_SIGN_MESSAGE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_SIGN_MESSAGE</span></code></a>, and the flag <a class="reference internal" href="#c.PSA_KEY_USAGE_SIGN_MESSAGE" title="PSA_KEY_USAGE_SIGN_MESSAGE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_SIGN_MESSAGE</span></code></a> will also be present when the application queries the usage policy of the key.</p>
+<p>For a key pair, this concerns the private key.</p>
+</div>
+<div class="section" id="PSA_KEY_USAGE_VERIFY_HASH">
+<span id="c.PSA_KEY_USAGE_VERIFY_HASH"></span><h3><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_VERIFY_HASH</span></code> (macro)</h3>
+<p>Permission to verify a message hash with the key.</p>
+<pre class="literal-block">
+#define <a class="reference internal" href="#c.PSA_KEY_USAGE_VERIFY_HASH" title="PSA_KEY_USAGE_VERIFY_HASH">PSA_KEY_USAGE_VERIFY_HASH</a> ((<a class="reference internal" href="attributes.html#c.psa_key_usage_t" title="psa_key_usage_t">psa_key_usage_t</a>)0x00002000)
+</pre>
+<p>This flag allows the key to be used to verify a message hash as part of an asymmetric signature verification operation, if otherwise permitted by the key’s type and policy. The flag must be present on keys used when calling <a class="reference internal" href="../ops/sign.html#c.psa_verify_hash" title="psa_verify_hash"><code class="xref any c c-func docutils literal"><span class="pre">psa_verify_hash()</span></code></a>.</p>
+<p>This flag automatically sets <a class="reference internal" href="#c.PSA_KEY_USAGE_VERIFY_MESSAGE" title="PSA_KEY_USAGE_VERIFY_MESSAGE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_VERIFY_MESSAGE</span></code></a>: if an application sets the flag <a class="reference internal" href="#c.PSA_KEY_USAGE_VERIFY_HASH" title="PSA_KEY_USAGE_VERIFY_HASH"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_VERIFY_HASH</span></code></a> when creating a key, then the key always has the permissions conveyed by <a class="reference internal" href="#c.PSA_KEY_USAGE_VERIFY_MESSAGE" title="PSA_KEY_USAGE_VERIFY_MESSAGE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_VERIFY_MESSAGE</span></code></a>, and the flag <a class="reference internal" href="#c.PSA_KEY_USAGE_VERIFY_MESSAGE" title="PSA_KEY_USAGE_VERIFY_MESSAGE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_VERIFY_MESSAGE</span></code></a> will also be present when the application queries the usage policy of the key.</p>
+<p>For a key pair, this concerns the public key.</p>
+</div>
+<div class="section" id="PSA_KEY_USAGE_DERIVE">
+<span id="c.PSA_KEY_USAGE_DERIVE"></span><h3><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_DERIVE</span></code> (macro)</h3>
+<p>Permission to derive other keys from this key.</p>
+<pre class="literal-block">
+#define <a class="reference internal" href="#c.PSA_KEY_USAGE_DERIVE" title="PSA_KEY_USAGE_DERIVE">PSA_KEY_USAGE_DERIVE</a> ((<a class="reference internal" href="attributes.html#c.psa_key_usage_t" title="psa_key_usage_t">psa_key_usage_t</a>)0x00004000)
+</pre>
+<p>This flag allows the key to be used for a key derivation operation or for a key agreement operation, if otherwise permitted by by the key’s type and policy. The flag must be present on keys used with the following APIs:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../ops/kdf.html#c.psa_key_derivation_input_key" title="psa_key_derivation_input_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_input_key()</span></code></a></li>
+<li><a class="reference internal" href="../ops/ka.html#c.psa_key_derivation_key_agreement" title="psa_key_derivation_key_agreement"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_key_agreement()</span></code></a></li>
+<li><a class="reference internal" href="../ops/ka.html#c.psa_raw_key_agreement" title="psa_raw_key_agreement"><code class="xref any c c-func docutils literal"><span class="pre">psa_raw_key_agreement()</span></code></a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="attribute-accessors">
+<h2>Attribute accessors</h2>
+<div class="section" id="psa_set_key_usage_flags">
+<span id="c.psa_set_key_usage_flags"></span><h3><code class="docutils literal"><span class="pre">psa_set_key_usage_flags</span></code> (function)</h3>
+<p>Declare usage flags for a key.</p>
+<pre class="literal-block">
+void <a class="reference internal" href="#c.psa_set_key_usage_flags" title="psa_set_key_usage_flags">psa_set_key_usage_flags</a>(<a class="reference internal" href="attributes.html#c.psa_key_attributes_t" title="psa_key_attributes_t">psa_key_attributes_t</a> * attributes,
+                             <a class="reference internal" href="attributes.html#c.psa_key_usage_t" title="psa_key_usage_t">psa_key_usage_t</a> usage_flags);
+</pre>
+<p class="rubric">Parameters</p>
+<dl class="docutils">
+<dt> <code class="docutils literal"><span class="pre">attributes</span></code></dt>
+<dd>The attribute object to write to.</dd>
+<dt> <code class="docutils literal"><span class="pre">usage_flags</span></code></dt>
+<dd>The usage flags to write.</dd>
+</dl>
+<p class="rubric">Returns: <code class="docutils literal"><span class="pre">void</span></code></p>
+<p class="rubric">Description</p>
+<p>Usage flags are part of a key’s usage policy. They encode what kind of operations are permitted on the key. For more details, refer to the documentation of the type <a class="reference internal" href="attributes.html#c.psa_key_usage_t" title="psa_key_usage_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_usage_t</span></code></a>.</p>
+<p>This function overwrites any usage flags previously set in <code class="docutils literal"><span class="pre">attributes</span></code>.</p>
+<div class="admonition-implementation-note admonition">
+<p class="first admonition-title">Implementation note</p>
+<p>This is a simple accessor function that is not required to validate its inputs. The following approaches can be used to provide an efficient implementation:</p>
+<ul class="last simple">
+<li>This function can be declared as <code class="docutils literal"><span class="pre">static</span></code> or <code class="docutils literal"><span class="pre">inline</span></code>, instead of using the default external linkage.</li>
+<li>This function can be provided as a function-like macro. In this form, the macro must evaluate each of its arguments exactly once, as if it was a function call.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="psa_get_key_usage_flags">
+<span id="c.psa_get_key_usage_flags"></span><h3><code class="docutils literal"><span class="pre">psa_get_key_usage_flags</span></code> (function)</h3>
+<p>Retrieve the usage flags from key attributes.</p>
+<pre class="literal-block">
+<a class="reference internal" href="attributes.html#c.psa_key_usage_t" title="psa_key_usage_t">psa_key_usage_t</a> <a class="reference internal" href="#c.psa_get_key_usage_flags" title="psa_get_key_usage_flags">psa_get_key_usage_flags</a>(const <a class="reference internal" href="attributes.html#c.psa_key_attributes_t" title="psa_key_attributes_t">psa_key_attributes_t</a> * attributes);
+</pre>
+<p class="rubric">Parameters</p>
+<dl class="docutils">
+<dt> <code class="docutils literal"><span class="pre">attributes</span></code></dt>
+<dd>The key attribute object to query.</dd>
+</dl>
+<p class="rubric">Returns: <a class="reference internal" href="attributes.html#c.psa_key_usage_t" title="psa_key_usage_t"><code class="docutils literal"><span class="pre">psa_key_usage_t</span></code></a></p>
+<p>The usage flags stored in the attribute object.</p>
+<p class="rubric">Description</p>
+<div class="admonition-implementation-note admonition">
+<p class="first admonition-title">Implementation note</p>
+<p>This is a simple accessor function that is not required to validate its inputs. The following approaches can be used to provide an efficient implementation:</p>
+<ul class="last simple">
+<li>This function can be declared as <code class="docutils literal"><span class="pre">static</span></code> or <code class="docutils literal"><span class="pre">inline</span></code>, instead of using the default external linkage.</li>
+<li>This function can be provided as a function-like macro. In this form, the macro must evaluate each of its arguments exactly once, as if it was a function call.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Key policies</a><ul>
+<li><a class="reference internal" href="#key-usage-flags">Key usage flags</a><ul>
+<li><a class="reference internal" href="#PSA_KEY_USAGE_EXPORT"><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_EXPORT</span></code> (macro)</a></li>
+<li><a class="reference internal" href="#PSA_KEY_USAGE_COPY"><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_COPY</span></code> (macro)</a></li>
+<li><a class="reference internal" href="#PSA_KEY_USAGE_CACHE"><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_CACHE</span></code> (macro)</a></li>
+<li><a class="reference internal" href="#PSA_KEY_USAGE_ENCRYPT"><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_ENCRYPT</span></code> (macro)</a></li>
+<li><a class="reference internal" href="#PSA_KEY_USAGE_DECRYPT"><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_DECRYPT</span></code> (macro)</a></li>
+<li><a class="reference internal" href="#PSA_KEY_USAGE_SIGN_MESSAGE"><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_SIGN_MESSAGE</span></code> (macro)</a></li>
+<li><a class="reference internal" href="#PSA_KEY_USAGE_VERIFY_MESSAGE"><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_VERIFY_MESSAGE</span></code> (macro)</a></li>
+<li><a class="reference internal" href="#PSA_KEY_USAGE_SIGN_HASH"><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_SIGN_HASH</span></code> (macro)</a></li>
+<li><a class="reference internal" href="#PSA_KEY_USAGE_VERIFY_HASH"><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_VERIFY_HASH</span></code> (macro)</a></li>
+<li><a class="reference internal" href="#PSA_KEY_USAGE_DERIVE"><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_DERIVE</span></code> (macro)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#attribute-accessors">Attribute accessors</a><ul>
+<li><a class="reference internal" href="#psa_set_key_usage_flags"><code class="docutils literal"><span class="pre">psa_set_key_usage_flags</span></code> (function)</a></li>
+<li><a class="reference internal" href="#psa_get_key_usage_flags"><code class="docutils literal"><span class="pre">psa_get_key_usage_flags</span></code> (function)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Key management reference</a><ul>
+      <li>Previous: <a href="types.html" title="previous chapter">Key types</a></li>
+      <li>Next: <a href="algorithms.html" title="next chapter">Algorithms</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/api/keys/usage.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy; 2019-2020, Arm Limited or its affiliates. All rights reserved.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../../_sources/api/keys/usage.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

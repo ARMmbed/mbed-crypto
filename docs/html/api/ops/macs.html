@@ -1,0 +1,791 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Message authentication codes (MAC) &#8212; PSA Crypto API 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Unauthenticated ciphers" href="ciphers.html" />
+    <link rel="prev" title="Message digests" href="hashes.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="message-authentication-codes-mac">
+<span id="macs"></span><h1>Message authentication codes (MAC)</h1>
+<div class="section" id="mac-algorithms">
+<span id="id1"></span><h2>MAC algorithms</h2>
+<div class="section" id="PSA_ALG_HMAC">
+<span id="c.PSA_ALG_HMAC"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_HMAC</span></code> (macro)</h3>
+<p>Macro to build an HMAC algorithm.</p>
+<pre class="literal-block">
+#define <a class="reference internal" href="#c.PSA_ALG_HMAC" title="PSA_ALG_HMAC">PSA_ALG_HMAC</a>(hash_alg) <em><a class="reference internal" href="../../overview/implementation.html#specification-defined-value"><span class="std std-ref">/* specification-defined value */</span></a></em>
+</pre>
+<p class="rubric">Parameters</p>
+<dl class="docutils">
+<dt> <code class="docutils literal"><span class="pre">hash_alg</span></code></dt>
+<dd>A hash algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_HASH" title="PSA_ALG_IS_HASH"><code class="docutils literal"><span class="pre">PSA_ALG_IS_HASH</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">hash_alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+</dl>
+<p class="rubric">Returns</p>
+<p>The corresponding HMAC algorithm.</p>
+<p>Unspecified if <code class="docutils literal"><span class="pre">hash_alg</span></code> is not a supported hash algorithm.</p>
+<p class="rubric">Description</p>
+<p>For example, <a class="reference internal" href="#c.PSA_ALG_HMAC" title="PSA_ALG_HMAC"><code class="docutils literal"><span class="pre">PSA_ALG_HMAC</span></code></a><code class="docutils literal"><span class="pre">(</span></code><a class="reference internal" href="hashes.html#c.PSA_ALG_SHA_256" title="PSA_ALG_SHA_256"><code class="docutils literal"><span class="pre">PSA_ALG_SHA_256</span></code></a><code class="docutils literal"><span class="pre">)</span></code> is HMAC-SHA-256.</p>
+</div>
+<div class="section" id="PSA_ALG_TRUNCATED_MAC">
+<span id="c.PSA_ALG_TRUNCATED_MAC"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_TRUNCATED_MAC</span></code> (macro)</h3>
+<p>Macro to build a truncated MAC algorithm.</p>
+<pre class="literal-block">
+#define <a class="reference internal" href="#c.PSA_ALG_TRUNCATED_MAC" title="PSA_ALG_TRUNCATED_MAC">PSA_ALG_TRUNCATED_MAC</a>(mac_alg, mac_length) \
+    <em><a class="reference internal" href="../../overview/implementation.html#specification-defined-value"><span class="std std-ref">/* specification-defined value */</span></a></em>
+</pre>
+<p class="rubric">Parameters</p>
+<dl class="docutils">
+<dt> <code class="docutils literal"><span class="pre">mac_alg</span></code></dt>
+<dd>A MAC algorithm identifier (value of type <a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_algorithm_t</span></code></a> such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_MAC" title="PSA_ALG_IS_MAC"><code class="docutils literal"><span class="pre">PSA_ALG_IS_MAC</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true). This can be a truncated or untruncated MAC algorithm.</dd>
+<dt> <code class="docutils literal"><span class="pre">mac_length</span></code></dt>
+<dd>Desired length of the truncated MAC in bytes. This must be at most the full length of the MAC and must be at least an implementation-specified minimum. The implementation-specified minimum must not be zero.</dd>
+</dl>
+<p class="rubric">Returns</p>
+<p>The corresponding MAC algorithm with the specified length.</p>
+<p>Unspecified if <code class="docutils literal"><span class="pre">alg</span></code> is not a supported MAC algorithm or if <code class="docutils literal"><span class="pre">mac_length</span></code> is too small or too large for the specified MAC algorithm.</p>
+<p class="rubric">Description</p>
+<p>A truncated MAC algorithm is identical to the corresponding MAC algorithm except that the MAC value for the truncated algorithm consists of only the first <code class="docutils literal"><span class="pre">mac_length</span></code> bytes of the MAC value for the untruncated algorithm.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This macro might allow constructing algorithm identifiers that are not valid, either because the specified length is larger than the untruncated MAC or because the specified length is smaller than permitted by the implementation.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is implementation-defined whether a truncated MAC that is truncated to the same length as the MAC of the untruncated algorithm is considered identical to the untruncated algorithm for policy comparison purposes.</p>
+</div>
+<p>The full-length MAC algorithm can be recovered using <a class="reference internal" href="#c.PSA_ALG_FULL_LENGTH_MAC" title="PSA_ALG_FULL_LENGTH_MAC"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_FULL_LENGTH_MAC()</span></code></a>.</p>
+</div>
+<div class="section" id="PSA_ALG_CBC_MAC">
+<span id="c.PSA_ALG_CBC_MAC"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_CBC_MAC</span></code> (macro)</h3>
+<p>The CBC-MAC construction over a block cipher.</p>
+<pre class="literal-block">
+#define <a class="reference internal" href="#c.PSA_ALG_CBC_MAC" title="PSA_ALG_CBC_MAC">PSA_ALG_CBC_MAC</a> ((<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x03c00100)
+</pre>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">CBC-MAC is insecure in many cases. A more secure mode, such as <a class="reference internal" href="#c.PSA_ALG_CMAC" title="PSA_ALG_CMAC"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_CMAC</span></code></a>, is recommended.</p>
+</div>
+</div>
+<div class="section" id="PSA_ALG_CMAC">
+<span id="c.PSA_ALG_CMAC"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_CMAC</span></code> (macro)</h3>
+<p>The CMAC construction over a block cipher.</p>
+<pre class="literal-block">
+#define <a class="reference internal" href="#c.PSA_ALG_CMAC" title="PSA_ALG_CMAC">PSA_ALG_CMAC</a> ((<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x03c00200)
+</pre>
+</div>
+</div>
+<div class="section" id="single-part-mac-functions">
+<h2>Single-part MAC functions</h2>
+<div class="section" id="psa_mac_compute">
+<span id="c.psa_mac_compute"></span><h3><code class="docutils literal"><span class="pre">psa_mac_compute</span></code> (function)</h3>
+<p>Calculate the message authentication code (MAC) of a message.</p>
+<pre class="literal-block">
+<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_mac_compute" title="psa_mac_compute">psa_mac_compute</a>(<a class="reference internal" href="../keys/attributes.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> key,
+                             <a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a> alg,
+                             const uint8_t * input,
+                             size_t input_length,
+                             uint8_t * mac,
+                             size_t mac_size,
+                             size_t * mac_length);
+</pre>
+<p class="rubric">Parameters</p>
+<dl class="docutils">
+<dt> <code class="docutils literal"><span class="pre">key</span></code></dt>
+<dd>Identifier of the key to use for the operation.
+It must allow the usage <a class="reference internal" href="../keys/usage.html#c.PSA_KEY_USAGE_SIGN_MESSAGE" title="PSA_KEY_USAGE_SIGN_MESSAGE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_SIGN_MESSAGE</span></code></a>.</dd>
+<dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
+<dd>The MAC algorithm to compute (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_MAC" title="PSA_ALG_IS_MAC"><code class="docutils literal"><span class="pre">PSA_ALG_IS_MAC</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dt> <code class="docutils literal"><span class="pre">input</span></code></dt>
+<dd>Buffer containing the input message.</dd>
+<dt> <code class="docutils literal"><span class="pre">input_length</span></code></dt>
+<dd>Size of the <code class="docutils literal"><span class="pre">input</span></code> buffer in bytes.</dd>
+<dt> <code class="docutils literal"><span class="pre">mac</span></code></dt>
+<dd>Buffer where the MAC value is to be written.</dd>
+<dt> <code class="docutils literal"><span class="pre">mac_size</span></code></dt>
+<dd><p class="first">Size of the <code class="docutils literal"><span class="pre">mac</span></code> buffer in bytes.
+This must be appropriate for the selected algorithm and key:</p>
+<ul class="last simple">
+<li>The exact MAC size is <a class="reference internal" href="#c.PSA_MAC_LENGTH" title="PSA_MAC_LENGTH"><code class="docutils literal"><span class="pre">PSA_MAC_LENGTH</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">key_type</span></code><code class="docutils literal"><span class="pre">,</span> </code><code class="docutils literal"><span class="pre">key_bits</span></code><code class="docutils literal"><span class="pre">,</span> </code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> where <code class="docutils literal"><span class="pre">key_type</span></code> and <code class="docutils literal"><span class="pre">key_bits</span></code> are attributes of the key used to compute the MAC.</li>
+<li><a class="reference internal" href="#c.PSA_MAC_MAX_SIZE" title="PSA_MAC_MAX_SIZE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_MAC_MAX_SIZE</span></code></a> evaluates to the maximum MAC size of any supported MAC algorithm.</li>
+</ul>
+</dd>
+<dt> <code class="docutils literal"><span class="pre">mac_length</span></code></dt>
+<dd>On success, the number of bytes that make up the MAC value.</dd>
+</dl>
+<p class="rubric">Returns: <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t"><code class="docutils literal"><span class="pre">psa_status_t</span></code></a></p>
+<dl class="docutils">
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS"><code class="docutils literal"><span class="pre">PSA_SUCCESS</span></code></a></dt>
+<dd>Success.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_HANDLE" title="PSA_ERROR_INVALID_HANDLE"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_HANDLE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_PERMITTED" title="PSA_ERROR_NOT_PERMITTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_PERMITTED</span></code></a></dt>
+<dd>The key does not have the <a class="reference internal" href="../keys/usage.html#c.PSA_KEY_USAGE_SIGN_MESSAGE" title="PSA_KEY_USAGE_SIGN_MESSAGE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_SIGN_MESSAGE</span></code></a> flag, or it does not permit the requested algorithm.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
+<dd><code class="docutils literal"><span class="pre">key</span></code> is not compatible with <code class="docutils literal"><span class="pre">alg</span></code>.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_SUPPORTED" title="PSA_ERROR_NOT_SUPPORTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_SUPPORTED</span></code></a></dt>
+<dd><code class="docutils literal"><span class="pre">alg</span></code> is not supported or is not a MAC algorithm.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BUFFER_TOO_SMALL" title="PSA_ERROR_BUFFER_TOO_SMALL"><code class="docutils literal"><span class="pre">PSA_ERROR_BUFFER_TOO_SMALL</span></code></a></dt>
+<dd>The size of the <code class="docutils literal"><span class="pre">mac</span></code> buffer is too small.
+<a class="reference internal" href="#c.PSA_MAC_LENGTH" title="PSA_MAC_LENGTH"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_MAC_LENGTH()</span></code></a> or <a class="reference internal" href="#c.PSA_MAC_MAX_SIZE" title="PSA_MAC_MAX_SIZE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_MAC_MAX_SIZE</span></code></a> can be used to determine the required buffer size.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INSUFFICIENT_MEMORY" title="PSA_ERROR_INSUFFICIENT_MEMORY"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_MEMORY</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_COMMUNICATION_FAILURE" title="PSA_ERROR_COMMUNICATION_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_COMMUNICATION_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_HARDWARE_FAILURE" title="PSA_ERROR_HARDWARE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_HARDWARE_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_CORRUPTION_DETECTED" title="PSA_ERROR_CORRUPTION_DETECTED"><code class="docutils literal"><span class="pre">PSA_ERROR_CORRUPTION_DETECTED</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_STORAGE_FAILURE" title="PSA_ERROR_STORAGE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_STORAGE_FAILURE</span></code></a></dt>
+<dd>The key could not be retrieved from storage.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_DATA_CORRUPT" title="PSA_ERROR_DATA_CORRUPT"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_CORRUPT</span></code></a></dt>
+<dd>The key could not be retrieved from storage.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_DATA_INVALID" title="PSA_ERROR_DATA_INVALID"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_INVALID</span></code></a></dt>
+<dd>The key could not be retrieved from storage.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
+<dd>The library has not been previously initialized by <a class="reference internal" href="../library/library.html#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_crypto_init()</span></code></a>. It is implementation-dependent whether a failure to initialize results in this error code.</dd>
+</dl>
+<p class="rubric">Description</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">To verify the MAC of a message against an expected value, use <a class="reference internal" href="#c.psa_mac_verify" title="psa_mac_verify"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_verify()</span></code></a> instead. Beware that comparing integrity or authenticity data such as MAC values with a function such as <code class="docutils literal"><span class="pre">memcmp()</span></code> is risky because the time taken by the comparison might leak information about the MAC value which could allow an attacker to guess a valid MAC and thereby bypass security controls.</p>
+</div>
+</div>
+<div class="section" id="psa_mac_verify">
+<span id="c.psa_mac_verify"></span><h3><code class="docutils literal"><span class="pre">psa_mac_verify</span></code> (function)</h3>
+<p>Calculate the MAC of a message and compare it with a reference value.</p>
+<pre class="literal-block">
+<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_mac_verify" title="psa_mac_verify">psa_mac_verify</a>(<a class="reference internal" href="../keys/attributes.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> key,
+                            <a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a> alg,
+                            const uint8_t * input,
+                            size_t input_length,
+                            const uint8_t * mac,
+                            size_t mac_length);
+</pre>
+<p class="rubric">Parameters</p>
+<dl class="docutils">
+<dt> <code class="docutils literal"><span class="pre">key</span></code></dt>
+<dd>Identifier of the key to use for the operation.
+It must allow the usage <a class="reference internal" href="../keys/usage.html#c.PSA_KEY_USAGE_VERIFY_MESSAGE" title="PSA_KEY_USAGE_VERIFY_MESSAGE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_VERIFY_MESSAGE</span></code></a>.</dd>
+<dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
+<dd>The MAC algorithm to compute (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_MAC" title="PSA_ALG_IS_MAC"><code class="docutils literal"><span class="pre">PSA_ALG_IS_MAC</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dt> <code class="docutils literal"><span class="pre">input</span></code></dt>
+<dd>Buffer containing the input message.</dd>
+<dt> <code class="docutils literal"><span class="pre">input_length</span></code></dt>
+<dd>Size of the <code class="docutils literal"><span class="pre">input</span></code> buffer in bytes.</dd>
+<dt> <code class="docutils literal"><span class="pre">mac</span></code></dt>
+<dd>Buffer containing the expected MAC value.</dd>
+<dt> <code class="docutils literal"><span class="pre">mac_length</span></code></dt>
+<dd>Size of the <code class="docutils literal"><span class="pre">mac</span></code> buffer in bytes.</dd>
+</dl>
+<p class="rubric">Returns: <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t"><code class="docutils literal"><span class="pre">psa_status_t</span></code></a></p>
+<dl class="docutils">
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS"><code class="docutils literal"><span class="pre">PSA_SUCCESS</span></code></a></dt>
+<dd>The expected MAC is identical to the actual MAC of the input.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_SIGNATURE" title="PSA_ERROR_INVALID_SIGNATURE"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_SIGNATURE</span></code></a></dt>
+<dd>The MAC of the message was calculated successfully, but it differs from the expected value.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_HANDLE" title="PSA_ERROR_INVALID_HANDLE"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_HANDLE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_PERMITTED" title="PSA_ERROR_NOT_PERMITTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_PERMITTED</span></code></a></dt>
+<dd>The key does not have the <a class="reference internal" href="../keys/usage.html#c.PSA_KEY_USAGE_VERIFY_MESSAGE" title="PSA_KEY_USAGE_VERIFY_MESSAGE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_VERIFY_MESSAGE</span></code></a> flag, or it does not permit the requested algorithm.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
+<dd><code class="docutils literal"><span class="pre">key</span></code> is not compatible with <code class="docutils literal"><span class="pre">alg</span></code>.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_SUPPORTED" title="PSA_ERROR_NOT_SUPPORTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_SUPPORTED</span></code></a></dt>
+<dd><code class="docutils literal"><span class="pre">alg</span></code> is not supported or is not a MAC algorithm.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INSUFFICIENT_MEMORY" title="PSA_ERROR_INSUFFICIENT_MEMORY"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_MEMORY</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_COMMUNICATION_FAILURE" title="PSA_ERROR_COMMUNICATION_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_COMMUNICATION_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_HARDWARE_FAILURE" title="PSA_ERROR_HARDWARE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_HARDWARE_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_CORRUPTION_DETECTED" title="PSA_ERROR_CORRUPTION_DETECTED"><code class="docutils literal"><span class="pre">PSA_ERROR_CORRUPTION_DETECTED</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_STORAGE_FAILURE" title="PSA_ERROR_STORAGE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_STORAGE_FAILURE</span></code></a></dt>
+<dd>The key could not be retrieved from storage.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_DATA_CORRUPT" title="PSA_ERROR_DATA_CORRUPT"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_CORRUPT</span></code></a></dt>
+<dd>The key could not be retrieved from storage.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_DATA_INVALID" title="PSA_ERROR_DATA_INVALID"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_INVALID</span></code></a></dt>
+<dd>The key could not be retrieved from storage.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
+<dd>The library has not been previously initialized by <a class="reference internal" href="../library/library.html#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_crypto_init()</span></code></a>. It is implementation-dependent whether a failure to initialize results in this error code.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="multi-part-mac-operations">
+<h2>Multi-part MAC operations</h2>
+<div class="section" id="psa_mac_operation_t">
+<span id="c.psa_mac_operation_t"></span><h3><code class="docutils literal"><span class="pre">psa_mac_operation_t</span></code> (type)</h3>
+<p>The type of the state object for multi-part MAC operations.</p>
+<pre class="literal-block">
+typedef <em><a class="reference internal" href="../../overview/implementation.html#implementation-defined-type"><span class="std std-ref">/* implementation-defined type */</span></a></em> <a class="reference internal" href="#c.psa_mac_operation_t" title="psa_mac_operation_t">psa_mac_operation_t</a>;
+</pre>
+<p>Before calling any function on a MAC operation object, the application must initialize it by any of the following means:</p>
+<ul>
+<li><p class="first">Set the object to all-bits-zero, for example:</p>
+<pre class="literal-block">
+<a class="reference internal" href="#c.psa_mac_operation_t" title="psa_mac_operation_t">psa_mac_operation_t</a> operation;
+memset(&amp;operation, 0, sizeof(operation));
+</pre>
+</li>
+<li><p class="first">Initialize the object to logical zero values by declaring the object as static or global without an explicit initializer, for example:</p>
+<pre class="literal-block">
+static <a class="reference internal" href="#c.psa_mac_operation_t" title="psa_mac_operation_t">psa_mac_operation_t</a> operation;
+</pre>
+</li>
+<li><p class="first">Initialize the object to the initializer <a class="reference internal" href="#c.PSA_MAC_OPERATION_INIT" title="PSA_MAC_OPERATION_INIT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_MAC_OPERATION_INIT</span></code></a>, for example:</p>
+<pre class="literal-block">
+<a class="reference internal" href="#c.psa_mac_operation_t" title="psa_mac_operation_t">psa_mac_operation_t</a> operation = <a class="reference internal" href="#c.PSA_MAC_OPERATION_INIT" title="PSA_MAC_OPERATION_INIT">PSA_MAC_OPERATION_INIT</a>;
+</pre>
+</li>
+<li><p class="first">Assign the result of the function <a class="reference internal" href="#c.psa_mac_operation_init" title="psa_mac_operation_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_operation_init()</span></code></a> to the object, for example:</p>
+<pre class="literal-block">
+<a class="reference internal" href="#c.psa_mac_operation_t" title="psa_mac_operation_t">psa_mac_operation_t</a> operation;
+operation = <a class="reference internal" href="#c.psa_mac_operation_init" title="psa_mac_operation_init">psa_mac_operation_init</a>();
+</pre>
+</li>
+</ul>
+<p>This is an implementation-defined type. Applications that make assumptions about the content of this object will result in in implementation-specific behavior, and are non-portable.</p>
+</div>
+<div class="section" id="PSA_MAC_OPERATION_INIT">
+<span id="c.PSA_MAC_OPERATION_INIT"></span><h3><code class="docutils literal"><span class="pre">PSA_MAC_OPERATION_INIT</span></code> (macro)</h3>
+<p>This macro returns a suitable initializer for a MAC operation object of type <a class="reference internal" href="#c.psa_mac_operation_t" title="psa_mac_operation_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_mac_operation_t</span></code></a>.</p>
+<pre class="literal-block">
+#define <a class="reference internal" href="#c.PSA_MAC_OPERATION_INIT" title="PSA_MAC_OPERATION_INIT">PSA_MAC_OPERATION_INIT</a> <em><a class="reference internal" href="../../overview/implementation.html#implementation-defined-value"><span class="std std-ref">/* implementation-defined value */</span></a></em>
+</pre>
+</div>
+<div class="section" id="psa_mac_operation_init">
+<span id="c.psa_mac_operation_init"></span><h3><code class="docutils literal"><span class="pre">psa_mac_operation_init</span></code> (function)</h3>
+<p>Return an initial value for a MAC operation object.</p>
+<pre class="literal-block">
+<a class="reference internal" href="#c.psa_mac_operation_t" title="psa_mac_operation_t">psa_mac_operation_t</a> <a class="reference internal" href="#c.psa_mac_operation_init" title="psa_mac_operation_init">psa_mac_operation_init</a>(void);
+</pre>
+<p class="rubric">Returns: <a class="reference internal" href="#c.psa_mac_operation_t" title="psa_mac_operation_t"><code class="docutils literal"><span class="pre">psa_mac_operation_t</span></code></a></p>
+</div>
+<div class="section" id="psa_mac_sign_setup">
+<span id="c.psa_mac_sign_setup"></span><h3><code class="docutils literal"><span class="pre">psa_mac_sign_setup</span></code> (function)</h3>
+<p>Set up a multi-part MAC calculation operation.</p>
+<pre class="literal-block">
+<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_mac_sign_setup" title="psa_mac_sign_setup">psa_mac_sign_setup</a>(<a class="reference internal" href="#c.psa_mac_operation_t" title="psa_mac_operation_t">psa_mac_operation_t</a> * operation,
+                                <a class="reference internal" href="../keys/attributes.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> key,
+                                <a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a> alg);
+</pre>
+<p class="rubric">Parameters</p>
+<dl class="docutils">
+<dt> <code class="docutils literal"><span class="pre">operation</span></code></dt>
+<dd>The operation object to set up. It must have been initialized as per the documentation for <a class="reference internal" href="#c.psa_mac_operation_t" title="psa_mac_operation_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_mac_operation_t</span></code></a> and not yet in use.</dd>
+<dt> <code class="docutils literal"><span class="pre">key</span></code></dt>
+<dd>Identifier of the key to use for the operation. It must remain valid until the operation terminates.
+It must allow the usage <a class="reference internal" href="../keys/usage.html#c.PSA_KEY_USAGE_SIGN_MESSAGE" title="PSA_KEY_USAGE_SIGN_MESSAGE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_SIGN_MESSAGE</span></code></a>.</dd>
+<dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
+<dd>The MAC algorithm to compute (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_MAC" title="PSA_ALG_IS_MAC"><code class="docutils literal"><span class="pre">PSA_ALG_IS_MAC</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+</dl>
+<p class="rubric">Returns: <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t"><code class="docutils literal"><span class="pre">psa_status_t</span></code></a></p>
+<dl class="docutils">
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS"><code class="docutils literal"><span class="pre">PSA_SUCCESS</span></code></a></dt>
+<dd>Success.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_HANDLE" title="PSA_ERROR_INVALID_HANDLE"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_HANDLE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_PERMITTED" title="PSA_ERROR_NOT_PERMITTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_PERMITTED</span></code></a></dt>
+<dd>The key does not have the <a class="reference internal" href="../keys/usage.html#c.PSA_KEY_USAGE_SIGN_MESSAGE" title="PSA_KEY_USAGE_SIGN_MESSAGE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_SIGN_MESSAGE</span></code></a> flag, or it does not permit the requested algorithm.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
+<dd><code class="docutils literal"><span class="pre">key</span></code> is not compatible with <code class="docutils literal"><span class="pre">alg</span></code>.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_SUPPORTED" title="PSA_ERROR_NOT_SUPPORTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_SUPPORTED</span></code></a></dt>
+<dd><code class="docutils literal"><span class="pre">alg</span></code> is not supported or is not a MAC algorithm.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INSUFFICIENT_MEMORY" title="PSA_ERROR_INSUFFICIENT_MEMORY"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_MEMORY</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_COMMUNICATION_FAILURE" title="PSA_ERROR_COMMUNICATION_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_COMMUNICATION_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_HARDWARE_FAILURE" title="PSA_ERROR_HARDWARE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_HARDWARE_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_CORRUPTION_DETECTED" title="PSA_ERROR_CORRUPTION_DETECTED"><code class="docutils literal"><span class="pre">PSA_ERROR_CORRUPTION_DETECTED</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_STORAGE_FAILURE" title="PSA_ERROR_STORAGE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_STORAGE_FAILURE</span></code></a></dt>
+<dd>The key could not be retrieved from storage.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_DATA_CORRUPT" title="PSA_ERROR_DATA_CORRUPT"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_CORRUPT</span></code></a></dt>
+<dd>The key could not be retrieved from storage.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_DATA_INVALID" title="PSA_ERROR_DATA_INVALID"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_INVALID</span></code></a></dt>
+<dd>The key could not be retrieved from storage.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
+<dd>The operation state is not valid: it must be inactive.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
+<dd>The library has not been previously initialized by <a class="reference internal" href="../library/library.html#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_crypto_init()</span></code></a>. It is implementation-dependent whether a failure to initialize results in this error code.</dd>
+</dl>
+<p class="rubric">Description</p>
+<p>This function sets up the calculation of the message authentication code (MAC) of a byte string. To verify the MAC of a message against an expected value, use <a class="reference internal" href="#c.psa_mac_verify_setup" title="psa_mac_verify_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_verify_setup()</span></code></a> instead.</p>
+<p>The sequence of operations to calculate a MAC is as follows:</p>
+<ol class="arabic simple">
+<li>Allocate an operation object which will be passed to all the functions listed here.</li>
+<li>Initialize the operation object with one of the methods described in the documentation for <a class="reference internal" href="#c.psa_mac_operation_t" title="psa_mac_operation_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_mac_operation_t</span></code></a>, e.g. <a class="reference internal" href="#c.PSA_MAC_OPERATION_INIT" title="PSA_MAC_OPERATION_INIT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_MAC_OPERATION_INIT</span></code></a>.</li>
+<li>Call <a class="reference internal" href="#c.psa_mac_sign_setup" title="psa_mac_sign_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_sign_setup()</span></code></a> to specify the algorithm and key.</li>
+<li>Call <a class="reference internal" href="#c.psa_mac_update" title="psa_mac_update"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_update()</span></code></a> zero, one or more times, passing a fragment of the message each time. The MAC that is calculated is the MAC of the concatenation of these messages in order.</li>
+<li>At the end of the message, call <a class="reference internal" href="#c.psa_mac_sign_finish" title="psa_mac_sign_finish"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_sign_finish()</span></code></a> to finish calculating the MAC value and retrieve it.</li>
+</ol>
+<p>If an error occurs at any step after a call to <a class="reference internal" href="#c.psa_mac_sign_setup" title="psa_mac_sign_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_sign_setup()</span></code></a>, the operation will need to be reset by a call to <a class="reference internal" href="#c.psa_mac_abort" title="psa_mac_abort"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_abort()</span></code></a>. The application can call <a class="reference internal" href="#c.psa_mac_abort" title="psa_mac_abort"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_abort()</span></code></a> at any time after the operation has been initialized.</p>
+<p>After a successful call to <a class="reference internal" href="#c.psa_mac_sign_setup" title="psa_mac_sign_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_sign_setup()</span></code></a>, the application must eventually terminate the operation through one of the following methods:</p>
+<ul class="simple">
+<li>A successful call to <a class="reference internal" href="#c.psa_mac_sign_finish" title="psa_mac_sign_finish"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_sign_finish()</span></code></a>.</li>
+<li>A call to <a class="reference internal" href="#c.psa_mac_abort" title="psa_mac_abort"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_abort()</span></code></a>.</li>
+</ul>
+</div>
+<div class="section" id="psa_mac_verify_setup">
+<span id="c.psa_mac_verify_setup"></span><h3><code class="docutils literal"><span class="pre">psa_mac_verify_setup</span></code> (function)</h3>
+<p>Set up a multi-part MAC verification operation.</p>
+<pre class="literal-block">
+<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_mac_verify_setup" title="psa_mac_verify_setup">psa_mac_verify_setup</a>(<a class="reference internal" href="#c.psa_mac_operation_t" title="psa_mac_operation_t">psa_mac_operation_t</a> * operation,
+                                  <a class="reference internal" href="../keys/attributes.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> key,
+                                  <a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a> alg);
+</pre>
+<p class="rubric">Parameters</p>
+<dl class="docutils">
+<dt> <code class="docutils literal"><span class="pre">operation</span></code></dt>
+<dd>The operation object to set up. It must have been initialized as per the documentation for <a class="reference internal" href="#c.psa_mac_operation_t" title="psa_mac_operation_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_mac_operation_t</span></code></a> and not yet in use.</dd>
+<dt> <code class="docutils literal"><span class="pre">key</span></code></dt>
+<dd>Identifier of the key to use for the operation. It must remain valid until the operation terminates.
+It must allow the usage <a class="reference internal" href="../keys/usage.html#c.PSA_KEY_USAGE_VERIFY_MESSAGE" title="PSA_KEY_USAGE_VERIFY_MESSAGE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_VERIFY_MESSAGE</span></code></a>.</dd>
+<dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
+<dd>The MAC algorithm to compute (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_MAC" title="PSA_ALG_IS_MAC"><code class="docutils literal"><span class="pre">PSA_ALG_IS_MAC</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+</dl>
+<p class="rubric">Returns: <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t"><code class="docutils literal"><span class="pre">psa_status_t</span></code></a></p>
+<dl class="docutils">
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS"><code class="docutils literal"><span class="pre">PSA_SUCCESS</span></code></a></dt>
+<dd>Success.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_HANDLE" title="PSA_ERROR_INVALID_HANDLE"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_HANDLE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_PERMITTED" title="PSA_ERROR_NOT_PERMITTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_PERMITTED</span></code></a></dt>
+<dd>The key does not have the <a class="reference internal" href="../keys/usage.html#c.PSA_KEY_USAGE_VERIFY_MESSAGE" title="PSA_KEY_USAGE_VERIFY_MESSAGE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_VERIFY_MESSAGE</span></code></a> flag, or it does not permit the requested algorithm.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
+<dd><code class="docutils literal"><span class="pre">key</span></code> is not compatible with <code class="docutils literal"><span class="pre">alg</span></code>.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_SUPPORTED" title="PSA_ERROR_NOT_SUPPORTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_SUPPORTED</span></code></a></dt>
+<dd><code class="docutils literal"><span class="pre">alg</span></code> is not supported or is not a MAC algorithm.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INSUFFICIENT_MEMORY" title="PSA_ERROR_INSUFFICIENT_MEMORY"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_MEMORY</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_COMMUNICATION_FAILURE" title="PSA_ERROR_COMMUNICATION_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_COMMUNICATION_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_HARDWARE_FAILURE" title="PSA_ERROR_HARDWARE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_HARDWARE_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_CORRUPTION_DETECTED" title="PSA_ERROR_CORRUPTION_DETECTED"><code class="docutils literal"><span class="pre">PSA_ERROR_CORRUPTION_DETECTED</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_STORAGE_FAILURE" title="PSA_ERROR_STORAGE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_STORAGE_FAILURE</span></code></a></dt>
+<dd>The key could not be retrieved from storage</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_DATA_CORRUPT" title="PSA_ERROR_DATA_CORRUPT"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_CORRUPT</span></code></a></dt>
+<dd>The key could not be retrieved from storage.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_DATA_INVALID" title="PSA_ERROR_DATA_INVALID"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_INVALID</span></code></a></dt>
+<dd>The key could not be retrieved from storage.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
+<dd>The operation state is not valid: it must be inactive.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
+<dd>The library has not been previously initialized by <a class="reference internal" href="../library/library.html#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_crypto_init()</span></code></a>. It is implementation-dependent whether a failure to initialize results in this error code.</dd>
+</dl>
+<p class="rubric">Description</p>
+<p>This function sets up the verification of the message authentication code (MAC) of a byte string against an expected value.</p>
+<p>The sequence of operations to verify a MAC is as follows:</p>
+<ol class="arabic simple">
+<li>Allocate an operation object which will be passed to all the functions listed here.</li>
+<li>Initialize the operation object with one of the methods described in the documentation for <a class="reference internal" href="#c.psa_mac_operation_t" title="psa_mac_operation_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_mac_operation_t</span></code></a>, e.g. <a class="reference internal" href="#c.PSA_MAC_OPERATION_INIT" title="PSA_MAC_OPERATION_INIT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_MAC_OPERATION_INIT</span></code></a>.</li>
+<li>Call <a class="reference internal" href="#c.psa_mac_verify_setup" title="psa_mac_verify_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_verify_setup()</span></code></a> to specify the algorithm and key.</li>
+<li>Call <a class="reference internal" href="#c.psa_mac_update" title="psa_mac_update"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_update()</span></code></a> zero, one or more times, passing a fragment of the message each time. The MAC that is calculated is the MAC of the concatenation of these messages in order.</li>
+<li>At the end of the message, call <a class="reference internal" href="#c.psa_mac_verify_finish" title="psa_mac_verify_finish"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_verify_finish()</span></code></a> to finish calculating the actual MAC of the message and verify it against the expected value.</li>
+</ol>
+<p>If an error occurs at any step after a call to <a class="reference internal" href="#c.psa_mac_verify_setup" title="psa_mac_verify_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_verify_setup()</span></code></a>, the operation will need to be reset by a call to <a class="reference internal" href="#c.psa_mac_abort" title="psa_mac_abort"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_abort()</span></code></a>. The application can call <a class="reference internal" href="#c.psa_mac_abort" title="psa_mac_abort"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_abort()</span></code></a> at any time after the operation has been initialized.</p>
+<p>After a successful call to <a class="reference internal" href="#c.psa_mac_verify_setup" title="psa_mac_verify_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_verify_setup()</span></code></a>, the application must eventually terminate the operation through one of the following methods:</p>
+<ul class="simple">
+<li>A successful call to <a class="reference internal" href="#c.psa_mac_verify_finish" title="psa_mac_verify_finish"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_verify_finish()</span></code></a>.</li>
+<li>A call to <a class="reference internal" href="#c.psa_mac_abort" title="psa_mac_abort"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_abort()</span></code></a>.</li>
+</ul>
+</div>
+<div class="section" id="psa_mac_update">
+<span id="c.psa_mac_update"></span><h3><code class="docutils literal"><span class="pre">psa_mac_update</span></code> (function)</h3>
+<p>Add a message fragment to a multi-part MAC operation.</p>
+<pre class="literal-block">
+<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_mac_update" title="psa_mac_update">psa_mac_update</a>(<a class="reference internal" href="#c.psa_mac_operation_t" title="psa_mac_operation_t">psa_mac_operation_t</a> * operation,
+                            const uint8_t * input,
+                            size_t input_length);
+</pre>
+<p class="rubric">Parameters</p>
+<dl class="docutils">
+<dt> <code class="docutils literal"><span class="pre">operation</span></code></dt>
+<dd>Active MAC operation.</dd>
+<dt> <code class="docutils literal"><span class="pre">input</span></code></dt>
+<dd>Buffer containing the message fragment to add to the MAC calculation.</dd>
+<dt> <code class="docutils literal"><span class="pre">input_length</span></code></dt>
+<dd>Size of the <code class="docutils literal"><span class="pre">input</span></code> buffer in bytes.</dd>
+</dl>
+<p class="rubric">Returns: <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t"><code class="docutils literal"><span class="pre">psa_status_t</span></code></a></p>
+<dl class="docutils">
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS"><code class="docutils literal"><span class="pre">PSA_SUCCESS</span></code></a></dt>
+<dd>Success.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
+<dd>The operation state is not valid: it must be active.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INSUFFICIENT_MEMORY" title="PSA_ERROR_INSUFFICIENT_MEMORY"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_MEMORY</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_COMMUNICATION_FAILURE" title="PSA_ERROR_COMMUNICATION_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_COMMUNICATION_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_HARDWARE_FAILURE" title="PSA_ERROR_HARDWARE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_HARDWARE_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_CORRUPTION_DETECTED" title="PSA_ERROR_CORRUPTION_DETECTED"><code class="docutils literal"><span class="pre">PSA_ERROR_CORRUPTION_DETECTED</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_STORAGE_FAILURE" title="PSA_ERROR_STORAGE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_STORAGE_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_DATA_CORRUPT" title="PSA_ERROR_DATA_CORRUPT"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_CORRUPT</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_DATA_INVALID" title="PSA_ERROR_DATA_INVALID"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_INVALID</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
+<dd>The library has not been previously initialized by <a class="reference internal" href="../library/library.html#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_crypto_init()</span></code></a>. It is implementation-dependent whether a failure to initialize results in this error code.</dd>
+</dl>
+<p class="rubric">Description</p>
+<p>The application must call <a class="reference internal" href="#c.psa_mac_sign_setup" title="psa_mac_sign_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_sign_setup()</span></code></a> or <a class="reference internal" href="#c.psa_mac_verify_setup" title="psa_mac_verify_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_verify_setup()</span></code></a> before calling this function.</p>
+<p>If this function returns an error status, the operation enters an error state and must be aborted by calling <a class="reference internal" href="#c.psa_mac_abort" title="psa_mac_abort"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_abort()</span></code></a>.</p>
+</div>
+<div class="section" id="psa_mac_sign_finish">
+<span id="c.psa_mac_sign_finish"></span><h3><code class="docutils literal"><span class="pre">psa_mac_sign_finish</span></code> (function)</h3>
+<p>Finish the calculation of the MAC of a message.</p>
+<pre class="literal-block">
+<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_mac_sign_finish" title="psa_mac_sign_finish">psa_mac_sign_finish</a>(<a class="reference internal" href="#c.psa_mac_operation_t" title="psa_mac_operation_t">psa_mac_operation_t</a> * operation,
+                                 uint8_t * mac,
+                                 size_t mac_size,
+                                 size_t * mac_length);
+</pre>
+<p class="rubric">Parameters</p>
+<dl class="docutils">
+<dt> <code class="docutils literal"><span class="pre">operation</span></code></dt>
+<dd>Active MAC operation.</dd>
+<dt> <code class="docutils literal"><span class="pre">mac</span></code></dt>
+<dd>Buffer where the MAC value is to be written.</dd>
+<dt> <code class="docutils literal"><span class="pre">mac_size</span></code></dt>
+<dd><p class="first">Size of the <code class="docutils literal"><span class="pre">mac</span></code> buffer in bytes.
+This must be appropriate for the selected algorithm and key:</p>
+<ul class="last simple">
+<li>The exact MAC size is <a class="reference internal" href="#c.PSA_MAC_LENGTH" title="PSA_MAC_LENGTH"><code class="docutils literal"><span class="pre">PSA_MAC_LENGTH</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">key_type</span></code><code class="docutils literal"><span class="pre">,</span> </code><code class="docutils literal"><span class="pre">key_bits</span></code><code class="docutils literal"><span class="pre">,</span> </code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> where <code class="docutils literal"><span class="pre">key_type</span></code> and <code class="docutils literal"><span class="pre">key_bits</span></code> are attributes of the key, and <code class="docutils literal"><span class="pre">alg</span></code> is the algorithm used to compute the MAC.</li>
+<li><a class="reference internal" href="#c.PSA_MAC_MAX_SIZE" title="PSA_MAC_MAX_SIZE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_MAC_MAX_SIZE</span></code></a> evaluates to the maximum MAC size of any supported MAC algorithm.</li>
+</ul>
+</dd>
+<dt> <code class="docutils literal"><span class="pre">mac_length</span></code></dt>
+<dd>On success, the number of bytes that make up the MAC value. This is always <code class="docutils literal"><span class="pre">PSA_MAC_FINAL_SIZE</span></code><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">key_type</span></code><code class="docutils literal"><span class="pre">,</span> </code><code class="docutils literal"><span class="pre">key_bits</span></code><code class="docutils literal"><span class="pre">,</span> </code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> where <code class="docutils literal"><span class="pre">key_type</span></code> and <code class="docutils literal"><span class="pre">key_bits</span></code> are the type and bit-size respectively of the key and <code class="docutils literal"><span class="pre">alg</span></code> is the MAC algorithm that is calculated.</dd>
+</dl>
+<p class="rubric">Returns: <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t"><code class="docutils literal"><span class="pre">psa_status_t</span></code></a></p>
+<dl class="docutils">
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS"><code class="docutils literal"><span class="pre">PSA_SUCCESS</span></code></a></dt>
+<dd>Success.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
+<dd>The operation state is not valid: it must be an active mac sign operation.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BUFFER_TOO_SMALL" title="PSA_ERROR_BUFFER_TOO_SMALL"><code class="docutils literal"><span class="pre">PSA_ERROR_BUFFER_TOO_SMALL</span></code></a></dt>
+<dd>The size of the <code class="docutils literal"><span class="pre">mac</span></code> buffer is too small.
+<a class="reference internal" href="#c.PSA_MAC_LENGTH" title="PSA_MAC_LENGTH"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_MAC_LENGTH()</span></code></a> or <a class="reference internal" href="#c.PSA_MAC_MAX_SIZE" title="PSA_MAC_MAX_SIZE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_MAC_MAX_SIZE</span></code></a> can be used to determine the required buffer size.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INSUFFICIENT_MEMORY" title="PSA_ERROR_INSUFFICIENT_MEMORY"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_MEMORY</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_COMMUNICATION_FAILURE" title="PSA_ERROR_COMMUNICATION_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_COMMUNICATION_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_HARDWARE_FAILURE" title="PSA_ERROR_HARDWARE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_HARDWARE_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_CORRUPTION_DETECTED" title="PSA_ERROR_CORRUPTION_DETECTED"><code class="docutils literal"><span class="pre">PSA_ERROR_CORRUPTION_DETECTED</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_STORAGE_FAILURE" title="PSA_ERROR_STORAGE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_STORAGE_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_DATA_CORRUPT" title="PSA_ERROR_DATA_CORRUPT"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_CORRUPT</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_DATA_INVALID" title="PSA_ERROR_DATA_INVALID"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_INVALID</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
+<dd>The library has not been previously initialized by <a class="reference internal" href="../library/library.html#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_crypto_init()</span></code></a>. It is implementation-dependent whether a failure to initialize results in this error code.</dd>
+</dl>
+<p class="rubric">Description</p>
+<p>The application must call <a class="reference internal" href="#c.psa_mac_sign_setup" title="psa_mac_sign_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_sign_setup()</span></code></a> before calling this function. This function calculates the MAC of the message formed by concatenating the inputs passed to preceding calls to <a class="reference internal" href="#c.psa_mac_update" title="psa_mac_update"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_update()</span></code></a>.</p>
+<p>When this function returns successfully, the operation becomes inactive. If this function returns an error status, the operation enters an error state and must be aborted by calling <a class="reference internal" href="#c.psa_mac_abort" title="psa_mac_abort"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_abort()</span></code></a>.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>It is not recommended to use this function when a specific value is expected for the MAC. Call <a class="reference internal" href="#c.psa_mac_verify_finish" title="psa_mac_verify_finish"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_verify_finish()</span></code></a> instead with the expected MAC value.</p>
+<p class="last">Comparing integrity or authenticity data such as MAC values with a function such as <code class="docutils literal"><span class="pre">memcmp()</span></code> is risky because the time taken by the comparison might leak information about the hashed data which could allow an attacker to guess a valid MAC and thereby bypass security controls.</p>
+</div>
+</div>
+<div class="section" id="psa_mac_verify_finish">
+<span id="c.psa_mac_verify_finish"></span><h3><code class="docutils literal"><span class="pre">psa_mac_verify_finish</span></code> (function)</h3>
+<p>Finish the calculation of the MAC of a message and compare it with an expected value.</p>
+<pre class="literal-block">
+<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_mac_verify_finish" title="psa_mac_verify_finish">psa_mac_verify_finish</a>(<a class="reference internal" href="#c.psa_mac_operation_t" title="psa_mac_operation_t">psa_mac_operation_t</a> * operation,
+                                   const uint8_t * mac,
+                                   size_t mac_length);
+</pre>
+<p class="rubric">Parameters</p>
+<dl class="docutils">
+<dt> <code class="docutils literal"><span class="pre">operation</span></code></dt>
+<dd>Active MAC operation.</dd>
+<dt> <code class="docutils literal"><span class="pre">mac</span></code></dt>
+<dd>Buffer containing the expected MAC value.</dd>
+<dt> <code class="docutils literal"><span class="pre">mac_length</span></code></dt>
+<dd>Size of the <code class="docutils literal"><span class="pre">mac</span></code> buffer in bytes.</dd>
+</dl>
+<p class="rubric">Returns: <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t"><code class="docutils literal"><span class="pre">psa_status_t</span></code></a></p>
+<dl class="docutils">
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS"><code class="docutils literal"><span class="pre">PSA_SUCCESS</span></code></a></dt>
+<dd>The expected MAC is identical to the actual MAC of the message.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_SIGNATURE" title="PSA_ERROR_INVALID_SIGNATURE"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_SIGNATURE</span></code></a></dt>
+<dd>The MAC of the message was calculated successfully, but it differs from the expected MAC.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
+<dd>The operation state is not valid: it must be an active mac verify operation.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INSUFFICIENT_MEMORY" title="PSA_ERROR_INSUFFICIENT_MEMORY"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_MEMORY</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_COMMUNICATION_FAILURE" title="PSA_ERROR_COMMUNICATION_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_COMMUNICATION_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_HARDWARE_FAILURE" title="PSA_ERROR_HARDWARE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_HARDWARE_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_CORRUPTION_DETECTED" title="PSA_ERROR_CORRUPTION_DETECTED"><code class="docutils literal"><span class="pre">PSA_ERROR_CORRUPTION_DETECTED</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_STORAGE_FAILURE" title="PSA_ERROR_STORAGE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_STORAGE_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_DATA_CORRUPT" title="PSA_ERROR_DATA_CORRUPT"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_CORRUPT</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_DATA_INVALID" title="PSA_ERROR_DATA_INVALID"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_INVALID</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
+<dd>The library has not been previously initialized by <a class="reference internal" href="../library/library.html#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_crypto_init()</span></code></a>. It is implementation-dependent whether a failure to initialize results in this error code.</dd>
+</dl>
+<p class="rubric">Description</p>
+<p>The application must call <a class="reference internal" href="#c.psa_mac_verify_setup" title="psa_mac_verify_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_verify_setup()</span></code></a> before calling this function. This function calculates the MAC of the message formed by concatenating the inputs passed to preceding calls to <a class="reference internal" href="#c.psa_mac_update" title="psa_mac_update"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_update()</span></code></a>. It then compares the calculated MAC with the expected MAC passed as a parameter to this function.</p>
+<p>When this function returns successfully, the operation becomes inactive. If this function returns an error status, the operation enters an error state and must be aborted by calling <a class="reference internal" href="#c.psa_mac_abort" title="psa_mac_abort"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_abort()</span></code></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Implementations must make the best effort to ensure that the comparison between the actual MAC and the expected MAC is performed in constant time.</p>
+</div>
+</div>
+<div class="section" id="psa_mac_abort">
+<span id="c.psa_mac_abort"></span><h3><code class="docutils literal"><span class="pre">psa_mac_abort</span></code> (function)</h3>
+<p>Abort a MAC operation.</p>
+<pre class="literal-block">
+<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_mac_abort" title="psa_mac_abort">psa_mac_abort</a>(<a class="reference internal" href="#c.psa_mac_operation_t" title="psa_mac_operation_t">psa_mac_operation_t</a> * operation);
+</pre>
+<p class="rubric">Parameters</p>
+<dl class="docutils">
+<dt> <code class="docutils literal"><span class="pre">operation</span></code></dt>
+<dd>Initialized MAC operation.</dd>
+</dl>
+<p class="rubric">Returns: <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t"><code class="docutils literal"><span class="pre">psa_status_t</span></code></a></p>
+<dl class="docutils">
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS"><code class="docutils literal"><span class="pre">PSA_SUCCESS</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_COMMUNICATION_FAILURE" title="PSA_ERROR_COMMUNICATION_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_COMMUNICATION_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_HARDWARE_FAILURE" title="PSA_ERROR_HARDWARE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_HARDWARE_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_CORRUPTION_DETECTED" title="PSA_ERROR_CORRUPTION_DETECTED"><code class="docutils literal"><span class="pre">PSA_ERROR_CORRUPTION_DETECTED</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
+<dd>The library has not been previously initialized by <a class="reference internal" href="../library/library.html#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_crypto_init()</span></code></a>. It is implementation-dependent whether a failure to initialize results in this error code.</dd>
+</dl>
+<p class="rubric">Description</p>
+<p>Aborting an operation frees all associated resources except for the <code class="docutils literal"><span class="pre">operation</span></code> object itself. Once aborted, the operation object can be reused for another operation by calling <a class="reference internal" href="#c.psa_mac_sign_setup" title="psa_mac_sign_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_sign_setup()</span></code></a> or <a class="reference internal" href="#c.psa_mac_verify_setup" title="psa_mac_verify_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_verify_setup()</span></code></a> again.</p>
+<p>This function can be called any time after the operation object has been initialized by one of the methods described in <a class="reference internal" href="#c.psa_mac_operation_t" title="psa_mac_operation_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_mac_operation_t</span></code></a>.</p>
+<p>In particular, calling <a class="reference internal" href="#c.psa_mac_abort" title="psa_mac_abort"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_abort()</span></code></a> after the operation has been terminated by a call to <a class="reference internal" href="#c.psa_mac_abort" title="psa_mac_abort"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_abort()</span></code></a>, <a class="reference internal" href="#c.psa_mac_sign_finish" title="psa_mac_sign_finish"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_sign_finish()</span></code></a> or <a class="reference internal" href="#c.psa_mac_verify_finish" title="psa_mac_verify_finish"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_verify_finish()</span></code></a> is safe and has no effect.</p>
+</div>
+</div>
+<div class="section" id="support-macros">
+<h2>Support macros</h2>
+<div class="section" id="PSA_ALG_IS_HMAC">
+<span id="c.PSA_ALG_IS_HMAC"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_IS_HMAC</span></code> (macro)</h3>
+<p>Whether the specified algorithm is an HMAC algorithm.</p>
+<pre class="literal-block">
+#define <a class="reference internal" href="#c.PSA_ALG_IS_HMAC" title="PSA_ALG_IS_HMAC">PSA_ALG_IS_HMAC</a>(alg) <em><a class="reference internal" href="../../overview/implementation.html#specification-defined-value"><span class="std std-ref">/* specification-defined value */</span></a></em>
+</pre>
+<p class="rubric">Parameters</p>
+<dl class="docutils">
+<dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
+<dd>An algorithm identifier (value of type <a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_algorithm_t</span></code></a>).</dd>
+</dl>
+<p class="rubric">Returns</p>
+<p><code class="docutils literal"><span class="pre">1</span></code> if <code class="docutils literal"><span class="pre">alg</span></code> is an HMAC algorithm, <code class="docutils literal"><span class="pre">0</span></code> otherwise. This macro can return either <code class="docutils literal"><span class="pre">0</span></code> or <code class="docutils literal"><span class="pre">1</span></code> if <code class="docutils literal"><span class="pre">alg</span></code> is not a supported algorithm identifier.</p>
+<p class="rubric">Description</p>
+<p>HMAC is a family of MAC algorithms that are based on a hash function.</p>
+</div>
+<div class="section" id="PSA_ALG_IS_BLOCK_CIPHER_MAC">
+<span id="c.PSA_ALG_IS_BLOCK_CIPHER_MAC"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_IS_BLOCK_CIPHER_MAC</span></code> (macro)</h3>
+<p>Whether the specified algorithm is a MAC algorithm based on a block cipher.</p>
+<pre class="literal-block">
+#define <a class="reference internal" href="#c.PSA_ALG_IS_BLOCK_CIPHER_MAC" title="PSA_ALG_IS_BLOCK_CIPHER_MAC">PSA_ALG_IS_BLOCK_CIPHER_MAC</a>(alg) <em><a class="reference internal" href="../../overview/implementation.html#specification-defined-value"><span class="std std-ref">/* specification-defined value */</span></a></em>
+</pre>
+<p class="rubric">Parameters</p>
+<dl class="docutils">
+<dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
+<dd>An algorithm identifier (value of type <a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_algorithm_t</span></code></a>).</dd>
+</dl>
+<p class="rubric">Returns</p>
+<p><code class="docutils literal"><span class="pre">1</span></code> if <code class="docutils literal"><span class="pre">alg</span></code> is a MAC algorithm based on a block cipher, <code class="docutils literal"><span class="pre">0</span></code> otherwise. This macro can return either <code class="docutils literal"><span class="pre">0</span></code> or <code class="docutils literal"><span class="pre">1</span></code> if <code class="docutils literal"><span class="pre">alg</span></code> is not a supported algorithm identifier.</p>
+</div>
+<div class="section" id="PSA_ALG_FULL_LENGTH_MAC">
+<span id="c.PSA_ALG_FULL_LENGTH_MAC"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_FULL_LENGTH_MAC</span></code> (macro)</h3>
+<p>Macro to construct the MAC algorithm with a full length MAC, from a truncated MAC algorithm.</p>
+<pre class="literal-block">
+#define <a class="reference internal" href="#c.PSA_ALG_FULL_LENGTH_MAC" title="PSA_ALG_FULL_LENGTH_MAC">PSA_ALG_FULL_LENGTH_MAC</a>(mac_alg) <em><a class="reference internal" href="../../overview/implementation.html#specification-defined-value"><span class="std std-ref">/* specification-defined value */</span></a></em>
+</pre>
+<p class="rubric">Parameters</p>
+<dl class="docutils">
+<dt> <code class="docutils literal"><span class="pre">mac_alg</span></code></dt>
+<dd>A MAC algorithm identifier (value of type <a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_algorithm_t</span></code></a> such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_MAC" title="PSA_ALG_IS_MAC"><code class="docutils literal"><span class="pre">PSA_ALG_IS_MAC</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true). This can be a truncated or untruncated MAC algorithm.</dd>
+</dl>
+<p class="rubric">Returns</p>
+<p>The corresponding MAC algorithm with a full length MAC.</p>
+<p>Unspecified if <code class="docutils literal"><span class="pre">alg</span></code> is not a supported MAC algorithm.</p>
+</div>
+<div class="section" id="PSA_MAC_LENGTH">
+<span id="c.PSA_MAC_LENGTH"></span><h3><code class="docutils literal"><span class="pre">PSA_MAC_LENGTH</span></code> (macro)</h3>
+<p>The size of the output of <a class="reference internal" href="#c.psa_mac_compute" title="psa_mac_compute"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_compute()</span></code></a> and <a class="reference internal" href="#c.psa_mac_sign_finish" title="psa_mac_sign_finish"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_sign_finish()</span></code></a>, in bytes.</p>
+<pre class="literal-block">
+#define <a class="reference internal" href="#c.PSA_MAC_LENGTH" title="PSA_MAC_LENGTH">PSA_MAC_LENGTH</a>(key_type, key_bits, alg) \
+    <em><a class="reference internal" href="../../overview/implementation.html#implementation-defined-value"><span class="std std-ref">/* implementation-defined value */</span></a></em>
+</pre>
+<p class="rubric">Parameters</p>
+<dl class="docutils">
+<dt> <code class="docutils literal"><span class="pre">key_type</span></code></dt>
+<dd>The type of the MAC key.</dd>
+<dt> <code class="docutils literal"><span class="pre">key_bits</span></code></dt>
+<dd>The size of the MAC key in bits.</dd>
+<dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
+<dd>A MAC algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_MAC" title="PSA_ALG_IS_MAC"><code class="docutils literal"><span class="pre">PSA_ALG_IS_MAC</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+</dl>
+<p class="rubric">Returns</p>
+<p>The MAC length for the specified algorithm with the specified key parameters.</p>
+<p><code class="docutils literal"><span class="pre">0</span></code> if the MAC algorithm is not recognized.</p>
+<p>Either <code class="docutils literal"><span class="pre">0</span></code> or the correct length for a MAC algorithm that the implementation recognizes, but does not support.</p>
+<p>Unspecified if the key parameters are not consistent with the algorithm.</p>
+<p class="rubric">Description</p>
+<p>This is also the MAC length that <a class="reference internal" href="#c.psa_mac_verify" title="psa_mac_verify"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_verify()</span></code></a> and <a class="reference internal" href="#c.psa_mac_verify_finish" title="psa_mac_verify_finish"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_verify_finish()</span></code></a> expects.</p>
+<p>See also <a class="reference internal" href="#c.PSA_MAC_MAX_SIZE" title="PSA_MAC_MAX_SIZE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_MAC_MAX_SIZE</span></code></a>.</p>
+</div>
+<div class="section" id="PSA_MAC_MAX_SIZE">
+<span id="c.PSA_MAC_MAX_SIZE"></span><h3><code class="docutils literal"><span class="pre">PSA_MAC_MAX_SIZE</span></code> (macro)</h3>
+<p>Maximum size of a MAC.</p>
+<pre class="literal-block">
+#define <a class="reference internal" href="#c.PSA_MAC_MAX_SIZE" title="PSA_MAC_MAX_SIZE">PSA_MAC_MAX_SIZE</a> <em><a class="reference internal" href="../../overview/implementation.html#implementation-defined-value"><span class="std std-ref">/* implementation-defined value */</span></a></em>
+</pre>
+<p>This macro must expand to a compile-time constant integer.
+It is recommended that this value is the maximum size of a MAC supported by the implementation, in bytes. The value must not be smaller than this maximum.</p>
+<p>See also <a class="reference internal" href="#c.PSA_MAC_LENGTH" title="PSA_MAC_LENGTH"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_MAC_LENGTH()</span></code></a>.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Message authentication codes (MAC)</a><ul>
+<li><a class="reference internal" href="#mac-algorithms">MAC algorithms</a><ul>
+<li><a class="reference internal" href="#PSA_ALG_HMAC"><code class="docutils literal"><span class="pre">PSA_ALG_HMAC</span></code> (macro)</a></li>
+<li><a class="reference internal" href="#PSA_ALG_TRUNCATED_MAC"><code class="docutils literal"><span class="pre">PSA_ALG_TRUNCATED_MAC</span></code> (macro)</a></li>
+<li><a class="reference internal" href="#PSA_ALG_CBC_MAC"><code class="docutils literal"><span class="pre">PSA_ALG_CBC_MAC</span></code> (macro)</a></li>
+<li><a class="reference internal" href="#PSA_ALG_CMAC"><code class="docutils literal"><span class="pre">PSA_ALG_CMAC</span></code> (macro)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#single-part-mac-functions">Single-part MAC functions</a><ul>
+<li><a class="reference internal" href="#psa_mac_compute"><code class="docutils literal"><span class="pre">psa_mac_compute</span></code> (function)</a></li>
+<li><a class="reference internal" href="#psa_mac_verify"><code class="docutils literal"><span class="pre">psa_mac_verify</span></code> (function)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#multi-part-mac-operations">Multi-part MAC operations</a><ul>
+<li><a class="reference internal" href="#psa_mac_operation_t"><code class="docutils literal"><span class="pre">psa_mac_operation_t</span></code> (type)</a></li>
+<li><a class="reference internal" href="#PSA_MAC_OPERATION_INIT"><code class="docutils literal"><span class="pre">PSA_MAC_OPERATION_INIT</span></code> (macro)</a></li>
+<li><a class="reference internal" href="#psa_mac_operation_init"><code class="docutils literal"><span class="pre">psa_mac_operation_init</span></code> (function)</a></li>
+<li><a class="reference internal" href="#psa_mac_sign_setup"><code class="docutils literal"><span class="pre">psa_mac_sign_setup</span></code> (function)</a></li>
+<li><a class="reference internal" href="#psa_mac_verify_setup"><code class="docutils literal"><span class="pre">psa_mac_verify_setup</span></code> (function)</a></li>
+<li><a class="reference internal" href="#psa_mac_update"><code class="docutils literal"><span class="pre">psa_mac_update</span></code> (function)</a></li>
+<li><a class="reference internal" href="#psa_mac_sign_finish"><code class="docutils literal"><span class="pre">psa_mac_sign_finish</span></code> (function)</a></li>
+<li><a class="reference internal" href="#psa_mac_verify_finish"><code class="docutils literal"><span class="pre">psa_mac_verify_finish</span></code> (function)</a></li>
+<li><a class="reference internal" href="#psa_mac_abort"><code class="docutils literal"><span class="pre">psa_mac_abort</span></code> (function)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#support-macros">Support macros</a><ul>
+<li><a class="reference internal" href="#PSA_ALG_IS_HMAC"><code class="docutils literal"><span class="pre">PSA_ALG_IS_HMAC</span></code> (macro)</a></li>
+<li><a class="reference internal" href="#PSA_ALG_IS_BLOCK_CIPHER_MAC"><code class="docutils literal"><span class="pre">PSA_ALG_IS_BLOCK_CIPHER_MAC</span></code> (macro)</a></li>
+<li><a class="reference internal" href="#PSA_ALG_FULL_LENGTH_MAC"><code class="docutils literal"><span class="pre">PSA_ALG_FULL_LENGTH_MAC</span></code> (macro)</a></li>
+<li><a class="reference internal" href="#PSA_MAC_LENGTH"><code class="docutils literal"><span class="pre">PSA_MAC_LENGTH</span></code> (macro)</a></li>
+<li><a class="reference internal" href="#PSA_MAC_MAX_SIZE"><code class="docutils literal"><span class="pre">PSA_MAC_MAX_SIZE</span></code> (macro)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Cryptographic operation reference</a><ul>
+      <li>Previous: <a href="hashes.html" title="previous chapter">Message digests</a></li>
+      <li>Next: <a href="ciphers.html" title="next chapter">Unauthenticated ciphers</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/api/ops/macs.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy; 2019-2020, Arm Limited or its affiliates. All rights reserved.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../../_sources/api/ops/macs.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
