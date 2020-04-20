@@ -1,0 +1,391 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Key attributes &#8212; PSA Crypto API 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Key locations" href="locations.html" />
+    <link rel="prev" title="Key management reference" href="index.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="key-attributes">
+<span id="id1"></span><h1>Key attributes</h1>
+<div class="section" id="attribute-types">
+<h2>Attribute types</h2>
+<div class="section" id="psa_key_lifetime_t">
+<span id="c.psa_key_lifetime_t"></span><h3><code class="docutils literal"><span class="pre">psa_key_lifetime_t</span></code> (type)</h3>
+<p>Encoding of key lifetimes.</p>
+<pre class="literal-block">
+typedef uint32_t <a class="reference internal" href="#c.psa_key_lifetime_t" title="psa_key_lifetime_t">psa_key_lifetime_t</a>;
+</pre>
+<p>The lifetime of a key indicates where it is stored and which application and system actions will create and destroy it.</p>
+<p>Keys with the lifetime <a class="reference internal" href="locations.html#c.PSA_KEY_LIFETIME_VOLATILE" title="PSA_KEY_LIFETIME_VOLATILE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_LIFETIME_VOLATILE</span></code></a> are automatically destroyed when the application terminates or on a power reset.</p>
+<p>Keys with a lifetime other than <a class="reference internal" href="locations.html#c.PSA_KEY_LIFETIME_VOLATILE" title="PSA_KEY_LIFETIME_VOLATILE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_LIFETIME_VOLATILE</span></code></a> are said to be <em>persistent</em>. Persistent keys are preserved if the application or the system restarts. Persistent keys have a key identifier of type <a class="reference internal" href="#c.psa_key_id_t" title="psa_key_id_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_id_t</span></code></a>.</p>
+<p>See <em><a class="reference internal" href="locations.html#key-locations"><span class="std std-ref">Key locations</span></a></em> for a list of defined key lifetimes.</p>
+</div>
+<div class="section" id="psa_key_id_t">
+<span id="c.psa_key_id_t"></span><h3><code class="docutils literal"><span class="pre">psa_key_id_t</span></code> (type)</h3>
+<p>Key identifier.</p>
+<pre class="literal-block">
+typedef uint32_t <a class="reference internal" href="#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a>;
+</pre>
+<p>A key identifiers can be a permanent name for a persistent key, or a transient reference to volatile key. The range of identifier values is divided as follows:</p>
+<dl class="docutils">
+<dt><a class="reference internal" href="locations.html#c.PSA_KEY_ID_NULL" title="PSA_KEY_ID_NULL"><code class="docutils literal"><span class="pre">PSA_KEY_ID_NULL</span></code></a></dt>
+<dd>Reserved as an invalid key identifier.</dd>
+<dt><a class="reference internal" href="locations.html#c.PSA_KEY_ID_USER_MIN" title="PSA_KEY_ID_USER_MIN"><code class="docutils literal"><span class="pre">PSA_KEY_ID_USER_MIN</span></code></a><code class="docutils literal"> <span class="pre">-</span> </code><a class="reference internal" href="locations.html#c.PSA_KEY_ID_USER_MAX" title="PSA_KEY_ID_USER_MAX"><code class="docutils literal"><span class="pre">PSA_KEY_ID_USER_MAX</span></code></a></dt>
+<dd>Applications can freely choose persistent key identifiers in this range.</dd>
+<dt><a class="reference internal" href="locations.html#c.PSA_KEY_ID_VENDOR_MIN" title="PSA_KEY_ID_VENDOR_MIN"><code class="docutils literal"><span class="pre">PSA_KEY_ID_VENDOR_MIN</span></code></a><code class="docutils literal"> <span class="pre">-</span> </code><a class="reference internal" href="locations.html#c.PSA_KEY_ID_VENDOR_MAX" title="PSA_KEY_ID_VENDOR_MAX"><code class="docutils literal"><span class="pre">PSA_KEY_ID_VENDOR_MAX</span></code></a></dt>
+<dd>Implementations can define additional persistent key identifiers in this
+range, and allocate key identifiers for volatile keys from this range.</dd>
+</dl>
+<p>Key identifiers outside these ranges are reserved for future use.</p>
+<p>See also <em><a class="reference internal" href="../../overview/functionality.html#key-ids"><span class="std std-ref">Key identifiers</span></a></em>.</p>
+</div>
+<div class="section" id="psa_key_type_t">
+<span id="c.psa_key_type_t"></span><h3><code class="docutils literal"><span class="pre">psa_key_type_t</span></code> (type)</h3>
+<p>Encoding of a key type.</p>
+<pre class="literal-block">
+typedef uint16_t <a class="reference internal" href="#c.psa_key_type_t" title="psa_key_type_t">psa_key_type_t</a>;
+</pre>
+<p>This is a structured bitfield that identifies the category and type of key. The range of key type values is divided as follows:</p>
+<dl class="docutils">
+<dt><a class="reference internal" href="types.html#c.PSA_KEY_TYPE_NONE" title="PSA_KEY_TYPE_NONE"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_NONE</span></code></a><code class="docutils literal"> <span class="pre">==</span> <span class="pre">0</span></code></dt>
+<dd>Reserved as an invalid key type.</dd>
+<dt><code class="docutils literal"><span class="pre">0</span></code><code class="docutils literal"><span class="pre">x0001</span></code><code class="docutils literal"> <span class="pre">-</span> <span class="pre">0</span></code><code class="docutils literal"><span class="pre">x7fff</span></code></dt>
+<dd>Specification-defined key types.
+Key types defined by this standard always have bit 15 clear.
+Unallocated key type values in this range are reserved for future use.</dd>
+<dt><code class="docutils literal"><span class="pre">0</span></code><code class="docutils literal"><span class="pre">x8000</span></code><code class="docutils literal"> <span class="pre">-</span> <span class="pre">0</span></code><code class="docutils literal"><span class="pre">xffff</span></code></dt>
+<dd>Implementation-defined key types.
+Implementations that define additional key types must use an encoding with bit 15 set.
+The related support macros will be easier to write if these key encodings also respect the bitwise structure used by standard encodings.</dd>
+</dl>
+<p>See <em><a class="reference internal" href="types.html#key-types"><span class="std std-ref">Key types</span></a></em> for a complete list of key types.</p>
+</div>
+<div class="section" id="psa_key_usage_t">
+<span id="c.psa_key_usage_t"></span><h3><code class="docutils literal"><span class="pre">psa_key_usage_t</span></code> (type)</h3>
+<p>Encoding of permitted usage on a key.</p>
+<pre class="literal-block">
+typedef uint32_t <a class="reference internal" href="#c.psa_key_usage_t" title="psa_key_usage_t">psa_key_usage_t</a>;
+</pre>
+<p>See <em><a class="reference internal" href="usage.html#key-usage"><span class="std std-ref">Key policies</span></a></em> for a full list of key usage policies.</p>
+</div>
+<div class="section" id="psa_algorithm_t">
+<span id="c.psa_algorithm_t"></span><h3><code class="docutils literal"><span class="pre">psa_algorithm_t</span></code> (type)</h3>
+<p>Encoding of a cryptographic algorithm.</p>
+<pre class="literal-block">
+typedef uint32_t <a class="reference internal" href="#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>;
+</pre>
+<p>This is a structured bitfield that identifies the category and type of algorithm. The range of algorithm identifier values is divided as follows:</p>
+<dl class="docutils">
+<dt><code class="docutils literal"><span class="pre">0</span></code><code class="docutils literal"><span class="pre">x00000000</span></code></dt>
+<dd>Reserved as an invalid algorithm identifier.</dd>
+<dt><code class="docutils literal"><span class="pre">0</span></code><code class="docutils literal"><span class="pre">x00000001</span></code><code class="docutils literal"> <span class="pre">-</span> <span class="pre">0</span></code><code class="docutils literal"><span class="pre">x7fffffff</span></code></dt>
+<dd>Specification-defined algorithm identifiers.
+Algorithm identifiers defined by this standard always have bit 31 clear.
+Unallocated algorithm identifier values in this range are reserved for future use.</dd>
+<dt><code class="docutils literal"><span class="pre">0</span></code><code class="docutils literal"><span class="pre">x80000000</span></code><code class="docutils literal"> <span class="pre">-</span> <span class="pre">0</span></code><code class="docutils literal"><span class="pre">xffffffff</span></code></dt>
+<dd>Implementation-defined algorithm identifiers.
+Implementations that define additional algorithms must use an encoding with bit 31 set.
+The related support macros will be easier to write if these algorithm identifier encodings also respect the bitwise structure used by standard encodings.</dd>
+</dl>
+<p>For algorithms that can be applied to multiple key types, this identifier does not encode the key type. For example, for symmetric ciphers based on a block cipher, <a class="reference internal" href="#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_algorithm_t</span></code></a> encodes the block cipher mode and the padding mode while the block cipher itself is encoded via <a class="reference internal" href="#c.psa_key_type_t" title="psa_key_type_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_type_t</span></code></a>.</p>
+<p>See <em><a class="reference internal" href="algorithms.html#algorithms"><span class="std std-ref">Algorithms</span></a></em> for a full list of algorithm identifiers.</p>
+</div>
+</div>
+<div class="section" id="managing-attributes">
+<h2>Managing attributes</h2>
+<div class="section" id="psa_key_attributes_t">
+<span id="c.psa_key_attributes_t"></span><h3><code class="docutils literal"><span class="pre">psa_key_attributes_t</span></code> (type)</h3>
+<p>The type of an object containing key attributes.</p>
+<pre class="literal-block">
+typedef <em><a class="reference internal" href="../../overview/implementation.html#implementation-defined-type"><span class="std std-ref">/* implementation-defined type */</span></a></em> <a class="reference internal" href="#c.psa_key_attributes_t" title="psa_key_attributes_t">psa_key_attributes_t</a>;
+</pre>
+<p>This is the object that represents the metadata of a key object. Metadata that can be stored in attributes includes:</p>
+<ul class="simple">
+<li>The location of the key in storage, indicated by its key identifier and its lifetime.</li>
+<li>The key’s policy, comprising usage flags and a specification of the permitted algorithm(s).</li>
+<li>Information about the key itself: the key type and its size.</li>
+<li>Implementations can define additional attributes.</li>
+</ul>
+<p>The actual key material is not considered an attribute of a key. Key attributes do not contain information that is generally considered highly confidential.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Implementations are recommended to define the attribute object as a simple data structure, with fields corresponding to the individual key attributes. In such an implementation, each function <code class="docutils literal"><span class="pre">psa_set_key_xxx()</span></code> sets a field and the corresponding function <code class="docutils literal"><span class="pre">psa_get_key_xxx()</span></code> retrieves the value of the field.</p>
+<p class="last">An implementations can report attribute values that are equivalent to the original one, but have a different encoding. For example, an implementation can use a more compact representation for types where many bit-patterns are invalid or not supported, and store all values that it does not support as a special marker value. In such an implementation, after setting an invalid value, the corresponding get function returns an invalid value which might not be the one that was originally stored.</p>
+</div>
+<p>This is an implementation-defined type. Applications that make assumptions about the content of this object will result in in implementation-specific behavior, and are non-portable.</p>
+<p>An attribute object can contain references to auxiliary resources, for example pointers to allocated memory or indirect references to pre-calculated values. In order to free such resources, the application must call <a class="reference internal" href="#c.psa_reset_key_attributes" title="psa_reset_key_attributes"><code class="xref any c c-func docutils literal"><span class="pre">psa_reset_key_attributes()</span></code></a>. As an exception, calling <a class="reference internal" href="#c.psa_reset_key_attributes" title="psa_reset_key_attributes"><code class="xref any c c-func docutils literal"><span class="pre">psa_reset_key_attributes()</span></code></a> on an attribute object is optional if the object has only been modified by the following functions since it was initialized or last reset with <a class="reference internal" href="#c.psa_reset_key_attributes" title="psa_reset_key_attributes"><code class="xref any c c-func docutils literal"><span class="pre">psa_reset_key_attributes()</span></code></a>:</p>
+<ul class="simple">
+<li><a class="reference internal" href="locations.html#c.psa_set_key_id" title="psa_set_key_id"><code class="xref any c c-func docutils literal"><span class="pre">psa_set_key_id()</span></code></a></li>
+<li><a class="reference internal" href="locations.html#c.psa_set_key_lifetime" title="psa_set_key_lifetime"><code class="xref any c c-func docutils literal"><span class="pre">psa_set_key_lifetime()</span></code></a></li>
+<li><a class="reference internal" href="types.html#c.psa_set_key_type" title="psa_set_key_type"><code class="xref any c c-func docutils literal"><span class="pre">psa_set_key_type()</span></code></a></li>
+<li><a class="reference internal" href="types.html#c.psa_set_key_bits" title="psa_set_key_bits"><code class="xref any c c-func docutils literal"><span class="pre">psa_set_key_bits()</span></code></a></li>
+<li><a class="reference internal" href="usage.html#c.psa_set_key_usage_flags" title="psa_set_key_usage_flags"><code class="xref any c c-func docutils literal"><span class="pre">psa_set_key_usage_flags()</span></code></a></li>
+<li><a class="reference internal" href="algorithms.html#c.psa_set_key_algorithm" title="psa_set_key_algorithm"><code class="xref any c c-func docutils literal"><span class="pre">psa_set_key_algorithm()</span></code></a></li>
+</ul>
+<p>Before calling any function on a key attribute object, the application must initialize it by any of the following means:</p>
+<ul>
+<li><p class="first">Set the object to all-bits-zero, for example:</p>
+<pre class="literal-block">
+<a class="reference internal" href="#c.psa_key_attributes_t" title="psa_key_attributes_t">psa_key_attributes_t</a> attributes;
+memset(&amp;attributes, 0, sizeof(attributes));
+</pre>
+</li>
+<li><p class="first">Initialize the object to logical zero values by declaring the object as static or global without an explicit initializer, for example:</p>
+<pre class="literal-block">
+static <a class="reference internal" href="#c.psa_key_attributes_t" title="psa_key_attributes_t">psa_key_attributes_t</a> attributes;
+</pre>
+</li>
+<li><p class="first">Initialize the object to the initializer <a class="reference internal" href="#c.PSA_KEY_ATTRIBUTES_INIT" title="PSA_KEY_ATTRIBUTES_INIT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_ATTRIBUTES_INIT</span></code></a>, for example:</p>
+<pre class="literal-block">
+<a class="reference internal" href="#c.psa_key_attributes_t" title="psa_key_attributes_t">psa_key_attributes_t</a> attributes = <a class="reference internal" href="#c.PSA_KEY_ATTRIBUTES_INIT" title="PSA_KEY_ATTRIBUTES_INIT">PSA_KEY_ATTRIBUTES_INIT</a>;
+</pre>
+</li>
+<li><p class="first">Assign the result of the function <a class="reference internal" href="#c.psa_key_attributes_init" title="psa_key_attributes_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_attributes_init()</span></code></a> to the object, for example:</p>
+<pre class="literal-block">
+<a class="reference internal" href="#c.psa_key_attributes_t" title="psa_key_attributes_t">psa_key_attributes_t</a> attributes;
+attributes = <a class="reference internal" href="#c.psa_key_attributes_init" title="psa_key_attributes_init">psa_key_attributes_init</a>();
+</pre>
+</li>
+</ul>
+<p>A freshly initialized attribute object contains the following values:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="85%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Attribute</th>
+<th class="head">Value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>lifetime</td>
+<td><a class="reference internal" href="locations.html#c.PSA_KEY_LIFETIME_VOLATILE" title="PSA_KEY_LIFETIME_VOLATILE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_LIFETIME_VOLATILE</span></code></a>.</td>
+</tr>
+<tr class="row-odd"><td>key identifier</td>
+<td><a class="reference internal" href="locations.html#c.PSA_KEY_ID_NULL" title="PSA_KEY_ID_NULL"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_ID_NULL</span></code></a> - which is not a valid key identifier.</td>
+</tr>
+<tr class="row-even"><td>type</td>
+<td><a class="reference internal" href="types.html#c.PSA_KEY_TYPE_NONE" title="PSA_KEY_TYPE_NONE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_NONE</span></code></a> - meaning that the type is unspecified.</td>
+</tr>
+<tr class="row-odd"><td>key size</td>
+<td><code class="docutils literal"><span class="pre">0</span></code> - meaning that the size is unspecified.</td>
+</tr>
+<tr class="row-even"><td>usage flags</td>
+<td><code class="docutils literal"><span class="pre">0</span></code> - which allows no usage except exporting a public key.</td>
+</tr>
+<tr class="row-odd"><td>algorithm</td>
+<td><a class="reference internal" href="algorithms.html#c.PSA_ALG_NONE" title="PSA_ALG_NONE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_NONE</span></code></a> - which does not allow cryptographic usage, but allows exporting.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Usage</p>
+<p>A typical sequence to create a key is as follows:</p>
+<ol class="arabic simple">
+<li>Create and initialize an attribute object.</li>
+<li>If the key is persistent, call <a class="reference internal" href="locations.html#c.psa_set_key_id" title="psa_set_key_id"><code class="xref any c c-func docutils literal"><span class="pre">psa_set_key_id()</span></code></a>. Also call <a class="reference internal" href="locations.html#c.psa_set_key_lifetime" title="psa_set_key_lifetime"><code class="xref any c c-func docutils literal"><span class="pre">psa_set_key_lifetime()</span></code></a> to place the key in a non-default location.</li>
+<li>Set the key policy with <a class="reference internal" href="usage.html#c.psa_set_key_usage_flags" title="psa_set_key_usage_flags"><code class="xref any c c-func docutils literal"><span class="pre">psa_set_key_usage_flags()</span></code></a> and <a class="reference internal" href="algorithms.html#c.psa_set_key_algorithm" title="psa_set_key_algorithm"><code class="xref any c c-func docutils literal"><span class="pre">psa_set_key_algorithm()</span></code></a>.</li>
+<li>Set the key type with <a class="reference internal" href="types.html#c.psa_set_key_type" title="psa_set_key_type"><code class="xref any c c-func docutils literal"><span class="pre">psa_set_key_type()</span></code></a>. Skip this step if copying an existing key with <a class="reference internal" href="management.html#c.psa_copy_key" title="psa_copy_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_copy_key()</span></code></a>.</li>
+<li>When generating a random key with <a class="reference internal" href="management.html#c.psa_generate_key" title="psa_generate_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_generate_key()</span></code></a> or deriving a key with <a class="reference internal" href="../ops/kdf.html#c.psa_key_derivation_output_key" title="psa_key_derivation_output_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_output_key()</span></code></a>, set the desired key size with <a class="reference internal" href="types.html#c.psa_set_key_bits" title="psa_set_key_bits"><code class="xref any c c-func docutils literal"><span class="pre">psa_set_key_bits()</span></code></a>.</li>
+<li>Call a key creation function: <a class="reference internal" href="management.html#c.psa_import_key" title="psa_import_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_import_key()</span></code></a>, <a class="reference internal" href="management.html#c.psa_generate_key" title="psa_generate_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_generate_key()</span></code></a>, <a class="reference internal" href="../ops/kdf.html#c.psa_key_derivation_output_key" title="psa_key_derivation_output_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_output_key()</span></code></a> or <a class="reference internal" href="management.html#c.psa_copy_key" title="psa_copy_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_copy_key()</span></code></a>. This function reads the attribute object, creates a key with these attributes, and outputs an identifier for the newly created key.</li>
+<li>Optionally call <a class="reference internal" href="#c.psa_reset_key_attributes" title="psa_reset_key_attributes"><code class="xref any c c-func docutils literal"><span class="pre">psa_reset_key_attributes()</span></code></a>, now that the attribute object is no longer needed. Currently this call is not required as the attributes defined in this specification do not require additional resources beyond the object itself.</li>
+</ol>
+<p>A typical sequence to query a key’s attributes is as follows:</p>
+<ol class="arabic simple">
+<li>Call <a class="reference internal" href="#c.psa_get_key_attributes" title="psa_get_key_attributes"><code class="xref any c c-func docutils literal"><span class="pre">psa_get_key_attributes()</span></code></a>.</li>
+<li>Call <code class="docutils literal"><span class="pre">psa_get_key_xxx()</span></code> functions to retrieve the required attribute(s).</li>
+<li>Call <a class="reference internal" href="#c.psa_reset_key_attributes" title="psa_reset_key_attributes"><code class="xref any c c-func docutils literal"><span class="pre">psa_reset_key_attributes()</span></code></a> to free any resources that can be used by the attribute object.</li>
+</ol>
+<p>Once a key has been created, it is impossible to change its attributes.</p>
+</div>
+<div class="section" id="PSA_KEY_ATTRIBUTES_INIT">
+<span id="c.PSA_KEY_ATTRIBUTES_INIT"></span><h3><code class="docutils literal"><span class="pre">PSA_KEY_ATTRIBUTES_INIT</span></code> (macro)</h3>
+<p>This macro returns a suitable initializer for a key attribute object of type <a class="reference internal" href="#c.psa_key_attributes_t" title="psa_key_attributes_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_attributes_t</span></code></a>.</p>
+<pre class="literal-block">
+#define <a class="reference internal" href="#c.PSA_KEY_ATTRIBUTES_INIT" title="PSA_KEY_ATTRIBUTES_INIT">PSA_KEY_ATTRIBUTES_INIT</a> <em><a class="reference internal" href="../../overview/implementation.html#implementation-defined-value"><span class="std std-ref">/* implementation-defined value */</span></a></em>
+</pre>
+</div>
+<div class="section" id="psa_key_attributes_init">
+<span id="c.psa_key_attributes_init"></span><h3><code class="docutils literal"><span class="pre">psa_key_attributes_init</span></code> (function)</h3>
+<p>Return an initial value for a key attribute object.</p>
+<pre class="literal-block">
+<a class="reference internal" href="#c.psa_key_attributes_t" title="psa_key_attributes_t">psa_key_attributes_t</a> <a class="reference internal" href="#c.psa_key_attributes_init" title="psa_key_attributes_init">psa_key_attributes_init</a>(void);
+</pre>
+<p class="rubric">Returns: <a class="reference internal" href="#c.psa_key_attributes_t" title="psa_key_attributes_t"><code class="docutils literal"><span class="pre">psa_key_attributes_t</span></code></a></p>
+</div>
+<div class="section" id="psa_get_key_attributes">
+<span id="c.psa_get_key_attributes"></span><h3><code class="docutils literal"><span class="pre">psa_get_key_attributes</span></code> (function)</h3>
+<p>Retrieve the attributes of a key.</p>
+<pre class="literal-block">
+<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_get_key_attributes" title="psa_get_key_attributes">psa_get_key_attributes</a>(<a class="reference internal" href="#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> key,
+                                    <a class="reference internal" href="#c.psa_key_attributes_t" title="psa_key_attributes_t">psa_key_attributes_t</a> * attributes);
+</pre>
+<p class="rubric">Parameters</p>
+<dl class="docutils">
+<dt> <code class="docutils literal"><span class="pre">key</span></code></dt>
+<dd>Identifier of the key to query.</dd>
+<dt> <code class="docutils literal"><span class="pre">attributes</span></code></dt>
+<dd>On entry, <code class="docutils literal"><span class="pre">*attributes</span></code> must be in a valid state. On successful return, it contains the attributes of the key. On failure, it is equivalent to a freshly-initialized attribute object.</dd>
+</dl>
+<p class="rubric">Returns: <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t"><code class="docutils literal"><span class="pre">psa_status_t</span></code></a></p>
+<dl class="docutils">
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS"><code class="docutils literal"><span class="pre">PSA_SUCCESS</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_HANDLE" title="PSA_ERROR_INVALID_HANDLE"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_HANDLE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INSUFFICIENT_MEMORY" title="PSA_ERROR_INSUFFICIENT_MEMORY"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_MEMORY</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_COMMUNICATION_FAILURE" title="PSA_ERROR_COMMUNICATION_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_COMMUNICATION_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_CORRUPTION_DETECTED" title="PSA_ERROR_CORRUPTION_DETECTED"><code class="docutils literal"><span class="pre">PSA_ERROR_CORRUPTION_DETECTED</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_STORAGE_FAILURE" title="PSA_ERROR_STORAGE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_STORAGE_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_DATA_CORRUPT" title="PSA_ERROR_DATA_CORRUPT"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_CORRUPT</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_DATA_INVALID" title="PSA_ERROR_DATA_INVALID"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_INVALID</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
+<dd>The library has not been previously initialized by <a class="reference internal" href="../library/library.html#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_crypto_init()</span></code></a>. It is implementation-dependent whether a failure to initialize results in this error code.</dd>
+</dl>
+<p class="rubric">Description</p>
+<p>This function first resets the attribute object as with <a class="reference internal" href="#c.psa_reset_key_attributes" title="psa_reset_key_attributes"><code class="xref any c c-func docutils literal"><span class="pre">psa_reset_key_attributes()</span></code></a>. It then copies the attributes of the given key into the given attribute object.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This function clears any previous content from the attribute object and therefore expects it to be in a valid state. In particular, if this function is called on a newly allocated attribute object, the attribute object  must be initialized before calling this function.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This function might allocate memory or other resources. Once this function has been called on an attribute object, <a class="reference internal" href="#c.psa_reset_key_attributes" title="psa_reset_key_attributes"><code class="xref any c c-func docutils literal"><span class="pre">psa_reset_key_attributes()</span></code></a> must be called to free these resources.</p>
+</div>
+</div>
+<div class="section" id="psa_reset_key_attributes">
+<span id="c.psa_reset_key_attributes"></span><h3><code class="docutils literal"><span class="pre">psa_reset_key_attributes</span></code> (function)</h3>
+<p>Reset a key attribute object to a freshly initialized state.</p>
+<pre class="literal-block">
+void <a class="reference internal" href="#c.psa_reset_key_attributes" title="psa_reset_key_attributes">psa_reset_key_attributes</a>(<a class="reference internal" href="#c.psa_key_attributes_t" title="psa_key_attributes_t">psa_key_attributes_t</a> * attributes);
+</pre>
+<p class="rubric">Parameters</p>
+<dl class="docutils">
+<dt> <code class="docutils literal"><span class="pre">attributes</span></code></dt>
+<dd>The attribute object to reset.</dd>
+</dl>
+<p class="rubric">Returns: <code class="docutils literal"><span class="pre">void</span></code></p>
+<p class="rubric">Description</p>
+<p>The attribute object must be initialized as described in the documentation of the type <a class="reference internal" href="#c.psa_key_attributes_t" title="psa_key_attributes_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_attributes_t</span></code></a> before calling this function. Once the object has been initialized, this function can be called at any time.</p>
+<p>This function frees any auxiliary resources that the object might contain.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Key attributes</a><ul>
+<li><a class="reference internal" href="#attribute-types">Attribute types</a><ul>
+<li><a class="reference internal" href="#psa_key_lifetime_t"><code class="docutils literal"><span class="pre">psa_key_lifetime_t</span></code> (type)</a></li>
+<li><a class="reference internal" href="#psa_key_id_t"><code class="docutils literal"><span class="pre">psa_key_id_t</span></code> (type)</a></li>
+<li><a class="reference internal" href="#psa_key_type_t"><code class="docutils literal"><span class="pre">psa_key_type_t</span></code> (type)</a></li>
+<li><a class="reference internal" href="#psa_key_usage_t"><code class="docutils literal"><span class="pre">psa_key_usage_t</span></code> (type)</a></li>
+<li><a class="reference internal" href="#psa_algorithm_t"><code class="docutils literal"><span class="pre">psa_algorithm_t</span></code> (type)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#managing-attributes">Managing attributes</a><ul>
+<li><a class="reference internal" href="#psa_key_attributes_t"><code class="docutils literal"><span class="pre">psa_key_attributes_t</span></code> (type)</a></li>
+<li><a class="reference internal" href="#PSA_KEY_ATTRIBUTES_INIT"><code class="docutils literal"><span class="pre">PSA_KEY_ATTRIBUTES_INIT</span></code> (macro)</a></li>
+<li><a class="reference internal" href="#psa_key_attributes_init"><code class="docutils literal"><span class="pre">psa_key_attributes_init</span></code> (function)</a></li>
+<li><a class="reference internal" href="#psa_get_key_attributes"><code class="docutils literal"><span class="pre">psa_get_key_attributes</span></code> (function)</a></li>
+<li><a class="reference internal" href="#psa_reset_key_attributes"><code class="docutils literal"><span class="pre">psa_reset_key_attributes</span></code> (function)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Key management reference</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Key management reference</a></li>
+      <li>Next: <a href="locations.html" title="next chapter">Key locations</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/api/keys/attributes.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy; 2019-2020, Arm Limited or its affiliates. All rights reserved.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../../_sources/api/keys/attributes.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -4,731 +4,302 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>PSA Cryptography API Specification &#8212; psa_crypto_api 1.0 beta3 documentation</title>
+    <title>PSA Cryptography API 1.0 &#8212; PSA Crypto API 1.0.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Introduction" href="general.html" />
+    <link rel="next" title="Introduction" href="overview/intro.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
-  
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head><body>
+  </head>
+  <body>
   
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          
-
           <div class="body" role="main">
             
-  <div class="section" id="psa-cryptography-api-specification">
-<h1>PSA Cryptography API Specification</h1>
+  <div class="section" id="psa-cryptography-api-version">
+<h1>PSA Cryptography API 1.0</h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="general.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="general.html#design-goals">Design goals</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="general.html#suitable-for-constrained-devices">Suitable for constrained devices</a></li>
-<li class="toctree-l2"><a class="reference internal" href="general.html#a-keystore-interface">A keystore interface</a></li>
-<li class="toctree-l2"><a class="reference internal" href="general.html#optional-isolation">Optional isolation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="general.html#choice-of-algorithms">Choice of algorithms</a></li>
-<li class="toctree-l2"><a class="reference internal" href="general.html#ease-of-use">Ease of use</a></li>
-<li class="toctree-l2"><a class="reference internal" href="general.html#example-use-cases">Example use cases</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="general.html#network-security-tls">Network Security (TLS)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="general.html#secure-storage">Secure Storage</a></li>
-<li class="toctree-l3"><a class="reference internal" href="general.html#network-credentials">Network Credentials</a></li>
-<li class="toctree-l3"><a class="reference internal" href="general.html#device-pairing">Device Pairing</a></li>
-<li class="toctree-l3"><a class="reference internal" href="general.html#secure-boot">Secure Boot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="general.html#attestation">Attestation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="general.html#factory-provisioning">Factory Provisioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview/intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview/goals.html">Design goals</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview/goals.html#suitable-for-constrained-devices">Suitable for constrained devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview/goals.html#a-keystore-interface">A keystore interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview/goals.html#optional-isolation">Optional isolation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview/goals.html#choice-of-algorithms">Choice of algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview/goals.html#ease-of-use">Ease of use</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview/goals.html#example-use-cases">Example use cases</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="overview/goals.html#network-security-tls">Network Security (TLS)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/goals.html#secure-storage">Secure Storage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/goals.html#network-credentials">Network Credentials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/goals.html#device-pairing">Device Pairing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/goals.html#secure-boot">Secure Boot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/goals.html#attestation">Attestation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/goals.html#factory-provisioning">Factory Provisioning</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="general.html#functionality-overview">Functionality overview</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="general.html#library-management">Library management</a></li>
-<li class="toctree-l2"><a class="reference internal" href="general.html#key-management">Key management</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="general.html#volatile-keys">Volatile keys</a></li>
-<li class="toctree-l3"><a class="reference internal" href="general.html#persistent-keys">Persistent keys</a></li>
-<li class="toctree-l3"><a class="reference internal" href="general.html#recommendations-of-minimum-standards-for-key-management">Recommendations of minimum standards for key management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview/functionality.html">Functionality overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview/functionality.html#library-management">Library management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview/functionality.html#key-management">Key management</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="overview/functionality.html#volatile-keys">Volatile keys</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/functionality.html#persistent-keys">Persistent keys</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/functionality.html#key-identifiers">Key identifiers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/functionality.html#recommendations-of-minimum-standards-for-key-management">Recommendations of minimum standards for key management</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="general.html#usage-policies">Usage policies</a></li>
-<li class="toctree-l2"><a class="reference internal" href="general.html#symmetric-cryptography">Symmetric cryptography</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="general.html#multipart-operations">Multipart operations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="general.html#authenticated-encryption">Authenticated encryption</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview/functionality.html#usage-policies">Usage policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview/functionality.html#symmetric-cryptography">Symmetric cryptography</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="overview/functionality.html#single-part-functions">Single-part Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/functionality.html#multi-part-operations">Multi-part operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/functionality.html#message-digests-hashes">Message digests (Hashes)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/functionality.html#message-authentication-codes-macs">Message authentication codes (MACs)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/functionality.html#encryption-and-decryption">Encryption and decryption</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/functionality.html#authenticated-encryption-aead">Authenticated encryption (AEAD)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/functionality.html#key-derivation">Key derivation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/functionality.html#example-of-the-symmetric-cryptography-api">Example of the symmetric cryptography API</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="general.html#key-derivation">Key derivation</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="general.html#key-derivation-operations">Key derivation operations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="general.html#key-derivation-function">Key derivation function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview/functionality.html#asymmetric-cryptography">Asymmetric cryptography</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="overview/functionality.html#asymmetric-encryption">Asymmetric encryption</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/functionality.html#hash-and-sign">Hash-and-sign</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/functionality.html#key-agreement">Key agreement</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="general.html#asymmetric-cryptography">Asymmetric cryptography</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="general.html#asymmetric-encryption">Asymmetric encryption</a></li>
-<li class="toctree-l3"><a class="reference internal" href="general.html#hash-and-sign">Hash-and-sign</a></li>
-<li class="toctree-l3"><a class="reference internal" href="general.html#key-agreement">Key agreement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview/functionality.html#randomness-and-key-generation">Randomness and key generation</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="general.html#randomness-and-key-generation">Randomness and key generation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="general.html#future-additions">Future additions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview/sample-arch.html">Sample architectures</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview/sample-arch.html#single-partition-architecture">Single-partition architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview/sample-arch.html#cryptographic-token-and-single-application-processor">Cryptographic token and single-application processor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview/sample-arch.html#cryptoprocessor-with-no-key-storage">Cryptoprocessor with no key storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview/sample-arch.html#multi-client-cryptoprocessor">Multi-client cryptoprocessor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview/sample-arch.html#multi-cryptoprocessor-architecture">Multi-cryptoprocessor architecture</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="general.html#sample-architectures">Sample architectures</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="general.html#single-partition-architecture">Single-partition architecture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="general.html#cryptographic-token-and-single-application-processor">Cryptographic token and single-application processor</a></li>
-<li class="toctree-l2"><a class="reference internal" href="general.html#cryptoprocessor-with-no-key-storage">Cryptoprocessor with no key storage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="general.html#multi-client-cryptoprocessor">Multi-client cryptoprocessor</a></li>
-<li class="toctree-l2"><a class="reference internal" href="general.html#multi-cryptoprocessor-architecture">Multi-cryptoprocessor architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview/conventions.html">Library conventions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview/conventions.html#error-handling">Error handling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="overview/conventions.html#return-status">Return status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/conventions.html#behavior-on-error">Behavior on error</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="general.html#library-conventions">Library conventions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="general.html#error-handling">Error handling</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="general.html#return-status">Return status</a></li>
-<li class="toctree-l3"><a class="reference internal" href="general.html#behavior-on-error">Behavior on error</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview/conventions.html#parameter-conventions">Parameter conventions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="overview/conventions.html#pointer-conventions">Pointer conventions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/conventions.html#input-buffer-sizes">Input buffer sizes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/conventions.html#output-buffer-sizes">Output buffer sizes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/conventions.html#overlap-between-parameters">Overlap between parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/conventions.html#stability-of-parameters">Stability of parameters</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="general.html#parameter-conventions">Parameter conventions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="general.html#pointer-conventions">Pointer conventions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="general.html#input-buffer-sizes">Input buffer sizes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="general.html#output-buffer-sizes">Output buffer sizes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="general.html#overlap-between-parameters">Overlap between parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="general.html#stability-of-parameters">Stability of parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview/conventions.html#key-types-and-algorithms">Key types and algorithms</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="overview/conventions.html#structure-of-key-and-algorithm-types">Structure of key and algorithm types</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="general.html#key-types-and-algorithms">Key types and algorithms</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="general.html#structure-of-key-and-algorithm-types">Structure of key and algorithm types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview/conventions.html#concurrent-calls">Concurrent calls</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="general.html#concurrent-calls">Concurrent calls</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview/implementation.html">Implementation considerations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview/implementation.html#implementation-specific-aspects-of-the-interface">Implementation-specific aspects of the interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="overview/implementation.html#implementation-profile">Implementation profile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/implementation.html#implementation-specific-types">Implementation-specific types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/implementation.html#implementation-specific-macros">Implementation-specific macros</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="general.html#implementation-considerations">Implementation considerations</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="general.html#implementation-specific-aspects-of-the-interface">Implementation-specific aspects of the interface</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="general.html#implementation-profile">Implementation profile</a></li>
-<li class="toctree-l3"><a class="reference internal" href="general.html#implementation-specific-types">Implementation-specific types</a></li>
-<li class="toctree-l3"><a class="reference internal" href="general.html#implementation-specific-macros">Implementation-specific macros</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview/implementation.html#porting-to-a-platform">Porting to a platform</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="overview/implementation.html#platform-assumptions">Platform assumptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/implementation.html#platform-specific-types">Platform-specific types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/implementation.html#cryptographic-hardware-support">Cryptographic hardware support</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="general.html#porting-to-a-platform">Porting to a platform</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="general.html#platform-assumptions">Platform assumptions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="general.html#platform-specific-types">Platform-specific types</a></li>
-<li class="toctree-l3"><a class="reference internal" href="general.html#cryptographic-hardware-support">Cryptographic hardware support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview/implementation.html#security-requirements-and-recommendations">Security requirements and recommendations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="overview/implementation.html#error-detection">Error detection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/implementation.html#indirect-object-references">Indirect object references</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/implementation.html#memory-cleanup">Memory cleanup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/implementation.html#managing-key-material">Managing key material</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/implementation.html#safe-outputs-on-error">Safe outputs on error</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/implementation.html#attack-resistance">Attack resistance</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="general.html#security-requirements-and-recommendations">Security requirements and recommendations</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="general.html#error-detection">Error detection</a></li>
-<li class="toctree-l3"><a class="reference internal" href="general.html#memory-cleanup">Memory cleanup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="general.html#safe-outputs-on-error">Safe outputs on error</a></li>
-<li class="toctree-l3"><a class="reference internal" href="general.html#attack-resistance">Attack resistance</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="general.html#other-implementation-considerations">Other implementation considerations</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="general.html#philosophy-of-resource-management">Philosophy of resource management</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="general.html#usage-considerations">Usage considerations</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="general.html#security-recommendations">Security recommendations</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="general.html#always-check-for-errors">Always check for errors</a></li>
-<li class="toctree-l3"><a class="reference internal" href="general.html#shared-memory-and-concurrency">Shared memory and concurrency</a></li>
-<li class="toctree-l3"><a class="reference internal" href="general.html#cleaning-up-after-use">Cleaning up after use</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview/implementation.html#other-implementation-considerations">Other implementation considerations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="overview/implementation.html#philosophy-of-resource-management">Philosophy of resource management</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html">Implementation-specific definitions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_key_handle_t"><code class="docutils literal notranslate"><span class="pre">psa_key_handle_t</span></code> (type)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview/usage.html">Usage considerations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview/usage.html#security-recommendations">Security recommendations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="overview/usage.html#always-check-for-errors">Always check for errors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/usage.html#shared-memory-and-concurrency">Shared memory and concurrency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview/usage.html#cleaning-up-after-use">Cleaning up after use</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#library-initialization">Library initialization</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_crypto_init"><code class="docutils literal notranslate"><span class="pre">psa_crypto_init</span></code> (function)</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#key-attributes">Key attributes</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_key_attributes_t"><code class="docutils literal notranslate"><span class="pre">psa_key_attributes_t</span></code> (type)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_ATTRIBUTES_INIT"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_ATTRIBUTES_INIT</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_key_attributes_init"><code class="docutils literal notranslate"><span class="pre">psa_key_attributes_init</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_set_key_id"><code class="docutils literal notranslate"><span class="pre">psa_set_key_id</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_set_key_lifetime"><code class="docutils literal notranslate"><span class="pre">psa_set_key_lifetime</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_get_key_id"><code class="docutils literal notranslate"><span class="pre">psa_get_key_id</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_get_key_lifetime"><code class="docutils literal notranslate"><span class="pre">psa_get_key_lifetime</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_set_key_usage_flags"><code class="docutils literal notranslate"><span class="pre">psa_set_key_usage_flags</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_get_key_usage_flags"><code class="docutils literal notranslate"><span class="pre">psa_get_key_usage_flags</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_set_key_algorithm"><code class="docutils literal notranslate"><span class="pre">psa_set_key_algorithm</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_get_key_algorithm"><code class="docutils literal notranslate"><span class="pre">psa_get_key_algorithm</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_set_key_type"><code class="docutils literal notranslate"><span class="pre">psa_set_key_type</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_set_key_bits"><code class="docutils literal notranslate"><span class="pre">psa_set_key_bits</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_get_key_type"><code class="docutils literal notranslate"><span class="pre">psa_get_key_type</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_get_key_bits"><code class="docutils literal notranslate"><span class="pre">psa_get_key_bits</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_get_key_attributes"><code class="docutils literal notranslate"><span class="pre">psa_get_key_attributes</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_reset_key_attributes"><code class="docutils literal notranslate"><span class="pre">psa_reset_key_attributes</span></code> (function)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/library/index.html">Library management reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/library/status.html">PSA status codes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/library/status.html#status-type">Status type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/library/status.html#success-codes">Success codes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/library/status.html#error-codes">Error codes</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#key-management">Key management</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_open_key"><code class="docutils literal notranslate"><span class="pre">psa_open_key</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_close_key"><code class="docutils literal notranslate"><span class="pre">psa_close_key</span></code> (function)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/library/library.html">PSA Crypto library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/library/library.html#api-version">API version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/library/library.html#library-initialization">Library initialization</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#key-import-and-export">Key import and export</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_import_key"><code class="docutils literal notranslate"><span class="pre">psa_import_key</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_destroy_key"><code class="docutils literal notranslate"><span class="pre">psa_destroy_key</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_export_key"><code class="docutils literal notranslate"><span class="pre">psa_export_key</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_export_public_key"><code class="docutils literal notranslate"><span class="pre">psa_export_public_key</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_copy_key"><code class="docutils literal notranslate"><span class="pre">psa_copy_key</span></code> (function)</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#message-digests">Message digests</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_hash_operation_t"><code class="docutils literal notranslate"><span class="pre">psa_hash_operation_t</span></code> (type)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_HASH_OPERATION_INIT"><code class="docutils literal notranslate"><span class="pre">PSA_HASH_OPERATION_INIT</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_hash_compute"><code class="docutils literal notranslate"><span class="pre">psa_hash_compute</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_hash_compare"><code class="docutils literal notranslate"><span class="pre">psa_hash_compare</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_hash_operation_init"><code class="docutils literal notranslate"><span class="pre">psa_hash_operation_init</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_hash_setup"><code class="docutils literal notranslate"><span class="pre">psa_hash_setup</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_hash_update"><code class="docutils literal notranslate"><span class="pre">psa_hash_update</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_hash_finish"><code class="docutils literal notranslate"><span class="pre">psa_hash_finish</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_hash_verify"><code class="docutils literal notranslate"><span class="pre">psa_hash_verify</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_hash_abort"><code class="docutils literal notranslate"><span class="pre">psa_hash_abort</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_hash_clone"><code class="docutils literal notranslate"><span class="pre">psa_hash_clone</span></code> (function)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/keys/index.html">Key management reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/keys/attributes.html">Key attributes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/keys/attributes.html#attribute-types">Attribute types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/keys/attributes.html#managing-attributes">Managing attributes</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#message-authentication-codes">Message authentication codes</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_mac_operation_t"><code class="docutils literal notranslate"><span class="pre">psa_mac_operation_t</span></code> (type)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_MAC_OPERATION_INIT"><code class="docutils literal notranslate"><span class="pre">PSA_MAC_OPERATION_INIT</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_mac_compute"><code class="docutils literal notranslate"><span class="pre">psa_mac_compute</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_mac_verify"><code class="docutils literal notranslate"><span class="pre">psa_mac_verify</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_mac_operation_init"><code class="docutils literal notranslate"><span class="pre">psa_mac_operation_init</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_mac_sign_setup"><code class="docutils literal notranslate"><span class="pre">psa_mac_sign_setup</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_mac_verify_setup"><code class="docutils literal notranslate"><span class="pre">psa_mac_verify_setup</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_mac_update"><code class="docutils literal notranslate"><span class="pre">psa_mac_update</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_mac_sign_finish"><code class="docutils literal notranslate"><span class="pre">psa_mac_sign_finish</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_mac_verify_finish"><code class="docutils literal notranslate"><span class="pre">psa_mac_verify_finish</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_mac_abort"><code class="docutils literal notranslate"><span class="pre">psa_mac_abort</span></code> (function)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/keys/locations.html">Key locations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/keys/locations.html#key-lifetimes">Key lifetimes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/keys/locations.html#key-identifiers">Key identifiers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/keys/locations.html#attribute-accessors">Attribute accessors</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#symmetric-ciphers">Symmetric ciphers</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_cipher_operation_t"><code class="docutils literal notranslate"><span class="pre">psa_cipher_operation_t</span></code> (type)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_CIPHER_OPERATION_INIT"><code class="docutils literal notranslate"><span class="pre">PSA_CIPHER_OPERATION_INIT</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_cipher_encrypt"><code class="docutils literal notranslate"><span class="pre">psa_cipher_encrypt</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_cipher_decrypt"><code class="docutils literal notranslate"><span class="pre">psa_cipher_decrypt</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_cipher_operation_init"><code class="docutils literal notranslate"><span class="pre">psa_cipher_operation_init</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_cipher_encrypt_setup"><code class="docutils literal notranslate"><span class="pre">psa_cipher_encrypt_setup</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_cipher_decrypt_setup"><code class="docutils literal notranslate"><span class="pre">psa_cipher_decrypt_setup</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_cipher_generate_iv"><code class="docutils literal notranslate"><span class="pre">psa_cipher_generate_iv</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_cipher_set_iv"><code class="docutils literal notranslate"><span class="pre">psa_cipher_set_iv</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_cipher_update"><code class="docutils literal notranslate"><span class="pre">psa_cipher_update</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_cipher_finish"><code class="docutils literal notranslate"><span class="pre">psa_cipher_finish</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_cipher_abort"><code class="docutils literal notranslate"><span class="pre">psa_cipher_abort</span></code> (function)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/keys/types.html">Key types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/keys/types.html#key-categories">Key categories</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/keys/types.html#symmetric-keys">Symmetric keys</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/keys/types.html#rsa-keys">RSA keys</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/keys/types.html#elliptic-curve-keys">Elliptic Curve keys</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/keys/types.html#diffie-hellman-keys">Diffie Hellman keys</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/keys/types.html#attribute-accessors">Attribute accessors</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#authenticated-encryption-with-associated-data-aead">Authenticated encryption with associated data (AEAD)</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_aead_operation_t"><code class="docutils literal notranslate"><span class="pre">psa_aead_operation_t</span></code> (type)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_AEAD_OPERATION_INIT"><code class="docutils literal notranslate"><span class="pre">PSA_AEAD_OPERATION_INIT</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_aead_encrypt"><code class="docutils literal notranslate"><span class="pre">psa_aead_encrypt</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_aead_decrypt"><code class="docutils literal notranslate"><span class="pre">psa_aead_decrypt</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_aead_operation_init"><code class="docutils literal notranslate"><span class="pre">psa_aead_operation_init</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_aead_encrypt_setup"><code class="docutils literal notranslate"><span class="pre">psa_aead_encrypt_setup</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_aead_decrypt_setup"><code class="docutils literal notranslate"><span class="pre">psa_aead_decrypt_setup</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_aead_generate_nonce"><code class="docutils literal notranslate"><span class="pre">psa_aead_generate_nonce</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_aead_set_nonce"><code class="docutils literal notranslate"><span class="pre">psa_aead_set_nonce</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_aead_set_lengths"><code class="docutils literal notranslate"><span class="pre">psa_aead_set_lengths</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_aead_update_ad"><code class="docutils literal notranslate"><span class="pre">psa_aead_update_ad</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_aead_update"><code class="docutils literal notranslate"><span class="pre">psa_aead_update</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_aead_finish"><code class="docutils literal notranslate"><span class="pre">psa_aead_finish</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_aead_verify"><code class="docutils literal notranslate"><span class="pre">psa_aead_verify</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_aead_abort"><code class="docutils literal notranslate"><span class="pre">psa_aead_abort</span></code> (function)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/keys/usage.html">Key policies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/keys/usage.html#key-usage-flags">Key usage flags</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/keys/usage.html#attribute-accessors">Attribute accessors</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#asymmetric-cryptography">Asymmetric cryptography</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_asymmetric_sign"><code class="docutils literal notranslate"><span class="pre">psa_asymmetric_sign</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_asymmetric_verify"><code class="docutils literal notranslate"><span class="pre">psa_asymmetric_verify</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_asymmetric_encrypt"><code class="docutils literal notranslate"><span class="pre">psa_asymmetric_encrypt</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_asymmetric_decrypt"><code class="docutils literal notranslate"><span class="pre">psa_asymmetric_decrypt</span></code> (function)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/keys/algorithms.html">Algorithms</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/keys/algorithms.html#algorithm-categories">Algorithm categories</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/keys/algorithms.html#attribute-accessors">Attribute accessors</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#key-derivation-and-pseudorandom-generation">Key derivation and pseudorandom generation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_key_derivation_operation_t"><code class="docutils literal notranslate"><span class="pre">psa_key_derivation_operation_t</span></code> (type)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_DERIVATION_OPERATION_INIT"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_DERIVATION_OPERATION_INIT</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_DERIVATION_UNLIMITED_CAPACITY"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_DERIVATION_UNLIMITED_CAPACITY</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_key_derivation_operation_init"><code class="docutils literal notranslate"><span class="pre">psa_key_derivation_operation_init</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_key_derivation_setup"><code class="docutils literal notranslate"><span class="pre">psa_key_derivation_setup</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_key_derivation_get_capacity"><code class="docutils literal notranslate"><span class="pre">psa_key_derivation_get_capacity</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_key_derivation_set_capacity"><code class="docutils literal notranslate"><span class="pre">psa_key_derivation_set_capacity</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_key_derivation_input_bytes"><code class="docutils literal notranslate"><span class="pre">psa_key_derivation_input_bytes</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_key_derivation_input_key"><code class="docutils literal notranslate"><span class="pre">psa_key_derivation_input_key</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_key_derivation_key_agreement"><code class="docutils literal notranslate"><span class="pre">psa_key_derivation_key_agreement</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_key_derivation_output_bytes"><code class="docutils literal notranslate"><span class="pre">psa_key_derivation_output_bytes</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_key_derivation_output_key"><code class="docutils literal notranslate"><span class="pre">psa_key_derivation_output_key</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_key_derivation_abort"><code class="docutils literal notranslate"><span class="pre">psa_key_derivation_abort</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_raw_key_agreement"><code class="docutils literal notranslate"><span class="pre">psa_raw_key_agreement</span></code> (function)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/keys/management.html">Key management functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/keys/management.html#key-creation">Key creation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/keys/management.html#key-destruction">Key destruction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/keys/management.html#key-export">Key export</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#random-generation">Random generation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_generate_random"><code class="docutils literal notranslate"><span class="pre">psa_generate_random</span></code> (function)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_generate_key"><code class="docutils literal notranslate"><span class="pre">psa_generate_key</span></code> (function)</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#error-codes">Error codes</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_status_t"><code class="docutils literal notranslate"><span class="pre">psa_status_t</span></code> (type)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_SUCCESS"><code class="docutils literal notranslate"><span class="pre">PSA_SUCCESS</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ERROR_GENERIC_ERROR"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_GENERIC_ERROR</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ERROR_NOT_SUPPORTED"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_NOT_SUPPORTED</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ERROR_NOT_PERMITTED"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_NOT_PERMITTED</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ERROR_BUFFER_TOO_SMALL"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_BUFFER_TOO_SMALL</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ERROR_ALREADY_EXISTS"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_ALREADY_EXISTS</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ERROR_DOES_NOT_EXIST"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_DOES_NOT_EXIST</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ERROR_BAD_STATE"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_BAD_STATE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ERROR_INSUFFICIENT_MEMORY"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_INSUFFICIENT_MEMORY</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ERROR_INSUFFICIENT_STORAGE"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_INSUFFICIENT_STORAGE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ERROR_COMMUNICATION_FAILURE"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_COMMUNICATION_FAILURE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ERROR_STORAGE_FAILURE"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_STORAGE_FAILURE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ERROR_HARDWARE_FAILURE"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_HARDWARE_FAILURE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ERROR_CORRUPTION_DETECTED"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_CORRUPTION_DETECTED</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ERROR_INSUFFICIENT_ENTROPY"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_INSUFFICIENT_ENTROPY</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ERROR_INVALID_SIGNATURE"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_INVALID_SIGNATURE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ERROR_INVALID_PADDING"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_INVALID_PADDING</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ERROR_INSUFFICIENT_DATA"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_INSUFFICIENT_DATA</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ERROR_INVALID_HANDLE"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_INVALID_HANDLE</span></code> (macro)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/ops/index.html">Cryptographic operation reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/ops/hashes.html">Message digests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/ops/hashes.html#hash-algorithms">Hash algorithms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ops/hashes.html#single-part-hashing-functions">Single-part hashing functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ops/hashes.html#multi-part-hashing-operations">Multi-part hashing operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ops/hashes.html#support-macros">Support macros</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ops/hashes.html#hash-suspend-state">Hash suspend state</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#key-and-algorithm-types">Key and algorithm types</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_key_type_t"><code class="docutils literal notranslate"><span class="pre">psa_key_type_t</span></code> (type)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_ecc_curve_t"><code class="docutils literal notranslate"><span class="pre">psa_ecc_curve_t</span></code> (type)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_dh_group_t"><code class="docutils literal notranslate"><span class="pre">psa_dh_group_t</span></code> (type)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_algorithm_t"><code class="docutils literal notranslate"><span class="pre">psa_algorithm_t</span></code> (type)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_NONE"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_NONE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_VENDOR_FLAG"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_VENDOR_FLAG</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_CATEGORY_MASK"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_CATEGORY_MASK</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_CATEGORY_SYMMETRIC"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_CATEGORY_SYMMETRIC</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_CATEGORY_RAW"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_CATEGORY_RAW</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_CATEGORY_PUBLIC_KEY"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_CATEGORY_PUBLIC_KEY</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_CATEGORY_KEY_PAIR"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_CATEGORY_KEY_PAIR</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_CATEGORY_FLAG_PAIR"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_CATEGORY_FLAG_PAIR</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_IS_VENDOR_DEFINED"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_IS_VENDOR_DEFINED</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_IS_UNSTRUCTURED"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_IS_UNSTRUCTURED</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_IS_ASYMMETRIC"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_IS_ASYMMETRIC</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_IS_PUBLIC_KEY"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_IS_PUBLIC_KEY</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_IS_KEY_PAIR"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_IS_KEY_PAIR</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_KEY_PAIR_OF_PUBLIC_KEY"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_KEY_PAIR_OF_PUBLIC_KEY</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_PUBLIC_KEY_OF_KEY_PAIR"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_PUBLIC_KEY_OF_KEY_PAIR</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_RAW_DATA"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_RAW_DATA</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_HMAC"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_HMAC</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_DERIVE"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_DERIVE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_AES"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_AES</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_DES"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_DES</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_CAMELLIA"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_CAMELLIA</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_ARC4"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_ARC4</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_CHACHA20"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_CHACHA20</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_RSA_PUBLIC_KEY"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_RSA_PUBLIC_KEY</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_RSA_KEY_PAIR"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_RSA_KEY_PAIR</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_IS_RSA"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_IS_RSA</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_ECC_PUBLIC_KEY_BASE"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_ECC_PUBLIC_KEY_BASE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_ECC_KEY_PAIR_BASE"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_ECC_KEY_PAIR_BASE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_ECC_CURVE_MASK"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_ECC_CURVE_MASK</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_ECC_KEY_PAIR"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_ECC_KEY_PAIR</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_ECC_PUBLIC_KEY"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_ECC_PUBLIC_KEY</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_IS_ECC"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_IS_ECC</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_IS_ECC_KEY_PAIR"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_IS_ECC_KEY_PAIR</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_IS_ECC_PUBLIC_KEY"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_IS_ECC_PUBLIC_KEY</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_GET_CURVE"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_GET_CURVE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ECC_CURVE_SECT163K1"><code class="docutils literal notranslate"><span class="pre">PSA_ECC_CURVE_SECT163K1</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ECC_CURVE_SECT163R1"><code class="docutils literal notranslate"><span class="pre">PSA_ECC_CURVE_SECT163R1</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ECC_CURVE_SECT163R2"><code class="docutils literal notranslate"><span class="pre">PSA_ECC_CURVE_SECT163R2</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ECC_CURVE_SECT193R1"><code class="docutils literal notranslate"><span class="pre">PSA_ECC_CURVE_SECT193R1</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ECC_CURVE_SECT193R2"><code class="docutils literal notranslate"><span class="pre">PSA_ECC_CURVE_SECT193R2</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ECC_CURVE_SECT233K1"><code class="docutils literal notranslate"><span class="pre">PSA_ECC_CURVE_SECT233K1</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ECC_CURVE_SECT233R1"><code class="docutils literal notranslate"><span class="pre">PSA_ECC_CURVE_SECT233R1</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ECC_CURVE_SECT239K1"><code class="docutils literal notranslate"><span class="pre">PSA_ECC_CURVE_SECT239K1</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ECC_CURVE_SECT283K1"><code class="docutils literal notranslate"><span class="pre">PSA_ECC_CURVE_SECT283K1</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ECC_CURVE_SECT283R1"><code class="docutils literal notranslate"><span class="pre">PSA_ECC_CURVE_SECT283R1</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ECC_CURVE_SECT409K1"><code class="docutils literal notranslate"><span class="pre">PSA_ECC_CURVE_SECT409K1</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ECC_CURVE_SECT409R1"><code class="docutils literal notranslate"><span class="pre">PSA_ECC_CURVE_SECT409R1</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ECC_CURVE_SECT571K1"><code class="docutils literal notranslate"><span class="pre">PSA_ECC_CURVE_SECT571K1</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ECC_CURVE_SECT571R1"><code class="docutils literal notranslate"><span class="pre">PSA_ECC_CURVE_SECT571R1</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ECC_CURVE_SECP160K1"><code class="docutils literal notranslate"><span class="pre">PSA_ECC_CURVE_SECP160K1</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ECC_CURVE_SECP160R1"><code class="docutils literal notranslate"><span class="pre">PSA_ECC_CURVE_SECP160R1</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ECC_CURVE_SECP160R2"><code class="docutils literal notranslate"><span class="pre">PSA_ECC_CURVE_SECP160R2</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ECC_CURVE_SECP192K1"><code class="docutils literal notranslate"><span class="pre">PSA_ECC_CURVE_SECP192K1</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ECC_CURVE_SECP192R1"><code class="docutils literal notranslate"><span class="pre">PSA_ECC_CURVE_SECP192R1</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ECC_CURVE_SECP224K1"><code class="docutils literal notranslate"><span class="pre">PSA_ECC_CURVE_SECP224K1</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ECC_CURVE_SECP224R1"><code class="docutils literal notranslate"><span class="pre">PSA_ECC_CURVE_SECP224R1</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ECC_CURVE_SECP256K1"><code class="docutils literal notranslate"><span class="pre">PSA_ECC_CURVE_SECP256K1</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ECC_CURVE_SECP256R1"><code class="docutils literal notranslate"><span class="pre">PSA_ECC_CURVE_SECP256R1</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ECC_CURVE_SECP384R1"><code class="docutils literal notranslate"><span class="pre">PSA_ECC_CURVE_SECP384R1</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ECC_CURVE_SECP521R1"><code class="docutils literal notranslate"><span class="pre">PSA_ECC_CURVE_SECP521R1</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ECC_CURVE_BRAINPOOL_P256R1"><code class="docutils literal notranslate"><span class="pre">PSA_ECC_CURVE_BRAINPOOL_P256R1</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ECC_CURVE_BRAINPOOL_P384R1"><code class="docutils literal notranslate"><span class="pre">PSA_ECC_CURVE_BRAINPOOL_P384R1</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ECC_CURVE_BRAINPOOL_P512R1"><code class="docutils literal notranslate"><span class="pre">PSA_ECC_CURVE_BRAINPOOL_P512R1</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ECC_CURVE_CURVE25519"><code class="docutils literal notranslate"><span class="pre">PSA_ECC_CURVE_CURVE25519</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ECC_CURVE_CURVE448"><code class="docutils literal notranslate"><span class="pre">PSA_ECC_CURVE_CURVE448</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_DH_PUBLIC_KEY_BASE"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_DH_PUBLIC_KEY_BASE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_DH_KEY_PAIR_BASE"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_DH_KEY_PAIR_BASE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_DH_GROUP_MASK"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_DH_GROUP_MASK</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_DH_KEY_PAIR"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_DH_KEY_PAIR</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_DH_PUBLIC_KEY"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_DH_PUBLIC_KEY</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_IS_DH"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_IS_DH</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_IS_DH_KEY_PAIR"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_IS_DH_KEY_PAIR</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_IS_DH_PUBLIC_KEY"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_IS_DH_PUBLIC_KEY</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_TYPE_GET_GROUP"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_GET_GROUP</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_DH_GROUP_FFDHE2048"><code class="docutils literal notranslate"><span class="pre">PSA_DH_GROUP_FFDHE2048</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_DH_GROUP_FFDHE3072"><code class="docutils literal notranslate"><span class="pre">PSA_DH_GROUP_FFDHE3072</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_DH_GROUP_FFDHE4096"><code class="docutils literal notranslate"><span class="pre">PSA_DH_GROUP_FFDHE4096</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_DH_GROUP_FFDHE6144"><code class="docutils literal notranslate"><span class="pre">PSA_DH_GROUP_FFDHE6144</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_DH_GROUP_FFDHE8192"><code class="docutils literal notranslate"><span class="pre">PSA_DH_GROUP_FFDHE8192</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_BLOCK_CIPHER_BLOCK_SIZE"><code class="docutils literal notranslate"><span class="pre">PSA_BLOCK_CIPHER_BLOCK_SIZE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_VENDOR_FLAG"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_VENDOR_FLAG</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_CATEGORY_MASK"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_CATEGORY_MASK</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_CATEGORY_HASH"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_CATEGORY_HASH</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_CATEGORY_MAC"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_CATEGORY_MAC</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_CATEGORY_CIPHER"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_CATEGORY_CIPHER</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_CATEGORY_AEAD"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_CATEGORY_AEAD</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_CATEGORY_SIGN"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_CATEGORY_SIGN</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_CATEGORY_ASYMMETRIC_ENCRYPTION"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_CATEGORY_ASYMMETRIC_ENCRYPTION</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_CATEGORY_KEY_DERIVATION"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_CATEGORY_KEY_DERIVATION</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_CATEGORY_KEY_AGREEMENT"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_CATEGORY_KEY_AGREEMENT</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_IS_VENDOR_DEFINED"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_IS_VENDOR_DEFINED</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_IS_HASH"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_IS_HASH</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_IS_MAC"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_IS_MAC</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_IS_CIPHER"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_IS_CIPHER</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_IS_AEAD"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_IS_AEAD</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_IS_SIGN"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_IS_SIGN</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_IS_ASYMMETRIC_ENCRYPTION"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_IS_ASYMMETRIC_ENCRYPTION</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_IS_KEY_AGREEMENT"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_IS_KEY_AGREEMENT</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_IS_KEY_DERIVATION"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_IS_KEY_DERIVATION</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_HASH_MASK"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_HASH_MASK</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_MD2"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_MD2</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_MD4"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_MD4</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_MD5"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_MD5</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_RIPEMD160"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_RIPEMD160</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_SHA_1"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_SHA_1</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_SHA_224"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_SHA_224</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_SHA_256"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_SHA_256</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_SHA_384"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_SHA_384</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_SHA_512"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_SHA_512</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_SHA_512_224"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_SHA_512_224</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_SHA_512_256"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_SHA_512_256</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_SHA3_224"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_SHA3_224</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_SHA3_256"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_SHA3_256</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_SHA3_384"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_SHA3_384</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_SHA3_512"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_SHA3_512</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_ANY_HASH"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_ANY_HASH</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_MAC_SUBCATEGORY_MASK"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_MAC_SUBCATEGORY_MASK</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_HMAC_BASE"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_HMAC_BASE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_HMAC"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_HMAC</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_HMAC_GET_HASH"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_HMAC_GET_HASH</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_IS_HMAC"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_IS_HMAC</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_MAC_TRUNCATION_MASK"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_MAC_TRUNCATION_MASK</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_MAC_TRUNCATION_OFFSET"><code class="docutils literal notranslate"><span class="pre">PSA_MAC_TRUNCATION_OFFSET</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_TRUNCATED_MAC"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_TRUNCATED_MAC</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_FULL_LENGTH_MAC"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_FULL_LENGTH_MAC</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_MAC_TRUNCATED_LENGTH"><code class="docutils literal notranslate"><span class="pre">PSA_MAC_TRUNCATED_LENGTH</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_CIPHER_MAC_BASE"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_CIPHER_MAC_BASE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_CBC_MAC"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_CBC_MAC</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_CMAC"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_CMAC</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_GMAC"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_GMAC</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_IS_BLOCK_CIPHER_MAC"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_IS_BLOCK_CIPHER_MAC</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_CIPHER_STREAM_FLAG"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_CIPHER_STREAM_FLAG</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_CIPHER_FROM_BLOCK_FLAG"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_CIPHER_FROM_BLOCK_FLAG</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_IS_STREAM_CIPHER"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_IS_STREAM_CIPHER</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_ARC4"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_ARC4</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_CHACHA20"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_CHACHA20</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_CTR"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_CTR</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_CFB"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_CFB</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_OFB"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_OFB</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_XTS"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_XTS</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_CBC_NO_PADDING"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_CBC_NO_PADDING</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_CBC_PKCS7"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_CBC_PKCS7</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_AEAD_FROM_BLOCK_FLAG"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_AEAD_FROM_BLOCK_FLAG</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_IS_AEAD_ON_BLOCK_CIPHER"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_IS_AEAD_ON_BLOCK_CIPHER</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_CCM"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_CCM</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_GCM"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_GCM</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_CHACHA20_POLY1305"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_CHACHA20_POLY1305</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_AEAD_TAG_LENGTH_MASK"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_AEAD_TAG_LENGTH_MASK</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_AEAD_TAG_LENGTH_OFFSET"><code class="docutils literal notranslate"><span class="pre">PSA_AEAD_TAG_LENGTH_OFFSET</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_AEAD_WITH_TAG_LENGTH"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_AEAD_WITH_TAG_LENGTH</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_AEAD_WITH_DEFAULT_TAG_LENGTH"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_AEAD_WITH_DEFAULT_TAG_LENGTH</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA__ALG_AEAD_WITH_DEFAULT_TAG_LENGTH__CASE"><code class="docutils literal notranslate"><span class="pre">PSA__ALG_AEAD_WITH_DEFAULT_TAG_LENGTH__CASE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_RSA_PKCS1V15_SIGN_BASE"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_RSA_PKCS1V15_SIGN_BASE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_RSA_PKCS1V15_SIGN"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_RSA_PKCS1V15_SIGN</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_RSA_PKCS1V15_SIGN_RAW"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_RSA_PKCS1V15_SIGN_RAW</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_IS_RSA_PKCS1V15_SIGN"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_IS_RSA_PKCS1V15_SIGN</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_RSA_PSS_BASE"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_RSA_PSS_BASE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_RSA_PSS"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_RSA_PSS</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_IS_RSA_PSS"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_IS_RSA_PSS</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_ECDSA_BASE"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_ECDSA_BASE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_ECDSA"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_ECDSA</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_ECDSA_ANY"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_ECDSA_ANY</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_DETERMINISTIC_ECDSA_BASE"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_DETERMINISTIC_ECDSA_BASE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_DETERMINISTIC_ECDSA"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_DETERMINISTIC_ECDSA</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_IS_ECDSA"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_IS_ECDSA</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_ECDSA_IS_DETERMINISTIC"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_ECDSA_IS_DETERMINISTIC</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_IS_DETERMINISTIC_ECDSA"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_IS_DETERMINISTIC_ECDSA</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_IS_RANDOMIZED_ECDSA"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_IS_RANDOMIZED_ECDSA</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_IS_HASH_AND_SIGN"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_IS_HASH_AND_SIGN</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_SIGN_GET_HASH"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_SIGN_GET_HASH</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_RSA_PKCS1V15_CRYPT"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_RSA_PKCS1V15_CRYPT</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_RSA_OAEP_BASE"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_RSA_OAEP_BASE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_RSA_OAEP"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_RSA_OAEP</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_IS_RSA_OAEP"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_IS_RSA_OAEP</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_RSA_OAEP_GET_HASH"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_RSA_OAEP_GET_HASH</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_HKDF_BASE"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_HKDF_BASE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_HKDF"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_HKDF</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_IS_HKDF"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_IS_HKDF</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_HKDF_GET_HASH"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_HKDF_GET_HASH</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_TLS12_PRF_BASE"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_TLS12_PRF_BASE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_TLS12_PRF"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_TLS12_PRF</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_IS_TLS12_PRF"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_IS_TLS12_PRF</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_TLS12_PRF_GET_HASH"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_TLS12_PRF_GET_HASH</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_TLS12_PSK_TO_MS_BASE"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_TLS12_PSK_TO_MS_BASE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_TLS12_PSK_TO_MS"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_TLS12_PSK_TO_MS</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_IS_TLS12_PSK_TO_MS"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_IS_TLS12_PSK_TO_MS</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_TLS12_PSK_TO_MS_GET_HASH"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_TLS12_PSK_TO_MS_GET_HASH</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_KEY_DERIVATION_MASK"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_KEY_DERIVATION_MASK</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_KEY_AGREEMENT_MASK"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_KEY_AGREEMENT_MASK</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_KEY_AGREEMENT"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_KEY_AGREEMENT</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_KEY_AGREEMENT_GET_KDF"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_KEY_AGREEMENT_GET_KDF</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_KEY_AGREEMENT_GET_BASE"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_KEY_AGREEMENT_GET_BASE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_IS_RAW_KEY_AGREEMENT"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_IS_RAW_KEY_AGREEMENT</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_IS_KEY_DERIVATION_OR_AGREEMENT"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_IS_KEY_DERIVATION_OR_AGREEMENT</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_FFDH"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_FFDH</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_IS_FFDH"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_IS_FFDH</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_ECDH"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_ECDH</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_IS_ECDH"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_IS_ECDH</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_IS_WILDCARD"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_IS_WILDCARD</span></code> (macro)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/ops/macs.html">Message authentication codes (MAC)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/ops/macs.html#mac-algorithms">MAC algorithms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ops/macs.html#single-part-mac-functions">Single-part MAC functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ops/macs.html#multi-part-mac-operations">Multi-part MAC operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ops/macs.html#support-macros">Support macros</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#key-lifetimes">Key lifetimes</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_key_lifetime_t"><code class="docutils literal notranslate"><span class="pre">psa_key_lifetime_t</span></code> (type)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_key_id_t"><code class="docutils literal notranslate"><span class="pre">psa_key_id_t</span></code> (type)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_LIFETIME_VOLATILE"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_LIFETIME_VOLATILE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_LIFETIME_PERSISTENT"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_LIFETIME_PERSISTENT</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_ID_USER_MIN"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_ID_USER_MIN</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_ID_USER_MAX"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_ID_USER_MAX</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_ID_VENDOR_MIN"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_ID_VENDOR_MIN</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_ID_VENDOR_MAX"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_ID_VENDOR_MAX</span></code> (macro)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/ops/ciphers.html">Unauthenticated ciphers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/ops/ciphers.html#cipher-algorithms">Cipher algorithms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ops/ciphers.html#single-part-cipher-functions">Single-part cipher functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ops/ciphers.html#multi-part-cipher-operations">Multi-part cipher operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ops/ciphers.html#support-macros">Support macros</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#key-policies">Key policies</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_key_usage_t"><code class="docutils literal notranslate"><span class="pre">psa_key_usage_t</span></code> (type)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_USAGE_EXPORT"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_USAGE_EXPORT</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_USAGE_COPY"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_USAGE_COPY</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_USAGE_ENCRYPT"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_USAGE_ENCRYPT</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_USAGE_DECRYPT"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_USAGE_DECRYPT</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_USAGE_SIGN"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_USAGE_SIGN</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_USAGE_VERIFY"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_USAGE_VERIFY</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_USAGE_DERIVE"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_USAGE_DERIVE</span></code> (macro)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/ops/aead.html">Authenticated encryption with associated data (AEAD)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/ops/aead.html#aead-algorithms">AEAD algorithms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ops/aead.html#single-part-aead-functions">Single-part AEAD functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ops/aead.html#multi-part-aead-operations">Multi-part AEAD operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ops/aead.html#support-macros">Support macros</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#key-derivation">Key derivation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#psa_key_derivation_step_t"><code class="docutils literal notranslate"><span class="pre">psa_key_derivation_step_t</span></code> (type)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_DERIVATION_INPUT_SECRET"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_DERIVATION_INPUT_SECRET</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_DERIVATION_INPUT_LABEL"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_DERIVATION_INPUT_LABEL</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_DERIVATION_INPUT_SALT"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_DERIVATION_INPUT_SALT</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_DERIVATION_INPUT_INFO"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_DERIVATION_INPUT_INFO</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_DERIVATION_INPUT_SEED"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_DERIVATION_INPUT_SEED</span></code> (macro)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/ops/kdf.html">Key derivation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/ops/kdf.html#key-derivation-algorithms">Key derivation algorithms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ops/kdf.html#input-step-types">Input step types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ops/kdf.html#key-derivation-functions">Key derivation functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ops/kdf.html#support-macros">Support macros</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#other-definitions">Other definitions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_BITS_TO_BYTES"><code class="docutils literal notranslate"><span class="pre">PSA_BITS_TO_BYTES</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_BYTES_TO_BITS"><code class="docutils literal notranslate"><span class="pre">PSA_BYTES_TO_BITS</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ROUND_UP_TO_MULTIPLE"><code class="docutils literal notranslate"><span class="pre">PSA_ROUND_UP_TO_MULTIPLE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_HASH_SIZE"><code class="docutils literal notranslate"><span class="pre">PSA_HASH_SIZE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_HASH_MAX_SIZE"><code class="docutils literal notranslate"><span class="pre">PSA_HASH_MAX_SIZE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_HMAC_MAX_HASH_BLOCK_SIZE"><code class="docutils literal notranslate"><span class="pre">PSA_HMAC_MAX_HASH_BLOCK_SIZE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_MAC_MAX_SIZE"><code class="docutils literal notranslate"><span class="pre">PSA_MAC_MAX_SIZE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_AEAD_TAG_LENGTH"><code class="docutils literal notranslate"><span class="pre">PSA_AEAD_TAG_LENGTH</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_VENDOR_RSA_MAX_KEY_BITS"><code class="docutils literal notranslate"><span class="pre">PSA_VENDOR_RSA_MAX_KEY_BITS</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_VENDOR_ECC_MAX_CURVE_BITS"><code class="docutils literal notranslate"><span class="pre">PSA_VENDOR_ECC_MAX_CURVE_BITS</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ECC_CURVE_BITS"><code class="docutils literal notranslate"><span class="pre">PSA_ECC_CURVE_BITS</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ALG_TLS12_PSK_TO_MS_MAX_PSK_LEN"><code class="docutils literal notranslate"><span class="pre">PSA_ALG_TLS12_PSK_TO_MS_MAX_PSK_LEN</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ASYMMETRIC_SIGNATURE_MAX_SIZE"><code class="docutils literal notranslate"><span class="pre">PSA_ASYMMETRIC_SIGNATURE_MAX_SIZE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_MAX_BLOCK_CIPHER_BLOCK_SIZE"><code class="docutils literal notranslate"><span class="pre">PSA_MAX_BLOCK_CIPHER_BLOCK_SIZE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_MAC_FINAL_SIZE"><code class="docutils literal notranslate"><span class="pre">PSA_MAC_FINAL_SIZE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_AEAD_ENCRYPT_OUTPUT_SIZE"><code class="docutils literal notranslate"><span class="pre">PSA_AEAD_ENCRYPT_OUTPUT_SIZE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_AEAD_DECRYPT_OUTPUT_SIZE"><code class="docutils literal notranslate"><span class="pre">PSA_AEAD_DECRYPT_OUTPUT_SIZE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_AEAD_UPDATE_OUTPUT_SIZE"><code class="docutils literal notranslate"><span class="pre">PSA_AEAD_UPDATE_OUTPUT_SIZE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_AEAD_FINISH_OUTPUT_SIZE"><code class="docutils literal notranslate"><span class="pre">PSA_AEAD_FINISH_OUTPUT_SIZE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_AEAD_VERIFY_OUTPUT_SIZE"><code class="docutils literal notranslate"><span class="pre">PSA_AEAD_VERIFY_OUTPUT_SIZE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_RSA_MINIMUM_PADDING_SIZE"><code class="docutils literal notranslate"><span class="pre">PSA_RSA_MINIMUM_PADDING_SIZE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ECDSA_SIGNATURE_SIZE"><code class="docutils literal notranslate"><span class="pre">PSA_ECDSA_SIGNATURE_SIZE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ASYMMETRIC_SIGN_OUTPUT_SIZE"><code class="docutils literal notranslate"><span class="pre">PSA_ASYMMETRIC_SIGN_OUTPUT_SIZE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ASYMMETRIC_ENCRYPT_OUTPUT_SIZE"><code class="docutils literal notranslate"><span class="pre">PSA_ASYMMETRIC_ENCRYPT_OUTPUT_SIZE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_ASYMMETRIC_DECRYPT_OUTPUT_SIZE"><code class="docutils literal notranslate"><span class="pre">PSA_ASYMMETRIC_DECRYPT_OUTPUT_SIZE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_EXPORT_ASN1_INTEGER_MAX_SIZE"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_EXPORT_ASN1_INTEGER_MAX_SIZE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_EXPORT_RSA_PUBLIC_KEY_MAX_SIZE"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_EXPORT_RSA_PUBLIC_KEY_MAX_SIZE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_EXPORT_RSA_KEY_PAIR_MAX_SIZE"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_EXPORT_RSA_KEY_PAIR_MAX_SIZE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_EXPORT_DSA_PUBLIC_KEY_MAX_SIZE"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_EXPORT_DSA_PUBLIC_KEY_MAX_SIZE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_EXPORT_DSA_KEY_PAIR_MAX_SIZE"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_EXPORT_DSA_KEY_PAIR_MAX_SIZE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_EXPORT_ECC_PUBLIC_KEY_MAX_SIZE"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_EXPORT_ECC_PUBLIC_KEY_MAX_SIZE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_EXPORT_ECC_KEY_PAIR_MAX_SIZE"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_EXPORT_ECC_KEY_PAIR_MAX_SIZE</span></code> (macro)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="from_doxygen.html#PSA_KEY_EXPORT_MAX_SIZE"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_EXPORT_MAX_SIZE</span></code> (macro)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/ops/sign.html">Asymmetric signature</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/ops/sign.html#asymmetric-signature-algorithms">Asymmetric signature algorithms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ops/sign.html#asymmetric-signature-functions">Asymmetric signature functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ops/sign.html#support-macros">Support macros</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/ops/pke.html">Asymmetric encryption</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/ops/pke.html#asymmetric-encryption-algorithms">Asymmetric encryption algorithms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ops/pke.html#asymmetric-encryption-functions">Asymmetric encryption functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ops/pke.html#support-macros">Support macros</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/ops/ka.html">Key agreement</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/ops/ka.html#key-agreement-algorithms">Key agreement algorithms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ops/ka.html#standalone-key-agreement">Standalone key agreement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ops/ka.html#combining-key-agreement-and-key-derivation">Combining key agreement and key derivation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ops/ka.html#support-macros">Support macros</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/ops/rng.html">Other cryptographic services</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/ops/rng.html#random-number-generation">Random number generation</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="section" id="document-history">
-<h2>Document history</h2>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="11%" />
-<col width="89%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Date</th>
-<th class="head">Changes</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td>2019-01-21</td>
-<td><em>Release 1.0 beta 1</em></td>
-</tr>
-<tr class="row-odd"><td>2019-02-08</td>
-<td><ul class="first last simple">
-<li>Remove obsolete definition <code class="docutils literal notranslate"><span class="pre">PSA_ALG_IS_KEY_SELECTION</span></code>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">psa_key_agreement</span></code>: document <code class="docutils literal notranslate"><span class="pre">alg</span></code> parameter.</li>
-<li><a class="reference internal" href="from_doxygen.html#c.PSA_AEAD_FINISH_OUTPUT_SIZE" title="PSA_AEAD_FINISH_OUTPUT_SIZE"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_AEAD_FINISH_OUTPUT_SIZE</span></code></a>: remove spurious parameter <code class="docutils literal notranslate"><span class="pre">plaintext_length</span></code>.</li>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="appendix/example_header.html">Example header file</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="appendix/example_header.html#psa-crypto-h">psa/crypto.h</a></li>
 </ul>
-</td>
-</tr>
-<tr class="row-even"><td>2019-02-08</td>
-<td>Document formatting improvements</td>
-</tr>
-<tr class="row-odd"><td>2019-02-22</td>
-<td><em>Release 1.0 beta 2</em></td>
-</tr>
-<tr class="row-even"><td>2019-03-12</td>
-<td>Specify <code class="docutils literal notranslate"><span class="pre">psa_generator_import_key</span></code> for most key types.</td>
-</tr>
-<tr class="row-odd"><td>2019-04-09</td>
-<td><p class="first">Change the value of error codes, and some names, to align
-with other PSA specifications. The name changes are:</p>
-<ul class="last simple">
-<li><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_UNKNOWN_ERROR</span></code> → <a class="reference internal" href="from_doxygen.html#c.PSA_ERROR_GENERIC_ERROR" title="PSA_ERROR_GENERIC_ERROR"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_ERROR_GENERIC_ERROR</span></code></a></li>
-<li><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_OCCUPIED_SLOT</span></code> → <a class="reference internal" href="from_doxygen.html#c.PSA_ERROR_ALREADY_EXISTS" title="PSA_ERROR_ALREADY_EXISTS"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_ERROR_ALREADY_EXISTS</span></code></a></li>
-<li><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_EMPTY_SLOT</span></code> → <a class="reference internal" href="from_doxygen.html#c.PSA_ERROR_DOES_NOT_EXIST" title="PSA_ERROR_DOES_NOT_EXIST"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_ERROR_DOES_NOT_EXIST</span></code></a></li>
-<li><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_INSUFFICIENT_CAPACITY</span></code> → <a class="reference internal" href="from_doxygen.html#c.PSA_ERROR_INSUFFICIENT_DATA" title="PSA_ERROR_INSUFFICIENT_DATA"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_ERROR_INSUFFICIENT_DATA</span></code></a></li>
-<li><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_TAMPERING_DETECTED</span></code> → <a class="reference internal" href="from_doxygen.html#c.PSA_ERROR_CORRUPTION_DETECTED" title="PSA_ERROR_CORRUPTION_DETECTED"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_ERROR_CORRUPTION_DETECTED</span></code></a></li>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix/specdef_values.html">Example macro implementations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="appendix/specdef_values.html#algorithm-macros">Algorithm macros</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/specdef_values.html#key-type-macros">Key type macros</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/specdef_values.html#hash-suspend-state-macros">Hash suspend state macros</a></li>
 </ul>
-</td>
-</tr>
-<tr class="row-even"><td>2019-05-02</td>
-<td><p class="first">Change the way keys are created to avoid “half-filled” handles
-that contained key metadata, but no key material.
-Now, to create a key, first fill in a data structure containing
-its attributes, then pass this structure to a function that
-both allocates resources for the key and fills in the key
-material. This affects the following functions:</p>
-<ul class="last simple">
-<li><a class="reference internal" href="from_doxygen.html#c.psa_import_key" title="psa_import_key"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_import_key</span></code></a>, <a class="reference internal" href="from_doxygen.html#c.psa_generate_key" title="psa_generate_key"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_generate_key</span></code></a>, <code class="docutils literal notranslate"><span class="pre">psa_generator_import_key</span></code>
-and <a class="reference internal" href="from_doxygen.html#c.psa_copy_key" title="psa_copy_key"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_copy_key</span></code></a> now take an attribute structure (specifically,
-a pointer to <a class="reference internal" href="from_doxygen.html#c.psa_key_attributes_t" title="psa_key_attributes_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_key_attributes_t</span></code></a>) to specify key metadata.
-This replaces the previous method of passing arguments to
-<code class="docutils literal notranslate"><span class="pre">psa_create_key</span></code> or to the key material creation function
-or calling <code class="docutils literal notranslate"><span class="pre">psa_set_key_policy</span></code>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">psa_key_policy_t</span></code> and functions operating on that type
-no longer exist. A key’s policy is now accessible as part of
-its attributes.</li>
-<li><code class="docutils literal notranslate"><span class="pre">psa_get_key_information</span></code> is also replaced by accessing the
-key’s attributes (retrieved with <a class="reference internal" href="from_doxygen.html#c.psa_get_key_attributes" title="psa_get_key_attributes"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_get_key_attributes</span></code></a>).</li>
-<li><code class="docutils literal notranslate"><span class="pre">psa_create_key</span></code> no longer exists. Instead, set the key id
-attribute and the lifetime attribute before creating the
-key material.</li>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix/history.html">Changes to the API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="appendix/history.html#release-information">Release information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/history.html#document-change-history">Document change history</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="appendix/history.html#changes-between-1-0-beta-1-and-1-0-beta-2">Changes between <em>1.0 beta 1</em> and <em>1.0 beta 2</em></a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/history.html#changes-between-1-0-beta-2-and-1-0-beta-3">Changes between <em>1.0 beta 2</em> and <em>1.0 beta 3</em></a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/history.html#changes-between-1-0-beta-3-and-1-0-0">Changes between <em>1.0 beta 3</em> and <em>1.0.0</em></a></li>
 </ul>
-</td>
-</tr>
-<tr class="row-odd"><td>2019-05-14</td>
-<td><ul class="first last simple">
-<li>Allow <a class="reference internal" href="from_doxygen.html#c.psa_aead_update" title="psa_aead_update"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_aead_update</span></code></a> to buffer data.</li>
-<li>New buffer size calculation macros.</li>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/history.html#planned-changes-for-version-1-0-x">Planned changes for version 1.0.x</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/history.html#future-additions">Future additions</a></li>
 </ul>
-</td>
-</tr>
-<tr class="row-even"><td>2019-05-16</td>
-<td><ul class="first last simple">
-<li>Key identifiers are no longer specific to a given lifetime
-value. <a class="reference internal" href="from_doxygen.html#c.psa_open_key" title="psa_open_key"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_open_key</span></code></a> no longer takes a <code class="docutils literal notranslate"><span class="pre">lifetime</span></code> parameter.</li>
-<li>Define a range of key identifiers for use by applications
-and a separate range for use by implementations.</li>
+</li>
 </ul>
-</td>
-</tr>
-<tr class="row-odd"><td>2019-05-16</td>
-<td><p class="first">Avoid the unusual terminology “generator”: call them
-“key derivation operations” instead. Rename a number of functions
-and other identifiers related to for clarity and consistency:</p>
-<ul class="last simple">
-<li><code class="docutils literal notranslate"><span class="pre">psa_crypto_generator_t</span></code> → <a class="reference internal" href="from_doxygen.html#c.psa_key_derivation_operation_t" title="psa_key_derivation_operation_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_key_derivation_operation_t</span></code></a></li>
-<li><code class="docutils literal notranslate"><span class="pre">PSA_CRYPTO_GENERATOR_INIT</span></code> → <a class="reference internal" href="from_doxygen.html#c.PSA_KEY_DERIVATION_OPERATION_INIT" title="PSA_KEY_DERIVATION_OPERATION_INIT"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_KEY_DERIVATION_OPERATION_INIT</span></code></a></li>
-<li><code class="docutils literal notranslate"><span class="pre">psa_crypto_generator_init</span></code> → <a class="reference internal" href="from_doxygen.html#c.psa_key_derivation_operation_init" title="psa_key_derivation_operation_init"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_key_derivation_operation_init</span></code></a></li>
-<li><code class="docutils literal notranslate"><span class="pre">PSA_GENERATOR_UNBRIDLED_CAPACITY</span></code> → <a class="reference internal" href="from_doxygen.html#c.PSA_KEY_DERIVATION_UNLIMITED_CAPACITY" title="PSA_KEY_DERIVATION_UNLIMITED_CAPACITY"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_KEY_DERIVATION_UNLIMITED_CAPACITY</span></code></a></li>
-<li><code class="docutils literal notranslate"><span class="pre">psa_set_generator_capacity</span></code> → <a class="reference internal" href="from_doxygen.html#c.psa_key_derivation_set_capacity" title="psa_key_derivation_set_capacity"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_key_derivation_set_capacity</span></code></a></li>
-<li><code class="docutils literal notranslate"><span class="pre">psa_get_generator_capacity</span></code> → <a class="reference internal" href="from_doxygen.html#c.psa_key_derivation_get_capacity" title="psa_key_derivation_get_capacity"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_key_derivation_get_capacity</span></code></a></li>
-<li><code class="docutils literal notranslate"><span class="pre">psa_key_agreement</span></code> → <a class="reference internal" href="from_doxygen.html#c.psa_key_derivation_key_agreement" title="psa_key_derivation_key_agreement"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_key_derivation_key_agreement</span></code></a></li>
-<li><code class="docutils literal notranslate"><span class="pre">psa_generator_read</span></code> → <a class="reference internal" href="from_doxygen.html#c.psa_key_derivation_output_bytes" title="psa_key_derivation_output_bytes"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_key_derivation_output_bytes</span></code></a></li>
-<li><code class="docutils literal notranslate"><span class="pre">psa_generate_derived_key</span></code> → <a class="reference internal" href="from_doxygen.html#c.psa_key_derivation_output_key" title="psa_key_derivation_output_key"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_key_derivation_output_key</span></code></a></li>
-<li><code class="docutils literal notranslate"><span class="pre">psa_generator_abort</span></code> → <a class="reference internal" href="from_doxygen.html#c.psa_key_derivation_abort" title="psa_key_derivation_abort"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_key_derivation_abort</span></code></a></li>
-<li><code class="docutils literal notranslate"><span class="pre">psa_key_agreement_raw_shared_secret</span></code> → <a class="reference internal" href="from_doxygen.html#c.psa_raw_key_agreement" title="psa_raw_key_agreement"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_raw_key_agreement</span></code></a></li>
-<li><code class="docutils literal notranslate"><span class="pre">PSA_KDF_STEP_xxx</span></code> → <code class="docutils literal notranslate"><span class="pre">PSA_KEY_DERIVATION_INPUT_xxx</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">PSA_xxx_KEYPAIR</span></code> → <code class="docutils literal notranslate"><span class="pre">PSA_xxx_KEY_PAIR</span></code></li>
-</ul>
-</td>
-</tr>
-<tr class="row-even"><td>2019-05-16</td>
-<td><ul class="first last simple">
-<li>Clarify the behavior in various corner cases.</li>
-<li>Document more error conditions.</li>
-</ul>
-</td>
-</tr>
-<tr class="row-odd"><td>2019-05-21</td>
-<td>Convert TLS1.2 KDF descriptions to multistep key derivation.</td>
-</tr>
-<tr class="row-even"><td>2019-05-22</td>
-<td><em>Release 1.0 beta 3</em></td>
-</tr>
-</tbody>
-</table>
 </div>
-<div class="section" id="planned-changes-for-version-1-0">
-<h2>Planned changes for version 1.0</h2>
-<p>Here is a summary of the changes we are currently planning to make to
-this specification for version 1.0.</p>
-<ul class="simple">
-<li>Add missing macros to calculate output buffer sizes, IV/nonce sizes,
-and maximum supported data sizes.</li>
-<li>Remove the definition of most macros, to give implementations free
-choice regarding how these macros are implemented, as long as the
-implementation meets the English-language specification.</li>
-<li>Remove certain auxiliary macros that are not directly useful to
-applications, but are currently used as building blocks to define
-other macros.</li>
-<li>Correct lists of documented error codes for several functions, and
-clarify error conditions for many functions.</li>
-<li>Constrain whether and when an application may have the same persistent key
-open multiple times.</li>
-<li>Constrain the permitted implementation behavior when calling a function on
-an operation object in a state where this function does not make sense,
-and when a key is destroyed while in use.</li>
-<li>Declare identifiers for additional cryptographic algorithms.</li>
-<li>Forbid zero-length keys.</li>
-<li>Use a standard import/export format for EC keys on Montgomery curves.</li>
-<li>Mandate certain checks when importing some types of asymmetric keys.</li>
-<li>Clarifications and improvements to the description of some API elements
-and to the structure of the document.</li>
-</ul>
 <h2 id="indices">Indices</h2>
 
 <ul>
@@ -736,91 +307,47 @@ and to the structure of the document.</li>
   <li><a class="reference internal" href="psa_c-identifiers.html">Index of identifiers</a></li>
   <li><a class="reference internal" href="search.html">Search</a></li>
 </ul></div>
-</div>
 
 
           </div>
-          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="#">psa_crypto_api</a></h1>
-
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="general.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="general.html#design-goals">Design goals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="general.html#functionality-overview">Functionality overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="general.html#sample-architectures">Sample architectures</a></li>
-<li class="toctree-l1"><a class="reference internal" href="general.html#library-conventions">Library conventions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="general.html#implementation-considerations">Implementation considerations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="general.html#usage-considerations">Usage considerations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html">Implementation-specific definitions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#library-initialization">Library initialization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#key-attributes">Key attributes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#key-management">Key management</a></li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#key-import-and-export">Key import and export</a></li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#message-digests">Message digests</a></li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#message-authentication-codes">Message authentication codes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#symmetric-ciphers">Symmetric ciphers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#authenticated-encryption-with-associated-data-aead">Authenticated encryption with associated data (AEAD)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#asymmetric-cryptography">Asymmetric cryptography</a></li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#key-derivation-and-pseudorandom-generation">Key derivation and pseudorandom generation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#random-generation">Random generation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#error-codes">Error codes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#key-and-algorithm-types">Key and algorithm types</a></li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#key-lifetimes">Key lifetimes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#key-policies">Key policies</a></li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#key-derivation">Key derivation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="from_doxygen.html#other-definitions">Other definitions</a></li>
-</ul>
-
-<div class="relations">
+        <div class="sphinxsidebarwrapper"><div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="#">Documentation overview</a><ul>
-      <li>Next: <a href="general.html" title="next chapter">Introduction</a></li>
+      <li>Next: <a href="overview/intro.html" title="next chapter">Introduction</a></li>
   </ul></li>
 </ul>
 </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
-    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
-
-
-
-
-
-
-
-
         </div>
       </div>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2019, Arm.
+      &copy; 2019-2020, Arm Limited or its affiliates. All rights reserved.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
       |
       <a href="_sources/index.rst.txt"

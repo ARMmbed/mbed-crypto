@@ -1,1 +1,111 @@
-/* This file intentionally left blank. */
+/* CSS overrides for the html output */
+
+body {
+    font-family: Calibri, sans-serif;
+    font-size: 17px;
+}
+
+div.document {
+    width: 1080px;
+}
+
+div.body h1,
+div.body h2,
+div.body h3,
+div.body h4,
+div.body h5,
+div.body h6 {
+    font-family: Calibri, sans-serif;
+    font-weight: bold;
+}
+
+div.sphinxsidebar h3,
+div.sphinxsidebar h4 {
+    font-family: Calibri, sans-serif;
+}
+
+a {
+    color: #0091BD;
+    text-decoration: none;
+}
+
+a.reference {
+    border-bottom: none;
+}
+
+tt, code {
+    font-family: 'Consolas', 'Menlo', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
+    font-size: 0.85em;
+    background-color: white;
+}
+
+code.xref, a code {
+    font-weight: normal;
+    color: #0091BD;
+    background-color: white;
+}
+
+pre {
+    font-family: 'Consolas', 'Menlo', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
+    font-size: 0.8em;
+    background: #F7F7F7;
+    padding: 7px 10px;
+    margin: 15px 0px 15px 15px;
+    line-height: 1.3em;
+}
+
+table.docutils {
+    border: 0;
+	width: 100%;
+	-moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-top: 1px solid #AAA;
+    border-bottom: 1px solid #AAA;
+}
+
+table.docutils td, table.docutils th {
+	border: 0;
+    padding: 0.3em 0.5em 0.3em 0.5em;
+    text-align: left;
+    vertical-align: top;
+}
+
+table.docutils th {
+    border-bottom: 1px solid #AAA;
+}
+
+.small-caps {
+    font-variant: small-caps;
+}
+
+div.admonition {
+    margin: 5px 15px;
+    padding: 5px 15px;
+    background-color: #FFF;
+    border: 0;
+    border-left: 6px solid #DDD;
+}
+
+div.warning {
+    border-left: 6px solid #FBB;
+}
+
+div.admonition p.admonition-title {
+    font-family: Calibri, sans-serif;
+    font-weight: bold;
+    font-size: 90%;
+}
+
+div.warning p.admonition-title {
+    color: darkred;
+}
+
+div.admonition p {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+p.admonition-title:after {
+    content: "";
+}

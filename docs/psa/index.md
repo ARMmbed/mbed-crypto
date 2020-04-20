@@ -13,7 +13,7 @@ The PSA Cryptography API is a C programming interface for applications that wish
 [HTML](../html/index.html),
 [PDF](../PSA_Cryptography_API_Specification.pdf)
 
-**Reference implementation**: [Mbed Crypto](https://github.com/ARMmbed/mbed-crypto)
+**Reference implementation**: [Mbed TLS](https://github.com/ARMmbed/mbed-tls)
 
 ## Hardware abstraction layer
 
@@ -43,5 +43,5 @@ For more information, see [PSA entropy source driver interface](entropy/).
 ## Feedback
 
 Arm welcomes feedback on the design of the PSA cryptography interfaces.
-If you think something could be improved, please open an [issue on the Mbed Crypto GitHub repository](https://github.com/ARMmbed/mbed-crypto/labels/api-spec).
+If you think something could be improved, please open an [issue on the Mbed TLS GitHub repository](https://github.com/ARMmbed/mbedtls/labels/api-spec).
 Alternatively, if you prefer to provide your feedback privately, please email us at `mbed-crypto@arm.com`. All feedback received by email is treated confidentially.

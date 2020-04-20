@@ -6,6 +6,6 @@ You can plug such drivers into any implementation of the [PSA Cryptography API](
 **Status: draft** — major changes are still likely.
 
 **Documentation**: for now, please see the header file:
-[`include/psa/crypto_accel_driver.h`](https://github.com/ARMmbed/mbed-crypto/blob/development/include/psa/crypto_accel_driver.h)
+[`include/psa/crypto_accel_driver.h`](https://github.com/ARMmbed/mbedtls/blob/development/include/psa/crypto_accel_driver.h)
 
-**Mbed Crypto support status**: Not implemented yet. For now, accelerators use the [Mbed TLS alternative cryptography engine interface](https://tls.mbed.org/kb/development/hw_acc_guidelines).
+**Mbed TLS support status**: Not implemented yet. For now, accelerators use the [Mbed TLS alternative cryptography engine interface](https://tls.mbed.org/kb/development/hw_acc_guidelines).

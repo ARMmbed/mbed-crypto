@@ -1,0 +1,165 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>PSA Crypto library &#8212; PSA Crypto API 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Key management reference" href="../keys/index.html" />
+    <link rel="prev" title="PSA status codes" href="status.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="psa-crypto-library">
+<h1>PSA Crypto library</h1>
+<div class="section" id="api-version">
+<span id="id1"></span><h2>API version</h2>
+<div class="section" id="PSA_CRYPTO_API_VERSION_MAJOR">
+<span id="c.PSA_CRYPTO_API_VERSION_MAJOR"></span><h3><code class="docutils literal"><span class="pre">PSA_CRYPTO_API_VERSION_MAJOR</span></code> (macro)</h3>
+<p>The major version of this implementation of the PSA Crypto API.</p>
+<pre class="literal-block">
+#define <a class="reference internal" href="#c.PSA_CRYPTO_API_VERSION_MAJOR" title="PSA_CRYPTO_API_VERSION_MAJOR">PSA_CRYPTO_API_VERSION_MAJOR</a> 1
+</pre>
+</div>
+<div class="section" id="PSA_CRYPTO_API_VERSION_MINOR">
+<span id="c.PSA_CRYPTO_API_VERSION_MINOR"></span><h3><code class="docutils literal"><span class="pre">PSA_CRYPTO_API_VERSION_MINOR</span></code> (macro)</h3>
+<p>The minor version of this implementation of the PSA Crypto API.</p>
+<pre class="literal-block">
+#define <a class="reference internal" href="#c.PSA_CRYPTO_API_VERSION_MINOR" title="PSA_CRYPTO_API_VERSION_MINOR">PSA_CRYPTO_API_VERSION_MINOR</a> 0
+</pre>
+</div>
+</div>
+<div class="section" id="library-initialization">
+<span id="library-init"></span><h2>Library initialization</h2>
+<div class="section" id="psa_crypto_init">
+<span id="c.psa_crypto_init"></span><h3><code class="docutils literal"><span class="pre">psa_crypto_init</span></code> (function)</h3>
+<p>Library initialization.</p>
+<pre class="literal-block">
+<a class="reference internal" href="status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_crypto_init" title="psa_crypto_init">psa_crypto_init</a>(void);
+</pre>
+<p class="rubric">Returns: <a class="reference internal" href="status.html#c.psa_status_t" title="psa_status_t"><code class="docutils literal"><span class="pre">psa_status_t</span></code></a></p>
+<dl class="docutils">
+<dt> <a class="reference internal" href="status.html#c.PSA_SUCCESS" title="PSA_SUCCESS"><code class="docutils literal"><span class="pre">PSA_SUCCESS</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="status.html#c.PSA_ERROR_INSUFFICIENT_MEMORY" title="PSA_ERROR_INSUFFICIENT_MEMORY"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_MEMORY</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="status.html#c.PSA_ERROR_COMMUNICATION_FAILURE" title="PSA_ERROR_COMMUNICATION_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_COMMUNICATION_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="status.html#c.PSA_ERROR_HARDWARE_FAILURE" title="PSA_ERROR_HARDWARE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_HARDWARE_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="status.html#c.PSA_ERROR_CORRUPTION_DETECTED" title="PSA_ERROR_CORRUPTION_DETECTED"><code class="docutils literal"><span class="pre">PSA_ERROR_CORRUPTION_DETECTED</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="status.html#c.PSA_ERROR_INSUFFICIENT_ENTROPY" title="PSA_ERROR_INSUFFICIENT_ENTROPY"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_ENTROPY</span></code></a></dt>
+<dd></dd>
+</dl>
+<p class="rubric">Description</p>
+<p>Applications must call this function before calling any other function in this module.</p>
+<p>Applications are permitted to call this function more than once. Once a call succeeds, subsequent calls are guaranteed to succeed.</p>
+<p>If the application calls other functions before calling <a class="reference internal" href="#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_crypto_init()</span></code></a>, the behavior is undefined. In this situation:</p>
+<ul class="simple">
+<li>Implementations are encouraged to either perform the operation as if the library had been initialized or to return <a class="reference internal" href="status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a> or some other applicable error.</li>
+<li>Implementations must not return a success status if the lack of initialization might have security implications, for example due to improper seeding of the random number generator.</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">PSA Crypto library</a><ul>
+<li><a class="reference internal" href="#api-version">API version</a><ul>
+<li><a class="reference internal" href="#PSA_CRYPTO_API_VERSION_MAJOR"><code class="docutils literal"><span class="pre">PSA_CRYPTO_API_VERSION_MAJOR</span></code> (macro)</a></li>
+<li><a class="reference internal" href="#PSA_CRYPTO_API_VERSION_MINOR"><code class="docutils literal"><span class="pre">PSA_CRYPTO_API_VERSION_MINOR</span></code> (macro)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#library-initialization">Library initialization</a><ul>
+<li><a class="reference internal" href="#psa_crypto_init"><code class="docutils literal"><span class="pre">psa_crypto_init</span></code> (function)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Library management reference</a><ul>
+      <li>Previous: <a href="status.html" title="previous chapter">PSA status codes</a></li>
+      <li>Next: <a href="../keys/index.html" title="next chapter">Key management reference</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/api/library/library.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy; 2019-2020, Arm Limited or its affiliates. All rights reserved.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../../_sources/api/library/library.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
