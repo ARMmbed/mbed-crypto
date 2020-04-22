@@ -712,15 +712,6 @@ component_build_deprecated () {
     msg "test: make, full config + DEPRECATED_WARNING, expect warnings" # ~ 30s
     make -C tests clean
     make CC=gcc CFLAGS='-O -Werror -Wall -Wextra -Wno-error=deprecated-declarations -DMBEDTLS_TEST_DEPRECATED' tests
-
-    msg "build: make, full config + DEPRECATED_REMOVED, clang -O" # ~ 30s
-    # No cleanup, just tweak the configuration and rebuild
-    make clean
-    scripts/config.py unset MBEDTLS_DEPRECATED_WARNING
-    scripts/config.py set MBEDTLS_DEPRECATED_REMOVED
-    # Build with -O -Wextra to catch a maximum of issues.
-    make CC=clang CFLAGS='-O -Werror -Wall -Wextra' lib programs
-    make CC=clang CFLAGS='-O -Werror -Wall -Wextra -Wno-unused-function' tests
 }
 
 component_test_depends_curves () {
