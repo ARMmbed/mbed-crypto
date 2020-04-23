@@ -31,4 +31,5 @@ The design goals of the PSA cryptography API include:
 * The interface to algorithms is generic, favoring algorithm agility.
 * The interface is designed to be easy to use and hard to accidentally misuse.
 
-Arm welcomes feedback on the design of the API. If you think something could be improved, please open an issue on our Github repository. Alternatively, if you prefer to provide your feedback privately, please email us at [`mbed-crypto@arm.com`](mailto:mbed-crypto@arm.com). All feedback received by email is treated confidentially.
+Arm welcomes feedback on the design of the API. If you think something could be improved, please discuss it on the [`psa-crypto` mailing list](https://lists.trustedfirmware.org/mailman/listinfo/psa-crypto).
+Alternatively, if you prefer to provide your feedback privately, please email us at [`mbed-crypto@arm.com`](mailto:mbed-crypto@arm.com). All feedback received through this email is treated confidentially.
