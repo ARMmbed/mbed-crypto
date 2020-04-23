@@ -702,16 +702,17 @@ component_test_full_make_gcc_o0 () {
 }
 
 component_build_deprecated () {
-    msg "build: make, full config + DEPRECATED_WARNING, gcc -O" # ~ 30s
+    msg "build: make, full config + DEPRECATED_WARNING, gcc -O, expect warnings" # ~ 30s
     scripts/config.py full
     scripts/config.py set MBEDTLS_DEPRECATED_WARNING
     # Build with -O -Wextra to catch a maximum of issues.
-    make CC=gcc CFLAGS='-O -Werror -Wall -Wextra' lib programs
-    make CC=gcc CFLAGS='-O -Werror -Wall -Wextra -Wno-unused-function' tests
+    # Expect #warning stating that Mbed Crypto is no longer updated.
+    make CC=gcc CFLAGS='-O -Werror -Wall -Wextra -Wno-error=cpp' lib programs
+    make CC=gcc CFLAGS='-O -Werror -Wall -Wextra -Wno-error=cpp -Wno-unused-function' tests
 
     msg "test: make, full config + DEPRECATED_WARNING, expect warnings" # ~ 30s
     make -C tests clean
-    make CC=gcc CFLAGS='-O -Werror -Wall -Wextra -Wno-error=deprecated-declarations -DMBEDTLS_TEST_DEPRECATED' tests
+    make CC=gcc CFLAGS='-O -Werror -Wall -Wextra -Wno-error=cpp -Wno-error=deprecated-declarations -DMBEDTLS_TEST_DEPRECATED' tests
 }
 
 component_test_depends_curves () {
