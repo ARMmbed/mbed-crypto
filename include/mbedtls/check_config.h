@@ -30,6 +30,13 @@
 #ifndef MBEDTLS_CHECK_CONFIG_H
 #define MBEDTLS_CHECK_CONFIG_H
 
+#if defined(MBEDTLS_DEPRECATED_REMOVED)
+#error "Mbed Crypto is no longer being updated. Please use Mbed TLS instead. See README.md."
+#endif
+#if defined(MBEDTLS_DEPRECATED_WARNING)
+#warning "Mbed Crypto is no longer being updated. Please use Mbed TLS instead. See README.md."
+#endif
+
 /*
  * We assume CHAR_BIT is 8 in many places. In practice, this is true on our
  * target platforms, so not an issue, but let's just be extra sure.

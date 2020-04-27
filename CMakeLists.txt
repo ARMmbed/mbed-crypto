@@ -241,3 +241,10 @@ if(ENABLE_TESTING)
                     ${CMAKE_CURRENT_BINARY_DIR}/DartConfiguration.tcl COPYONLY)
     endif()
 endif()
+
+message(WARNING "\
+\n ****************************************************************\
+\n **** Mbed Crypto is no longer being updated. *******************\
+\n **** Please use Mbed TLS instead. See README.md. ***************\
+\n ****************************************************************\
+")

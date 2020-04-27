@@ -77,6 +77,10 @@ ifndef WINDOWS
 	-scripts/config.py get MBEDTLS_TEST_NULL_ENTROPY && ([ $$? -eq 0 ]) && \
 	    echo '$(NULL_ENTROPY_WARNING)'
 endif
+	-echo "****************************************************************"
+	-echo "**** Mbed Crypto is no longer being updated. *******************"
+	-echo "**** Please use Mbed TLS instead. See README.md. ***************"
+	-echo "****************************************************************"
 
 clean:
 	$(MAKE) -C library clean
