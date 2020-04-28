@@ -998,7 +998,18 @@
  * Uncomment this macro to disable the use of CRT in RSA.
  *
  */
-//#define MBEDTLS_RSA_NO_CRT
+#define MBEDTLS_RSA_NO_CRT
+
+/**
+ * \def MBEDTLS_RSA_PRIVATE_NO_E_CHECKING
+ *
+ * Allow to perform RSA private with no
+ * public exponent
+ *
+ * Uncomment this macro to disable E checking in RSA private.
+ *
+ */
+#define MBEDTLS_RSA_PRIVATE_NO_E_CHECKING
 
 /**
  * \def MBEDTLS_SELF_TEST

@@ -870,15 +870,18 @@ void mbedtls_rsa_private( data_t * message_str, int mod, int radix_P,
                           int result )
 {
     unsigned char output[256];
-    mbedtls_rsa_context ctx, ctx2; /* Also test mbedtls_rsa_copy() while at it */
-    mbedtls_mpi N, P, Q, E;
+    mbedtls_rsa_context ctx, ctx2, ctx3; /* Also test mbedtls_rsa_copy() while at it */
+    mbedtls_mpi N, P, Q, D, E;
     rnd_pseudo_info rnd_info;
     int i;
 
     mbedtls_mpi_init( &N ); mbedtls_mpi_init( &P );
     mbedtls_mpi_init( &Q ); mbedtls_mpi_init( &E );
+    mbedtls_mpi_init( &D );
+
     mbedtls_rsa_init( &ctx, MBEDTLS_RSA_PKCS_V15, 0 );
     mbedtls_rsa_init( &ctx2, MBEDTLS_RSA_PKCS_V15, 0 );
+    mbedtls_rsa_init( &ctx3, MBEDTLS_RSA_PKCS_V15, 0 );
 
     memset( &rnd_info, 0, sizeof( rnd_pseudo_info ) );
 
@@ -922,11 +925,24 @@ void mbedtls_rsa_private( data_t * message_str, int mod, int radix_P,
         TEST_ASSERT( hexcmp( output, result_hex_str->x, ctx2.len, result_hex_str->len ) == 0 );
     }
 
+    /* And now one more time only with N and D */
+    TEST_ASSERT( mbedtls_rsa_export( &ctx2, &N, &P, &Q, &D, &E ) == 0 );
+    TEST_ASSERT( mbedtls_rsa_import( &ctx3, &N, NULL, NULL, &D, NULL ) == 0 );
+
+    memset( output, 0x00, sizeof( output ) );
+    TEST_ASSERT( mbedtls_rsa_private( &ctx3, NULL, NULL,
+                                  message_str->x, output ) == result );
+    if( result == 0 )
+    {
+        TEST_ASSERT( hexcmp( output, result_hex_str->x, ctx2.len, result_hex_str->len ) == 0 );
+    }
+
 exit:
     mbedtls_mpi_free( &N ); mbedtls_mpi_free( &P );
     mbedtls_mpi_free( &Q ); mbedtls_mpi_free( &E );
+    mbedtls_mpi_free( &D );
 
-    mbedtls_rsa_free( &ctx ); mbedtls_rsa_free( &ctx2 );
+    mbedtls_rsa_free( &ctx ); mbedtls_rsa_free( &ctx2 ); mbedtls_rsa_free( &ctx3 );
 }
 /* END_CASE */
 
