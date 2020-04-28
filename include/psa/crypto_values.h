@@ -615,6 +615,7 @@
 #define PSA_ALG_CATEGORY_MAC                    ((psa_algorithm_t)0x02000000)
 #define PSA_ALG_CATEGORY_CIPHER                 ((psa_algorithm_t)0x04000000)
 #define PSA_ALG_CATEGORY_AEAD                   ((psa_algorithm_t)0x06000000)
+#define PSA_ALG_CATEGORY_WRAP                   ((psa_algorithm_t)0x0e000000)
 #define PSA_ALG_CATEGORY_SIGN                   ((psa_algorithm_t)0x10000000)
 #define PSA_ALG_CATEGORY_ASYMMETRIC_ENCRYPTION  ((psa_algorithm_t)0x12000000)
 #define PSA_ALG_CATEGORY_KEY_DERIVATION         ((psa_algorithm_t)0x20000000)
@@ -671,6 +672,17 @@
  */
 #define PSA_ALG_IS_AEAD(alg)                                            \
     (((alg) & PSA_ALG_CATEGORY_MASK) == PSA_ALG_CATEGORY_AEAD)
+
+/** Whether the specified algorithm is a key wrapping algorithm.
+ *
+ * \param alg An algorithm identifier (value of type #psa_algorithm_t).
+ *
+ * \return 1 if \p alg is a key wrapping algorithm, 0 otherwise.
+ *         This macro may return either 0 or 1 if \p alg is not a supported
+ *         algorithm identifier.
+ */
+#define PSA_ALG_IS_KEY_WRAP(alg)                                        \
+    (((alg) & PSA_ALG_CATEGORY_MASK) == PSA_ALG_CATEGORY_WRAP)
 
 /** Whether the specified algorithm is a public-key signature algorithm.
  *
@@ -1081,6 +1093,24 @@
     PSA_ALG_AEAD_WITH_TAG_LENGTH(aead_alg, 0) ==                         \
     PSA_ALG_AEAD_WITH_TAG_LENGTH(ref, 0) ?                               \
     ref :
+
+/** The KW algorithm from NIST SP 800-38F, also described in RFC 3394.
+ *
+ * This algorithm may be used with any key type for a block cipher with
+ * a 128-bit block size, not just AES. The calculations are the same as
+ * described in SP 800-38F, but replacing uses of AES with the 128-bit
+ * block cipher that the key is for.
+ */
+#define PSA_ALG_NIST_KW                         ((psa_algorithm_t)0x0e401003)
+
+/** The KWP algorithm from NIST SP 800-38F.
+ *
+ * This algorithm may be used with any key type for a block cipher with
+ * a 128-bit block size, not just AES. The calculations are the same as
+ * described in SP 800-38F, but replacing uses of AES with the 128-bit
+ * block cipher that the key is for.
+ */
+#define PSA_ALG_NIST_KWP                        ((psa_algorithm_t)0x0e401005)
 
 #define PSA_ALG_RSA_PKCS1V15_SIGN_BASE          ((psa_algorithm_t)0x10020000)
 /** RSA PKCS#1 v1.5 signature with hashing.
@@ -1571,6 +1601,22 @@
  */
 #define PSA_KEY_ID_VENDOR_MAX                   ((psa_app_key_id_t)0x7fffffff)
 
+/** A key wrapping key suitable for keys managed directly by the
+ * PSA Cryptography implementation.
+ *
+ * Applications may use this key with psa_wrap_key_with_policy() and
+ * psa_unwrap_key_with_policy() to back up a key that has the
+ * #PSA_KEY_USAGE_BACKUP usage flag and later restore it on the same device,
+ * if the implementation supports it.
+ *
+ * The existence of this key is optional. Implementations that support
+ * key wrapping should offer a key with this identifier if having a
+ * single wrapping key makes sense in the scenarios where this implementation
+ * is used. If this key exists, it must be private to the device, i.e. it
+ * must not be shared with any other device or entity.
+ */
+#define PSA_KEY_ID_WRAP_BOUND                   ((psa_app_key_id_t)0x80000062)
+
 /**@}*/
 
 /** \defgroup policy Key policies
@@ -1603,8 +1649,68 @@
  * For keys with the lifetime #PSA_KEY_LIFETIME_VOLATILE or
  * #PSA_KEY_LIFETIME_PERSISTENT, the usage flag #PSA_KEY_USAGE_COPY
  * is sufficient to permit the copy.
+ *
+ * When combined with #PSA_KEY_USAGE_BACKUP, this flag allows the use
+ * of psa_unwrap_key_to_alternate_lifetime() on a wrapped key data.
  */
 #define PSA_KEY_USAGE_COPY                      ((psa_key_usage_t)0x00000002)
+
+/** Whether the key material may be exported in wrapped form.
+ *
+ * This flag allows the use of psa_wrap_key_material() on the given key,
+ * with any suitable wrapping key.
+ *
+ * A wrapped form of the key material preserves the confidentiality
+ * and authenticity of the key material. In practical terms, the key
+ * material is encrypted and authenticated.
+ *
+ * A wrapped form does not preserve the key metadata in general, so it is up
+ * to the application to ensure that the key is unwrapped with the correct
+ * type and policy.
+ *
+ * \note Given that a wrapped key can be unwrapped with a different policy,
+ *       which may include #PSA_KEY_USAGE_EXPORT, there is often no
+ *       security advantage to allowing the key usage
+ *       #PSA_KEY_USAGE_EXPORT_WRAPPED but not #PSA_KEY_USAGE_EXPORT.
+ *       However implementations may impose restrictions on keys that
+ *       are created through unwrapping with a particular key, in which
+ *       case unwrapping could preserve the non-extractibility of a key.
+ */
+#define PSA_KEY_USAGE_EXPORT_WRAPPED            ((psa_key_usage_t)0x00000010)
+
+/** Whether the key object may be saved outside the device in wrapped form.
+ * This is also known as key binding.
+ *
+ * This flag allows the use of psa_wrap_key_with_policy() on the given key,
+ * with any suitable wrapping key, and the subsequent use of
+ * psa_unwrap_key_with_policy() on the resulting data.
+ * When combined with #PSA_KEY_USAGE_COPY, this flag also allows the use
+ * of psa_unwrap_key_to_alternate_lifetime() to unwrap the resulting data.
+ *
+ * A wrapped form of the key object preserves the confidentiality and
+ * authenticity of the key material and the authenticity of the key
+ * policy. In practical terms, the key material is encrypted, and
+ * the key data and metadata are authenticated together.
+ */
+#define PSA_KEY_USAGE_BACKUP                    ((psa_key_usage_t)0x00000020)
+
+/** Whether the key may be used to wrap another key.
+ *
+ * This flag allows the key to be used as a wrapping key with
+ * psa_wrap_key_material().
+ *
+ * For a key pair, this concerns the public key.
+ */
+#define PSA_KEY_USAGE_WRAP_OTHER_KEY            ((psa_key_usage_t)0x00000040)
+
+/** Whether the key may be used to unwrap another key.
+ *
+ * This flag allows the key to be used as a wrapping key with
+ * psa_unwrap_key_material().
+ *
+ * For a key pair, this concerns the private key.
+ */
+#define PSA_KEY_USAGE_UNWRAP_OTHER_KEY          ((psa_key_usage_t)0x00000080)
 
 /** Whether the key may be used to encrypt a message.
  *

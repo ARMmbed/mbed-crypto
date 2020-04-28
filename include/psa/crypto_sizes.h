@@ -641,8 +641,8 @@
  *
  * \return If the parameters are valid and supported, return
  *         a buffer size in bytes that guarantees that
- *         psa_sign_hash() will not fail with
- *         #PSA_ERROR_BUFFER_TOO_SMALL.
+ *         psa_export_key() (and psa_export_public_key() if applicable)
+           will not fail with #PSA_ERROR_BUFFER_TOO_SMALL.
  *         If the parameters are a valid combination that is not supported
  *         by the implementation, this macro shall return either a
  *         sensible size or 0.
@@ -658,5 +658,56 @@
      PSA_KEY_TYPE_IS_ECC_KEY_PAIR(key_type) ? PSA_KEY_EXPORT_ECC_KEY_PAIR_MAX_SIZE(key_bits) : \
      PSA_KEY_TYPE_IS_ECC_PUBLIC_KEY(key_type) ? PSA_KEY_EXPORT_ECC_PUBLIC_KEY_MAX_SIZE(key_bits) : \
      0)
+
+/** Sufficient output buffer size for psa_wrap_key_with_policy().
+ *
+ * This macro returns a compile-time constant if its arguments are
+ * compile-time constants.
+ *
+ * \warning This function may call its arguments multiple times or
+ *          zero times, so you should not pass arguments that contain
+ *          side effects.
+ *
+ * \param key_type  A supported key type.
+ * \param key_bits  The size of the key in bits.
+ *
+ * \return If the parameters are valid and supported, return
+ *         a buffer size in bytes that guarantees that
+ *         psa_wrap_key_with_policy() will not fail with
+ *         #PSA_ERROR_BUFFER_TOO_SMALL.
+ *         If the parameters are a valid combination that is not supported
+ *         by the implementation, this macro shall return either a
+ *         sensible size or 0.
+ *         If the parameters are not valid, the
+ *         return value is unspecified.
+ */
+#define PSA_WRAP_KEY_WITH_POLICY_OUTPUT_SIZE(key_type, key_bits)        \
+    0u /*not implemented yet*/
+
+/** Sufficient output buffer size for psa_wrap_key_material().
+ *
+ * This macro returns a compile-time constant if its arguments are
+ * compile-time constants.
+ *
+ * \warning This function may call its arguments multiple times or
+ *          zero times, so you should not pass arguments that contain
+ *          side effects.
+ *
+ * \param alg       The key wrapping algorithm.
+ * \param key_type  A supported key type.
+ * \param key_bits  The size of the key in bits.
+ *
+ * \return If the parameters are valid and supported, return
+ *         a buffer size in bytes that guarantees that
+ *         psa_wrap_key_material() will not fail with
+ *         #PSA_ERROR_BUFFER_TOO_SMALL.
+ *         If the parameters are a valid combination that is not supported
+ *         by the implementation, this macro shall return either a
+ *         sensible size or 0.
+ *         If the parameters are not valid, the
+ *         return value is unspecified.
+ */
+#define PSA_WRAP_KEY_MATERIAL_OUTPUT_SIZE(alg, key_type, key_bits)       \
+    0u /*not implemented yet*/
 
 #endif /* PSA_CRYPTO_SIZES_H */
