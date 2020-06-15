@@ -9,6 +9,7 @@ endif()
 set(MBEDTLS_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
 option(ENABLE_PROGRAMS "Build mbed TLS programs." ON)
+option(ENABLE_DOCS "Build api documentation." ON)
 
 option(UNSAFE_BUILD "Allow unsafe builds. These builds ARE NOT SECURE." OFF)
 
@@ -192,9 +193,11 @@ if(ENABLE_PROGRAMS)
     add_subdirectory(programs)
 endif()
 
-ADD_CUSTOM_TARGET(apidoc
-    COMMAND doxygen mbedtls.doxyfile
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/doxygen)
+if(ENABLE_DOCS)
+    ADD_CUSTOM_TARGET(apidoc
+        COMMAND doxygen mbedtls.doxyfile
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/doxygen)
+endif()
 
 if(ENABLE_TESTING)
     enable_testing()
