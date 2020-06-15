@@ -152,6 +152,7 @@ if(USE_STATIC_MBEDTLS_LIBRARY)
     target_link_libraries(${mbedcrypto_static_target} ${libs})
     target_include_directories(${mbedcrypto_static_target}
         PUBLIC ${MBEDTLS_DIR}/include/
+        PUBLIC ${MBEDTLS_DIR}/include/mbedtls/
         PUBLIC ${MBEDTLS_DIR}/crypto/include/)
 
     install(TARGETS ${mbedcrypto_static_target}
@@ -165,6 +166,7 @@ if(USE_SHARED_MBEDTLS_LIBRARY)
     target_link_libraries(mbedcrypto ${libs})
     target_include_directories(mbedcrypto
         PUBLIC ${MBEDTLS_DIR}/include/
+        PUBLIC ${MBEDTLS_DIR}/include/mbedtls/
         PUBLIC ${MBEDTLS_DIR}/crypto/include/)
 
     install(TARGETS mbedcrypto
