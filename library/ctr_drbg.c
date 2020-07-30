@@ -30,7 +30,7 @@
 #include MBEDTLS_CONFIG_FILE
 #endif
 
-#if defined(MBEDTLS_CTR_DRBG_C)
+#if !defined(MBEDTLS_CTR_DRBG_C_ALT)
 
 #include "mbedtls/ctr_drbg.h"
 #include "mbedtls/platform_util.h"
