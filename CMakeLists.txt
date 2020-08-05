@@ -80,10 +80,6 @@ option: \n\
     endif()
 endif()
 
-set(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE}
-    CACHE STRING "Choose the type of build: None Debug Release Coverage ASan ASanDbg MemSan MemSanDbg Check CheckFull"
-    FORCE)
-
 # Create a symbolic link from ${base_name} in the binary directory
 # to the corresponding path in the source directory.
 function(link_to_source base_name)
