@@ -4185,8 +4185,22 @@ static psa_status_t psa_aead_setup( aead_operation_t *operation,
     if( status != PSA_SUCCESS )
         return( status );
 
+#if defined (MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C)
+    if (PSA_KEY_LIFETIME_IS_VENDOR_DEFINED(operation->slot->attr.lifetime))
+    {
+        /* The mbedcrypto implementation obtains the list of methods based on the keybit size.
+         * Since the wrapped keybit size does not correspond to the raw key size i.e the
+         * AES256 raw bit size is 256 but the wrapped size is 416 bytes, provide the 256 bit value
+         * to mbedcrypto so that the right methods are invoked. */
+        status = vendor_bitlength_to_raw_bitlength(operation->slot->attr.type, operation->slot->attr.bits, &key_bits);
+        if (status != PSA_SUCCESS)
+        {
+            return status;
+        }
+    }
+#else
     key_bits = psa_get_key_slot_bits( operation->slot );
-
+#endif /* MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C */
     operation->cipher_info =
         mbedtls_cipher_info_from_psa( alg, operation->slot->attr.type, key_bits,
                                       &cipher_id );
