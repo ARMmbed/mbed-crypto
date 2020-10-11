@@ -4185,6 +4185,8 @@ static psa_status_t psa_aead_setup( aead_operation_t *operation,
     if( status != PSA_SUCCESS )
         return( status );
 
+    key_bits = psa_get_key_slot_bits( operation->slot );
+
 #if defined (MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C)
     if (PSA_KEY_LIFETIME_IS_VENDOR_DEFINED(operation->slot->attr.lifetime))
     {
@@ -4198,8 +4200,6 @@ static psa_status_t psa_aead_setup( aead_operation_t *operation,
             return status;
         }
     }
-#else
-    key_bits = psa_get_key_slot_bits( operation->slot );
 #endif /* MBEDTLS_PSA_CRYPTO_ACCEL_DRV_C */
     operation->cipher_info =
         mbedtls_cipher_info_from_psa( alg, operation->slot->attr.type, key_bits,
