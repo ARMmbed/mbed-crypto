@@ -7,8 +7,6 @@ For more information about the Platform Security Architecture, see [the Arm Deve
 
 The PSA Cryptography API is a C programming interface for applications that wish to store cryptographic keys and use them to perform cryptographic operations.
 
-**Status: beta** — version 1.0.0 beta 3. Minor changes and clarifications are planned before 1.0. Additional features are planned for 1.x releases.
-
 **Reference documentation**:
 [HTML](../html/index.html),
 [PDF](../PSA_Cryptography_API_Specification.pdf)
