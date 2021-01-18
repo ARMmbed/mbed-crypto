@@ -15,28 +15,12 @@ The PSA Cryptography API is a C programming interface for applications that wish
 
 ## Hardware abstraction layer
 
-PSA includes functional specifications describing a hardware abstraction layer covering [cryptographic accelerators](accel/), [secure elements](se/) and [entropy sources](entropy/).
-
-### Accelerator driver interface
-
-The cryptographic accelerator driver interface lets you write drivers for hardware that performs cryptographic operations with keys in clear text.
-You can plug such drivers into any implementation of the PSA Cryptography API.
-
-For more information, see [PSA cryptography accelerator driver interface](accel/).
-
 ### Secure element driver interface
 
 The secure element driver interface lets you write drivers for external cryptoprocessors such as secure elements (SE), smart cards and hardware security modules (HSM) that perform operations on keys that never leave the external processor and are accessed only through opaque handles.
 You can plug such drivers into any implementation of the PSA Cryptography API.
 
 For more information, see [PSA secure element driver interface](se/).
-
-### Entropy source driver interface
-
-The entropy source driver interface lets you write drivers for Hardware Random Number Generators (HRNG), also known as True Random Number Generators (TRNG).
-You can plug such drivers into any implementation of the PSA Cryptography API.
-
-For more information, see [PSA entropy source driver interface](entropy/).
 
 ## Feedback
 
