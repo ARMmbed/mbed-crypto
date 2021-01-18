@@ -5,26 +5,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Authenticated encryption with associated data (AEAD) &#8212; PSA Crypto API 1.0.0 documentation</title>
+    <title>10.5. Authenticated encryption with associated data (AEAD) &#8212; PSA Crypto API 1.0.1 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '1.0.0',
+        VERSION:     '1.0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
+        HAS_SOURCE:  false,
         SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Key derivation" href="kdf.html" />
-    <link rel="prev" title="Unauthenticated ciphers" href="ciphers.html" />
+    <link rel="next" title="10.6. Key derivation" href="kdf.html" />
+    <link rel="prev" title="10.4. Unauthenticated ciphers" href="ciphers.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -40,37 +41,52 @@
           <div class="body" role="main">
             
   <div class="section" id="authenticated-encryption-with-associated-data-aead">
-<span id="aead"></span><h1>Authenticated encryption with associated data (AEAD)</h1>
+<span id="aead"></span><h1>10.5. Authenticated encryption with associated data (AEAD)</h1>
 <div class="section" id="aead-algorithms">
-<span id="id1"></span><h2>AEAD algorithms</h2>
+<span id="id1"></span><h2>10.5.1. AEAD algorithms</h2>
 <div class="section" id="PSA_ALG_CCM">
 <span id="c.PSA_ALG_CCM"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_CCM</span></code> (macro)</h3>
-<p>The CCM authenticated encryption algorithm.</p>
+<p>The <em>Counter with CBC-MAC</em> (CCM) authenticated encryption algorithm.</p>
 <pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_ALG_CCM" title="PSA_ALG_CCM">PSA_ALG_CCM</a> ((<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x05500100)
+#define <a class="reference internal" href="#c.PSA_ALG_CCM" title="PSA_ALG_CCM">PSA_ALG_CCM</a> ((<a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x05500100)
 </pre>
-<p>The underlying block cipher is determined by the key type.</p>
+<p>CCM is defined for block ciphers that have a 128-bit block size. The underlying block cipher is determined by the key type.</p>
+<p>To use <a class="reference internal" href="#c.PSA_ALG_CCM" title="PSA_ALG_CCM"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_CCM</span></code></a> with a multi-part AEAD operation, the application must call <a class="reference internal" href="#c.psa_aead_set_lengths" title="psa_aead_set_lengths"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_set_lengths()</span></code></a> before providing the nonce, the additional data and plaintext to the operation.</p>
+<p>CCM requires a nonce of between 7 and 13 bytes in length. The length of the nonce depends on the length of the plaintext:</p>
+<ul class="simple">
+<li>CCM encodes the plaintext length <em>pLen</em> in <em>L</em> octets, with <em>L</em> the smallest integer &gt;= 2 where <em>pLen</em> &lt; 2^(8<em>L</em>).</li>
+<li>The nonce length is then 15 - <em>L</em> bytes.</li>
+</ul>
+<p>If the application is generating a random nonce using <a class="reference internal" href="#c.psa_aead_generate_nonce" title="psa_aead_generate_nonce"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_generate_nonce()</span></code></a>, the size of the generated nonce is 15 - <em>L</em> bytes.</p>
+<p>CCM supports authentication tag sizes of 4, 6, 8, 10, 12, 14, and 16 bytes. The default tag length is 16. Shortened tag lengths can be requested using <a class="reference internal" href="#c.PSA_ALG_AEAD_WITH_SHORTENED_TAG" title="PSA_ALG_AEAD_WITH_SHORTENED_TAG"><code class="docutils literal"><span class="pre">PSA_ALG_AEAD_WITH_SHORTENED_TAG</span></code></a><code class="docutils literal"><span class="pre">(</span></code><a class="reference internal" href="#c.PSA_ALG_CCM" title="PSA_ALG_CCM"><code class="docutils literal"><span class="pre">PSA_ALG_CCM</span></code></a><code class="docutils literal"><span class="pre">,</span> </code><code class="docutils literal"><span class="pre">tag_length</span></code><code class="docutils literal"><span class="pre">)</span></code>, where <code class="docutils literal"><span class="pre">tag_length</span></code> is a valid CCM tag length.</p>
+<p>The CCM block cipher mode is defined in <span><em>Counter with CBC-MAC (CCM)</em> <a class="reference internal" href="../../about.html#citation-rfc3610"><span class="cite">[RFC3610]</span></a></span>.</p>
 </div>
 <div class="section" id="PSA_ALG_GCM">
 <span id="c.PSA_ALG_GCM"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_GCM</span></code> (macro)</h3>
-<p>The GCM authenticated encryption algorithm.</p>
+<p>The <em>Galois/Counter Mode</em> (GCM) authenticated encryption algorithm.</p>
 <pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_ALG_GCM" title="PSA_ALG_GCM">PSA_ALG_GCM</a> ((<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x05500200)
+#define <a class="reference internal" href="#c.PSA_ALG_GCM" title="PSA_ALG_GCM">PSA_ALG_GCM</a> ((<a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x05500200)
 </pre>
-<p>The underlying block cipher is determined by the key type.</p>
+<p>GCM is defined for block ciphers that have a 128-bit block size. The underlying block cipher is determined by the key type.</p>
+<p>GCM requires a nonce of at least 1 byte in length. The maximum supported nonce size is <a class="reference internal" href="../../about.html#term-implementation-defined"><span class="scterm">implementation defined</span></a>. Calling <a class="reference internal" href="#c.psa_aead_generate_nonce" title="psa_aead_generate_nonce"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_generate_nonce()</span></code></a> will generate a random 12-byte nonce.</p>
+<p>GCM supports authentication tag sizes of 4, 8, 12, 13, 14, 15, and 16 bytes. The default tag length is 16. Shortened tag lengths can be requested using <a class="reference internal" href="#c.PSA_ALG_AEAD_WITH_SHORTENED_TAG" title="PSA_ALG_AEAD_WITH_SHORTENED_TAG"><code class="docutils literal"><span class="pre">PSA_ALG_AEAD_WITH_SHORTENED_TAG</span></code></a><code class="docutils literal"><span class="pre">(</span></code><a class="reference internal" href="#c.PSA_ALG_GCM" title="PSA_ALG_GCM"><code class="docutils literal"><span class="pre">PSA_ALG_GCM</span></code></a><code class="docutils literal"><span class="pre">,</span> </code><code class="docutils literal"><span class="pre">tag_length</span></code><code class="docutils literal"><span class="pre">)</span></code>, where <code class="docutils literal"><span class="pre">tag_length</span></code> is a valid GCM tag length.</p>
+<p>The GCM block cipher mode is defined in <span><em>NIST Special Publication 800-38D: Recommendation for Block Cipher Modes of Operation: Galois/Counter Mode (GCM) and GMAC</em> <a class="reference internal" href="../../about.html#citation-sp800-38d"><span class="cite">[SP800-38D]</span></a></span>.</p>
 </div>
 <div class="section" id="PSA_ALG_CHACHA20_POLY1305">
 <span id="c.PSA_ALG_CHACHA20_POLY1305"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_CHACHA20_POLY1305</span></code> (macro)</h3>
-<p>The Chacha20-Poly1305 AEAD algorithm.</p>
+<p>The ChaCha20-Poly1305 AEAD algorithm.</p>
 <pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_ALG_CHACHA20_POLY1305" title="PSA_ALG_CHACHA20_POLY1305">PSA_ALG_CHACHA20_POLY1305</a> ((<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x05100500)
+#define <a class="reference internal" href="#c.PSA_ALG_CHACHA20_POLY1305" title="PSA_ALG_CHACHA20_POLY1305">PSA_ALG_CHACHA20_POLY1305</a> ((<a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x05100500)
 </pre>
-<p>The ChaCha20_Poly1305 construction is defined in <a class="reference external" href="https://tools.ietf.org/html/rfc7539.html">RFC 7539</a>.</p>
-<p>Variants of this algorithm are defined by the length of the nonce:</p>
+<p>There are two defined variants of ChaCha20-Poly1305:</p>
 <ul class="simple">
-<li>Implementations must support a 12-byte nonce, as defined in <a class="reference external" href="https://tools.ietf.org/html/rfc7539.html">RFC 7539</a>.</li>
-<li>Implementations can optionally support an 8-byte nonce, the original variant.</li>
-<li>It is recommended that implementations do not support other sizes of nonce.</li>
+<li>An implementation that supports ChaCha20-Poly1305 must support the variant defined by <span><em>ChaCha20 and Poly1305 for IETF Protocols</em> <a class="reference internal" href="../../about.html#citation-rfc7539"><span class="cite">[RFC7539]</span></a></span>, which has a 96-bit nonce and 32-bit counter.</li>
+<li>An implementation can optionally also support the original variant defined by <span><em>ChaCha, a variant of Salsa20</em> <a class="reference internal" href="../../about.html#citation-chacha20"><span class="cite">[CHACHA20]</span></a></span>, which has a 64-bit nonce and 64-bit counter.</li>
+</ul>
+<p>The variant used for the AEAD encryption or decryption operation, depends on the nonce provided for an AEAD operation using <a class="reference internal" href="#c.PSA_ALG_CHACHA20_POLY1305" title="PSA_ALG_CHACHA20_POLY1305"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_CHACHA20_POLY1305</span></code></a>:</p>
+<ul class="simple">
+<li>A nonce provided in a call to <a class="reference internal" href="#c.psa_aead_encrypt" title="psa_aead_encrypt"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_encrypt()</span></code></a>, <a class="reference internal" href="#c.psa_aead_decrypt" title="psa_aead_decrypt"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_decrypt()</span></code></a> or <a class="reference internal" href="#c.psa_aead_set_nonce" title="psa_aead_set_nonce"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_set_nonce()</span></code></a> must be 8 or 12 bytes. The size of nonce will select the appropriate variant of the algorithm.</li>
+<li>A nonce generated by a call to <a class="reference internal" href="#c.psa_aead_generate_nonce" title="psa_aead_generate_nonce"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_generate_nonce()</span></code></a> will be 12 bytes, and will use the <a class="reference internal" href="../../about.html#citation-rfc7539"><span class="cite">[RFC7539]</span></a> variant.</li>
 </ul>
 <p>Implementations must support 16-byte tags. It is recommended that truncated tag sizes are rejected.</p>
 </div>
@@ -84,7 +100,7 @@
 <p class="rubric">Parameters</p>
 <dl class="docutils">
 <dt> <code class="docutils literal"><span class="pre">aead_alg</span></code></dt>
-<dd>An AEAD algorithm identifier (value of type <a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_algorithm_t</span></code></a> such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_AEAD" title="PSA_ALG_IS_AEAD"><code class="docutils literal"><span class="pre">PSA_ALG_IS_AEAD</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>An AEAD algorithm identifier (value of type <a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_algorithm_t</span></code></a> such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_AEAD" title="PSA_ALG_IS_AEAD"><code class="docutils literal"><span class="pre">PSA_ALG_IS_AEAD</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 <dt> <code class="docutils literal"><span class="pre">tag_length</span></code></dt>
 <dd>Desired length of the authentication tag in bytes.</dd>
 </dl>
@@ -97,13 +113,13 @@
 </div>
 </div>
 <div class="section" id="single-part-aead-functions">
-<h2>Single-part AEAD functions</h2>
+<h2>10.5.2. Single-part AEAD functions</h2>
 <div class="section" id="psa_aead_encrypt">
 <span id="c.psa_aead_encrypt"></span><h3><code class="docutils literal"><span class="pre">psa_aead_encrypt</span></code> (function)</h3>
 <p>Process an authenticated encryption operation.</p>
 <pre class="literal-block">
-<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_aead_encrypt" title="psa_aead_encrypt">psa_aead_encrypt</a>(<a class="reference internal" href="../keys/attributes.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> key,
-                              <a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a> alg,
+<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_aead_encrypt" title="psa_aead_encrypt">psa_aead_encrypt</a>(<a class="reference internal" href="../keys/ids.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> key,
+                              <a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a> alg,
                               const uint8_t * nonce,
                               size_t nonce_length,
                               const uint8_t * additional_data,
@@ -118,9 +134,9 @@
 <dl class="docutils">
 <dt> <code class="docutils literal"><span class="pre">key</span></code></dt>
 <dd>Identifier of the key to use for the operation.
-It must allow the usage <a class="reference internal" href="../keys/usage.html#c.PSA_KEY_USAGE_ENCRYPT" title="PSA_KEY_USAGE_ENCRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_ENCRYPT</span></code></a>.</dd>
+It must allow the usage <a class="reference internal" href="../keys/policy.html#c.PSA_KEY_USAGE_ENCRYPT" title="PSA_KEY_USAGE_ENCRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_ENCRYPT</span></code></a>.</dd>
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>The AEAD algorithm to compute (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_AEAD" title="PSA_ALG_IS_AEAD"><code class="docutils literal"><span class="pre">PSA_ALG_IS_AEAD</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>The AEAD algorithm to compute (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_AEAD" title="PSA_ALG_IS_AEAD"><code class="docutils literal"><span class="pre">PSA_ALG_IS_AEAD</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 <dt> <code class="docutils literal"><span class="pre">nonce</span></code></dt>
 <dd>Nonce or IV to use.</dd>
 <dt> <code class="docutils literal"><span class="pre">nonce_length</span></code></dt>
@@ -152,7 +168,7 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_HANDLE" title="PSA_ERROR_INVALID_HANDLE"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_HANDLE</span></code></a></dt>
 <dd></dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_PERMITTED" title="PSA_ERROR_NOT_PERMITTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_PERMITTED</span></code></a></dt>
-<dd>The key does not have the <a class="reference internal" href="../keys/usage.html#c.PSA_KEY_USAGE_ENCRYPT" title="PSA_KEY_USAGE_ENCRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_ENCRYPT</span></code></a> flag, or it does not permit the requested algorithm.</dd>
+<dd>The key does not have the <a class="reference internal" href="../keys/policy.html#c.PSA_KEY_USAGE_ENCRYPT" title="PSA_KEY_USAGE_ENCRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_ENCRYPT</span></code></a> flag, or it does not permit the requested algorithm.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
 <dd><code class="docutils literal"><span class="pre">key</span></code> is not compatible with <code class="docutils literal"><span class="pre">alg</span></code>.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_SUPPORTED" title="PSA_ERROR_NOT_SUPPORTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_SUPPORTED</span></code></a></dt>
@@ -181,8 +197,8 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 <span id="c.psa_aead_decrypt"></span><h3><code class="docutils literal"><span class="pre">psa_aead_decrypt</span></code> (function)</h3>
 <p>Process an authenticated decryption operation.</p>
 <pre class="literal-block">
-<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_aead_decrypt" title="psa_aead_decrypt">psa_aead_decrypt</a>(<a class="reference internal" href="../keys/attributes.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> key,
-                              <a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a> alg,
+<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_aead_decrypt" title="psa_aead_decrypt">psa_aead_decrypt</a>(<a class="reference internal" href="../keys/ids.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> key,
+                              <a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a> alg,
                               const uint8_t * nonce,
                               size_t nonce_length,
                               const uint8_t * additional_data,
@@ -197,9 +213,9 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 <dl class="docutils">
 <dt> <code class="docutils literal"><span class="pre">key</span></code></dt>
 <dd>Identifier of the key to use for the operation.
-It must allow the usage <a class="reference internal" href="../keys/usage.html#c.PSA_KEY_USAGE_DECRYPT" title="PSA_KEY_USAGE_DECRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_DECRYPT</span></code></a>.</dd>
+It must allow the usage <a class="reference internal" href="../keys/policy.html#c.PSA_KEY_USAGE_DECRYPT" title="PSA_KEY_USAGE_DECRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_DECRYPT</span></code></a>.</dd>
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>The AEAD algorithm to compute (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_AEAD" title="PSA_ALG_IS_AEAD"><code class="docutils literal"><span class="pre">PSA_ALG_IS_AEAD</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>The AEAD algorithm to compute (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_AEAD" title="PSA_ALG_IS_AEAD"><code class="docutils literal"><span class="pre">PSA_ALG_IS_AEAD</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 <dt> <code class="docutils literal"><span class="pre">nonce</span></code></dt>
 <dd>Nonce or IV to use.</dd>
 <dt> <code class="docutils literal"><span class="pre">nonce_length</span></code></dt>
@@ -233,7 +249,7 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_SIGNATURE" title="PSA_ERROR_INVALID_SIGNATURE"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_SIGNATURE</span></code></a></dt>
 <dd>The ciphertext is not authentic.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_PERMITTED" title="PSA_ERROR_NOT_PERMITTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_PERMITTED</span></code></a></dt>
-<dd>The key does not have the <a class="reference internal" href="../keys/usage.html#c.PSA_KEY_USAGE_DECRYPT" title="PSA_KEY_USAGE_DECRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_DECRYPT</span></code></a> flag, or it does not permit the requested algorithm.</dd>
+<dd>The key does not have the <a class="reference internal" href="../keys/policy.html#c.PSA_KEY_USAGE_DECRYPT" title="PSA_KEY_USAGE_DECRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_DECRYPT</span></code></a> flag, or it does not permit the requested algorithm.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
 <dd><code class="docutils literal"><span class="pre">key</span></code> is not compatible with <code class="docutils literal"><span class="pre">alg</span></code>.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_SUPPORTED" title="PSA_ERROR_NOT_SUPPORTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_SUPPORTED</span></code></a></dt>
@@ -260,7 +276,7 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 </div>
 </div>
 <div class="section" id="multi-part-aead-operations">
-<h2>Multi-part AEAD operations</h2>
+<h2>10.5.3. Multi-part AEAD operations</h2>
 <div class="admonition warning" id="aead-multi-part-warning">
 <p class="first admonition-title">Warning</p>
 <p>When decrypting using a multi-part AEAD operation, there is no guarantee that the input or output is valid until <a class="reference internal" href="#c.psa_aead_verify" title="psa_aead_verify"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_verify()</span></code></a> has returned <a class="reference internal" href="../library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_SUCCESS</span></code></a>.</p>
@@ -326,8 +342,8 @@ operation = <a class="reference internal" href="#c.psa_aead_operation_init" titl
 <p>Set the key for a multi-part authenticated encryption operation.</p>
 <pre class="literal-block">
 <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_aead_encrypt_setup" title="psa_aead_encrypt_setup">psa_aead_encrypt_setup</a>(<a class="reference internal" href="#c.psa_aead_operation_t" title="psa_aead_operation_t">psa_aead_operation_t</a> * operation,
-                                    <a class="reference internal" href="../keys/attributes.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> key,
-                                    <a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a> alg);
+                                    <a class="reference internal" href="../keys/ids.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> key,
+                                    <a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a> alg);
 </pre>
 <p class="rubric">Parameters</p>
 <dl class="docutils">
@@ -335,9 +351,9 @@ operation = <a class="reference internal" href="#c.psa_aead_operation_init" titl
 <dd>The operation object to set up. It must have been initialized as per the documentation for <a class="reference internal" href="#c.psa_aead_operation_t" title="psa_aead_operation_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_aead_operation_t</span></code></a> and not yet in use.</dd>
 <dt> <code class="docutils literal"><span class="pre">key</span></code></dt>
 <dd>Identifier of the key to use for the operation. It must remain valid until the operation terminates.
-It must allow the usage <a class="reference internal" href="../keys/usage.html#c.PSA_KEY_USAGE_ENCRYPT" title="PSA_KEY_USAGE_ENCRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_ENCRYPT</span></code></a>.</dd>
+It must allow the usage <a class="reference internal" href="../keys/policy.html#c.PSA_KEY_USAGE_ENCRYPT" title="PSA_KEY_USAGE_ENCRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_ENCRYPT</span></code></a>.</dd>
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>The AEAD algorithm to compute (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_AEAD" title="PSA_ALG_IS_AEAD"><code class="docutils literal"><span class="pre">PSA_ALG_IS_AEAD</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>The AEAD algorithm to compute (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_AEAD" title="PSA_ALG_IS_AEAD"><code class="docutils literal"><span class="pre">PSA_ALG_IS_AEAD</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 </dl>
 <p class="rubric">Returns: <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t"><code class="docutils literal"><span class="pre">psa_status_t</span></code></a></p>
 <dl class="docutils">
@@ -348,7 +364,7 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_HANDLE" title="PSA_ERROR_INVALID_HANDLE"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_HANDLE</span></code></a></dt>
 <dd></dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_PERMITTED" title="PSA_ERROR_NOT_PERMITTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_PERMITTED</span></code></a></dt>
-<dd>The key does not have the <a class="reference internal" href="../keys/usage.html#c.PSA_KEY_USAGE_ENCRYPT" title="PSA_KEY_USAGE_ENCRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_ENCRYPT</span></code></a> flag, or it does not permit the requested algorithm.</dd>
+<dd>The key does not have the <a class="reference internal" href="../keys/policy.html#c.PSA_KEY_USAGE_ENCRYPT" title="PSA_KEY_USAGE_ENCRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_ENCRYPT</span></code></a> flag, or it does not permit the requested algorithm.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
 <dd><code class="docutils literal"><span class="pre">key</span></code> is not compatible with <code class="docutils literal"><span class="pre">alg</span></code>.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_SUPPORTED" title="PSA_ERROR_NOT_SUPPORTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_SUPPORTED</span></code></a></dt>
@@ -394,8 +410,8 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 <p>Set the key for a multi-part authenticated decryption operation.</p>
 <pre class="literal-block">
 <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_aead_decrypt_setup" title="psa_aead_decrypt_setup">psa_aead_decrypt_setup</a>(<a class="reference internal" href="#c.psa_aead_operation_t" title="psa_aead_operation_t">psa_aead_operation_t</a> * operation,
-                                    <a class="reference internal" href="../keys/attributes.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> key,
-                                    <a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a> alg);
+                                    <a class="reference internal" href="../keys/ids.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> key,
+                                    <a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a> alg);
 </pre>
 <p class="rubric">Parameters</p>
 <dl class="docutils">
@@ -403,9 +419,9 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 <dd>The operation object to set up. It must have been initialized as per the documentation for <a class="reference internal" href="#c.psa_aead_operation_t" title="psa_aead_operation_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_aead_operation_t</span></code></a> and not yet in use.</dd>
 <dt> <code class="docutils literal"><span class="pre">key</span></code></dt>
 <dd>Identifier of the key to use for the operation. It must remain valid until the operation terminates.
-It must allow the usage <a class="reference internal" href="../keys/usage.html#c.PSA_KEY_USAGE_DECRYPT" title="PSA_KEY_USAGE_DECRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_DECRYPT</span></code></a>.</dd>
+It must allow the usage <a class="reference internal" href="../keys/policy.html#c.PSA_KEY_USAGE_DECRYPT" title="PSA_KEY_USAGE_DECRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_DECRYPT</span></code></a>.</dd>
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>The AEAD algorithm to compute (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_AEAD" title="PSA_ALG_IS_AEAD"><code class="docutils literal"><span class="pre">PSA_ALG_IS_AEAD</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>The AEAD algorithm to compute (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_AEAD" title="PSA_ALG_IS_AEAD"><code class="docutils literal"><span class="pre">PSA_ALG_IS_AEAD</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 </dl>
 <p class="rubric">Returns: <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t"><code class="docutils literal"><span class="pre">psa_status_t</span></code></a></p>
 <dl class="docutils">
@@ -416,7 +432,7 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_HANDLE" title="PSA_ERROR_INVALID_HANDLE"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_HANDLE</span></code></a></dt>
 <dd></dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_PERMITTED" title="PSA_ERROR_NOT_PERMITTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_PERMITTED</span></code></a></dt>
-<dd>The key does not have the <a class="reference internal" href="../keys/usage.html#c.PSA_KEY_USAGE_DECRYPT" title="PSA_KEY_USAGE_DECRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_DECRYPT</span></code></a> flag, or it does not permit the requested algorithm.</dd>
+<dd>The key does not have the <a class="reference internal" href="../keys/policy.html#c.PSA_KEY_USAGE_DECRYPT" title="PSA_KEY_USAGE_DECRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_DECRYPT</span></code></a> flag, or it does not permit the requested algorithm.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
 <dd><code class="docutils literal"><span class="pre">key</span></code> is not compatible with <code class="docutils literal"><span class="pre">alg</span></code>.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_SUPPORTED" title="PSA_ERROR_NOT_SUPPORTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_SUPPORTED</span></code></a></dt>
@@ -457,6 +473,51 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 <li>A call to <a class="reference internal" href="#c.psa_aead_abort" title="psa_aead_abort"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_abort()</span></code></a>.</li>
 </ul>
 </div>
+<div class="section" id="psa_aead_set_lengths">
+<span id="c.psa_aead_set_lengths"></span><h3><code class="docutils literal"><span class="pre">psa_aead_set_lengths</span></code> (function)</h3>
+<p>Declare the lengths of the message and additional data for AEAD.</p>
+<pre class="literal-block">
+<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_aead_set_lengths" title="psa_aead_set_lengths">psa_aead_set_lengths</a>(<a class="reference internal" href="#c.psa_aead_operation_t" title="psa_aead_operation_t">psa_aead_operation_t</a> * operation,
+                                  size_t ad_length,
+                                  size_t plaintext_length);
+</pre>
+<p class="rubric">Parameters</p>
+<dl class="docutils">
+<dt> <code class="docutils literal"><span class="pre">operation</span></code></dt>
+<dd>Active AEAD operation.</dd>
+<dt> <code class="docutils literal"><span class="pre">ad_length</span></code></dt>
+<dd>Size of the non-encrypted additional authenticated data in bytes.</dd>
+<dt> <code class="docutils literal"><span class="pre">plaintext_length</span></code></dt>
+<dd>Size of the plaintext to encrypt in bytes.</dd>
+</dl>
+<p class="rubric">Returns: <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t"><code class="docutils literal"><span class="pre">psa_status_t</span></code></a></p>
+<dl class="docutils">
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS"><code class="docutils literal"><span class="pre">PSA_SUCCESS</span></code></a></dt>
+<dd>Success.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
+<dd>The operation state is not valid: it must be active, and <a class="reference internal" href="#c.psa_aead_set_nonce" title="psa_aead_set_nonce"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_set_nonce()</span></code></a> and <a class="reference internal" href="#c.psa_aead_generate_nonce" title="psa_aead_generate_nonce"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_generate_nonce()</span></code></a> must not have been called yet.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
+<dd>At least one of the lengths is not acceptable for the chosen algorithm.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INSUFFICIENT_MEMORY" title="PSA_ERROR_INSUFFICIENT_MEMORY"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_MEMORY</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_COMMUNICATION_FAILURE" title="PSA_ERROR_COMMUNICATION_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_COMMUNICATION_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_HARDWARE_FAILURE" title="PSA_ERROR_HARDWARE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_HARDWARE_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_CORRUPTION_DETECTED" title="PSA_ERROR_CORRUPTION_DETECTED"><code class="docutils literal"><span class="pre">PSA_ERROR_CORRUPTION_DETECTED</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
+<dd>The library has not been previously initialized by <a class="reference internal" href="../library/library.html#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_crypto_init()</span></code></a>. It is implementation-dependent whether a failure to initialize results in this error code.</dd>
+</dl>
+<p class="rubric">Description</p>
+<p>The application must call this function before calling <a class="reference internal" href="#c.psa_aead_set_nonce" title="psa_aead_set_nonce"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_set_nonce()</span></code></a> or <a class="reference internal" href="#c.psa_aead_generate_nonce" title="psa_aead_generate_nonce"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_generate_nonce()</span></code></a>, if the algorithm for the operation requires it. If the algorithm does not require it, calling this function is optional, but if this function is called then the implementation must enforce the lengths.</p>
+<ul class="simple">
+<li>For <a class="reference internal" href="#c.PSA_ALG_CCM" title="PSA_ALG_CCM"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_CCM</span></code></a>, calling this function is required.</li>
+<li>For the other AEAD algorithms defined in this specification, calling this function is not required.</li>
+<li>For vendor-defined algorithm, refer to the vendor documentation.</li>
+</ul>
+<p>If this function returns an error status, the operation enters an error state and must be aborted by calling <a class="reference internal" href="#c.psa_aead_abort" title="psa_aead_abort"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_abort()</span></code></a>.</p>
+</div>
 <div class="section" id="psa_aead_generate_nonce">
 <span id="c.psa_aead_generate_nonce"></span><h3><code class="docutils literal"><span class="pre">psa_aead_generate_nonce</span></code> (function)</h3>
 <p>Generate a random nonce for an authenticated encryption operation.</p>
@@ -483,6 +544,8 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 <dd>Success.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
 <dd>The operation state is not valid: it must be an active AEAD encryption operation, with no nonce set.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
+<dd>The operation state is not valid: this is an algorithm which requires <a class="reference internal" href="#c.psa_aead_set_lengths" title="psa_aead_set_lengths"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_set_lengths()</span></code></a> to be called before setting the nonce.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BUFFER_TOO_SMALL" title="PSA_ERROR_BUFFER_TOO_SMALL"><code class="docutils literal"><span class="pre">PSA_ERROR_BUFFER_TOO_SMALL</span></code></a></dt>
 <dd>The size of the <code class="docutils literal"><span class="pre">nonce</span></code> buffer is too small. <a class="reference internal" href="#c.PSA_AEAD_NONCE_LENGTH" title="PSA_AEAD_NONCE_LENGTH"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_AEAD_NONCE_LENGTH()</span></code></a> or <a class="reference internal" href="#c.PSA_AEAD_NONCE_MAX_SIZE" title="PSA_AEAD_NONCE_MAX_SIZE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_AEAD_NONCE_MAX_SIZE</span></code></a> can be used to determine the required buffer size.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INSUFFICIENT_MEMORY" title="PSA_ERROR_INSUFFICIENT_MEMORY"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_MEMORY</span></code></a></dt>
@@ -504,7 +567,7 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 </dl>
 <p class="rubric">Description</p>
 <p>This function generates a random nonce for the authenticated encryption operation with an appropriate size for the chosen algorithm, key type and key size.</p>
-<p>The application must call <a class="reference internal" href="#c.psa_aead_encrypt_setup" title="psa_aead_encrypt_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_encrypt_setup()</span></code></a> before calling this function.</p>
+<p>The application must call <a class="reference internal" href="#c.psa_aead_encrypt_setup" title="psa_aead_encrypt_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_encrypt_setup()</span></code></a> before calling this function. If applicable for the algorithm, the application must call <a class="reference internal" href="#c.psa_aead_set_lengths" title="psa_aead_set_lengths"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_set_lengths()</span></code></a> before calling this function.</p>
 <p>If this function returns an error status, the operation enters an error state and must be aborted by calling <a class="reference internal" href="#c.psa_aead_abort" title="psa_aead_abort"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_abort()</span></code></a>.</p>
 </div>
 <div class="section" id="psa_aead_set_nonce">
@@ -530,6 +593,8 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 <dd>Success.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
 <dd>The operation state is not valid: it must be active, with no nonce set.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
+<dd>The operation state is not valid: this is an algorithm which requires <a class="reference internal" href="#c.psa_aead_set_lengths" title="psa_aead_set_lengths"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_set_lengths()</span></code></a> to be called before setting the nonce.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
 <dd>The size of <code class="docutils literal"><span class="pre">nonce</span></code> is not acceptable for the chosen algorithm.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INSUFFICIENT_MEMORY" title="PSA_ERROR_INSUFFICIENT_MEMORY"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_MEMORY</span></code></a></dt>
@@ -551,58 +616,12 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 </dl>
 <p class="rubric">Description</p>
 <p>This function sets the nonce for the authenticated encryption or decryption operation.</p>
-<p>The application must call <a class="reference internal" href="#c.psa_aead_encrypt_setup" title="psa_aead_encrypt_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_encrypt_setup()</span></code></a> or <a class="reference internal" href="#c.psa_aead_decrypt_setup" title="psa_aead_decrypt_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_decrypt_setup()</span></code></a> before calling this function.</p>
+<p>The application must call <a class="reference internal" href="#c.psa_aead_encrypt_setup" title="psa_aead_encrypt_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_encrypt_setup()</span></code></a> or <a class="reference internal" href="#c.psa_aead_decrypt_setup" title="psa_aead_decrypt_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_decrypt_setup()</span></code></a> before calling this function. If applicable for the algorithm, the application must call <a class="reference internal" href="#c.psa_aead_set_lengths" title="psa_aead_set_lengths"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_set_lengths()</span></code></a> before calling this function.</p>
 <p>If this function returns an error status, the operation enters an error state and must be aborted by calling <a class="reference internal" href="#c.psa_aead_abort" title="psa_aead_abort"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_abort()</span></code></a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">When encrypting, <a class="reference internal" href="#c.psa_aead_generate_nonce" title="psa_aead_generate_nonce"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_generate_nonce()</span></code></a> is recommended instead of using this function, unless implementing a protocol that requires a non-random IV.</p>
 </div>
-</div>
-<div class="section" id="psa_aead_set_lengths">
-<span id="c.psa_aead_set_lengths"></span><h3><code class="docutils literal"><span class="pre">psa_aead_set_lengths</span></code> (function)</h3>
-<p>Declare the lengths of the message and additional data for AEAD.</p>
-<pre class="literal-block">
-<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_aead_set_lengths" title="psa_aead_set_lengths">psa_aead_set_lengths</a>(<a class="reference internal" href="#c.psa_aead_operation_t" title="psa_aead_operation_t">psa_aead_operation_t</a> * operation,
-                                  size_t ad_length,
-                                  size_t plaintext_length);
-</pre>
-<p class="rubric">Parameters</p>
-<dl class="docutils">
-<dt> <code class="docutils literal"><span class="pre">operation</span></code></dt>
-<dd>Active AEAD operation.</dd>
-<dt> <code class="docutils literal"><span class="pre">ad_length</span></code></dt>
-<dd>Size of the non-encrypted additional authenticated data in bytes.</dd>
-<dt> <code class="docutils literal"><span class="pre">plaintext_length</span></code></dt>
-<dd>Size of the plaintext to encrypt in bytes.</dd>
-</dl>
-<p class="rubric">Returns: <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t"><code class="docutils literal"><span class="pre">psa_status_t</span></code></a></p>
-<dl class="docutils">
-<dt> <a class="reference internal" href="../library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS"><code class="docutils literal"><span class="pre">PSA_SUCCESS</span></code></a></dt>
-<dd>Success.</dd>
-<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
-<dd>The operation state is not valid: it must be active, and <a class="reference internal" href="#c.psa_aead_update_ad" title="psa_aead_update_ad"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_update_ad()</span></code></a> and <a class="reference internal" href="#c.psa_aead_update" title="psa_aead_update"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_update()</span></code></a> must not have been called yet.</dd>
-<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
-<dd>At least one of the lengths is not acceptable for the chosen algorithm.</dd>
-<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INSUFFICIENT_MEMORY" title="PSA_ERROR_INSUFFICIENT_MEMORY"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_MEMORY</span></code></a></dt>
-<dd></dd>
-<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_COMMUNICATION_FAILURE" title="PSA_ERROR_COMMUNICATION_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_COMMUNICATION_FAILURE</span></code></a></dt>
-<dd></dd>
-<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_HARDWARE_FAILURE" title="PSA_ERROR_HARDWARE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_HARDWARE_FAILURE</span></code></a></dt>
-<dd></dd>
-<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_CORRUPTION_DETECTED" title="PSA_ERROR_CORRUPTION_DETECTED"><code class="docutils literal"><span class="pre">PSA_ERROR_CORRUPTION_DETECTED</span></code></a></dt>
-<dd></dd>
-<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
-<dd>The library has not been previously initialized by <a class="reference internal" href="../library/library.html#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_crypto_init()</span></code></a>. It is implementation-dependent whether a failure to initialize results in this error code.</dd>
-</dl>
-<p class="rubric">Description</p>
-<p>The application must call this function before calling <a class="reference internal" href="#c.psa_aead_update_ad" title="psa_aead_update_ad"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_update_ad()</span></code></a> or <a class="reference internal" href="#c.psa_aead_update" title="psa_aead_update"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_update()</span></code></a> if the algorithm for the operation requires it. If the algorithm does not require it, calling this function is optional, but if this function is called then the implementation must enforce the lengths.</p>
-<p>This function can be called before or after setting the nonce with <a class="reference internal" href="#c.psa_aead_set_nonce" title="psa_aead_set_nonce"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_set_nonce()</span></code></a> or <a class="reference internal" href="#c.psa_aead_generate_nonce" title="psa_aead_generate_nonce"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_generate_nonce()</span></code></a>.</p>
-<ul class="simple">
-<li>For <a class="reference internal" href="#c.PSA_ALG_CCM" title="PSA_ALG_CCM"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_CCM</span></code></a>, calling this function is required.</li>
-<li>For the other AEAD algorithms defined in this specification, calling this function is not required.</li>
-<li>For vendor-defined algorithm, refer to the vendor documentation.</li>
-</ul>
-<p>If this function returns an error status, the operation enters an error state and must be aborted by calling <a class="reference internal" href="#c.psa_aead_abort" title="psa_aead_abort"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_abort()</span></code></a>.</p>
 </div>
 <div class="section" id="psa_aead_update_ad">
 <span id="c.psa_aead_update_ad"></span><h3><code class="docutils literal"><span class="pre">psa_aead_update_ad</span></code> (function)</h3>
@@ -927,7 +946,7 @@ This must be appropriate for the selected algorithm and key:</p>
 </div>
 </div>
 <div class="section" id="support-macros">
-<h2>Support macros</h2>
+<h2>10.5.4. Support macros</h2>
 <div class="section" id="PSA_ALG_IS_AEAD_ON_BLOCK_CIPHER">
 <span id="c.PSA_ALG_IS_AEAD_ON_BLOCK_CIPHER"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_IS_AEAD_ON_BLOCK_CIPHER</span></code> (macro)</h3>
 <p>Whether the specified algorithm is an AEAD mode on a block cipher.</p>
@@ -937,7 +956,7 @@ This must be appropriate for the selected algorithm and key:</p>
 <p class="rubric">Parameters</p>
 <dl class="docutils">
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>An algorithm identifier (value of type <a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_algorithm_t</span></code></a>).</dd>
+<dd>An algorithm identifier (value of type <a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_algorithm_t</span></code></a>).</dd>
 </dl>
 <p class="rubric">Returns</p>
 <p><code class="docutils literal"><span class="pre">1</span></code> if <code class="docutils literal"><span class="pre">alg</span></code> is an AEAD algorithm which is an AEAD mode based on a block cipher, <code class="docutils literal"><span class="pre">0</span></code> otherwise.</p>
@@ -953,7 +972,7 @@ This must be appropriate for the selected algorithm and key:</p>
 <p class="rubric">Parameters</p>
 <dl class="docutils">
 <dt> <code class="docutils literal"><span class="pre">aead_alg</span></code></dt>
-<dd>An AEAD algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_AEAD" title="PSA_ALG_IS_AEAD"><code class="docutils literal"><span class="pre">PSA_ALG_IS_AEAD</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>An AEAD algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_AEAD" title="PSA_ALG_IS_AEAD"><code class="docutils literal"><span class="pre">PSA_ALG_IS_AEAD</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 </dl>
 <p class="rubric">Returns</p>
 <p>The corresponding AEAD algorithm with the default tag length for that algorithm.</p>
@@ -972,7 +991,7 @@ This must be appropriate for the selected algorithm and key:</p>
 <dt> <code class="docutils literal"><span class="pre">key_type</span></code></dt>
 <dd>A symmetric key type that is compatible with algorithm <code class="docutils literal"><span class="pre">alg</span></code>.</dd>
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>An AEAD algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_AEAD" title="PSA_ALG_IS_AEAD"><code class="docutils literal"><span class="pre">PSA_ALG_IS_AEAD</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>An AEAD algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_AEAD" title="PSA_ALG_IS_AEAD"><code class="docutils literal"><span class="pre">PSA_ALG_IS_AEAD</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 <dt> <code class="docutils literal"><span class="pre">plaintext_length</span></code></dt>
 <dd>Size of the plaintext in bytes.</dd>
 </dl>
@@ -1010,7 +1029,7 @@ This must be appropriate for the selected algorithm and key:</p>
 <dt> <code class="docutils literal"><span class="pre">key_type</span></code></dt>
 <dd>A symmetric key type that is compatible with algorithm <code class="docutils literal"><span class="pre">alg</span></code>.</dd>
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>An AEAD algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_AEAD" title="PSA_ALG_IS_AEAD"><code class="docutils literal"><span class="pre">PSA_ALG_IS_AEAD</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>An AEAD algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_AEAD" title="PSA_ALG_IS_AEAD"><code class="docutils literal"><span class="pre">PSA_ALG_IS_AEAD</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 <dt> <code class="docutils literal"><span class="pre">ciphertext_length</span></code></dt>
 <dd>Size of the ciphertext in bytes.</dd>
 </dl>
@@ -1047,7 +1066,7 @@ This must be appropriate for the selected algorithm and key:</p>
 <dt> <code class="docutils literal"><span class="pre">key_type</span></code></dt>
 <dd>A symmetric key type that is compatible with algorithm <code class="docutils literal"><span class="pre">alg</span></code>.</dd>
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>An AEAD algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_AEAD" title="PSA_ALG_IS_AEAD"><code class="docutils literal"><span class="pre">PSA_ALG_IS_AEAD</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>An AEAD algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_AEAD" title="PSA_ALG_IS_AEAD"><code class="docutils literal"><span class="pre">PSA_ALG_IS_AEAD</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 </dl>
 <p class="rubric">Returns</p>
 <p>The default nonce size for the specified key type and algorithm. If the key type or AEAD algorithm is not recognized, or the parameters are incompatible, return <code class="docutils literal"><span class="pre">0</span></code>. An implementation can return either <code class="docutils literal"><span class="pre">0</span></code> or a correct size for a key type and AEAD algorithm that it recognizes, but does not support.</p>
@@ -1075,7 +1094,7 @@ This must be appropriate for the selected algorithm and key:</p>
 <dt> <code class="docutils literal"><span class="pre">key_type</span></code></dt>
 <dd>A symmetric key type that is compatible with algorithm <code class="docutils literal"><span class="pre">alg</span></code>.</dd>
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>An AEAD algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_AEAD" title="PSA_ALG_IS_AEAD"><code class="docutils literal"><span class="pre">PSA_ALG_IS_AEAD</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>An AEAD algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_AEAD" title="PSA_ALG_IS_AEAD"><code class="docutils literal"><span class="pre">PSA_ALG_IS_AEAD</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 <dt> <code class="docutils literal"><span class="pre">input_length</span></code></dt>
 <dd>Size of the input in bytes.</dd>
 </dl>
@@ -1113,7 +1132,7 @@ This must be appropriate for the selected algorithm and key:</p>
 <dt> <code class="docutils literal"><span class="pre">key_type</span></code></dt>
 <dd>A symmetric key type that is compatible with algorithm <code class="docutils literal"><span class="pre">alg</span></code>.</dd>
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>An AEAD algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_AEAD" title="PSA_ALG_IS_AEAD"><code class="docutils literal"><span class="pre">PSA_ALG_IS_AEAD</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>An AEAD algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_AEAD" title="PSA_ALG_IS_AEAD"><code class="docutils literal"><span class="pre">PSA_ALG_IS_AEAD</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 </dl>
 <p class="rubric">Returns</p>
 <p>A sufficient ciphertext buffer size for the specified key type and algorithm. If the key type or AEAD algorithm is not recognized, or the parameters are incompatible, return <code class="docutils literal"><span class="pre">0</span></code>. An implementation can return either <code class="docutils literal"><span class="pre">0</span></code> or a correct size for a key type and AEAD algorithm that it recognizes, but does not support.</p>
@@ -1143,7 +1162,7 @@ This must be appropriate for the selected algorithm and key:</p>
 <dt> <code class="docutils literal"><span class="pre">key_bits</span></code></dt>
 <dd>The size of the AEAD key in bits.</dd>
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>An AEAD algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_AEAD" title="PSA_ALG_IS_AEAD"><code class="docutils literal"><span class="pre">PSA_ALG_IS_AEAD</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>An AEAD algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_AEAD" title="PSA_ALG_IS_AEAD"><code class="docutils literal"><span class="pre">PSA_ALG_IS_AEAD</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 </dl>
 <p class="rubric">Returns</p>
 <p>The tag length for the specified algorithm and key.
@@ -1172,7 +1191,7 @@ If the AEAD algorithm does not have an identified tag that can be distinguished 
 <dt> <code class="docutils literal"><span class="pre">key_type</span></code></dt>
 <dd>A symmetric key type that is compatible with algorithm <code class="docutils literal"><span class="pre">alg</span></code>.</dd>
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>An AEAD algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_AEAD" title="PSA_ALG_IS_AEAD"><code class="docutils literal"><span class="pre">PSA_ALG_IS_AEAD</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>An AEAD algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_AEAD" title="PSA_ALG_IS_AEAD"><code class="docutils literal"><span class="pre">PSA_ALG_IS_AEAD</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 </dl>
 <p class="rubric">Returns</p>
 <p>A sufficient plaintext buffer size for the specified key type and algorithm. If the key type or AEAD algorithm is not recognized, or the parameters are incompatible, return <code class="docutils literal"><span class="pre">0</span></code>. An implementation can return either <code class="docutils literal"><span class="pre">0</span></code> or a correct size for a key type and AEAD algorithm that it recognizes, but does not support.</p>
@@ -1196,78 +1215,52 @@ If the AEAD algorithm does not have an identified tag that can be distinguished 
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="../../index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Authenticated encryption with associated data (AEAD)</a><ul>
-<li><a class="reference internal" href="#aead-algorithms">AEAD algorithms</a><ul>
-<li><a class="reference internal" href="#PSA_ALG_CCM"><code class="docutils literal"><span class="pre">PSA_ALG_CCM</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_GCM"><code class="docutils literal"><span class="pre">PSA_ALG_GCM</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_CHACHA20_POLY1305"><code class="docutils literal"><span class="pre">PSA_ALG_CHACHA20_POLY1305</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_AEAD_WITH_SHORTENED_TAG"><code class="docutils literal"><span class="pre">PSA_ALG_AEAD_WITH_SHORTENED_TAG</span></code> (macro)</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#single-part-aead-functions">Single-part AEAD functions</a><ul>
-<li><a class="reference internal" href="#psa_aead_encrypt"><code class="docutils literal"><span class="pre">psa_aead_encrypt</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_aead_decrypt"><code class="docutils literal"><span class="pre">psa_aead_decrypt</span></code> (function)</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#multi-part-aead-operations">Multi-part AEAD operations</a><ul>
-<li><a class="reference internal" href="#psa_aead_operation_t"><code class="docutils literal"><span class="pre">psa_aead_operation_t</span></code> (type)</a></li>
-<li><a class="reference internal" href="#PSA_AEAD_OPERATION_INIT"><code class="docutils literal"><span class="pre">PSA_AEAD_OPERATION_INIT</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#psa_aead_operation_init"><code class="docutils literal"><span class="pre">psa_aead_operation_init</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_aead_encrypt_setup"><code class="docutils literal"><span class="pre">psa_aead_encrypt_setup</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_aead_decrypt_setup"><code class="docutils literal"><span class="pre">psa_aead_decrypt_setup</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_aead_generate_nonce"><code class="docutils literal"><span class="pre">psa_aead_generate_nonce</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_aead_set_nonce"><code class="docutils literal"><span class="pre">psa_aead_set_nonce</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_aead_set_lengths"><code class="docutils literal"><span class="pre">psa_aead_set_lengths</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_aead_update_ad"><code class="docutils literal"><span class="pre">psa_aead_update_ad</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_aead_update"><code class="docutils literal"><span class="pre">psa_aead_update</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_aead_finish"><code class="docutils literal"><span class="pre">psa_aead_finish</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_aead_verify"><code class="docutils literal"><span class="pre">psa_aead_verify</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_aead_abort"><code class="docutils literal"><span class="pre">psa_aead_abort</span></code> (function)</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#support-macros">Support macros</a><ul>
-<li><a class="reference internal" href="#PSA_ALG_IS_AEAD_ON_BLOCK_CIPHER"><code class="docutils literal"><span class="pre">PSA_ALG_IS_AEAD_ON_BLOCK_CIPHER</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_AEAD_WITH_DEFAULT_LENGTH_TAG"><code class="docutils literal"><span class="pre">PSA_ALG_AEAD_WITH_DEFAULT_LENGTH_TAG</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_AEAD_ENCRYPT_OUTPUT_SIZE"><code class="docutils literal"><span class="pre">PSA_AEAD_ENCRYPT_OUTPUT_SIZE</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_AEAD_ENCRYPT_OUTPUT_MAX_SIZE"><code class="docutils literal"><span class="pre">PSA_AEAD_ENCRYPT_OUTPUT_MAX_SIZE</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_AEAD_DECRYPT_OUTPUT_SIZE"><code class="docutils literal"><span class="pre">PSA_AEAD_DECRYPT_OUTPUT_SIZE</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_AEAD_DECRYPT_OUTPUT_MAX_SIZE"><code class="docutils literal"><span class="pre">PSA_AEAD_DECRYPT_OUTPUT_MAX_SIZE</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_AEAD_NONCE_LENGTH"><code class="docutils literal"><span class="pre">PSA_AEAD_NONCE_LENGTH</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_AEAD_NONCE_MAX_SIZE"><code class="docutils literal"><span class="pre">PSA_AEAD_NONCE_MAX_SIZE</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_AEAD_UPDATE_OUTPUT_SIZE"><code class="docutils literal"><span class="pre">PSA_AEAD_UPDATE_OUTPUT_SIZE</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_AEAD_UPDATE_OUTPUT_MAX_SIZE"><code class="docutils literal"><span class="pre">PSA_AEAD_UPDATE_OUTPUT_MAX_SIZE</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_AEAD_FINISH_OUTPUT_SIZE"><code class="docutils literal"><span class="pre">PSA_AEAD_FINISH_OUTPUT_SIZE</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_AEAD_FINISH_OUTPUT_MAX_SIZE"><code class="docutils literal"><span class="pre">PSA_AEAD_FINISH_OUTPUT_MAX_SIZE</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_AEAD_TAG_LENGTH"><code class="docutils literal"><span class="pre">PSA_AEAD_TAG_LENGTH</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_AEAD_TAG_MAX_SIZE"><code class="docutils literal"><span class="pre">PSA_AEAD_TAG_MAX_SIZE</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_AEAD_VERIFY_OUTPUT_SIZE"><code class="docutils literal"><span class="pre">PSA_AEAD_VERIFY_OUTPUT_SIZE</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_AEAD_VERIFY_OUTPUT_MAX_SIZE"><code class="docutils literal"><span class="pre">PSA_AEAD_VERIFY_OUTPUT_MAX_SIZE</span></code> (macro)</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
+        <div class="sphinxsidebarwrapper"><h3><a href="../../index.html"><b>PSA Crypto API</b></a></h3>
+IHI 0086<br/>
+Non-confidential<br/>
+Version 1.0.1
+<span style="color: red; font-weight: bold;"></span>
 <ul>
-  <li><a href="../../index.html">Documentation overview</a><ul>
-  <li><a href="index.html">Cryptographic operation reference</a><ul>
-      <li>Previous: <a href="ciphers.html" title="previous chapter">Unauthenticated ciphers</a></li>
-      <li>Next: <a href="kdf.html" title="next chapter">Key derivation</a></li>
-  </ul></li>
-  </ul></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About this document</a></li>
 </ul>
-</div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../../_sources/api/ops/aead.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview/intro.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/goals.html">2. Design goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/functionality.html">3. Functionality overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/sample-arch.html">4. Sample architectures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/conventions.html">5. Library conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/implementation.html">6. Implementation considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/usage.html">7. Usage considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../library/index.html">8. Library management reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../keys/index.html">9. Key management reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">10. Cryptographic operation reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="algorithms.html">10.1. Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hashes.html">10.2. Message digests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="macs.html">10.3. Message authentication codes (MAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ciphers.html">10.4. Unauthenticated ciphers</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">10.5. Authenticated encryption with associated data (AEAD)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#aead-algorithms">10.5.1. AEAD algorithms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#single-part-aead-functions">10.5.2. Single-part AEAD functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#multi-part-aead-operations">10.5.3. Multi-part AEAD operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#support-macros">10.5.4. Support macros</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="kdf.html">10.6. Key derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sign.html">10.7. Asymmetric signature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pke.html">10.8. Asymmetric encryption</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ka.html">10.9. Key agreement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rng.html">10.10. Other cryptographic services</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../appendix/example_header.html">Example header file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendix/specdef_values.html">Example macro implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendix/history.html">Changes to the API</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../psa_c-identifiers.html">Index of API elements</a></li>
+</ul>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
@@ -1283,15 +1276,12 @@ If the AEAD algorithm does not have an identified tag that can be distinguished 
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy; 2019-2020, Arm Limited or its affiliates. All rights reserved.
+      &copy; 2018-2020, Arm Limited or its affiliates. All rights reserved.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
-      |
-      <a href="../../_sources/api/ops/aead.rst.txt"
-          rel="nofollow">Page source</a>
     </div>
 
     

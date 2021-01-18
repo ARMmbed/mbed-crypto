@@ -18,7 +18,8 @@ Update the rendered copy of the PSA Cryptography API specification.
 3. Copy the rendered files.
     $0 psa-crypto-api
 4. Commit the changes.
-    git commit docs/html docs/PSA_Cryptography_API_Specification.pdf
+    git add docs/html docs/PSA_Cryptography_API_Specification.pdf
+    git commit
 EOF
 }
 

@@ -5,26 +5,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Functionality overview &#8212; PSA Crypto API 1.0.0 documentation</title>
+    <title>3. Functionality overview &#8212; PSA Crypto API 1.0.1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.0.0',
+        VERSION:     '1.0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
+        HAS_SOURCE:  false,
         SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Sample architectures" href="sample-arch.html" />
-    <link rel="prev" title="Design goals" href="goals.html" />
+    <link rel="next" title="4. Sample architectures" href="sample-arch.html" />
+    <link rel="prev" title="2. Design goals" href="goals.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -40,20 +41,21 @@
           <div class="body" role="main">
             
   <div class="section" id="functionality-overview">
-<span id="id1"></span><h1>Functionality overview</h1>
+<span id="id1"></span><h1>3. Functionality overview</h1>
 <p>This section provides a high-level overview of the functionality provided by the
-interface defined in this specification. Refer to the <a class="reference internal" href="../api/library/index.html#api-reference"><span class="std std-ref">API definition</span></a> for a detailed description.</p>
+interface defined in this specification. Refer to the
+<a class="reference internal" href="../api/library/index.html#api-reference"><span class="std std-ref">API definition</span></a> for a detailed description.</p>
 <p><a class="reference internal" href="../appendix/history.html#future"><span class="std std-ref">Future additions</span></a> describes features that might be included in future versions of this
 specification.</p>
 <p>Due to the modularity of the interface, almost every part of the library is
 optional. The only mandatory function is <a class="reference internal" href="../api/library/library.html#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_crypto_init()</span></code></a>.</p>
 <div class="section" id="library-management">
-<h2>Library management</h2>
+<h2>3.1. Library management</h2>
 <p>Applications must call <a class="reference internal" href="../api/library/library.html#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_crypto_init()</span></code></a> to initialize the library before
 using any other function.</p>
 </div>
 <div class="section" id="key-management">
-<h2>Key management</h2>
+<h2>3.2. Key management</h2>
 <p>Applications always access keys indirectly via an identifier, and can perform
 operations using a key without accessing the key material. This allows keys to
 be <em>non-extractable</em>, where an application can use a key but is not permitted to
@@ -62,107 +64,53 @@ rate-limited and can have their usage restricted by policies.</p>
 <p>Each key has a set of attributes that describe the key and the policy for using
 the key. A <a class="reference internal" href="../api/keys/attributes.html#c.psa_key_attributes_t" title="psa_key_attributes_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_attributes_t</span></code></a> object contains all of the attributes, which
 is used when creating a key and when querying key attributes.</p>
-<p>Each key has a <em>lifetime</em> that determines when the key material is destroyed.
-There are two types of lifetimes: <a class="reference internal" href="#volatile-keys"><span class="std std-ref">volatile</span></a> and
-<a class="reference internal" href="#persistent-keys"><span class="std std-ref">persistent</span></a>.</p>
-<div class="section" id="volatile-keys">
-<span id="id2"></span><h3>Volatile keys</h3>
-<p>A <em>volatile</em> key exists until it explicitly destroyed with <a class="reference internal" href="../api/keys/management.html#c.psa_destroy_key" title="psa_destroy_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_destroy_key()</span></code></a>
-or until the application terminates, which conceptually destroys all of its
-volatile keys.</p>
-<p>Conceptually, a volatile key is stored in RAM. Volatile keys have the
-lifetime <a class="reference internal" href="../api/keys/locations.html#c.PSA_KEY_LIFETIME_VOLATILE" title="PSA_KEY_LIFETIME_VOLATILE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_LIFETIME_VOLATILE</span></code></a>.</p>
-<p>To create a volatile key:</p>
-<ol class="arabic simple">
-<li>Populate a <a class="reference internal" href="../api/keys/attributes.html#c.psa_key_attributes_t" title="psa_key_attributes_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_attributes_t</span></code></a> object with the required type, size, policy
-and other key attributes.</li>
-<li>Create the key with <a class="reference internal" href="../api/keys/management.html#c.psa_import_key" title="psa_import_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_import_key()</span></code></a>, <a class="reference internal" href="../api/keys/management.html#c.psa_generate_key" title="psa_generate_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_generate_key()</span></code></a>,
-<a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_output_key" title="psa_key_derivation_output_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_output_key()</span></code></a> or <a class="reference internal" href="../api/keys/management.html#c.psa_copy_key" title="psa_copy_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_copy_key()</span></code></a>. If successful, these
-functions output a transient <a class="reference internal" href="#key-ids"><span class="std std-ref">key identifier</span></a>.</li>
-</ol>
-<p>To destroy a volatile key, call <a class="reference internal" href="../api/keys/management.html#c.psa_destroy_key" title="psa_destroy_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_destroy_key()</span></code></a> with the key identifier.</p>
-</div>
-<div class="section" id="persistent-keys">
-<span id="id3"></span><h3>Persistent keys</h3>
-<p>A <em>persistent</em> key exists until it explicitly destroyed with <a class="reference internal" href="../api/keys/management.html#c.psa_destroy_key" title="psa_destroy_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_destroy_key()</span></code></a>
-or until it is wiped by the reset or destruction of the device.</p>
-<p>Each persistent key has a permanent key identifier, which acts as a name for the key.
-Within an application, the key identifier corresponds to a single key. The
-application specifies the key identifier when the key is created and when
-using the key.</p>
-<p>Persistent keys can be stored in different storage areas; this is indicated
-through different lifetime values. This specification defines a single lifetime
-value <a class="reference internal" href="../api/keys/locations.html#c.PSA_KEY_LIFETIME_PERSISTENT" title="PSA_KEY_LIFETIME_PERSISTENT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_LIFETIME_PERSISTENT</span></code></a> which corresponds to a default storage
-area. Implementations can define alternative lifetime values corresponding to
-different storage areas with different retention policies, or to secure elements
-with different security characteristics.</p>
-<p>To create a persistent key:</p>
-<ol class="arabic">
-<li><p class="first">Populate a <a class="reference internal" href="../api/keys/attributes.html#c.psa_key_attributes_t" title="psa_key_attributes_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_attributes_t</span></code></a> object with the key’s type, size, policy
-and other attributes.</p>
-</li>
-<li><p class="first">In the attributes object, set the desired lifetime and persistent identifier
-for the key.</p>
-</li>
-<li><p class="first">Create the key with one of the <em>key creation functions</em>:</p>
+<p>The key attributes include:</p>
+<ul class="simple">
+<li>A <a class="reference internal" href="../api/keys/types.html#key-types"><span class="std std-ref">type</span></a> and size that describe the key material.</li>
+<li>The key <a class="reference internal" href="#key-ids"><span class="std std-ref">identifier</span></a> that the application uses to refer to the key.</li>
+<li>A <a class="reference internal" href="#key-life"><span class="std std-ref">lifetime</span></a> that determines when the key material is destroyed, and where it is stored.</li>
+<li>A <a class="reference internal" href="#key-usage-policies"><span class="std std-ref">policy</span></a> that determines how the key can be used.</li>
+</ul>
+<p>Keys are created using one of the <em>key creation functions</em>:</p>
 <ul class="simple">
 <li><a class="reference internal" href="../api/keys/management.html#c.psa_import_key" title="psa_import_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_import_key()</span></code></a></li>
 <li><a class="reference internal" href="../api/keys/management.html#c.psa_generate_key" title="psa_generate_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_generate_key()</span></code></a></li>
 <li><a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_output_key" title="psa_key_derivation_output_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_output_key()</span></code></a></li>
 <li><a class="reference internal" href="../api/keys/management.html#c.psa_copy_key" title="psa_copy_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_copy_key()</span></code></a></li>
 </ul>
-<p>If successful, these functions output the <a class="reference internal" href="#key-ids"><span class="std std-ref">key identifier</span></a>
-that was specified by the application in step 2.</p>
-</li>
-</ol>
-<p>To access an existing persistent key: use the key identifier in any API that
-requires a key.</p>
-<p>To remove cached copies of key material for persistent keys created with the
-<a class="reference internal" href="../api/keys/usage.html#c.PSA_KEY_USAGE_CACHE" title="PSA_KEY_USAGE_CACHE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_CACHE</span></code></a> policy: call <a class="reference internal" href="../api/keys/management.html#c.psa_purge_key" title="psa_purge_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_purge_key()</span></code></a> with the key identifier.</p>
-<p>To destroy a persistent key: call <a class="reference internal" href="../api/keys/management.html#c.psa_destroy_key" title="psa_destroy_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_destroy_key()</span></code></a> with the key identifier.
-Destroying a persistent key permanently removes it from memory and storage.</p>
-<p>The key lifetime and identifier are set when the key is created and cannot be
-changed without destroying the key first. If the original key permits copying,
-then the application can specify a different lifetime for the copy of the key.</p>
-</div>
-<div class="section" id="key-identifiers">
-<span id="key-ids"></span><h3>Key identifiers</h3>
-<p>Key identifiers are integral values that act as permanent names for persistent
-keys, or as transient references to volatile keys. Key identifiers use the
-<a class="reference internal" href="../api/keys/attributes.html#c.psa_key_id_t" title="psa_key_id_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_id_t</span></code></a> type, and the range of identifier values is divided as follows:</p>
-<dl class="docutils">
-<dt><a class="reference internal" href="../api/keys/locations.html#c.PSA_KEY_ID_NULL" title="PSA_KEY_ID_NULL"><code class="docutils literal"><span class="pre">PSA_KEY_ID_NULL</span></code></a><code class="docutils literal"> <span class="pre">=</span> <span class="pre">0</span></code></dt>
-<dd>Reserved as an invalid key identifier.</dd>
-<dt><a class="reference internal" href="../api/keys/locations.html#c.PSA_KEY_ID_USER_MIN" title="PSA_KEY_ID_USER_MIN"><code class="docutils literal"><span class="pre">PSA_KEY_ID_USER_MIN</span></code></a><code class="docutils literal"> <span class="pre">-</span> </code><a class="reference internal" href="../api/keys/locations.html#c.PSA_KEY_ID_USER_MAX" title="PSA_KEY_ID_USER_MAX"><code class="docutils literal"><span class="pre">PSA_KEY_ID_USER_MAX</span></code></a></dt>
-<dd>Applications can freely choose persistent key identifiers in this range.</dd>
-<dt><a class="reference internal" href="../api/keys/locations.html#c.PSA_KEY_ID_VENDOR_MIN" title="PSA_KEY_ID_VENDOR_MIN"><code class="docutils literal"><span class="pre">PSA_KEY_ID_VENDOR_MIN</span></code></a><code class="docutils literal"> <span class="pre">-</span> </code><a class="reference internal" href="../api/keys/locations.html#c.PSA_KEY_ID_VENDOR_MAX" title="PSA_KEY_ID_VENDOR_MAX"><code class="docutils literal"><span class="pre">PSA_KEY_ID_VENDOR_MAX</span></code></a></dt>
-<dd>Implementations can define additional persistent key identifiers in this
-range, and must allocate any volatile key identifiers from this range.</dd>
-</dl>
-<p>Key identifiers outside these ranges are reserved for future use.</p>
-<p>Key identifiers are output from a successful call to one of
-the key creation functions. For persistent keys, this is the same identifier
-as the one specified in the key attributes used to create the key.
-The key identifier remains valid until it is invalidated by passing it to
-<a class="reference internal" href="../api/keys/management.html#c.psa_destroy_key" title="psa_destroy_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_destroy_key()</span></code></a>. A volatile key identifier must not be used after it has been
-invalidated.</p>
-<p>Valid key identifiers must have distinct values within the same application. If
-the implementation provides <a class="reference internal" href="goals.html#isolation"><span class="std std-ref">caller isolation</span></a>, then key
-identifiers are local to each application. That is, the same key identifier in two
-applications corresponds to two different keys.</p>
-<p>If an invalid key identifier is provided as a parameter in any function, the
-function will return <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_INVALID_HANDLE" title="PSA_ERROR_INVALID_HANDLE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_INVALID_HANDLE</span></code></a>; except for the special case of
-calling <a class="reference internal" href="../api/keys/management.html#c.psa_destroy_key" title="psa_destroy_key"><code class="docutils literal"><span class="pre">psa_destroy_key</span></code></a><code class="docutils literal"><span class="pre">(</span></code><a class="reference internal" href="../api/keys/locations.html#c.PSA_KEY_ID_NULL" title="PSA_KEY_ID_NULL"><code class="docutils literal"><span class="pre">PSA_KEY_ID_NULL</span></code></a><code class="docutils literal"><span class="pre">)</span></code>, which has no effect and always
-returns <a class="reference internal" href="../api/library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_SUCCESS</span></code></a>.</p>
-<p>There must be a matching call to <a class="reference internal" href="../api/keys/management.html#c.psa_destroy_key" title="psa_destroy_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_destroy_key()</span></code></a> for each successful call
-to a create a volatile key.</p>
+<p>These output the key identifier, that is used to access the key in all other parts of the API.</p>
+<p>All of the key attributes are set when the key is created and cannot be changed
+without destroying the key first. If the original key permits copying, then the
+application can specify a different lifetime or restricted policy for the
+copy of the key.</p>
 <p>A call to <a class="reference internal" href="../api/keys/management.html#c.psa_destroy_key" title="psa_destroy_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_destroy_key()</span></code></a> destroys the key material, and will cause any active
 operations that are using the key to fail. Therefore an application must not
 destroy a key while an operation using that key is in progress, unless the
 application is prepared to handle a failure of the operation.</p>
+<div class="section" id="key-identifiers">
+<span id="key-ids"></span><h3>3.2.1. Key identifiers</h3>
+<p>Key identifiers are integral values that act as permanent names for persistent keys, or as transient references to volatile keys. Key identifiers are defined by the application for persistent keys, and by the implementation for volatile keys and for built-in keys.</p>
+<p>Key identifiers are output from a successful call to one of the key creation functions.</p>
+<p>Valid key identifiers must have distinct values within the same application. If
+the implementation provides <a class="reference internal" href="goals.html#isolation"><span class="std std-ref">caller isolation</span></a>, then key
+identifiers are local to each application. That is, the same key identifier in two
+applications corresponds to two different keys.</p>
+<p>See <a class="reference internal" href="../api/keys/ids.html#key-identifiers"><span class="secref">Key identifiers</span></a>.</p>
+</div>
+<div class="section" id="key-lifetimes">
+<span id="key-life"></span><h3>3.2.2. Key lifetimes</h3>
+<p>The lifetime of a key indicates where it is stored and which application and system actions will create and destroy it.</p>
+<p>There are two main types of lifetimes: <em>volatile</em> and <em>persistent</em>.</p>
+<p>Volatile keys are automatically destroyed when the application instance terminates or on a power reset of the device. Volatile key identifiers are allocated by the implementation when the key is created. Volatile keys can be explicitly destroyed with a call to <a class="reference internal" href="../api/keys/management.html#c.psa_destroy_key" title="psa_destroy_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_destroy_key()</span></code></a>.</p>
+<p>Persistent keys are preserved until the application explicitly destroys them or until an implementation-specific device management event occurs, for example, a factory reset. The key identifier for a persistent key is set by the application when creating the key, and remains valid throughout the lifetime of the key, even if the application instance that created the key terminates.</p>
+<p>See <a class="reference internal" href="../api/keys/lifetimes.html#key-lifetimes"><span class="secref">Key lifetimes</span></a>.</p>
+</div>
+<div class="section" id="key-policies">
+<span id="key-usage-policies"></span><h3>3.2.3. Key policies</h3>
+<p>All keys have an associated policy that regulates which operations are permitted on the key. Each key policy is a set of usage flags and a specific algorithm that is permitted with the key. See <a class="reference internal" href="../api/keys/policy.html#key-policy"><span class="secref">Key policies</span></a>.</p>
 </div>
 <div class="section" id="recommendations-of-minimum-standards-for-key-management">
-<h3>Recommendations of minimum standards for key management</h3>
+<h3>3.2.4. Recommendations of minimum standards for key management</h3>
 <p>Most implementations provide the following functions:</p>
 <ul class="simple">
 <li><a class="reference internal" href="../api/keys/management.html#c.psa_import_key" title="psa_import_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_import_key()</span></code></a>. The exceptions are implementations that only give access
@@ -181,38 +129,8 @@ non-extractable keys, do not need to provide this function.</li>
 </ul>
 </div>
 </div>
-<div class="section" id="usage-policies">
-<h2>Usage policies</h2>
-<p>All keys have an associated policy that regulates which operations are permitted
-on the key. Each key policy is a set of usage flags and a specific algorithm
-that is permitted with the key. The policy is part of the key attributes that
-are managed by a <a class="reference internal" href="../api/keys/attributes.html#c.psa_key_attributes_t" title="psa_key_attributes_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_attributes_t</span></code></a> object.</p>
-<p>The usage flags are encoded in a bitmask, which has the type
-<a class="reference internal" href="../api/keys/attributes.html#c.psa_key_usage_t" title="psa_key_usage_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_usage_t</span></code></a>. Four kinds of usage flag can be specified:</p>
-<ul class="simple">
-<li>The extractable flag <a class="reference internal" href="../api/keys/usage.html#c.PSA_KEY_USAGE_EXPORT" title="PSA_KEY_USAGE_EXPORT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_EXPORT</span></code></a> determines whether the key
-material can be extracted.</li>
-<li>The copyable flag <a class="reference internal" href="../api/keys/usage.html#c.PSA_KEY_USAGE_COPY" title="PSA_KEY_USAGE_COPY"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_COPY</span></code></a> determines whether the key material
-can be copied into a new key, which can have a different lifetime or a more
-restrictive policy.</li>
-<li>The cacheable flag <a class="reference internal" href="../api/keys/usage.html#c.PSA_KEY_USAGE_CACHE" title="PSA_KEY_USAGE_CACHE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_CACHE</span></code></a> determines whether the
-implementation is permitted to retain non-essential copies of the
-key material in RAM. This policy only applies to persistent keys. See also
-<em><a class="reference internal" href="implementation.html#key-material"><span class="std std-ref">Managing key material</span></a></em>.</li>
-<li>The other usage flags, for example, <a class="reference internal" href="../api/keys/usage.html#c.PSA_KEY_USAGE_ENCRYPT" title="PSA_KEY_USAGE_ENCRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_ENCRYPT</span></code></a> and <a class="reference internal" href="../api/keys/usage.html#c.PSA_KEY_USAGE_SIGN_MESSAGE" title="PSA_KEY_USAGE_SIGN_MESSAGE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_SIGN_MESSAGE</span></code></a>,
-determine whether the corresponding operation is permitted on the key.</li>
-</ul>
-<p>In addition to the usage bitmask, a policy specifies which algorithm is
-permitted with the key. This specification only defines policies that restrict
-keys to a single algorithm, which is consistent with both common practice and
-security good practice.</p>
-<p>A highly constrained implementation might not be able to support all the policies
-that can be expressed through this interface. If an implementation cannot create
-a key with the required policy, it must return an appropriate error code when
-the key is created.</p>
-</div>
 <div class="section" id="symmetric-cryptography">
-<h2>Symmetric cryptography</h2>
+<h2>3.3. Symmetric cryptography</h2>
 <p>This specification defines interfaces for the following types of symmetric
 cryptographic operation:</p>
 <ul class="simple">
@@ -228,16 +146,16 @@ encrypt and decrypt.</li>
 <li>A series of functions that permit <em>multi-part operations</em>.</li>
 </ul>
 <div class="section" id="single-part-functions">
-<h3>Single-part Functions</h3>
+<h3>3.3.1. Single-part Functions</h3>
 <p>Single-part functions are APIs that implement the cryptographic operation in a
 single function call. This is the easiest API to use when all of the inputs and
 outputs fit into the application memory.</p>
 <p>Some use cases involve messages that are too large to be assembled in memory, or
 require non-default configuration of the algorithm. These use cases require the
-use of a <em><a class="reference internal" href="#multi-part-operations"><span class="std std-ref">multi-part operation</span></a></em>.</p>
+use of a <a class="reference internal" href="#multi-part-operations"><span class="secref">multi-part operation</span></a>.</p>
 </div>
 <div class="section" id="multi-part-operations">
-<span id="id4"></span><h3>Multi-part operations</h3>
+<span id="id2"></span><h3>3.3.2. Multi-part operations</h3>
 <p>Multi-part operations are APIs which split a single cryptographic operation into
 a sequence of separate steps. This enables fine control over the configuration
 of the cryptographic operation, and allows the message data to be processed in
@@ -328,7 +246,7 @@ Documentation for the specific operation describes the configuration and update
 functions, and any requirements about their usage and ordering.</p>
 </div>
 <div class="section" id="message-digests-hashes">
-<h3>Message digests (Hashes)</h3>
+<h3>3.3.3. Message digests (Hashes)</h3>
 <p>The single-part hash functions are:</p>
 <ul class="simple">
 <li><a class="reference internal" href="../api/ops/hashes.html#c.psa_hash_compute" title="psa_hash_compute"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_compute()</span></code></a> to calculate the hash of a message.</li>
@@ -357,7 +275,7 @@ to resume the hash operation.</li>
 <p>To abort the operation or recover from an error, call <a class="reference internal" href="../api/ops/hashes.html#c.psa_hash_abort" title="psa_hash_abort"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_abort()</span></code></a>.</p>
 </div>
 <div class="section" id="message-authentication-codes-macs">
-<h3>Message authentication codes (MACs)</h3>
+<h3>3.3.4. Message authentication codes (MACs)</h3>
 <p>The single-part MAC functions are:</p>
 <ul class="simple">
 <li><a class="reference internal" href="../api/ops/macs.html#c.psa_mac_compute" title="psa_mac_compute"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_compute()</span></code></a> to calculate the MAC of a message.</li>
@@ -381,13 +299,13 @@ algorithm and key.</li>
 <p>To abort the operation or recover from an error, call <a class="reference internal" href="../api/ops/macs.html#c.psa_mac_abort" title="psa_mac_abort"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_abort()</span></code></a>.</p>
 </div>
 <div class="section" id="encryption-and-decryption">
-<h3>Encryption and decryption</h3>
+<h3>3.3.5. Encryption and decryption</h3>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The unauthenticated cipher API is provided to implement legacy protocols and
 for use cases where the data integrity and authenticity is guaranteed by
 non-cryptographic means. It is recommended that newer protocols use
-<em><a class="reference internal" href="#func-aead"><span class="std std-ref">Authenticated encryption (AEAD)</span></a></em>.</p>
+<a class="reference internal" href="#func-aead"><span class="secref">Authenticated encryption (AEAD)</span></a>.</p>
 </div>
 <p>The single-part functions for encrypting or decrypting a message using an
 unauthenticated symmetric cipher are:</p>
@@ -423,7 +341,7 @@ output.</li>
 <p>To abort the operation or recover from an error, call <a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_abort" title="psa_cipher_abort"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_abort()</span></code></a>.</p>
 </div>
 <div class="section" id="authenticated-encryption-aead">
-<span id="func-aead"></span><h3>Authenticated encryption (AEAD)</h3>
+<span id="func-aead"></span><h3>3.3.6. Authenticated encryption (AEAD)</h3>
 <p>The single-part AEAD functions are:</p>
 <ul class="simple">
 <li><a class="reference internal" href="../api/ops/aead.html#c.psa_aead_encrypt" title="psa_aead_encrypt"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_encrypt()</span></code></a> to encrypt a message using an authenticated symmetric
@@ -431,7 +349,7 @@ cipher.</li>
 <li><a class="reference internal" href="../api/ops/aead.html#c.psa_aead_decrypt" title="psa_aead_decrypt"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_decrypt()</span></code></a> to decrypt a message using an authenticated symmetric
 cipher.</li>
 </ul>
-<p>These functions follow the interface recommended by <a class="reference external" href="https://tools.ietf.org/html/rfc5116.html">RFC 5116</a>.</p>
+<p>These functions follow the interface recommended by <span><em>An Interface and Algorithms for Authenticated Encryption</em> <a class="reference internal" href="../about.html#citation-rfc5116"><span class="cite">[RFC5116]</span></a></span>.</p>
 <p>The encryption function requires a nonce to be provided. To generate a random
 nonce, either call <a class="reference internal" href="../api/ops/rng.html#c.psa_generate_random" title="psa_generate_random"><code class="xref any c c-func docutils literal"><span class="pre">psa_generate_random()</span></code></a> or use the AEAD multi-part API.</p>
 <p>The <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_operation_t" title="psa_aead_operation_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_aead_operation_t</span></code></a> <a class="reference internal" href="#multi-part-operations"><span class="std std-ref">multi-part operation</span></a>
@@ -478,7 +396,7 @@ start; the application can call the function <a class="reference internal" href=
 these lengths before providing input.</p>
 </div>
 <div class="section" id="key-derivation">
-<span id="id5"></span><h3>Key derivation</h3>
+<span id="id3"></span><h3>3.3.7. Key derivation</h3>
 <p>A key derivation encodes a deterministic method to generate a finite stream of
 bytes. This data stream is computed by the cryptoprocessor and extracted in
 chunks. If two key derivation operations are constructed with the same
@@ -528,12 +446,12 @@ output, it cannot be output again. This ensures that the same part of the output
 will not be used for different purposes.</p>
 </div>
 <div class="section" id="example-of-the-symmetric-cryptography-api">
-<h3>Example of the symmetric cryptography API</h3>
+<h3>3.3.8. Example of the symmetric cryptography API</h3>
 <p>Here is an example of a use case where a master key is used to generate both a
 message encryption key and an IV for the encryption, and the derived key and IV
 are then used to encrypt a message.</p>
 <ol class="arabic simple">
-<li>Derive the message encryption material from the master key.<ol class="arabic">
+<li>Derive the message encryption material from the master key.<ol class="loweralpha">
 <li>Initialize a <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_operation_t" title="psa_key_derivation_operation_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_derivation_operation_t</span></code></a> object to zero or to
 <a class="reference internal" href="../api/ops/kdf.html#c.PSA_KEY_DERIVATION_OPERATION_INIT" title="PSA_KEY_DERIVATION_OPERATION_INIT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_DERIVATION_OPERATION_INIT</span></code></a>.</li>
 <li>Call <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_setup" title="psa_key_derivation_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_setup()</span></code></a> with <a class="reference internal" href="../api/ops/kdf.html#c.PSA_ALG_HKDF" title="PSA_ALG_HKDF"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_HKDF</span></code></a> as the algorithm.</li>
@@ -550,7 +468,7 @@ encryption key’s attributes.</li>
 memory.</li>
 </ol>
 </li>
-<li>Encrypt the message with the derived material.<ol class="arabic">
+<li>Encrypt the message with the derived material.<ol class="loweralpha">
 <li>Initialize a <a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_operation_t" title="psa_cipher_operation_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_cipher_operation_t</span></code></a> object to zero or to
 <a class="reference internal" href="../api/ops/ciphers.html#c.PSA_CIPHER_OPERATION_INIT" title="PSA_CIPHER_OPERATION_INIT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_CIPHER_OPERATION_INIT</span></code></a>.</li>
 <li>Call <a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_encrypt_setup" title="psa_cipher_encrypt_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_encrypt_setup()</span></code></a> with the derived message encryption key.</li>
@@ -564,16 +482,16 @@ memory.</li>
 </div>
 </div>
 <div class="section" id="asymmetric-cryptography">
-<h2>Asymmetric cryptography</h2>
+<h2>3.4. Asymmetric cryptography</h2>
 <p>This specification defines functions for asymmetric cryptography, including
 asymmetric encryption, asymmetric signature, and two-way key agreement.</p>
 <div class="section" id="asymmetric-encryption">
-<h3>Asymmetric encryption</h3>
+<h3>3.4.1. Asymmetric encryption</h3>
 <p>Asymmetric encryption is provided through the functions
 <a class="reference internal" href="../api/ops/pke.html#c.psa_asymmetric_encrypt" title="psa_asymmetric_encrypt"><code class="xref any c c-func docutils literal"><span class="pre">psa_asymmetric_encrypt()</span></code></a> and <a class="reference internal" href="../api/ops/pke.html#c.psa_asymmetric_decrypt" title="psa_asymmetric_decrypt"><code class="xref any c c-func docutils literal"><span class="pre">psa_asymmetric_decrypt()</span></code></a>.</p>
 </div>
 <div class="section" id="hash-and-sign">
-<h3>Hash-and-sign</h3>
+<h3>3.4.2. Hash-and-sign</h3>
 <p>The signature and verification functions <a class="reference internal" href="../api/ops/sign.html#c.psa_sign_message" title="psa_sign_message"><code class="xref any c c-func docutils literal"><span class="pre">psa_sign_message()</span></code></a> and
 <a class="reference internal" href="../api/ops/sign.html#c.psa_verify_message" title="psa_verify_message"><code class="xref any c c-func docutils literal"><span class="pre">psa_verify_message()</span></code></a> take a message as one of their inputs and perform a
 hash-and-sign algorithm.</p>
@@ -581,28 +499,28 @@ hash-and-sign algorithm.</p>
 one of their inputs. This is useful for signing pre-computed hashes, or for
 implementing hash-and-sign using a <a class="reference internal" href="../api/ops/hashes.html#hash-mp"><span class="std std-ref">multi-part hash operation</span></a>
 before signing the resulting hash. To determine which
-hash algorithm to use, call the macro <a class="reference internal" href="../api/keys/algorithms.html#c.PSA_ALG_GET_HASH" title="PSA_ALG_GET_HASH"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_GET_HASH()</span></code></a> on the
+hash algorithm to use, call the macro <a class="reference internal" href="../api/ops/algorithms.html#c.PSA_ALG_GET_HASH" title="PSA_ALG_GET_HASH"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_GET_HASH()</span></code></a> on the
 corresponding signature algorithm.</p>
 <p>Some hash-and-sign algorithms add padding to the message hash before completing
 the signing operation. The format of the padding that is used depends on the
 algorithm used to construct the signature.</p>
 </div>
 <div class="section" id="key-agreement">
-<h3>Key agreement</h3>
+<h3>3.4.3. Key agreement</h3>
 <p>This specification defines two functions for a Diffie-Hellman-style key
 agreement where each party combines its own private key with the peer’s public
 key.</p>
-<p>The recommended approach is to use a <a class="reference internal" href="#key-derivation"><span class="std std-ref">key derivation
-operation</span></a> with the <a class="reference internal" href="../api/ops/ka.html#c.psa_key_derivation_key_agreement" title="psa_key_derivation_key_agreement"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_key_agreement()</span></code></a>
-input function, which calculates a shared secret for the key derivation
-function.</p>
+<p>The recommended approach is to use a
+<a class="reference internal" href="#key-derivation"><span class="std std-ref">key derivation operation</span></a> with the
+<a class="reference internal" href="../api/ops/ka.html#c.psa_key_derivation_key_agreement" title="psa_key_derivation_key_agreement"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_key_agreement()</span></code></a> input function, which calculates a shared
+secret for the key derivation function.</p>
 <p>Where an application needs direct access to the shared secret, it can call
 <a class="reference internal" href="../api/ops/ka.html#c.psa_raw_key_agreement" title="psa_raw_key_agreement"><code class="xref any c c-func docutils literal"><span class="pre">psa_raw_key_agreement()</span></code></a> instead. Note that in general the shared secret is not
 directly suitable for use as a key because it is biased.</p>
 </div>
 </div>
 <div class="section" id="randomness-and-key-generation">
-<h2>Randomness and key generation</h2>
+<h2>3.5. Randomness and key generation</h2>
 <p>We strongly recommended that implementations include a random generator,
 consisting of a cryptographically secure pseudo-random generator (CSPRNG), which
 is adequately seeded with a cryptographic-quality hardware entropy source,
@@ -623,56 +541,62 @@ function <a class="reference internal" href="../api/ops/rng.html#c.psa_generate_
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Functionality overview</a><ul>
-<li><a class="reference internal" href="#library-management">Library management</a></li>
-<li><a class="reference internal" href="#key-management">Key management</a><ul>
-<li><a class="reference internal" href="#volatile-keys">Volatile keys</a></li>
-<li><a class="reference internal" href="#persistent-keys">Persistent keys</a></li>
-<li><a class="reference internal" href="#key-identifiers">Key identifiers</a></li>
-<li><a class="reference internal" href="#recommendations-of-minimum-standards-for-key-management">Recommendations of minimum standards for key management</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#usage-policies">Usage policies</a></li>
-<li><a class="reference internal" href="#symmetric-cryptography">Symmetric cryptography</a><ul>
-<li><a class="reference internal" href="#single-part-functions">Single-part Functions</a></li>
-<li><a class="reference internal" href="#multi-part-operations">Multi-part operations</a></li>
-<li><a class="reference internal" href="#message-digests-hashes">Message digests (Hashes)</a></li>
-<li><a class="reference internal" href="#message-authentication-codes-macs">Message authentication codes (MACs)</a></li>
-<li><a class="reference internal" href="#encryption-and-decryption">Encryption and decryption</a></li>
-<li><a class="reference internal" href="#authenticated-encryption-aead">Authenticated encryption (AEAD)</a></li>
-<li><a class="reference internal" href="#key-derivation">Key derivation</a></li>
-<li><a class="reference internal" href="#example-of-the-symmetric-cryptography-api">Example of the symmetric cryptography API</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#asymmetric-cryptography">Asymmetric cryptography</a><ul>
-<li><a class="reference internal" href="#asymmetric-encryption">Asymmetric encryption</a></li>
-<li><a class="reference internal" href="#hash-and-sign">Hash-and-sign</a></li>
-<li><a class="reference internal" href="#key-agreement">Key agreement</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#randomness-and-key-generation">Randomness and key generation</a></li>
-</ul>
-</li>
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
+        <div class="sphinxsidebarwrapper"><h3><a href="../index.html"><b>PSA Crypto API</b></a></h3>
+IHI 0086<br/>
+Non-confidential<br/>
+Version 1.0.1
+<span style="color: red; font-weight: bold;"></span>
 <ul>
-  <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="goals.html" title="previous chapter">Design goals</a></li>
-      <li>Next: <a href="sample-arch.html" title="next chapter">Sample architectures</a></li>
-  </ul></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About this document</a></li>
 </ul>
-</div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/overview/functionality.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="goals.html">2. Design goals</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">3. Functionality overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#library-management">3.1. Library management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#key-management">3.2. Key management</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#key-identifiers">3.2.1. Key identifiers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#key-lifetimes">3.2.2. Key lifetimes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#key-policies">3.2.3. Key policies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#recommendations-of-minimum-standards-for-key-management">3.2.4. Recommendations of minimum standards for key management</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#symmetric-cryptography">3.3. Symmetric cryptography</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#single-part-functions">3.3.1. Single-part Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#multi-part-operations">3.3.2. Multi-part operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#message-digests-hashes">3.3.3. Message digests (Hashes)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#message-authentication-codes-macs">3.3.4. Message authentication codes (MACs)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#encryption-and-decryption">3.3.5. Encryption and decryption</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#authenticated-encryption-aead">3.3.6. Authenticated encryption (AEAD)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#key-derivation">3.3.7. Key derivation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example-of-the-symmetric-cryptography-api">3.3.8. Example of the symmetric cryptography API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#asymmetric-cryptography">3.4. Asymmetric cryptography</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#asymmetric-encryption">3.4.1. Asymmetric encryption</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hash-and-sign">3.4.2. Hash-and-sign</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#key-agreement">3.4.3. Key agreement</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#randomness-and-key-generation">3.5. Randomness and key generation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sample-arch.html">4. Sample architectures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conventions.html">5. Library conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="implementation.html">6. Implementation considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">7. Usage considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/library/index.html">8. Library management reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/keys/index.html">9. Key management reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/ops/index.html">10. Cryptographic operation reference</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../appendix/example_header.html">Example header file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendix/specdef_values.html">Example macro implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendix/history.html">Changes to the API</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../psa_c-identifiers.html">Index of API elements</a></li>
+</ul>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
@@ -688,15 +612,12 @@ function <a class="reference internal" href="../api/ops/rng.html#c.psa_generate_
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy; 2019-2020, Arm Limited or its affiliates. All rights reserved.
+      &copy; 2018-2020, Arm Limited or its affiliates. All rights reserved.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
-      |
-      <a href="../_sources/overview/functionality.rst.txt"
-          rel="nofollow">Page source</a>
     </div>
 
     

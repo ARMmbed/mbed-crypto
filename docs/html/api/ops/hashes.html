@@ -5,26 +5,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Message digests &#8212; PSA Crypto API 1.0.0 documentation</title>
+    <title>10.2. Message digests &#8212; PSA Crypto API 1.0.1 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '1.0.0',
+        VERSION:     '1.0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
+        HAS_SOURCE:  false,
         SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Message authentication codes (MAC)" href="macs.html" />
-    <link rel="prev" title="Cryptographic operation reference" href="index.html" />
+    <link rel="next" title="10.3. Message authentication codes (MAC)" href="macs.html" />
+    <link rel="prev" title="10.1. Algorithms" href="algorithms.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -40,138 +41,161 @@
           <div class="body" role="main">
             
   <div class="section" id="message-digests">
-<span id="hashes"></span><h1>Message digests</h1>
+<span id="hashes"></span><h1>10.2. Message digests</h1>
 <div class="section" id="hash-algorithms">
-<span id="id1"></span><h2>Hash algorithms</h2>
+<span id="id1"></span><h2>10.2.1. Hash algorithms</h2>
 <div class="section" id="PSA_ALG_MD2">
 <span id="c.PSA_ALG_MD2"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_MD2</span></code> (macro)</h3>
-<p>MD2.</p>
+<p>The MD2 message-digest algorithm.</p>
 <pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_ALG_MD2" title="PSA_ALG_MD2">PSA_ALG_MD2</a> ((<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x02000001)
+#define <a class="reference internal" href="#c.PSA_ALG_MD2" title="PSA_ALG_MD2">PSA_ALG_MD2</a> ((<a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x02000001)
 </pre>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">The MD2 hash is weak and deprecated and is only recommended for use in legacy protocols.</p>
 </div>
+<p>MD2 is defined in <span><em>The MD2 Message-Digest Algorithm</em> <a class="reference internal" href="../../about.html#citation-rfc1319"><span class="cite">[RFC1319]</span></a></span>.</p>
 </div>
 <div class="section" id="PSA_ALG_MD4">
 <span id="c.PSA_ALG_MD4"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_MD4</span></code> (macro)</h3>
-<p>MD4.</p>
+<p>The MD4 message-digest algorithm.</p>
 <pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_ALG_MD4" title="PSA_ALG_MD4">PSA_ALG_MD4</a> ((<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x02000002)
+#define <a class="reference internal" href="#c.PSA_ALG_MD4" title="PSA_ALG_MD4">PSA_ALG_MD4</a> ((<a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x02000002)
 </pre>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">The MD4 hash is weak and deprecated and is only recommended for use in legacy protocols.</p>
 </div>
+<p>MD4 is defined in <span><em>The MD4 Message-Digest Algorithm</em> <a class="reference internal" href="../../about.html#citation-rfc1320"><span class="cite">[RFC1320]</span></a></span>.</p>
 </div>
 <div class="section" id="PSA_ALG_MD5">
 <span id="c.PSA_ALG_MD5"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_MD5</span></code> (macro)</h3>
-<p>MD5.</p>
+<p>The MD5 message-digest algorithm.</p>
 <pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_ALG_MD5" title="PSA_ALG_MD5">PSA_ALG_MD5</a> ((<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x02000003)
+#define <a class="reference internal" href="#c.PSA_ALG_MD5" title="PSA_ALG_MD5">PSA_ALG_MD5</a> ((<a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x02000003)
 </pre>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">The MD5 hash is weak and deprecated and is only recommended for use in legacy protocols.</p>
 </div>
+<p>MD5 is defined in <span><em>The MD5 Message-Digest Algorithm</em> <a class="reference internal" href="../../about.html#citation-rfc1321"><span class="cite">[RFC1321]</span></a></span>.</p>
 </div>
 <div class="section" id="PSA_ALG_RIPEMD160">
 <span id="c.PSA_ALG_RIPEMD160"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_RIPEMD160</span></code> (macro)</h3>
-<p>RIPEMD-160.</p>
+<p>The RIPEMD-160 message-digest algorithm.</p>
 <pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_ALG_RIPEMD160" title="PSA_ALG_RIPEMD160">PSA_ALG_RIPEMD160</a> ((<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x02000004)
+#define <a class="reference internal" href="#c.PSA_ALG_RIPEMD160" title="PSA_ALG_RIPEMD160">PSA_ALG_RIPEMD160</a> ((<a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x02000004)
 </pre>
+<p>RIPEMD-160 is defined in <span><em>RIPEMD-160: A Strengthened Version of RIPEMD</em> <a class="reference internal" href="../../about.html#citation-ripemd"><span class="cite">[RIPEMD]</span></a></span>, and also in <span><em>ISO/IEC 10118-3:2018 IT Security techniques — Hash-functions — Part 3: Dedicated hash-functions</em> <a class="reference internal" href="../../about.html#citation-iso10118"><span class="cite">[ISO10118]</span></a></span>.</p>
 </div>
 <div class="section" id="PSA_ALG_SHA_1">
 <span id="c.PSA_ALG_SHA_1"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_SHA_1</span></code> (macro)</h3>
-<p>SHA-1.</p>
+<p>The SHA-1 message-digest algorithm.</p>
 <pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_ALG_SHA_1" title="PSA_ALG_SHA_1">PSA_ALG_SHA_1</a> ((<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x02000005)
+#define <a class="reference internal" href="#c.PSA_ALG_SHA_1" title="PSA_ALG_SHA_1">PSA_ALG_SHA_1</a> ((<a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x02000005)
 </pre>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">The SHA-1 hash is weak and deprecated and is only recommended for use in legacy protocols.</p>
 </div>
+<p>SHA-1 is defined in <span><em>FIPS Publication 180-4: Secure Hash Standard (SHS)</em> <a class="reference internal" href="../../about.html#citation-fips180-4"><span class="cite">[FIPS180-4]</span></a></span>.</p>
 </div>
 <div class="section" id="PSA_ALG_SHA_224">
 <span id="c.PSA_ALG_SHA_224"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_SHA_224</span></code> (macro)</h3>
-<p>SHA-224.</p>
+<p>The SHA-224 message-digest algorithm.</p>
 <pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_ALG_SHA_224" title="PSA_ALG_SHA_224">PSA_ALG_SHA_224</a> ((<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x02000008)
+#define <a class="reference internal" href="#c.PSA_ALG_SHA_224" title="PSA_ALG_SHA_224">PSA_ALG_SHA_224</a> ((<a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x02000008)
 </pre>
+<p>SHA-224 is defined in <a class="reference internal" href="../../about.html#citation-fips180-4"><span class="cite">[FIPS180-4]</span></a>.</p>
 </div>
 <div class="section" id="PSA_ALG_SHA_256">
 <span id="c.PSA_ALG_SHA_256"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_SHA_256</span></code> (macro)</h3>
-<p>SHA-256.</p>
+<p>The SHA-256 message-digest algorithm.</p>
 <pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_ALG_SHA_256" title="PSA_ALG_SHA_256">PSA_ALG_SHA_256</a> ((<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x02000009)
+#define <a class="reference internal" href="#c.PSA_ALG_SHA_256" title="PSA_ALG_SHA_256">PSA_ALG_SHA_256</a> ((<a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x02000009)
 </pre>
+<p>SHA-256 is defined in <a class="reference internal" href="../../about.html#citation-fips180-4"><span class="cite">[FIPS180-4]</span></a>.</p>
 </div>
 <div class="section" id="PSA_ALG_SHA_384">
 <span id="c.PSA_ALG_SHA_384"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_SHA_384</span></code> (macro)</h3>
-<p>SHA-384.</p>
+<p>The SHA-384 message-digest algorithm.</p>
 <pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_ALG_SHA_384" title="PSA_ALG_SHA_384">PSA_ALG_SHA_384</a> ((<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x0200000a)
+#define <a class="reference internal" href="#c.PSA_ALG_SHA_384" title="PSA_ALG_SHA_384">PSA_ALG_SHA_384</a> ((<a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x0200000a)
 </pre>
+<p>SHA-384 is defined in <a class="reference internal" href="../../about.html#citation-fips180-4"><span class="cite">[FIPS180-4]</span></a>.</p>
 </div>
 <div class="section" id="PSA_ALG_SHA_512">
 <span id="c.PSA_ALG_SHA_512"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_SHA_512</span></code> (macro)</h3>
-<p>SHA-512.</p>
+<p>The SHA-512 message-digest algorithm.</p>
 <pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_ALG_SHA_512" title="PSA_ALG_SHA_512">PSA_ALG_SHA_512</a> ((<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x0200000b)
+#define <a class="reference internal" href="#c.PSA_ALG_SHA_512" title="PSA_ALG_SHA_512">PSA_ALG_SHA_512</a> ((<a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x0200000b)
 </pre>
+<p>SHA-512 is defined in <a class="reference internal" href="../../about.html#citation-fips180-4"><span class="cite">[FIPS180-4]</span></a>.</p>
 </div>
 <div class="section" id="PSA_ALG_SHA_512_224">
 <span id="c.PSA_ALG_SHA_512_224"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_SHA_512_224</span></code> (macro)</h3>
-<p>SHA-512/224.</p>
+<p>The SHA-512/224 message-digest algorithm.</p>
 <pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_ALG_SHA_512_224" title="PSA_ALG_SHA_512_224">PSA_ALG_SHA_512_224</a> ((<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x0200000c)
+#define <a class="reference internal" href="#c.PSA_ALG_SHA_512_224" title="PSA_ALG_SHA_512_224">PSA_ALG_SHA_512_224</a> ((<a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x0200000c)
 </pre>
+<p>SHA-512/224 is defined in <a class="reference internal" href="../../about.html#citation-fips180-4"><span class="cite">[FIPS180-4]</span></a>.</p>
 </div>
 <div class="section" id="PSA_ALG_SHA_512_256">
 <span id="c.PSA_ALG_SHA_512_256"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_SHA_512_256</span></code> (macro)</h3>
-<p>SHA-512/256.</p>
+<p>The SHA-512/256 message-digest algorithm.</p>
 <pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_ALG_SHA_512_256" title="PSA_ALG_SHA_512_256">PSA_ALG_SHA_512_256</a> ((<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x0200000d)
+#define <a class="reference internal" href="#c.PSA_ALG_SHA_512_256" title="PSA_ALG_SHA_512_256">PSA_ALG_SHA_512_256</a> ((<a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x0200000d)
 </pre>
+<p>SHA-512/256 is defined in <a class="reference internal" href="../../about.html#citation-fips180-4"><span class="cite">[FIPS180-4]</span></a>.</p>
 </div>
 <div class="section" id="PSA_ALG_SHA3_224">
 <span id="c.PSA_ALG_SHA3_224"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_SHA3_224</span></code> (macro)</h3>
-<p>SHA3-224.</p>
+<p>The SHA3-224 message-digest algorithm.</p>
 <pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_ALG_SHA3_224" title="PSA_ALG_SHA3_224">PSA_ALG_SHA3_224</a> ((<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x02000010)
+#define <a class="reference internal" href="#c.PSA_ALG_SHA3_224" title="PSA_ALG_SHA3_224">PSA_ALG_SHA3_224</a> ((<a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x02000010)
 </pre>
+<p>SHA3-224 is defined in <span><em>FIPS Publication 202: SHA-3 Standard: Permutation-Based Hash and Extendable-Output Functions</em> <a class="reference internal" href="../../about.html#citation-fips202"><span class="cite">[FIPS202]</span></a></span>.</p>
 </div>
 <div class="section" id="PSA_ALG_SHA3_256">
 <span id="c.PSA_ALG_SHA3_256"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_SHA3_256</span></code> (macro)</h3>
-<p>SHA3-256.</p>
+<p>The SHA3-256 message-digest algorithm.</p>
 <pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_ALG_SHA3_256" title="PSA_ALG_SHA3_256">PSA_ALG_SHA3_256</a> ((<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x02000011)
+#define <a class="reference internal" href="#c.PSA_ALG_SHA3_256" title="PSA_ALG_SHA3_256">PSA_ALG_SHA3_256</a> ((<a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x02000011)
 </pre>
+<p>SHA3-256 is defined in <a class="reference internal" href="../../about.html#citation-fips202"><span class="cite">[FIPS202]</span></a>.</p>
 </div>
 <div class="section" id="PSA_ALG_SHA3_384">
 <span id="c.PSA_ALG_SHA3_384"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_SHA3_384</span></code> (macro)</h3>
-<p>SHA3-384.</p>
+<p>The SHA3-384 message-digest algorithm.</p>
 <pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_ALG_SHA3_384" title="PSA_ALG_SHA3_384">PSA_ALG_SHA3_384</a> ((<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x02000012)
+#define <a class="reference internal" href="#c.PSA_ALG_SHA3_384" title="PSA_ALG_SHA3_384">PSA_ALG_SHA3_384</a> ((<a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x02000012)
 </pre>
+<p>SHA3-384 is defined in <a class="reference internal" href="../../about.html#citation-fips202"><span class="cite">[FIPS202]</span></a>.</p>
 </div>
 <div class="section" id="PSA_ALG_SHA3_512">
 <span id="c.PSA_ALG_SHA3_512"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_SHA3_512</span></code> (macro)</h3>
-<p>SHA3-512.</p>
+<p>The SHA3-512 message-digest algorithm.</p>
 <pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_ALG_SHA3_512" title="PSA_ALG_SHA3_512">PSA_ALG_SHA3_512</a> ((<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x02000013)
+#define <a class="reference internal" href="#c.PSA_ALG_SHA3_512" title="PSA_ALG_SHA3_512">PSA_ALG_SHA3_512</a> ((<a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x02000013)
 </pre>
+<p>SHA3-512 is defined in <a class="reference internal" href="../../about.html#citation-fips202"><span class="cite">[FIPS202]</span></a>.</p>
+</div>
+<div class="section" id="PSA_ALG_SM3">
+<span id="c.PSA_ALG_SM3"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_SM3</span></code> (macro)</h3>
+<p>The SM3 message-digest algorithm.</p>
+<pre class="literal-block">
+#define <a class="reference internal" href="#c.PSA_ALG_SM3" title="PSA_ALG_SM3">PSA_ALG_SM3</a> ((<a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x02000014)
+</pre>
+<p>SM3 is defined in <span><em>GB/T 32905-2016: Information security techniques — SM3 cryptographic hash algorithm</em> <a class="reference internal" href="../../about.html#citation-prc-sm3"><span class="cite">[PRC-SM3]</span></a></span> and <span><em>The SM3 Cryptographic Hash Function</em> <a class="reference internal" href="../../about.html#citation-ietf-sm3"><span class="cite">[IETF-SM3]</span></a></span>.</p>
 </div>
 </div>
 <div class="section" id="single-part-hashing-functions">
-<h2>Single-part hashing functions</h2>
+<h2>10.2.2. Single-part hashing functions</h2>
 <div class="section" id="psa_hash_compute">
 <span id="c.psa_hash_compute"></span><h3><code class="docutils literal"><span class="pre">psa_hash_compute</span></code> (function)</h3>
 <p>Calculate the hash (digest) of a message.</p>
 <pre class="literal-block">
-<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_hash_compute" title="psa_hash_compute">psa_hash_compute</a>(<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a> alg,
+<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_hash_compute" title="psa_hash_compute">psa_hash_compute</a>(<a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a> alg,
                               const uint8_t * input,
                               size_t input_length,
                               uint8_t * hash,
@@ -181,7 +205,7 @@
 <p class="rubric">Parameters</p>
 <dl class="docutils">
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>The hash algorithm to compute (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_HASH" title="PSA_ALG_IS_HASH"><code class="docutils literal"><span class="pre">PSA_ALG_IS_HASH</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>The hash algorithm to compute (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_HASH" title="PSA_ALG_IS_HASH"><code class="docutils literal"><span class="pre">PSA_ALG_IS_HASH</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 <dt> <code class="docutils literal"><span class="pre">input</span></code></dt>
 <dd>Buffer containing the message to hash.</dd>
 <dt> <code class="docutils literal"><span class="pre">input_length</span></code></dt>
@@ -228,7 +252,7 @@ This must be at least <a class="reference internal" href="#c.PSA_HASH_LENGTH" ti
 <span id="c.psa_hash_compare"></span><h3><code class="docutils literal"><span class="pre">psa_hash_compare</span></code> (function)</h3>
 <p>Calculate the hash (digest) of a message and compare it with a reference value.</p>
 <pre class="literal-block">
-<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_hash_compare" title="psa_hash_compare">psa_hash_compare</a>(<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a> alg,
+<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_hash_compare" title="psa_hash_compare">psa_hash_compare</a>(<a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a> alg,
                               const uint8_t * input,
                               size_t input_length,
                               const uint8_t * hash,
@@ -237,7 +261,7 @@ This must be at least <a class="reference internal" href="#c.PSA_HASH_LENGTH" ti
 <p class="rubric">Parameters</p>
 <dl class="docutils">
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>The hash algorithm to compute (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_HASH" title="PSA_ALG_IS_HASH"><code class="docutils literal"><span class="pre">PSA_ALG_IS_HASH</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>The hash algorithm to compute (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_HASH" title="PSA_ALG_IS_HASH"><code class="docutils literal"><span class="pre">PSA_ALG_IS_HASH</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 <dt> <code class="docutils literal"><span class="pre">input</span></code></dt>
 <dd>Buffer containing the message to hash.</dd>
 <dt> <code class="docutils literal"><span class="pre">input_length</span></code></dt>
@@ -273,7 +297,7 @@ This must be at least <a class="reference internal" href="#c.PSA_HASH_LENGTH" ti
 </div>
 </div>
 <div class="section" id="multi-part-hashing-operations">
-<span id="hash-mp"></span><h2>Multi-part hashing operations</h2>
+<span id="hash-mp"></span><h2>10.2.3. Multi-part hashing operations</h2>
 <div class="section" id="psa_hash_operation_t">
 <span id="c.psa_hash_operation_t"></span><h3><code class="docutils literal"><span class="pre">psa_hash_operation_t</span></code> (type)</h3>
 <p>The type of the state object for multi-part hash operations.</p>
@@ -327,14 +351,14 @@ operation = <a class="reference internal" href="#c.psa_hash_operation_init" titl
 <p>Set up a multi-part hash operation.</p>
 <pre class="literal-block">
 <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_hash_setup" title="psa_hash_setup">psa_hash_setup</a>(<a class="reference internal" href="#c.psa_hash_operation_t" title="psa_hash_operation_t">psa_hash_operation_t</a> * operation,
-                            <a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a> alg);
+                            <a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a> alg);
 </pre>
 <p class="rubric">Parameters</p>
 <dl class="docutils">
 <dt> <code class="docutils literal"><span class="pre">operation</span></code></dt>
 <dd>The operation object to set up. It must have been initialized as per the documentation for <a class="reference internal" href="#c.psa_hash_operation_t" title="psa_hash_operation_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_hash_operation_t</span></code></a> and not yet in use.</dd>
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>The hash algorithm to compute (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_HASH" title="PSA_ALG_IS_HASH"><code class="docutils literal"><span class="pre">PSA_ALG_IS_HASH</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>The hash algorithm to compute (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_HASH" title="PSA_ALG_IS_HASH"><code class="docutils literal"><span class="pre">PSA_ALG_IS_HASH</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 </dl>
 <p class="rubric">Returns: <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t"><code class="docutils literal"><span class="pre">psa_status_t</span></code></a></p>
 <dl class="docutils">
@@ -585,7 +609,7 @@ This must be appropriate for the selected algorithm:</p>
 <p>The application must call <a class="reference internal" href="#c.psa_hash_setup" title="psa_hash_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_setup()</span></code></a> or <a class="reference internal" href="#c.psa_hash_resume" title="psa_hash_resume"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_resume()</span></code></a> before calling this function. This function extracts an intermediate state of the hash computation of the message formed by concatenating the inputs passed to preceding calls to <a class="reference internal" href="#c.psa_hash_update" title="psa_hash_update"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_update()</span></code></a>.</p>
 <p>This function can be used to halt a hash operation, and then resume the hash operation at a later time, or in another application, by transferring the extracted hash suspend state to a call to <a class="reference internal" href="#c.psa_hash_resume" title="psa_hash_resume"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_resume()</span></code></a>.</p>
 <p>When this function returns successfully, the operation becomes inactive. If this function returns an error status, the operation enters an error state and must be aborted by calling <a class="reference internal" href="#c.psa_hash_abort" title="psa_hash_abort"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_abort()</span></code></a>.</p>
-<p>Hash suspend and resume is not defined for the SHA3 family of hash algorithms. <em><a class="reference internal" href="#hash-suspend-state"><span class="std std-ref">Hash suspend state</span></a></em> defines the format of the output from <a class="reference internal" href="#c.psa_hash_suspend" title="psa_hash_suspend"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_suspend()</span></code></a>.</p>
+<p>Hash suspend and resume is not defined for the SHA3 family of hash algorithms. <a class="reference internal" href="#hash-suspend-state"><span class="secref">Hash suspend state</span></a> defines the format of the output from <a class="reference internal" href="#c.psa_hash_suspend" title="psa_hash_suspend"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_suspend()</span></code></a>.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">Applications must not use any of the hash suspend state as if it was a hash output. Instead, the suspend state must only be used to resume a hash operation, and <a class="reference internal" href="#c.psa_hash_finish" title="psa_hash_finish"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_finish()</span></code></a> or <a class="reference internal" href="#c.psa_hash_verify" title="psa_hash_verify"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_verify()</span></code></a> can then calculate or verify the final hash value.</p>
@@ -595,7 +619,7 @@ This must be appropriate for the selected algorithm:</p>
 <ol class="arabic">
 <li><p class="first">Compute the first part of the hash.</p>
 <blockquote>
-<div><ol class="arabic simple">
+<div><ol class="loweralpha simple">
 <li>Allocate an operation object and initialize it as described in the documentation for <a class="reference internal" href="#c.psa_hash_operation_t" title="psa_hash_operation_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_hash_operation_t</span></code></a>.</li>
 <li>Call <a class="reference internal" href="#c.psa_hash_setup" title="psa_hash_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_setup()</span></code></a> to specify the algorithm.</li>
 <li>Call <a class="reference internal" href="#c.psa_hash_update" title="psa_hash_update"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_update()</span></code></a> zero, one or more times, passing a fragment of the message each time.</li>
@@ -607,7 +631,7 @@ This must be appropriate for the selected algorithm:</p>
 </li>
 <li><p class="first">Compute the rest of the hash.</p>
 <blockquote>
-<div><ol class="arabic simple">
+<div><ol class="loweralpha simple">
 <li>Allocate an operation object and initialize it as described in the documentation for <a class="reference internal" href="#c.psa_hash_operation_t" title="psa_hash_operation_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_hash_operation_t</span></code></a>.</li>
 <li>Call <a class="reference internal" href="#c.psa_hash_resume" title="psa_hash_resume"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_resume()</span></code></a> with the extracted hash state.</li>
 <li>Call <a class="reference internal" href="#c.psa_hash_update" title="psa_hash_update"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_update()</span></code></a> zero, one or more times, passing a fragment of the message each time.</li>
@@ -631,7 +655,7 @@ This must be appropriate for the selected algorithm:</p>
 <dt> <code class="docutils literal"><span class="pre">operation</span></code></dt>
 <dd>The operation object to set up. It must have been initialized as per the documentation for <a class="reference internal" href="#c.psa_hash_operation_t" title="psa_hash_operation_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_hash_operation_t</span></code></a> and not yet in use.</dd>
 <dt> <code class="docutils literal"><span class="pre">hash_state</span></code></dt>
-<dd>A buffer containing the suspended hash state which is to be resumed. This must be in the format output by <a class="reference internal" href="#c.psa_hash_suspend" title="psa_hash_suspend"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_suspend()</span></code></a>, which is described in <em><a class="reference internal" href="#hash-suspend-state-format"><span class="std std-ref">Hash suspend state format</span></a></em>.</dd>
+<dd>A buffer containing the suspended hash state which is to be resumed. This must be in the format output by <a class="reference internal" href="#c.psa_hash_suspend" title="psa_hash_suspend"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_suspend()</span></code></a>, which is described in <a class="reference internal" href="#hash-suspend-state-format"><span class="secref">Hash suspend state format</span></a>.</dd>
 <dt> <code class="docutils literal"><span class="pre">hash_state_length</span></code></dt>
 <dd>Length of <code class="docutils literal"><span class="pre">hash_state</span></code> in bytes.</dd>
 </dl>
@@ -642,7 +666,7 @@ This must be appropriate for the selected algorithm:</p>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_SUPPORTED" title="PSA_ERROR_NOT_SUPPORTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_SUPPORTED</span></code></a></dt>
 <dd>The provided hash suspend state is for an algorithm that is not supported.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
-<dd><code class="docutils literal"><span class="pre">hash_state</span></code> does not correspond to a valid hash suspend state. See <em><a class="reference internal" href="#hash-suspend-state-format"><span class="std std-ref">Hash suspend state format</span></a></em> for the definition.</dd>
+<dd><code class="docutils literal"><span class="pre">hash_state</span></code> does not correspond to a valid hash suspend state. See <a class="reference internal" href="#hash-suspend-state-format"><span class="secref">Hash suspend state format</span></a> for the definition.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
 <dd>The operation state is not valid: it must be inactive.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INSUFFICIENT_MEMORY" title="PSA_ERROR_INSUFFICIENT_MEMORY"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_MEMORY</span></code></a></dt>
@@ -702,7 +726,7 @@ This must be appropriate for the selected algorithm:</p>
 </div>
 </div>
 <div class="section" id="support-macros">
-<h2>Support macros</h2>
+<h2>10.2.4. Support macros</h2>
 <div class="section" id="PSA_HASH_LENGTH">
 <span id="c.PSA_HASH_LENGTH"></span><h3><code class="docutils literal"><span class="pre">PSA_HASH_LENGTH</span></code> (macro)</h3>
 <p>The size of the output of <a class="reference internal" href="#c.psa_hash_compute" title="psa_hash_compute"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_compute()</span></code></a> and <a class="reference internal" href="#c.psa_hash_finish" title="psa_hash_finish"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_finish()</span></code></a>, in bytes.</p>
@@ -712,7 +736,7 @@ This must be appropriate for the selected algorithm:</p>
 <p class="rubric">Parameters</p>
 <dl class="docutils">
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>A hash algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_HASH" title="PSA_ALG_IS_HASH"><code class="docutils literal"><span class="pre">PSA_ALG_IS_HASH</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true), or an HMAC algorithm (<a class="reference internal" href="macs.html#c.PSA_ALG_HMAC" title="PSA_ALG_HMAC"><code class="docutils literal"><span class="pre">PSA_ALG_HMAC</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">hash_alg</span></code><code class="docutils literal"><span class="pre">)</span></code> where <code class="docutils literal"><span class="pre">hash_alg</span></code> is a hash algorithm).</dd>
+<dd>A hash algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_HASH" title="PSA_ALG_IS_HASH"><code class="docutils literal"><span class="pre">PSA_ALG_IS_HASH</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true), or an HMAC algorithm (<a class="reference internal" href="macs.html#c.PSA_ALG_HMAC" title="PSA_ALG_HMAC"><code class="docutils literal"><span class="pre">PSA_ALG_HMAC</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">hash_alg</span></code><code class="docutils literal"><span class="pre">)</span></code> where <code class="docutils literal"><span class="pre">hash_alg</span></code> is a hash algorithm).</dd>
 </dl>
 <p class="rubric">Returns</p>
 <p>The hash length for the specified hash algorithm. If the hash algorithm is not recognized, return <code class="docutils literal"><span class="pre">0</span></code>. An implementation can return either <code class="docutils literal"><span class="pre">0</span></code> or the correct size for a hash algorithm that it recognizes, but does not support.</p>
@@ -739,7 +763,7 @@ It is recommended that this value is the maximum size of a hash supported by the
 <p class="rubric">Parameters</p>
 <dl class="docutils">
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>A hash algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_HASH" title="PSA_ALG_IS_HASH"><code class="docutils literal"><span class="pre">PSA_ALG_IS_HASH</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>A hash algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_HASH" title="PSA_ALG_IS_HASH"><code class="docutils literal"><span class="pre">PSA_ALG_IS_HASH</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 </dl>
 <p class="rubric">Returns</p>
 <p>A sufficient output size for the algorithm. If the hash algorithm is not recognized, or is not supported by <a class="reference internal" href="#c.psa_hash_suspend" title="psa_hash_suspend"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_suspend()</span></code></a>, return <code class="docutils literal"><span class="pre">0</span></code>. An implementation can return either <code class="docutils literal"><span class="pre">0</span></code> or a correct size for a hash algorithm that it recognizes, but does not support.</p>
@@ -780,11 +804,11 @@ It is recommended that this value is the maximum size of a hash supported by the
 <p class="rubric">Parameters</p>
 <dl class="docutils">
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>A hash algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_HASH" title="PSA_ALG_IS_HASH"><code class="docutils literal"><span class="pre">PSA_ALG_IS_HASH</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>A hash algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_HASH" title="PSA_ALG_IS_HASH"><code class="docutils literal"><span class="pre">PSA_ALG_IS_HASH</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 </dl>
 <p class="rubric">Returns</p>
 <p>The size, in bytes, of the <em>input-length</em> field of the hash suspend state for the specified hash algorithm. If the hash algorithm is not recognized, return <code class="docutils literal"><span class="pre">0</span></code>. An implementation can return either <code class="docutils literal"><span class="pre">0</span></code> or the correct size for a hash algorithm that it recognizes, but does not support.</p>
-<p>The algorithm-specific values are defined in <em><a class="reference internal" href="#hash-suspend-state-constants"><span class="std std-ref">Hash suspend state field sizes</span></a></em>.</p>
+<p>The algorithm-specific values are defined in <a class="reference internal" href="#hash-suspend-state-constants"><span class="secref">Hash suspend state field sizes</span></a>.</p>
 <p class="rubric">Description</p>
 <p>Applications can use this value to unpack the hash suspend state that is output by <a class="reference internal" href="#c.psa_hash_suspend" title="psa_hash_suspend"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_suspend()</span></code></a>.</p>
 </div>
@@ -798,60 +822,53 @@ It is recommended that this value is the maximum size of a hash supported by the
 <p class="rubric">Parameters</p>
 <dl class="docutils">
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>A hash algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_HASH" title="PSA_ALG_IS_HASH"><code class="docutils literal"><span class="pre">PSA_ALG_IS_HASH</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>A hash algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_HASH" title="PSA_ALG_IS_HASH"><code class="docutils literal"><span class="pre">PSA_ALG_IS_HASH</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 </dl>
 <p class="rubric">Returns</p>
 <p>The size, in bytes, of the <em>hash-state</em> field of the hash suspend state for the specified hash algorithm. If the hash algorithm is not recognized, return <code class="docutils literal"><span class="pre">0</span></code>. An implementation can return either <code class="docutils literal"><span class="pre">0</span></code> or the correct size for a hash algorithm that it recognizes, but does not support.</p>
-<p>The algorithm-specific values are defined in <em><a class="reference internal" href="#hash-suspend-state-constants"><span class="std std-ref">Hash suspend state field sizes</span></a></em>.</p>
+<p>The algorithm-specific values are defined in <a class="reference internal" href="#hash-suspend-state-constants"><span class="secref">Hash suspend state field sizes</span></a>.</p>
 <p class="rubric">Description</p>
 <p>Applications can use this value to unpack the hash suspend state that is output by <a class="reference internal" href="#c.psa_hash_suspend" title="psa_hash_suspend"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_suspend()</span></code></a>.</p>
 </div>
 <div class="section" id="PSA_HASH_BLOCK_LENGTH">
 <span id="c.PSA_HASH_BLOCK_LENGTH"></span><h3><code class="docutils literal"><span class="pre">PSA_HASH_BLOCK_LENGTH</span></code> (macro)</h3>
-<p>The input block size of a hash algorithm.</p>
+<p>The input block size of a hash algorithm, in bytes.</p>
 <pre class="literal-block">
 #define <a class="reference internal" href="#c.PSA_HASH_BLOCK_LENGTH" title="PSA_HASH_BLOCK_LENGTH">PSA_HASH_BLOCK_LENGTH</a>(alg) <em><a class="reference internal" href="../../overview/implementation.html#implementation-defined-value"><span class="std std-ref">/* implementation-defined value */</span></a></em>
 </pre>
 <p class="rubric">Parameters</p>
 <dl class="docutils">
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>A hash algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_HASH" title="PSA_ALG_IS_HASH"><code class="docutils literal"><span class="pre">PSA_ALG_IS_HASH</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>A hash algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_HASH" title="PSA_ALG_IS_HASH"><code class="docutils literal"><span class="pre">PSA_ALG_IS_HASH</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 </dl>
 <p class="rubric">Returns</p>
-<p>The block size for the specified hash algorithm. If the hash algorithm is not recognized, return <code class="docutils literal"><span class="pre">0</span></code>. An implementation can return either <code class="docutils literal"><span class="pre">0</span></code> or the correct size for a hash algorithm that it recognizes, but does not support.</p>
+<p>The block size in bytes for the specified hash algorithm. If the hash algorithm is not recognized, return <code class="docutils literal"><span class="pre">0</span></code>. An implementation can return either <code class="docutils literal"><span class="pre">0</span></code> or the correct size for a hash algorithm that it recognizes, but does not support.</p>
 <p class="rubric">Description</p>
 <p>Hash algorithms process their input data in blocks. Hash operations will retain any partial blocks until they have enough input to fill the block or until the operation is finished.</p>
 <p>This affects the output from <a class="reference internal" href="#c.psa_hash_suspend" title="psa_hash_suspend"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_suspend()</span></code></a>.</p>
 </div>
 </div>
 <div class="section" id="hash-suspend-state">
-<span id="id2"></span><h2>Hash suspend state</h2>
+<span id="id2"></span><h2>10.2.5. Hash suspend state</h2>
 <p>The hash suspend state is output by <a class="reference internal" href="#c.psa_hash_suspend" title="psa_hash_suspend"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_suspend()</span></code></a> and input to <a class="reference internal" href="#c.psa_hash_resume" title="psa_hash_resume"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_resume()</span></code></a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Hash suspend and resume is not defined for the SHA3 family of hash algorithms.</p>
 </div>
-<p class="rubric" id="hash-suspend-state-format">Hash suspend state format</p>
+<div class="section" id="hash-suspend-state-format">
+<span id="id3"></span><h3>Hash suspend state format</h3>
 <p>The hash suspend state has the following format:</p>
 <p><em>hash-suspend-state</em> = <em>algorithm</em> || <em>input-length</em> || <em>hash-state</em> || <em>unprocessed-input</em></p>
 <p>The fields in the hash suspend state are defined as follows:</p>
-<table border="1" class="colwidths-given docutils">
-<colgroup>
-<col width="25%" />
-<col width="75%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><p class="first"><em>algorithm</em></p>
-<p class="last">big-endian 32-bit unsigned integer</p>
-</td>
-<td><p class="first">The PSA Crypto API algorithm identifier. Encoded as a big-endian 32-bit unsigned integer.</p>
+<dl class="docutils">
+<dt><em>algorithm</em></dt>
+<dd><p class="first">A big-endian 32-bit unsigned integer.</p>
+<p>The PSA Crypto API algorithm identifier value.</p>
 <p class="last">The byte length of the <em>algorithm</em> field can be evaluated using <a class="reference internal" href="#c.PSA_HASH_SUSPEND_ALGORITHM_FIELD_LENGTH" title="PSA_HASH_SUSPEND_ALGORITHM_FIELD_LENGTH"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_HASH_SUSPEND_ALGORITHM_FIELD_LENGTH</span></code></a>.</p>
-</td>
-</tr>
-<tr class="row-even"><td><p class="first"><em>input-length</em></p>
-<p class="last">big-endian unsigned integer</p>
-</td>
-<td><p class="first">The content of this field is algorithm-specific:</p>
+</dd>
+<dt><em>input-length</em></dt>
+<dd><p class="first">A big-endian unsigned integer</p>
+<p>The content of this field is algorithm-specific:</p>
 <ul class="simple">
 <li>For MD2, this is the number of bytes in the <em>unprocessed-input</em>.</li>
 <li>For all other hash algorithms, this is the total number of bytes of input to the hash computation. This includes the <em>unprocessed-input</em> bytes.</li>
@@ -863,13 +880,11 @@ It is recommended that this value is the maximum size of a hash supported by the
 <li>For SHA-512, SHA-384 and SHA-512/256: <em>input-length</em> is a 128-bit unsigned integer.</li>
 </ul>
 <p class="last">The length, in bytes, of the <em>input-length</em> field can be calculated using <a class="reference internal" href="#c.PSA_HASH_SUSPEND_INPUT_LENGTH_FIELD_LENGTH" title="PSA_HASH_SUSPEND_INPUT_LENGTH_FIELD_LENGTH"><code class="docutils literal"><span class="pre">PSA_HASH_SUSPEND_INPUT_LENGTH_FIELD_LENGTH</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> where <code class="docutils literal"><span class="pre">alg</span></code> is a hash algorithm.
-See <em><a class="reference internal" href="#hash-suspend-state-constants"><span class="std std-ref">Hash suspend state field sizes</span></a></em>.</p>
-</td>
-</tr>
-<tr class="row-odd"><td><p class="first"><em>hash-state</em></p>
-<p class="last">array of bytes</p>
-</td>
-<td><p class="first">Algorithm-specific intermediate hash state:</p>
+See <a class="reference internal" href="#hash-suspend-state-constants"><span class="secref">Hash suspend state field sizes</span></a>.</p>
+</dd>
+<dt><em>hash-state</em></dt>
+<dd><p class="first">An array of bytes</p>
+<p>Algorithm-specific intermediate hash state:</p>
 <ul class="simple">
 <li>For MD2: 16 bytes of internal checksum, then 48 bytes of intermediate digest.</li>
 <li>For MD4 and MD5: 4x 32-bit integers, in little-endian encoding.</li>
@@ -880,22 +895,20 @@ See <em><a class="reference internal" href="#hash-suspend-state-constants"><span
 </ul>
 <p class="last">The length of this field is specific to the algorithm.
 The length, in bytes, of the <em>hash-state</em> field can be calculated using <a class="reference internal" href="#c.PSA_HASH_SUSPEND_HASH_STATE_FIELD_LENGTH" title="PSA_HASH_SUSPEND_HASH_STATE_FIELD_LENGTH"><code class="docutils literal"><span class="pre">PSA_HASH_SUSPEND_HASH_STATE_FIELD_LENGTH</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> where <code class="docutils literal"><span class="pre">alg</span></code> is a hash algorithm.
-See <em><a class="reference internal" href="#hash-suspend-state-constants"><span class="std std-ref">Hash suspend state field sizes</span></a></em>.</p>
-</td>
-</tr>
-<tr class="row-even"><td><p class="first"><em>unprocessed-input</em></p>
-<p class="last">0 to (<em>hash-block-size</em>-1) bytes</p>
-</td>
-<td><p class="first">A partial block of unprocessed input data. This is between zero and <em>hash-block-size</em>-1 bytes of data, the length can be calculated by:</p>
+See <a class="reference internal" href="#hash-suspend-state-constants"><span class="secref">Hash suspend state field sizes</span></a>.</p>
+</dd>
+<dt><em>unprocessed-input</em></dt>
+<dd><p class="first">0 to (<em>hash-block-size</em>-1) bytes</p>
+<p>A partial block of unprocessed input data. This is between zero and <em>hash-block-size</em>-1 bytes of data, the length can be calculated by:</p>
 <p><code class="docutils literal"><span class="pre">length(</span></code><em>unprocessed-input</em><code class="docutils literal"><span class="pre">)</span></code> <code class="docutils literal"><span class="pre">=</span></code> <em>input-length</em> <code class="docutils literal"><span class="pre">%</span></code> <em>hash-block-size</em>.</p>
 <p class="last">The <em>hash-block-size</em> is specific to the algorithm.
 The size of a hash block can be calculated using <a class="reference internal" href="#c.PSA_HASH_BLOCK_LENGTH" title="PSA_HASH_BLOCK_LENGTH"><code class="docutils literal"><span class="pre">PSA_HASH_BLOCK_LENGTH</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> where <code class="docutils literal"><span class="pre">alg</span></code> is a hash algorithm.
-See <em><a class="reference internal" href="#hash-suspend-state-constants"><span class="std std-ref">Hash suspend state field sizes</span></a></em>.</p>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric" id="hash-suspend-state-constants">Hash suspend state field sizes</p>
+See <a class="reference internal" href="#hash-suspend-state-constants"><span class="secref">Hash suspend state field sizes</span></a>.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="hash-suspend-state-field-sizes">
+<span id="hash-suspend-state-constants"></span><h3>Hash suspend state field sizes</h3>
 <p>The following table defines the algorithm-specific field lengths for the hash suspend state returned by <a class="reference internal" href="#c.psa_hash_suspend" title="psa_hash_suspend"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_suspend()</span></code></a>. All of the field lengths are in bytes. To compute the field lengths for algorithm <code class="docutils literal"><span class="pre">alg</span></code>, use the following expressions:</p>
 <ul class="simple">
 <li><a class="reference internal" href="#c.PSA_HASH_SUSPEND_ALGORITHM_FIELD_LENGTH" title="PSA_HASH_SUSPEND_ALGORITHM_FIELD_LENGTH"><code class="docutils literal"><span class="pre">PSA_HASH_SUSPEND_ALGORITHM_FIELD_LENGTH</span></code></a> returns the length of the <em>algorithm</em> field.</li>
@@ -904,13 +917,7 @@ See <em><a class="reference internal" href="#hash-suspend-state-constants"><span
 <li><a class="reference internal" href="#c.PSA_HASH_BLOCK_LENGTH" title="PSA_HASH_BLOCK_LENGTH"><code class="docutils literal"><span class="pre">PSA_HASH_BLOCK_LENGTH</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)-1</span></code> is the maximum length of the <em>unprocessed-bytes</em> field.</li>
 <li><a class="reference internal" href="#c.PSA_HASH_SUSPEND_OUTPUT_SIZE" title="PSA_HASH_SUSPEND_OUTPUT_SIZE"><code class="docutils literal"><span class="pre">PSA_HASH_SUSPEND_OUTPUT_SIZE</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">slg</span></code><code class="docutils literal"><span class="pre">)</span></code> returns the maximum size of the hash suspend state.</li>
 </ul>
-<table border="1" class="docutils">
-<colgroup>
-<col width="25%" />
-<col width="25%" />
-<col width="25%" />
-<col width="25%" />
-</colgroup>
+<table border="1" class="colwidths-auto docutils align-left">
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">Hash algorithm</th>
 <th class="head"><em>input-length</em> size (bytes)</th>
@@ -973,86 +980,60 @@ See <em><a class="reference internal" href="#hash-suspend-state-constants"><span
 </table>
 </div>
 </div>
+</div>
 
 
           </div>
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="../../index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Message digests</a><ul>
-<li><a class="reference internal" href="#hash-algorithms">Hash algorithms</a><ul>
-<li><a class="reference internal" href="#PSA_ALG_MD2"><code class="docutils literal"><span class="pre">PSA_ALG_MD2</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_MD4"><code class="docutils literal"><span class="pre">PSA_ALG_MD4</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_MD5"><code class="docutils literal"><span class="pre">PSA_ALG_MD5</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_RIPEMD160"><code class="docutils literal"><span class="pre">PSA_ALG_RIPEMD160</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_SHA_1"><code class="docutils literal"><span class="pre">PSA_ALG_SHA_1</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_SHA_224"><code class="docutils literal"><span class="pre">PSA_ALG_SHA_224</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_SHA_256"><code class="docutils literal"><span class="pre">PSA_ALG_SHA_256</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_SHA_384"><code class="docutils literal"><span class="pre">PSA_ALG_SHA_384</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_SHA_512"><code class="docutils literal"><span class="pre">PSA_ALG_SHA_512</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_SHA_512_224"><code class="docutils literal"><span class="pre">PSA_ALG_SHA_512_224</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_SHA_512_256"><code class="docutils literal"><span class="pre">PSA_ALG_SHA_512_256</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_SHA3_224"><code class="docutils literal"><span class="pre">PSA_ALG_SHA3_224</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_SHA3_256"><code class="docutils literal"><span class="pre">PSA_ALG_SHA3_256</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_SHA3_384"><code class="docutils literal"><span class="pre">PSA_ALG_SHA3_384</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_SHA3_512"><code class="docutils literal"><span class="pre">PSA_ALG_SHA3_512</span></code> (macro)</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#single-part-hashing-functions">Single-part hashing functions</a><ul>
-<li><a class="reference internal" href="#psa_hash_compute"><code class="docutils literal"><span class="pre">psa_hash_compute</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_hash_compare"><code class="docutils literal"><span class="pre">psa_hash_compare</span></code> (function)</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#multi-part-hashing-operations">Multi-part hashing operations</a><ul>
-<li><a class="reference internal" href="#psa_hash_operation_t"><code class="docutils literal"><span class="pre">psa_hash_operation_t</span></code> (type)</a></li>
-<li><a class="reference internal" href="#PSA_HASH_OPERATION_INIT"><code class="docutils literal"><span class="pre">PSA_HASH_OPERATION_INIT</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#psa_hash_operation_init"><code class="docutils literal"><span class="pre">psa_hash_operation_init</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_hash_setup"><code class="docutils literal"><span class="pre">psa_hash_setup</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_hash_update"><code class="docutils literal"><span class="pre">psa_hash_update</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_hash_finish"><code class="docutils literal"><span class="pre">psa_hash_finish</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_hash_verify"><code class="docutils literal"><span class="pre">psa_hash_verify</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_hash_abort"><code class="docutils literal"><span class="pre">psa_hash_abort</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_hash_suspend"><code class="docutils literal"><span class="pre">psa_hash_suspend</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_hash_resume"><code class="docutils literal"><span class="pre">psa_hash_resume</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_hash_clone"><code class="docutils literal"><span class="pre">psa_hash_clone</span></code> (function)</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#support-macros">Support macros</a><ul>
-<li><a class="reference internal" href="#PSA_HASH_LENGTH"><code class="docutils literal"><span class="pre">PSA_HASH_LENGTH</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_HASH_MAX_SIZE"><code class="docutils literal"><span class="pre">PSA_HASH_MAX_SIZE</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_HASH_SUSPEND_OUTPUT_SIZE"><code class="docutils literal"><span class="pre">PSA_HASH_SUSPEND_OUTPUT_SIZE</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_HASH_SUSPEND_OUTPUT_MAX_SIZE"><code class="docutils literal"><span class="pre">PSA_HASH_SUSPEND_OUTPUT_MAX_SIZE</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_HASH_SUSPEND_ALGORITHM_FIELD_LENGTH"><code class="docutils literal"><span class="pre">PSA_HASH_SUSPEND_ALGORITHM_FIELD_LENGTH</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_HASH_SUSPEND_INPUT_LENGTH_FIELD_LENGTH"><code class="docutils literal"><span class="pre">PSA_HASH_SUSPEND_INPUT_LENGTH_FIELD_LENGTH</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_HASH_SUSPEND_HASH_STATE_FIELD_LENGTH"><code class="docutils literal"><span class="pre">PSA_HASH_SUSPEND_HASH_STATE_FIELD_LENGTH</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_HASH_BLOCK_LENGTH"><code class="docutils literal"><span class="pre">PSA_HASH_BLOCK_LENGTH</span></code> (macro)</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#hash-suspend-state">Hash suspend state</a></li>
-</ul>
-</li>
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
+        <div class="sphinxsidebarwrapper"><h3><a href="../../index.html"><b>PSA Crypto API</b></a></h3>
+IHI 0086<br/>
+Non-confidential<br/>
+Version 1.0.1
+<span style="color: red; font-weight: bold;"></span>
 <ul>
-  <li><a href="../../index.html">Documentation overview</a><ul>
-  <li><a href="index.html">Cryptographic operation reference</a><ul>
-      <li>Previous: <a href="index.html" title="previous chapter">Cryptographic operation reference</a></li>
-      <li>Next: <a href="macs.html" title="next chapter">Message authentication codes (MAC)</a></li>
-  </ul></li>
-  </ul></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About this document</a></li>
 </ul>
-</div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../../_sources/api/ops/hashes.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview/intro.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/goals.html">2. Design goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/functionality.html">3. Functionality overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/sample-arch.html">4. Sample architectures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/conventions.html">5. Library conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/implementation.html">6. Implementation considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/usage.html">7. Usage considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../library/index.html">8. Library management reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../keys/index.html">9. Key management reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">10. Cryptographic operation reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="algorithms.html">10.1. Algorithms</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">10.2. Message digests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#hash-algorithms">10.2.1. Hash algorithms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#single-part-hashing-functions">10.2.2. Single-part hashing functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#multi-part-hashing-operations">10.2.3. Multi-part hashing operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#support-macros">10.2.4. Support macros</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hash-suspend-state">10.2.5. Hash suspend state</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="macs.html">10.3. Message authentication codes (MAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ciphers.html">10.4. Unauthenticated ciphers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aead.html">10.5. Authenticated encryption with associated data (AEAD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kdf.html">10.6. Key derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sign.html">10.7. Asymmetric signature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pke.html">10.8. Asymmetric encryption</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ka.html">10.9. Key agreement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rng.html">10.10. Other cryptographic services</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../appendix/example_header.html">Example header file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendix/specdef_values.html">Example macro implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendix/history.html">Changes to the API</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../psa_c-identifiers.html">Index of API elements</a></li>
+</ul>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
@@ -1068,15 +1049,12 @@ See <em><a class="reference internal" href="#hash-suspend-state-constants"><span
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy; 2019-2020, Arm Limited or its affiliates. All rights reserved.
+      &copy; 2018-2020, Arm Limited or its affiliates. All rights reserved.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
-      |
-      <a href="../../_sources/api/ops/hashes.rst.txt"
-          rel="nofollow">Page source</a>
     </div>
 
     

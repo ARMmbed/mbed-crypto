@@ -5,22 +5,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Changes to the API &#8212; PSA Crypto API 1.0.0 documentation</title>
+    <title>Changes to the API &#8212; PSA Crypto API 1.0.1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.0.0',
+        VERSION:     '1.0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
+        HAS_SOURCE:  false,
         SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="prev" title="Example macro implementations" href="specdef_values.html" />
@@ -40,151 +41,59 @@
             
   <div class="section" id="changes-to-the-api">
 <h1>Changes to the API</h1>
-<div class="section" id="release-information">
-<h2>Release information</h2>
-<p>All published versions of this document have been <strong>non-confidential</strong>.</p>
-<p>The change history table lists the changes that have been made to this document.</p>
-<table border="1" class="colwidths-given docutils">
-<colgroup>
-<col width="15%" />
-<col width="15%" />
-<col width="70%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head"><strong>Date</strong></th>
-<th class="head"><strong>Version</strong></th>
-<th class="head"><strong>Comments</strong></th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td><strong>Jan 2019</strong></td>
-<td>1.0 beta 1</td>
-<td>First public beta release.</td>
-</tr>
-<tr class="row-odd"><td><strong>Feb 2019</strong></td>
-<td>1.0 beta 2</td>
-<td>Update for release with other PSA Dev API specifications.</td>
-</tr>
-<tr class="row-even"><td><strong>May 2019</strong></td>
-<td>1.0 beta 3</td>
-<td><p class="first">Update for release with other PSA API specifications.</p>
-<ul class="last simple">
-<li>Alignment with PSA API specifications.</li>
-<li>Changes to the key creation API.</li>
-<li>Changes to the handling of key lifetimes.</li>
-<li>Replaced ‘generators’ with key derivation operations.</li>
-</ul>
-</td>
-</tr>
-<tr class="row-odd"><td><strong>Feb 2020</strong></td>
-<td>1.0.0</td>
-<td><p class="first">1.0 API finalized.</p>
-<ul class="last simple">
-<li>Removed implementation APIs and definitions.</li>
-<li>Merged key handles with key identifiers.</li>
-<li>Recoded algorithm identifiers.</li>
-<li>Restructured key types.</li>
-<li>Provide buffer size macros for all output buffers.</li>
-<li>Provide sign-message signature operations.</li>
-<li>Add functions to suspend and resume hash operations.</li>
-<li>Reallocated key types and algorithm identifiers.</li>
-<li>Many minor corrections and clarifications.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>The detailed changes in each release are described in the following sections.</p>
-</div>
 <div class="section" id="document-change-history">
-<h2>Document change history</h2>
-<div class="section" id="changes-between-1-0-beta-1-and-1-0-beta-2">
-<h3>Changes between <em>1.0 beta 1</em> and <em>1.0 beta 2</em></h3>
-<p class="rubric">Changes to the API</p>
+<span id="changes"></span><h2>Document change history</h2>
+<p>This section provides the detailed changes made between published version of the document.</p>
+<div class="section" id="changes-between-1-0-0-and-1-0-1">
+<h3>Changes between <em>1.0.0</em> and <em>1.0.1</em></h3>
+<div class="section" id="id1">
+<h4>Changes to the API</h4>
 <ul class="simple">
-<li>Remove obsolete definition <code class="docutils literal"><span class="pre">PSA_ALG_IS_KEY_SELECTION</span></code>.</li>
-<li><a class="reference internal" href="../api/ops/aead.html#c.PSA_AEAD_FINISH_OUTPUT_SIZE" title="PSA_AEAD_FINISH_OUTPUT_SIZE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_AEAD_FINISH_OUTPUT_SIZE</span></code></a>: remove spurious parameter <code class="docutils literal"><span class="pre">plaintext_length</span></code>.</li>
-</ul>
-<p class="rubric">Clarifications</p>
-<ul class="simple">
-<li><code class="docutils literal"><span class="pre">psa_key_agreement()</span></code>: document <code class="docutils literal"><span class="pre">alg</span></code> parameter.</li>
-</ul>
-<p class="rubric">Other changes</p>
-<ul class="simple">
-<li>Document formatting improvements.</li>
+<li>Added subtypes <a class="reference internal" href="../api/keys/lifetimes.html#c.psa_key_persistence_t" title="psa_key_persistence_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_persistence_t</span></code></a> and <a class="reference internal" href="../api/keys/lifetimes.html#c.psa_key_location_t" title="psa_key_location_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_location_t</span></code></a> for key lifetimes, and defined standard values for these attributes.</li>
+<li>Added identifiers for <a class="reference internal" href="../api/ops/hashes.html#c.PSA_ALG_SM3" title="PSA_ALG_SM3"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_SM3</span></code></a> and <a class="reference internal" href="../api/keys/types.html#c.PSA_KEY_TYPE_SM4" title="PSA_KEY_TYPE_SM4"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_SM4</span></code></a>.</li>
 </ul>
 </div>
-<div class="section" id="changes-between-1-0-beta-2-and-1-0-beta-3">
-<h3>Changes between <em>1.0 beta 2</em> and <em>1.0 beta 3</em></h3>
-<p class="rubric">Changes to the API</p>
+<div class="section" id="clarifications-and-fixes">
+<h4>Clarifications and fixes</h4>
 <ul class="simple">
-<li>Change the value of error codes, and some names, to align
-with other PSA specifications. The name changes are:<ul>
-<li><code class="docutils literal"><span class="pre">PSA_ERROR_UNKNOWN_ERROR</span></code> → <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_GENERIC_ERROR" title="PSA_ERROR_GENERIC_ERROR"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_GENERIC_ERROR</span></code></a></li>
-<li><code class="docutils literal"><span class="pre">PSA_ERROR_OCCUPIED_SLOT</span></code> → <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_ALREADY_EXISTS" title="PSA_ERROR_ALREADY_EXISTS"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_ALREADY_EXISTS</span></code></a></li>
-<li><code class="docutils literal"><span class="pre">PSA_ERROR_EMPTY_SLOT</span></code> → <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_DOES_NOT_EXIST" title="PSA_ERROR_DOES_NOT_EXIST"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_DOES_NOT_EXIST</span></code></a></li>
-<li><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_CAPACITY</span></code> → <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_INSUFFICIENT_DATA" title="PSA_ERROR_INSUFFICIENT_DATA"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_DATA</span></code></a></li>
-<li><code class="docutils literal"><span class="pre">PSA_ERROR_TAMPERING_DETECTED</span></code> → <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_CORRUPTION_DETECTED" title="PSA_ERROR_CORRUPTION_DETECTED"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_CORRUPTION_DETECTED</span></code></a></li>
+<li>Provided citation references for all cryptographic algorithms in the specification.</li>
+<li>Provided precise key size information for all key types.</li>
+<li>Permitted implementations to store and export long HMAC keys in hashed form.</li>
+<li>Provided details for initialization vectors in all unauthenticated cipher algorithms.</li>
+<li>Provided details for nonces in all AEAD algorithms.</li>
+<li>Clarified the input steps for HKDF.</li>
+<li>Provided details of signature algorithms, include requirements when using with <a class="reference internal" href="../api/ops/sign.html#c.psa_sign_hash" title="psa_sign_hash"><code class="xref any c c-func docutils literal"><span class="pre">psa_sign_hash()</span></code></a> and <a class="reference internal" href="../api/ops/sign.html#c.psa_verify_hash" title="psa_verify_hash"><code class="xref any c c-func docutils literal"><span class="pre">psa_verify_hash()</span></code></a>.</li>
+<li>Provided details of key agreement algorithms, and how to use them.</li>
+<li>Aligned terminology relating to key policies, to clarify the combination of the usage flags and permitted algorithm in the policy.</li>
+<li>Clarified the use of the individual key attributes for all of the key creation functions.</li>
+<li>Restructured the description for <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_output_key" title="psa_key_derivation_output_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_output_key()</span></code></a>, to clarify the handling of the excess bits in ECC key generation when needing a string of bits whose length is not a multiple of <code class="docutils literal"><span class="pre">8</span></code>.</li>
+<li>Referenced the correct buffer size macros for <a class="reference internal" href="../api/keys/management.html#c.psa_export_key" title="psa_export_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_export_key()</span></code></a>.</li>
+<li>Removed the use of the <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_DOES_NOT_EXIST" title="PSA_ERROR_DOES_NOT_EXIST"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_DOES_NOT_EXIST</span></code></a> error.</li>
+<li>Clarified concurrency rules.</li>
+<li>Document that <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_output_key" title="psa_key_derivation_output_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_output_key()</span></code></a> does not return <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_NOT_PERMITTED" title="PSA_ERROR_NOT_PERMITTED"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_NOT_PERMITTED</span></code></a> if the secret input is the result of a key agreement. This matches what was already documented for <a class="reference internal" href="../api/ops/kdf.html#c.PSA_KEY_DERIVATION_INPUT_SECRET" title="PSA_KEY_DERIVATION_INPUT_SECRET"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_DERIVATION_INPUT_SECRET</span></code></a>.</li>
+<li>Relax the requirement to use the defined key derivation methods in <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_output_key" title="psa_key_derivation_output_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_output_key()</span></code></a>: implementation-specific KDF algorithms can use implementation-defined methods to derive the key material.</li>
 </ul>
-</li>
-<li>Change the way keys are created to avoid “half-filled” handles
-that contained key metadata, but no key material.
-Now, to create a key, first fill in a data structure containing
-its attributes, then pass this structure to a function that
-both allocates resources for the key and fills in the key
-material. This affects the following functions:<ul>
-<li><a class="reference internal" href="../api/keys/management.html#c.psa_import_key" title="psa_import_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_import_key()</span></code></a>, <a class="reference internal" href="../api/keys/management.html#c.psa_generate_key" title="psa_generate_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_generate_key()</span></code></a>, <code class="docutils literal"><span class="pre">psa_generator_import_key()</span></code>
-and <a class="reference internal" href="../api/keys/management.html#c.psa_copy_key" title="psa_copy_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_copy_key()</span></code></a> now take an attribute structure, as
-a pointer to <a class="reference internal" href="../api/keys/attributes.html#c.psa_key_attributes_t" title="psa_key_attributes_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_attributes_t</span></code></a>, to specify key metadata.
-This replaces the previous method of passing arguments to
-<code class="docutils literal"><span class="pre">psa_create_key()</span></code> or to the key material creation function
-or calling <code class="docutils literal"><span class="pre">psa_set_key_policy()</span></code>.</li>
-<li><code class="docutils literal"><span class="pre">psa_key_policy_t</span></code> and functions operating on that type
-no longer exist. A key’s policy is now accessible as part of
-its attributes.</li>
-<li><code class="docutils literal"><span class="pre">psa_get_key_information()</span></code> is also replaced by accessing the
-key’s attributes, retrieved with <a class="reference internal" href="../api/keys/attributes.html#c.psa_get_key_attributes" title="psa_get_key_attributes"><code class="xref any c c-func docutils literal"><span class="pre">psa_get_key_attributes()</span></code></a>.</li>
-<li><code class="docutils literal"><span class="pre">psa_create_key()</span></code> no longer exists. Instead, set the key id
-attribute and the lifetime attribute before creating the
-key material.</li>
-</ul>
-</li>
-<li>Allow <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_update" title="psa_aead_update"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_update()</span></code></a> to buffer data.</li>
-<li>New buffer size calculation macros.</li>
-<li>Key identifiers are no longer specific to a given lifetime value. <code class="docutils literal"><span class="pre">psa_open_key()</span></code> no longer takes a <code class="docutils literal"><span class="pre">lifetime</span></code> parameter.</li>
-<li>Define a range of key identifiers for use by applications and a separate range for use by implementations.</li>
-<li>Avoid the unusual terminology “generator”: call them
-“key derivation operations” instead. Rename a number of functions
-and other identifiers related to for clarity and consistency:<ul>
-<li><code class="docutils literal"><span class="pre">psa_crypto_generator_t</span></code> → <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_operation_t" title="psa_key_derivation_operation_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_derivation_operation_t</span></code></a></li>
-<li><code class="docutils literal"><span class="pre">PSA_CRYPTO_GENERATOR_INIT</span></code> → <a class="reference internal" href="../api/ops/kdf.html#c.PSA_KEY_DERIVATION_OPERATION_INIT" title="PSA_KEY_DERIVATION_OPERATION_INIT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_DERIVATION_OPERATION_INIT</span></code></a></li>
-<li><code class="docutils literal"><span class="pre">psa_crypto_generator_init()</span></code> → <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_operation_init" title="psa_key_derivation_operation_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_operation_init()</span></code></a></li>
-<li><code class="docutils literal"><span class="pre">PSA_GENERATOR_UNBRIDLED_CAPACITY</span></code> → <a class="reference internal" href="../api/ops/kdf.html#c.PSA_KEY_DERIVATION_UNLIMITED_CAPACITY" title="PSA_KEY_DERIVATION_UNLIMITED_CAPACITY"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_DERIVATION_UNLIMITED_CAPACITY</span></code></a></li>
-<li><code class="docutils literal"><span class="pre">psa_set_generator_capacity()</span></code> → <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_set_capacity" title="psa_key_derivation_set_capacity"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_set_capacity()</span></code></a></li>
-<li><code class="docutils literal"><span class="pre">psa_get_generator_capacity()</span></code> → <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_get_capacity" title="psa_key_derivation_get_capacity"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_get_capacity()</span></code></a></li>
-<li><code class="docutils literal"><span class="pre">psa_key_agreement()</span></code> → <a class="reference internal" href="../api/ops/ka.html#c.psa_key_derivation_key_agreement" title="psa_key_derivation_key_agreement"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_key_agreement()</span></code></a></li>
-<li><code class="docutils literal"><span class="pre">psa_generator_read()</span></code> → <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_output_bytes" title="psa_key_derivation_output_bytes"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_output_bytes()</span></code></a></li>
-<li><code class="docutils literal"><span class="pre">psa_generate_derived_key()</span></code> → <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_output_key" title="psa_key_derivation_output_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_output_key()</span></code></a></li>
-<li><code class="docutils literal"><span class="pre">psa_generator_abort()</span></code> → <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_abort" title="psa_key_derivation_abort"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_abort()</span></code></a></li>
-<li><code class="docutils literal"><span class="pre">psa_key_agreement_raw_shared_secret()</span></code> → <a class="reference internal" href="../api/ops/ka.html#c.psa_raw_key_agreement" title="psa_raw_key_agreement"><code class="xref any c c-func docutils literal"><span class="pre">psa_raw_key_agreement()</span></code></a></li>
-<li><code class="docutils literal"><span class="pre">PSA_KDF_STEP_xxx</span></code> → <code class="docutils literal"><span class="pre">PSA_KEY_DERIVATION_INPUT_xxx</span></code></li>
-<li><code class="docutils literal"><span class="pre">PSA_xxx_KEYPAIR</span></code> → <code class="docutils literal"><span class="pre">PSA_xxx_KEY_PAIR</span></code></li>
-</ul>
-</li>
-<li>Convert TLS1.2 KDF descriptions to multistep key derivation.</li>
-</ul>
-<p class="rubric">Clarifications</p>
+</div>
+<div class="section" id="other-changes">
+<h4>Other changes</h4>
 <ul class="simple">
-<li>Specify <code class="docutils literal"><span class="pre">psa_generator_import_key()</span></code> for most key types.</li>
-<li>Clarify the behavior in various corner cases.</li>
-<li>Document more error conditions.</li>
+<li>Provided a glossary of terms.</li>
+<li>Provided a table of references.</li>
+<li>Restructured the <a class="reference internal" href="../api/keys/index.html#key-management"><span class="secref">Key management reference</span></a> chapter.<ul>
+<li>Moved individual attribute types, values and accessor functions into their own sections.</li>
+<li>Placed permitted algorithms and usage flags into <a class="reference internal" href="../api/keys/policy.html#key-policy"><span class="secref">Key policies</span></a>.</li>
+<li>Moved most introductory material from the <a class="reference internal" href="../overview/functionality.html#functionality-overview"><span class="secref">Functionality overview</span></a> into the relevant API sections.</li>
 </ul>
+</li>
+</ul>
+</div>
 </div>
 <div class="section" id="changes-between-1-0-beta-3-and-1-0-0">
 <h3>Changes between <em>1.0 beta 3</em> and <em>1.0.0</em></h3>
-<p class="rubric">Changes to the API</p>
+<div class="section" id="id2">
+<h4>Changes to the API</h4>
 <ul>
-<li><p class="first">Added <a class="reference internal" href="../api/library/library.html#c.PSA_CRYPTO_API_VERSION_MAJOR" title="PSA_CRYPTO_API_VERSION_MAJOR"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_CRYPTO_API_VERSION_MAJOR</span></code></a> and <a class="reference internal" href="../api/library/library.html#c.PSA_CRYPTO_API_VERSION_MINOR" title="PSA_CRYPTO_API_VERSION_MINOR"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_CRYPTO_API_VERSION_MINOR</span></code></a> to report the PSA Cyrpto API version.</p>
+<li><p class="first">Added <a class="reference internal" href="../api/library/library.html#c.PSA_CRYPTO_API_VERSION_MAJOR" title="PSA_CRYPTO_API_VERSION_MAJOR"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_CRYPTO_API_VERSION_MAJOR</span></code></a> and <a class="reference internal" href="../api/library/library.html#c.PSA_CRYPTO_API_VERSION_MINOR" title="PSA_CRYPTO_API_VERSION_MINOR"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_CRYPTO_API_VERSION_MINOR</span></code></a> to report the PSA Crypto API version.</p>
 </li>
 <li><p class="first">Removed <code class="docutils literal"><span class="pre">PSA_ALG_GMAC</span></code> algorithm identifier.</p>
 </li>
@@ -257,13 +166,13 @@ and other identifiers related to for clarity and consistency:<ul>
 <li><code class="docutils literal"><span class="pre">PSA_VENDOR_RSA_MAX_KEY_BITS</span></code></li>
 </ul>
 </li>
-<li><p class="first">Remove the definition of implementation-defined macros from the specification, and clarified the implementation requirements for these macros in <em><a class="reference internal" href="../overview/implementation.html#implementation-specific-macro"><span class="std std-ref">Implementation-specific macros</span></a></em>.</p>
+<li><p class="first">Remove the definition of implementation-defined macros from the specification, and clarified the implementation requirements for these macros in <a class="reference internal" href="../overview/implementation.html#implementation-specific-macro"><span class="secref">Implementation-specific macros</span></a>.</p>
 <ul class="simple">
 <li>Macros with implementation-defined values are indicated by <code class="docutils literal"><span class="pre">/*</span> <span class="pre">implementation-defined</span> <span class="pre">value</span> <span class="pre">*/</span></code> in the API prototype.
 The implementation must provide the implementation.</li>
 <li>Macros for algorithm and key type construction and inspection have specification-defined values.
 This is indicated by <code class="docutils literal"><span class="pre">/*</span> <span class="pre">specification-defined</span> <span class="pre">value</span> <span class="pre">*/</span></code> in the API prototype.
-Example definitions of these macros is provided in <em><a class="reference internal" href="specdef_values.html#appendix-specdef-values"><span class="std std-ref">Example macro implementations</span></a></em>.</li>
+Example definitions of these macros is provided in <a class="reference internal" href="specdef_values.html#appendix-specdef-values"><span class="secref">Example macro implementations</span></a>.</li>
 </ul>
 </li>
 <li><p class="first">Changed the semantics of multi-part operations.</p>
@@ -277,11 +186,11 @@ Example definitions of these macros is provided in <em><a class="reference inter
 <li><p class="first">Merge the key identifier and key handle concepts in the API.</p>
 <ul class="simple">
 <li>Replaced all references to key handles with key identifiers, or something similar.</li>
-<li>Replaced all uses of <code class="docutils literal"><span class="pre">psa_key_handle_t</span></code> with <a class="reference internal" href="../api/keys/attributes.html#c.psa_key_id_t" title="psa_key_id_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_id_t</span></code></a> in the API, and removes the <code class="docutils literal"><span class="pre">psa_key_handle_t</span></code> type.</li>
+<li>Replaced all uses of <code class="docutils literal"><span class="pre">psa_key_handle_t</span></code> with <a class="reference internal" href="../api/keys/ids.html#c.psa_key_id_t" title="psa_key_id_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_id_t</span></code></a> in the API, and removes the <code class="docutils literal"><span class="pre">psa_key_handle_t</span></code> type.</li>
 <li>Removed <code class="docutils literal"><span class="pre">psa_open_key</span></code> and <code class="docutils literal"><span class="pre">psa_close_key</span></code>.</li>
-<li>Added <a class="reference internal" href="../api/keys/locations.html#c.PSA_KEY_ID_NULL" title="PSA_KEY_ID_NULL"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_ID_NULL</span></code></a> for the never valid zero key identifier.</li>
+<li>Added <a class="reference internal" href="../api/keys/ids.html#c.PSA_KEY_ID_NULL" title="PSA_KEY_ID_NULL"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_ID_NULL</span></code></a> for the never valid zero key identifier.</li>
 <li>Document rules related to destroying keys whilst in use.</li>
-<li>Added the <a class="reference internal" href="../api/keys/usage.html#c.PSA_KEY_USAGE_CACHE" title="PSA_KEY_USAGE_CACHE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_CACHE</span></code></a> usage policy and the related <a class="reference internal" href="../api/keys/management.html#c.psa_purge_key" title="psa_purge_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_purge_key()</span></code></a> API.</li>
+<li>Added the <a class="reference internal" href="../api/keys/policy.html#c.PSA_KEY_USAGE_CACHE" title="PSA_KEY_USAGE_CACHE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_CACHE</span></code></a> usage flag and the related <a class="reference internal" href="../api/keys/management.html#c.psa_purge_key" title="psa_purge_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_purge_key()</span></code></a> API.</li>
 <li>Added clarification about caching keys to non-volatile memory.</li>
 </ul>
 </li>
@@ -362,15 +271,15 @@ Example definitions of these macros is provided in <em><a class="reference inter
 <li><p class="first">Provide hash-and-sign operations as well as sign-the-hash operations. The API for asymmetric signature has been changed to clarify the use of the new functions.</p>
 <ul class="simple">
 <li>The existing asymmetric signature API has been renamed to clarify that this is for signing a hash that is already computed:<ul>
-<li><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_SIGN</span></code> → <a class="reference internal" href="../api/keys/usage.html#c.PSA_KEY_USAGE_SIGN_HASH" title="PSA_KEY_USAGE_SIGN_HASH"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_SIGN_HASH</span></code></a></li>
-<li><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_VERIFY</span></code> → <a class="reference internal" href="../api/keys/usage.html#c.PSA_KEY_USAGE_VERIFY_HASH" title="PSA_KEY_USAGE_VERIFY_HASH"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_VERIFY_HASH</span></code></a></li>
+<li><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_SIGN</span></code> → <a class="reference internal" href="../api/keys/policy.html#c.PSA_KEY_USAGE_SIGN_HASH" title="PSA_KEY_USAGE_SIGN_HASH"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_SIGN_HASH</span></code></a></li>
+<li><code class="docutils literal"><span class="pre">PSA_KEY_USAGE_VERIFY</span></code> → <a class="reference internal" href="../api/keys/policy.html#c.PSA_KEY_USAGE_VERIFY_HASH" title="PSA_KEY_USAGE_VERIFY_HASH"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_VERIFY_HASH</span></code></a></li>
 <li><code class="docutils literal"><span class="pre">psa_asymmetric_sign()</span></code> → <a class="reference internal" href="../api/ops/sign.html#c.psa_sign_hash" title="psa_sign_hash"><code class="xref any c c-func docutils literal"><span class="pre">psa_sign_hash()</span></code></a></li>
 <li><code class="docutils literal"><span class="pre">psa_asymmetric_verify()</span></code> → <a class="reference internal" href="../api/ops/sign.html#c.psa_verify_hash" title="psa_verify_hash"><code class="xref any c c-func docutils literal"><span class="pre">psa_verify_hash()</span></code></a></li>
 </ul>
 </li>
 <li>New APIs added to provide the complete message signing operation:<ul>
-<li><a class="reference internal" href="../api/keys/usage.html#c.PSA_KEY_USAGE_SIGN_MESSAGE" title="PSA_KEY_USAGE_SIGN_MESSAGE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_SIGN_MESSAGE</span></code></a></li>
-<li><a class="reference internal" href="../api/keys/usage.html#c.PSA_KEY_USAGE_VERIFY_MESSAGE" title="PSA_KEY_USAGE_VERIFY_MESSAGE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_VERIFY_MESSAGE</span></code></a></li>
+<li><a class="reference internal" href="../api/keys/policy.html#c.PSA_KEY_USAGE_SIGN_MESSAGE" title="PSA_KEY_USAGE_SIGN_MESSAGE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_SIGN_MESSAGE</span></code></a></li>
+<li><a class="reference internal" href="../api/keys/policy.html#c.PSA_KEY_USAGE_VERIFY_MESSAGE" title="PSA_KEY_USAGE_VERIFY_MESSAGE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_VERIFY_MESSAGE</span></code></a></li>
 <li><a class="reference internal" href="../api/ops/sign.html#c.psa_sign_message" title="psa_sign_message"><code class="xref any c c-func docutils literal"><span class="pre">psa_sign_message()</span></code></a></li>
 <li><a class="reference internal" href="../api/ops/sign.html#c.psa_verify_message" title="psa_verify_message"><code class="xref any c c-func docutils literal"><span class="pre">psa_verify_message()</span></code></a></li>
 </ul>
@@ -385,12 +294,12 @@ Example definitions of these macros is provided in <em><a class="reference inter
 <li><code class="docutils literal"><span class="pre">PSA_ASYMMETRIC_SIGNATURE_MAX_SIZE</span></code> → <a class="reference internal" href="../api/ops/sign.html#c.PSA_SIGNATURE_MAX_SIZE" title="PSA_SIGNATURE_MAX_SIZE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_SIGNATURE_MAX_SIZE</span></code></a></li>
 </ul>
 </li>
-<li>The usage policy values have been changed, including for <a class="reference internal" href="../api/keys/usage.html#c.PSA_KEY_USAGE_DERIVE" title="PSA_KEY_USAGE_DERIVE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_DERIVE</span></code></a>.</li>
+<li>The usage flag values have been changed, including for <a class="reference internal" href="../api/keys/policy.html#c.PSA_KEY_USAGE_DERIVE" title="PSA_KEY_USAGE_DERIVE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_DERIVE</span></code></a>.</li>
 </ul>
 </li>
-<li><p class="first">Restructure <a class="reference internal" href="../api/keys/attributes.html#c.psa_key_type_t" title="psa_key_type_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_type_t</span></code></a> and reassign all key type values.</p>
+<li><p class="first">Restructure <a class="reference internal" href="../api/keys/types.html#c.psa_key_type_t" title="psa_key_type_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_type_t</span></code></a> and reassign all key type values.</p>
 <ul class="simple">
-<li><a class="reference internal" href="../api/keys/attributes.html#c.psa_key_type_t" title="psa_key_type_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_type_t</span></code></a> changes from 32-bit to 16-bit integer.</li>
+<li><a class="reference internal" href="../api/keys/types.html#c.psa_key_type_t" title="psa_key_type_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_type_t</span></code></a> changes from 32-bit to 16-bit integer.</li>
 <li>Reassigned the key type categories.</li>
 <li>Add a parity bit to the key type to ensure that valid key type values differ by at least 2 bits.</li>
 <li>16-bit elliptic curve ids (<code class="docutils literal"><span class="pre">psa_ecc_curve_t</span></code>) replaced by 8-bit ECC curve family ids (<a class="reference internal" href="../api/keys/types.html#c.psa_ecc_family_t" title="psa_ecc_family_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_ecc_family_t</span></code></a>).
@@ -493,9 +402,9 @@ Example definitions of these macros is provided in <em><a class="reference inter
 </li>
 <li><p class="first">Add ECC family <a class="reference internal" href="../api/keys/types.html#c.PSA_ECC_FAMILY_FRP" title="PSA_ECC_FAMILY_FRP"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ECC_FAMILY_FRP</span></code></a> for the FRP256v1 curve.</p>
 </li>
-<li><p class="first">Restructure <a class="reference internal" href="../api/keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_algorithm_t</span></code></a> encoding, to increase consistency across algorithm categories.</p>
+<li><p class="first">Restructure <a class="reference internal" href="../api/ops/algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_algorithm_t</span></code></a> encoding, to increase consistency across algorithm categories.</p>
 <ul class="simple">
-<li>Algorithms that include a hash operation all use the same structure to encode the hash algorithm. The following <code class="docutils literal"><span class="pre">PSA_ALG_XXXX_GET_HASH()</span></code> macros have all been replaced by a single macro <a class="reference internal" href="../api/keys/algorithms.html#c.PSA_ALG_GET_HASH" title="PSA_ALG_GET_HASH"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_GET_HASH()</span></code></a>:<ul>
+<li>Algorithms that include a hash operation all use the same structure to encode the hash algorithm. The following <code class="docutils literal"><span class="pre">PSA_ALG_XXXX_GET_HASH()</span></code> macros have all been replaced by a single macro <a class="reference internal" href="../api/ops/algorithms.html#c.PSA_ALG_GET_HASH" title="PSA_ALG_GET_HASH"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_GET_HASH()</span></code></a>:<ul>
 <li><code class="docutils literal"><span class="pre">PSA_ALG_HKDF_GET_HASH()</span></code></li>
 <li><code class="docutils literal"><span class="pre">PSA_ALG_HMAC_GET_HASH()</span></code></li>
 <li><code class="docutils literal"><span class="pre">PSA_ALG_RSA_OAEP_GET_HASH()</span></code></li>
@@ -551,33 +460,33 @@ Example definitions of these macros is provided in <em><a class="reference inter
 <li><a class="reference internal" href="../api/ops/macs.html#c.PSA_ALG_FULL_LENGTH_MAC" title="PSA_ALG_FULL_LENGTH_MAC"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_FULL_LENGTH_MAC()</span></code></a></li>
 <li><a class="reference internal" href="../api/ops/kdf.html#c.PSA_ALG_HKDF" title="PSA_ALG_HKDF"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_HKDF()</span></code></a></li>
 <li><a class="reference internal" href="../api/ops/macs.html#c.PSA_ALG_HMAC" title="PSA_ALG_HMAC"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_HMAC()</span></code></a></li>
-<li><a class="reference internal" href="../api/keys/algorithms.html#c.PSA_ALG_IS_AEAD" title="PSA_ALG_IS_AEAD"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_AEAD()</span></code></a></li>
+<li><a class="reference internal" href="../api/ops/algorithms.html#c.PSA_ALG_IS_AEAD" title="PSA_ALG_IS_AEAD"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_AEAD()</span></code></a></li>
 <li><a class="reference internal" href="../api/ops/aead.html#c.PSA_ALG_IS_AEAD_ON_BLOCK_CIPHER" title="PSA_ALG_IS_AEAD_ON_BLOCK_CIPHER"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_AEAD_ON_BLOCK_CIPHER()</span></code></a></li>
-<li><a class="reference internal" href="../api/keys/algorithms.html#c.PSA_ALG_IS_ASYMMETRIC_ENCRYPTION" title="PSA_ALG_IS_ASYMMETRIC_ENCRYPTION"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_ASYMMETRIC_ENCRYPTION()</span></code></a></li>
+<li><a class="reference internal" href="../api/ops/algorithms.html#c.PSA_ALG_IS_ASYMMETRIC_ENCRYPTION" title="PSA_ALG_IS_ASYMMETRIC_ENCRYPTION"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_ASYMMETRIC_ENCRYPTION()</span></code></a></li>
 <li><a class="reference internal" href="../api/ops/macs.html#c.PSA_ALG_IS_BLOCK_CIPHER_MAC" title="PSA_ALG_IS_BLOCK_CIPHER_MAC"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_BLOCK_CIPHER_MAC()</span></code></a></li>
-<li><a class="reference internal" href="../api/keys/algorithms.html#c.PSA_ALG_IS_CIPHER" title="PSA_ALG_IS_CIPHER"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_CIPHER()</span></code></a></li>
+<li><a class="reference internal" href="../api/ops/algorithms.html#c.PSA_ALG_IS_CIPHER" title="PSA_ALG_IS_CIPHER"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_CIPHER()</span></code></a></li>
 <li><a class="reference internal" href="../api/ops/sign.html#c.PSA_ALG_IS_DETERMINISTIC_ECDSA" title="PSA_ALG_IS_DETERMINISTIC_ECDSA"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_DETERMINISTIC_ECDSA()</span></code></a></li>
 <li><a class="reference internal" href="../api/ops/ka.html#c.PSA_ALG_IS_ECDH" title="PSA_ALG_IS_ECDH"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_ECDH()</span></code></a></li>
 <li><a class="reference internal" href="../api/ops/sign.html#c.PSA_ALG_IS_ECDSA" title="PSA_ALG_IS_ECDSA"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_ECDSA()</span></code></a></li>
 <li><a class="reference internal" href="../api/ops/ka.html#c.PSA_ALG_IS_FFDH" title="PSA_ALG_IS_FFDH"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_FFDH()</span></code></a></li>
-<li><a class="reference internal" href="../api/keys/algorithms.html#c.PSA_ALG_IS_HASH" title="PSA_ALG_IS_HASH"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_HASH()</span></code></a></li>
+<li><a class="reference internal" href="../api/ops/algorithms.html#c.PSA_ALG_IS_HASH" title="PSA_ALG_IS_HASH"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_HASH()</span></code></a></li>
 <li><a class="reference internal" href="../api/ops/sign.html#c.PSA_ALG_IS_HASH_AND_SIGN" title="PSA_ALG_IS_HASH_AND_SIGN"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_HASH_AND_SIGN()</span></code></a></li>
 <li><a class="reference internal" href="../api/ops/kdf.html#c.PSA_ALG_IS_HKDF" title="PSA_ALG_IS_HKDF"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_HKDF()</span></code></a></li>
 <li><a class="reference internal" href="../api/ops/macs.html#c.PSA_ALG_IS_HMAC" title="PSA_ALG_IS_HMAC"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_HMAC()</span></code></a></li>
-<li><a class="reference internal" href="../api/keys/algorithms.html#c.PSA_ALG_IS_KEY_AGREEMENT" title="PSA_ALG_IS_KEY_AGREEMENT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_KEY_AGREEMENT()</span></code></a></li>
-<li><a class="reference internal" href="../api/keys/algorithms.html#c.PSA_ALG_IS_KEY_DERIVATION" title="PSA_ALG_IS_KEY_DERIVATION"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_KEY_DERIVATION()</span></code></a></li>
-<li><a class="reference internal" href="../api/keys/algorithms.html#c.PSA_ALG_IS_MAC" title="PSA_ALG_IS_MAC"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_MAC()</span></code></a></li>
+<li><a class="reference internal" href="../api/ops/algorithms.html#c.PSA_ALG_IS_KEY_AGREEMENT" title="PSA_ALG_IS_KEY_AGREEMENT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_KEY_AGREEMENT()</span></code></a></li>
+<li><a class="reference internal" href="../api/ops/algorithms.html#c.PSA_ALG_IS_KEY_DERIVATION" title="PSA_ALG_IS_KEY_DERIVATION"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_KEY_DERIVATION()</span></code></a></li>
+<li><a class="reference internal" href="../api/ops/algorithms.html#c.PSA_ALG_IS_MAC" title="PSA_ALG_IS_MAC"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_MAC()</span></code></a></li>
 <li><a class="reference internal" href="../api/ops/sign.html#c.PSA_ALG_IS_RANDOMIZED_ECDSA" title="PSA_ALG_IS_RANDOMIZED_ECDSA"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_RANDOMIZED_ECDSA()</span></code></a></li>
 <li><a class="reference internal" href="../api/ops/ka.html#c.PSA_ALG_IS_RAW_KEY_AGREEMENT" title="PSA_ALG_IS_RAW_KEY_AGREEMENT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_RAW_KEY_AGREEMENT()</span></code></a></li>
 <li><a class="reference internal" href="../api/ops/pke.html#c.PSA_ALG_IS_RSA_OAEP" title="PSA_ALG_IS_RSA_OAEP"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_RSA_OAEP()</span></code></a></li>
 <li><a class="reference internal" href="../api/ops/sign.html#c.PSA_ALG_IS_RSA_PKCS1V15_SIGN" title="PSA_ALG_IS_RSA_PKCS1V15_SIGN"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_RSA_PKCS1V15_SIGN()</span></code></a></li>
 <li><a class="reference internal" href="../api/ops/sign.html#c.PSA_ALG_IS_RSA_PSS" title="PSA_ALG_IS_RSA_PSS"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_RSA_PSS()</span></code></a></li>
-<li><a class="reference internal" href="../api/keys/algorithms.html#c.PSA_ALG_IS_SIGN" title="PSA_ALG_IS_SIGN"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_SIGN()</span></code></a></li>
+<li><a class="reference internal" href="../api/ops/algorithms.html#c.PSA_ALG_IS_SIGN" title="PSA_ALG_IS_SIGN"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_SIGN()</span></code></a></li>
 <li><a class="reference internal" href="../api/ops/sign.html#c.PSA_ALG_IS_SIGN_MESSAGE" title="PSA_ALG_IS_SIGN_MESSAGE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_SIGN_MESSAGE()</span></code></a></li>
 <li><a class="reference internal" href="../api/ops/ciphers.html#c.PSA_ALG_IS_STREAM_CIPHER" title="PSA_ALG_IS_STREAM_CIPHER"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_STREAM_CIPHER()</span></code></a></li>
 <li><a class="reference internal" href="../api/ops/kdf.html#c.PSA_ALG_IS_TLS12_PRF" title="PSA_ALG_IS_TLS12_PRF"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_TLS12_PRF()</span></code></a></li>
 <li><a class="reference internal" href="../api/ops/kdf.html#c.PSA_ALG_IS_TLS12_PSK_TO_MS" title="PSA_ALG_IS_TLS12_PSK_TO_MS"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_TLS12_PSK_TO_MS()</span></code></a></li>
-<li><a class="reference internal" href="../api/keys/algorithms.html#c.PSA_ALG_IS_WILDCARD" title="PSA_ALG_IS_WILDCARD"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_WILDCARD()</span></code></a></li>
+<li><a class="reference internal" href="../api/ops/algorithms.html#c.PSA_ALG_IS_WILDCARD" title="PSA_ALG_IS_WILDCARD"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_IS_WILDCARD()</span></code></a></li>
 <li><a class="reference internal" href="../api/ops/ka.html#c.PSA_ALG_KEY_AGREEMENT" title="PSA_ALG_KEY_AGREEMENT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_KEY_AGREEMENT()</span></code></a></li>
 <li><a class="reference internal" href="../api/ops/ka.html#c.PSA_ALG_KEY_AGREEMENT_GET_BASE" title="PSA_ALG_KEY_AGREEMENT_GET_BASE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_KEY_AGREEMENT_GET_BASE()</span></code></a></li>
 <li><a class="reference internal" href="../api/ops/ka.html#c.PSA_ALG_KEY_AGREEMENT_GET_KDF" title="PSA_ALG_KEY_AGREEMENT_GET_KDF"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_KEY_AGREEMENT_GET_KDF()</span></code></a></li>
@@ -598,7 +507,7 @@ Example definitions of these macros is provided in <em><a class="reference inter
 <li><a class="reference internal" href="../api/ops/hashes.html#c.psa_hash_suspend" title="psa_hash_suspend"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_suspend()</span></code></a> halts the current operation and outputs a hash suspend state.</li>
 <li><a class="reference internal" href="../api/ops/hashes.html#c.psa_hash_resume" title="psa_hash_resume"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_resume()</span></code></a> continues a previously suspended hash operation.</li>
 </ul>
-<p>The format of the hash suspend state is documented in <em><a class="reference internal" href="../api/ops/hashes.html#hash-suspend-state"><span class="std std-ref">Hash suspend state</span></a></em>, and supporting macros are provided for using this API:</p>
+<p>The format of the hash suspend state is documented in <a class="reference internal" href="../api/ops/hashes.html#hash-suspend-state"><span class="secref">Hash suspend state</span></a>, and supporting macros are provided for using this API:</p>
 <ul class="simple">
 <li><a class="reference internal" href="../api/ops/hashes.html#c.PSA_HASH_SUSPEND_OUTPUT_SIZE" title="PSA_HASH_SUSPEND_OUTPUT_SIZE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_HASH_SUSPEND_OUTPUT_SIZE()</span></code></a></li>
 <li><a class="reference internal" href="../api/ops/hashes.html#c.PSA_HASH_SUSPEND_OUTPUT_MAX_SIZE" title="PSA_HASH_SUSPEND_OUTPUT_MAX_SIZE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_HASH_SUSPEND_OUTPUT_MAX_SIZE</span></code></a></li>
@@ -613,21 +522,118 @@ Example definitions of these macros is provided in <em><a class="reference inter
 <li><p class="first">Added input step <a class="reference internal" href="../api/ops/kdf.html#c.PSA_KEY_DERIVATION_INPUT_CONTEXT" title="PSA_KEY_DERIVATION_INPUT_CONTEXT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_DERIVATION_INPUT_CONTEXT</span></code></a> for key derivation, supporting obvious mapping from the step identifiers to common KDF constructions.</p>
 </li>
 </ul>
-<p class="rubric">Clarifications</p>
+</div>
+<div class="section" id="clarifications">
+<h4>Clarifications</h4>
 <ul class="simple">
 <li>Clarified rules regarding modification of parameters in concurrent environments.</li>
-<li>Guarantee that <a class="reference internal" href="../api/keys/management.html#c.psa_destroy_key" title="psa_destroy_key"><code class="docutils literal"><span class="pre">psa_destroy_key</span></code></a><code class="docutils literal"><span class="pre">(</span></code><a class="reference internal" href="../api/keys/locations.html#c.PSA_KEY_ID_NULL" title="PSA_KEY_ID_NULL"><code class="docutils literal"><span class="pre">PSA_KEY_ID_NULL</span></code></a><code class="docutils literal"><span class="pre">)</span></code> always returns <a class="reference internal" href="../api/library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_SUCCESS</span></code></a>.</li>
+<li>Guarantee that <a class="reference internal" href="../api/keys/management.html#c.psa_destroy_key" title="psa_destroy_key"><code class="docutils literal"><span class="pre">psa_destroy_key</span></code></a><code class="docutils literal"><span class="pre">(</span></code><a class="reference internal" href="../api/keys/ids.html#c.PSA_KEY_ID_NULL" title="PSA_KEY_ID_NULL"><code class="docutils literal"><span class="pre">PSA_KEY_ID_NULL</span></code></a><code class="docutils literal"><span class="pre">)</span></code> always returns <a class="reference internal" href="../api/library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_SUCCESS</span></code></a>.</li>
 <li>Clarified the TLS PSK to MS key agreement algorithm.</li>
 <li>Document the key policy requirements for all APIs that accept a key parameter.</li>
 <li>Document more of the error codes for each function.</li>
 </ul>
-<p class="rubric">Other changes</p>
+</div>
+<div class="section" id="id3">
+<h4>Other changes</h4>
 <ul class="simple">
 <li>Require C99 for this specification instead of C89.</li>
-<li>Removed references to non-standard mbed-crypto header files. The only header file that applications need to include is <strong>psa/crypto.h</strong>.</li>
+<li>Removed references to non-standard mbed-crypto header files. The only header file that applications need to include is <code class="file docutils literal"><span class="pre">psa/crypto.h</span></code>.</li>
 <li>Reorganized the API reference, grouping the elements in a more natural way.</li>
 <li>Improved the cross referencing between all of the document sections, and from code snippets to API element descriptions.</li>
 </ul>
+</div>
+</div>
+<div class="section" id="changes-between-1-0-beta-2-and-1-0-beta-3">
+<h3>Changes between <em>1.0 beta 2</em> and <em>1.0 beta 3</em></h3>
+<div class="section" id="id4">
+<h4>Changes to the API</h4>
+<ul class="simple">
+<li>Change the value of error codes, and some names, to align
+with other PSA specifications. The name changes are:<ul>
+<li><code class="docutils literal"><span class="pre">PSA_ERROR_UNKNOWN_ERROR</span></code> → <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_GENERIC_ERROR" title="PSA_ERROR_GENERIC_ERROR"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_GENERIC_ERROR</span></code></a></li>
+<li><code class="docutils literal"><span class="pre">PSA_ERROR_OCCUPIED_SLOT</span></code> → <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_ALREADY_EXISTS" title="PSA_ERROR_ALREADY_EXISTS"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_ALREADY_EXISTS</span></code></a></li>
+<li><code class="docutils literal"><span class="pre">PSA_ERROR_EMPTY_SLOT</span></code> → <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_DOES_NOT_EXIST" title="PSA_ERROR_DOES_NOT_EXIST"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_DOES_NOT_EXIST</span></code></a></li>
+<li><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_CAPACITY</span></code> → <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_INSUFFICIENT_DATA" title="PSA_ERROR_INSUFFICIENT_DATA"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_DATA</span></code></a></li>
+<li><code class="docutils literal"><span class="pre">PSA_ERROR_TAMPERING_DETECTED</span></code> → <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_CORRUPTION_DETECTED" title="PSA_ERROR_CORRUPTION_DETECTED"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_CORRUPTION_DETECTED</span></code></a></li>
+</ul>
+</li>
+<li>Change the way keys are created to avoid “half-filled” handles
+that contained key metadata, but no key material.
+Now, to create a key, first fill in a data structure containing
+its attributes, then pass this structure to a function that
+both allocates resources for the key and fills in the key
+material. This affects the following functions:<ul>
+<li><a class="reference internal" href="../api/keys/management.html#c.psa_import_key" title="psa_import_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_import_key()</span></code></a>, <a class="reference internal" href="../api/keys/management.html#c.psa_generate_key" title="psa_generate_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_generate_key()</span></code></a>, <code class="docutils literal"><span class="pre">psa_generator_import_key()</span></code>
+and <a class="reference internal" href="../api/keys/management.html#c.psa_copy_key" title="psa_copy_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_copy_key()</span></code></a> now take an attribute structure, as
+a pointer to <a class="reference internal" href="../api/keys/attributes.html#c.psa_key_attributes_t" title="psa_key_attributes_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_attributes_t</span></code></a>, to specify key metadata.
+This replaces the previous method of passing arguments to
+<code class="docutils literal"><span class="pre">psa_create_key()</span></code> or to the key material creation function
+or calling <code class="docutils literal"><span class="pre">psa_set_key_policy()</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">psa_key_policy_t</span></code> and functions operating on that type
+no longer exist. A key’s policy is now accessible as part of
+its attributes.</li>
+<li><code class="docutils literal"><span class="pre">psa_get_key_information()</span></code> is also replaced by accessing the
+key’s attributes, retrieved with <a class="reference internal" href="../api/keys/attributes.html#c.psa_get_key_attributes" title="psa_get_key_attributes"><code class="xref any c c-func docutils literal"><span class="pre">psa_get_key_attributes()</span></code></a>.</li>
+<li><code class="docutils literal"><span class="pre">psa_create_key()</span></code> no longer exists. Instead, set the key id
+attribute and the lifetime attribute before creating the
+key material.</li>
+</ul>
+</li>
+<li>Allow <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_update" title="psa_aead_update"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_update()</span></code></a> to buffer data.</li>
+<li>New buffer size calculation macros.</li>
+<li>Key identifiers are no longer specific to a given lifetime value. <code class="docutils literal"><span class="pre">psa_open_key()</span></code> no longer takes a <code class="docutils literal"><span class="pre">lifetime</span></code> parameter.</li>
+<li>Define a range of key identifiers for use by applications and a separate range for use by implementations.</li>
+<li>Avoid the unusual terminology “generator”: call them
+“key derivation operations” instead. Rename a number of functions
+and other identifiers related to for clarity and consistency:<ul>
+<li><code class="docutils literal"><span class="pre">psa_crypto_generator_t</span></code> → <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_operation_t" title="psa_key_derivation_operation_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_derivation_operation_t</span></code></a></li>
+<li><code class="docutils literal"><span class="pre">PSA_CRYPTO_GENERATOR_INIT</span></code> → <a class="reference internal" href="../api/ops/kdf.html#c.PSA_KEY_DERIVATION_OPERATION_INIT" title="PSA_KEY_DERIVATION_OPERATION_INIT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_DERIVATION_OPERATION_INIT</span></code></a></li>
+<li><code class="docutils literal"><span class="pre">psa_crypto_generator_init()</span></code> → <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_operation_init" title="psa_key_derivation_operation_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_operation_init()</span></code></a></li>
+<li><code class="docutils literal"><span class="pre">PSA_GENERATOR_UNBRIDLED_CAPACITY</span></code> → <a class="reference internal" href="../api/ops/kdf.html#c.PSA_KEY_DERIVATION_UNLIMITED_CAPACITY" title="PSA_KEY_DERIVATION_UNLIMITED_CAPACITY"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_DERIVATION_UNLIMITED_CAPACITY</span></code></a></li>
+<li><code class="docutils literal"><span class="pre">psa_set_generator_capacity()</span></code> → <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_set_capacity" title="psa_key_derivation_set_capacity"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_set_capacity()</span></code></a></li>
+<li><code class="docutils literal"><span class="pre">psa_get_generator_capacity()</span></code> → <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_get_capacity" title="psa_key_derivation_get_capacity"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_get_capacity()</span></code></a></li>
+<li><code class="docutils literal"><span class="pre">psa_key_agreement()</span></code> → <a class="reference internal" href="../api/ops/ka.html#c.psa_key_derivation_key_agreement" title="psa_key_derivation_key_agreement"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_key_agreement()</span></code></a></li>
+<li><code class="docutils literal"><span class="pre">psa_generator_read()</span></code> → <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_output_bytes" title="psa_key_derivation_output_bytes"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_output_bytes()</span></code></a></li>
+<li><code class="docutils literal"><span class="pre">psa_generate_derived_key()</span></code> → <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_output_key" title="psa_key_derivation_output_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_output_key()</span></code></a></li>
+<li><code class="docutils literal"><span class="pre">psa_generator_abort()</span></code> → <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_abort" title="psa_key_derivation_abort"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_abort()</span></code></a></li>
+<li><code class="docutils literal"><span class="pre">psa_key_agreement_raw_shared_secret()</span></code> → <a class="reference internal" href="../api/ops/ka.html#c.psa_raw_key_agreement" title="psa_raw_key_agreement"><code class="xref any c c-func docutils literal"><span class="pre">psa_raw_key_agreement()</span></code></a></li>
+<li><code class="docutils literal"><span class="pre">PSA_KDF_STEP_xxx</span></code> → <code class="docutils literal"><span class="pre">PSA_KEY_DERIVATION_INPUT_xxx</span></code></li>
+<li><code class="docutils literal"><span class="pre">PSA_xxx_KEYPAIR</span></code> → <code class="docutils literal"><span class="pre">PSA_xxx_KEY_PAIR</span></code></li>
+</ul>
+</li>
+<li>Convert TLS1.2 KDF descriptions to multi-part key derivation.</li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h4>Clarifications</h4>
+<ul class="simple">
+<li>Specify <code class="docutils literal"><span class="pre">psa_generator_import_key()</span></code> for most key types.</li>
+<li>Clarify the behavior in various corner cases.</li>
+<li>Document more error conditions.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="changes-between-1-0-beta-1-and-1-0-beta-2">
+<h3>Changes between <em>1.0 beta 1</em> and <em>1.0 beta 2</em></h3>
+<div class="section" id="id6">
+<h4>Changes to the API</h4>
+<ul class="simple">
+<li>Remove obsolete definition <code class="docutils literal"><span class="pre">PSA_ALG_IS_KEY_SELECTION</span></code>.</li>
+<li><a class="reference internal" href="../api/ops/aead.html#c.PSA_AEAD_FINISH_OUTPUT_SIZE" title="PSA_AEAD_FINISH_OUTPUT_SIZE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_AEAD_FINISH_OUTPUT_SIZE</span></code></a>: remove spurious parameter <code class="docutils literal"><span class="pre">plaintext_length</span></code>.</li>
+</ul>
+</div>
+<div class="section" id="id7">
+<h4>Clarifications</h4>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">psa_key_agreement()</span></code>: document <code class="docutils literal"><span class="pre">alg</span></code> parameter.</li>
+</ul>
+</div>
+<div class="section" id="id8">
+<h4>Other changes</h4>
+<ul class="simple">
+<li>Document formatting improvements.</li>
+</ul>
+</div>
 </div>
 </div>
 <div class="section" id="planned-changes-for-version-1-0-x">
@@ -668,37 +674,45 @@ other clients.</li>
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Changes to the API</a><ul>
-<li><a class="reference internal" href="#release-information">Release information</a></li>
-<li><a class="reference internal" href="#document-change-history">Document change history</a><ul>
-<li><a class="reference internal" href="#changes-between-1-0-beta-1-and-1-0-beta-2">Changes between <em>1.0 beta 1</em> and <em>1.0 beta 2</em></a></li>
-<li><a class="reference internal" href="#changes-between-1-0-beta-2-and-1-0-beta-3">Changes between <em>1.0 beta 2</em> and <em>1.0 beta 3</em></a></li>
-<li><a class="reference internal" href="#changes-between-1-0-beta-3-and-1-0-0">Changes between <em>1.0 beta 3</em> and <em>1.0.0</em></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#planned-changes-for-version-1-0-x">Planned changes for version 1.0.x</a></li>
-<li><a class="reference internal" href="#future-additions">Future additions</a></li>
-</ul>
-</li>
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
+        <div class="sphinxsidebarwrapper"><h3><a href="../index.html"><b>PSA Crypto API</b></a></h3>
+IHI 0086<br/>
+Non-confidential<br/>
+Version 1.0.1
+<span style="color: red; font-weight: bold;"></span>
 <ul>
-  <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="specdef_values.html" title="previous chapter">Example macro implementations</a></li>
-  </ul></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About this document</a></li>
 </ul>
-</div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/appendix/history.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../overview/intro.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/goals.html">2. Design goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/functionality.html">3. Functionality overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/sample-arch.html">4. Sample architectures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/conventions.html">5. Library conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/implementation.html">6. Implementation considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/usage.html">7. Usage considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/library/index.html">8. Library management reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/keys/index.html">9. Key management reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/ops/index.html">10. Cryptographic operation reference</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="example_header.html">Example header file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specdef_values.html">Example macro implementations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Changes to the API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#document-change-history">Document change history</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#changes-between-1-0-0-and-1-0-1">Changes between <em>1.0.0</em> and <em>1.0.1</em></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#changes-between-1-0-beta-3-and-1-0-0">Changes between <em>1.0 beta 3</em> and <em>1.0.0</em></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#changes-between-1-0-beta-2-and-1-0-beta-3">Changes between <em>1.0 beta 2</em> and <em>1.0 beta 3</em></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#changes-between-1-0-beta-1-and-1-0-beta-2">Changes between <em>1.0 beta 1</em> and <em>1.0 beta 2</em></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#planned-changes-for-version-1-0-x">Planned changes for version 1.0.x</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#future-additions">Future additions</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../psa_c-identifiers.html">Index of API elements</a></li>
+</ul>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
@@ -714,15 +728,12 @@ other clients.</li>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy; 2019-2020, Arm Limited or its affiliates. All rights reserved.
+      &copy; 2018-2020, Arm Limited or its affiliates. All rights reserved.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
-      |
-      <a href="../_sources/appendix/history.rst.txt"
-          rel="nofollow">Page source</a>
     </div>
 
     
