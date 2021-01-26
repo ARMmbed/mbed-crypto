@@ -5,26 +5,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Library conventions &#8212; PSA Crypto API 1.0.0 documentation</title>
+    <title>5. Library conventions &#8212; PSA Crypto API 1.0.1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.0.0',
+        VERSION:     '1.0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
+        HAS_SOURCE:  false,
         SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Implementation considerations" href="implementation.html" />
-    <link rel="prev" title="Sample architectures" href="sample-arch.html" />
+    <link rel="next" title="6. Implementation considerations" href="implementation.html" />
+    <link rel="prev" title="4. Sample architectures" href="sample-arch.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -40,11 +41,11 @@
           <div class="body" role="main">
             
   <div class="section" id="library-conventions">
-<h1>Library conventions</h1>
+<h1>5. Library conventions</h1>
 <div class="section" id="error-handling">
-<h2>Error handling</h2>
+<h2>5.1. Error handling</h2>
 <div class="section" id="return-status">
-<h3>Return status</h3>
+<h3>5.1.1. Return status</h3>
 <p>Almost all functions return a status indication of type <a class="reference internal" href="../api/library/status.html#c.psa_status_t" title="psa_status_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_status_t</span></code></a>. This
 is an enumeration of integer values, with <code class="docutils literal"><span class="pre">0</span></code> (<a class="reference internal" href="../api/library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_SUCCESS</span></code></a>) indicating
 successful operation and other values indicating errors. The exceptions are
@@ -63,7 +64,7 @@ the application in a manner that is appropriate for the platform if the
 undefined behavior condition can be detected. However, application developers need to be aware that undefined behavior conditions cannot be detected in general.</p>
 </div>
 <div class="section" id="behavior-on-error">
-<h3>Behavior on error</h3>
+<h3>5.1.2. Behavior on error</h3>
 <p>All function calls must be implemented atomically:</p>
 <ul class="simple">
 <li>When a function returns a type other than <a class="reference internal" href="../api/library/status.html#c.psa_status_t" title="psa_status_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_status_t</span></code></a>, the requested
@@ -112,9 +113,9 @@ handle all errors.</p>
 </div>
 </div>
 <div class="section" id="parameter-conventions">
-<h2>Parameter conventions</h2>
+<h2>5.2. Parameter conventions</h2>
 <div class="section" id="pointer-conventions">
-<h3>Pointer conventions</h3>
+<h3>5.2.1. Pointer conventions</h3>
 <p>Unless explicitly stated in the documentation of a function, all pointers must
 be valid pointers to an object of the specified type.</p>
 <p>A parameter is considered a <strong>buffer</strong> if it points to an array of bytes. A
@@ -131,10 +132,10 @@ dereference.</p>
 be in writable memory. Output parameters that are not buffers must also be
 readable, and the implementation must be able to write to a non-buffer output
 parameter and read back the same value, as explained in the
-<em><a class="reference internal" href="#stability-of-parameters"><span class="std std-ref">Stability of parameters</span></a></em> section.</p>
+<a class="reference internal" href="#stability-of-parameters"><span class="secref">Stability of parameters</span></a> section.</p>
 </div>
 <div class="section" id="input-buffer-sizes">
-<h3>Input buffer sizes</h3>
+<h3>5.2.2. Input buffer sizes</h3>
 <p>For input buffers, the parameter convention is:</p>
 <dl class="docutils">
 <dt><code class="docutils literal"><span class="pre">const</span> <span class="pre">uint8_t</span> <span class="pre">*foo</span></code></dt>
@@ -146,7 +147,7 @@ can be invalid if the buffer size is <code class="docutils literal"><span class=
 <p>The interface never uses input-output buffers.</p>
 </div>
 <div class="section" id="output-buffer-sizes">
-<h3>Output buffer sizes</h3>
+<h3>5.2.3. Output buffer sizes</h3>
 <p>For output buffers, the parameter convention is:</p>
 <dl class="docutils">
 <dt><code class="docutils literal"><span class="pre">uint8_t</span> <span class="pre">*foo</span></code></dt>
@@ -181,7 +182,7 @@ successful.</dd>
 </dl>
 </div>
 <div class="section" id="overlap-between-parameters">
-<h3>Overlap between parameters</h3>
+<h3>5.2.4. Overlap between parameters</h3>
 <p>Output parameters that are not buffers must not overlap with any input buffer or
 with any other output parameter. Otherwise, the behavior is undefined.</p>
 <p>Output buffers can overlap with input buffers. In this event, the implementation
@@ -191,10 +192,10 @@ memory, as far as the result is concerned. However, it is possible that overlap
 between parameters will affect the performance of a function call. Overlap might
 also affect memory management security if the buffer is located in memory that
 the caller shares with another security context, as described in the
-<em><a class="reference internal" href="#stability-of-parameters"><span class="std std-ref">Stability of parameters</span></a></em> section.</p>
+<a class="reference internal" href="#stability-of-parameters"><span class="secref">Stability of parameters</span></a> section.</p>
 </div>
 <div class="section" id="stability-of-parameters">
-<span id="id1"></span><h3>Stability of parameters</h3>
+<span id="id1"></span><h3>5.2.5. Stability of parameters</h3>
 <p>In some environments, it is possible for the content of a parameter to change
 while a function is executing. It might also be possible for the content of an
 output parameter to be read before the function terminates. This can happen if
@@ -230,10 +231,10 @@ parameter once a function call has returned.</p>
 </div>
 </div>
 <div class="section" id="key-types-and-algorithms">
-<h2>Key types and algorithms</h2>
+<h2>5.3. Key types and algorithms</h2>
 <p>Types of cryptographic keys and cryptographic algorithms are encoded separately.
-Each is encoded by using an integral type: <a class="reference internal" href="../api/keys/attributes.html#c.psa_key_type_t" title="psa_key_type_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_type_t</span></code></a> and
-<a class="reference internal" href="../api/keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_algorithm_t</span></code></a>, respectively.</p>
+Each is encoded by using an integral type: <a class="reference internal" href="../api/keys/types.html#c.psa_key_type_t" title="psa_key_type_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_type_t</span></code></a> and
+<a class="reference internal" href="../api/ops/algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_algorithm_t</span></code></a>, respectively.</p>
 <p>There is some overlap in the information conveyed by key types and algorithms.
 Both types contain enough information, so that the meaning of an algorithm type
 value does not depend on what type of key it is used with, and vice versa.
@@ -244,7 +245,7 @@ determined by the key type.</p>
 <p>Key types do not encode the key size. For example, AES-128, AES-192 and AES-256
 share a key type <a class="reference internal" href="../api/keys/types.html#c.PSA_KEY_TYPE_AES" title="PSA_KEY_TYPE_AES"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_AES</span></code></a>.</p>
 <div class="section" id="structure-of-key-and-algorithm-types">
-<h3>Structure of key and algorithm types</h3>
+<h3>5.3.1. Structure of key and algorithm types</h3>
 <p>Both types use a partial bitmask structure, which allows the analysis and
 building of values from parts. However, the interface defines constants, so that
 applications do not need to depend on the encoding, and an implementation might
@@ -267,19 +268,23 @@ parametrized around a hash function encode the hash in the 8 lowest bits.</li>
 </div>
 </div>
 <div class="section" id="concurrent-calls">
-<span id="concurrency"></span><h2>Concurrent calls</h2>
+<span id="concurrency"></span><h2>5.4. Concurrent calls</h2>
 <p>In some environments, an application can make calls to the PSA crypto API in
-separate threads. In such an environment, concurrent calls are performed
-correctly, as if the calls were executed in sequence, provided that they obey
-the following constraints:</p>
+separate threads. In such an environment, <em>concurrent calls</em> are two or more
+calls to the API whose execution can overlap in time.</p>
+<p>Concurrent calls are performed correctly, as if the calls were executed in
+sequence, provided that they obey the following constraints:</p>
 <ul class="simple">
 <li>There is no overlap between an output parameter of one call and an input or
 output parameter of another call. Overlap between input parameters is
 permitted.</li>
-<li>If a call destroys a key, then no other call must destroy or use that key.
-<em>Using</em>, in this context, includes all functions of multi-part operations
-which have used the key as an input in a previous function.</li>
-<li>Concurrent calls that use the same key are permitted.</li>
+<li>A call to destroy a key must not overlap with a concurrent call to any of
+the following functions:<ul>
+<li>Any call where the same key identifier is a parameter to the call.</li>
+<li>Any call in a multi-part operation, where the same key identifier was
+used as a parameter to a previous step in the multi-part operation.</li>
+</ul>
+</li>
 <li>Concurrent calls must not use the same operation object.</li>
 </ul>
 <p>If any of these constraints are violated, the behavior is undefined.</p>
@@ -294,47 +299,54 @@ progress, the behavior is undefined.</p>
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Library conventions</a><ul>
-<li><a class="reference internal" href="#error-handling">Error handling</a><ul>
-<li><a class="reference internal" href="#return-status">Return status</a></li>
-<li><a class="reference internal" href="#behavior-on-error">Behavior on error</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#parameter-conventions">Parameter conventions</a><ul>
-<li><a class="reference internal" href="#pointer-conventions">Pointer conventions</a></li>
-<li><a class="reference internal" href="#input-buffer-sizes">Input buffer sizes</a></li>
-<li><a class="reference internal" href="#output-buffer-sizes">Output buffer sizes</a></li>
-<li><a class="reference internal" href="#overlap-between-parameters">Overlap between parameters</a></li>
-<li><a class="reference internal" href="#stability-of-parameters">Stability of parameters</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#key-types-and-algorithms">Key types and algorithms</a><ul>
-<li><a class="reference internal" href="#structure-of-key-and-algorithm-types">Structure of key and algorithm types</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#concurrent-calls">Concurrent calls</a></li>
-</ul>
-</li>
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
+        <div class="sphinxsidebarwrapper"><h3><a href="../index.html"><b>PSA Crypto API</b></a></h3>
+IHI 0086<br/>
+Non-confidential<br/>
+Version 1.0.1
+<span style="color: red; font-weight: bold;"></span>
 <ul>
-  <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="sample-arch.html" title="previous chapter">Sample architectures</a></li>
-      <li>Next: <a href="implementation.html" title="next chapter">Implementation considerations</a></li>
-  </ul></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About this document</a></li>
 </ul>
-</div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/overview/conventions.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="goals.html">2. Design goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functionality.html">3. Functionality overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sample-arch.html">4. Sample architectures</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">5. Library conventions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#error-handling">5.1. Error handling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#return-status">5.1.1. Return status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#behavior-on-error">5.1.2. Behavior on error</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#parameter-conventions">5.2. Parameter conventions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pointer-conventions">5.2.1. Pointer conventions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#input-buffer-sizes">5.2.2. Input buffer sizes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#output-buffer-sizes">5.2.3. Output buffer sizes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#overlap-between-parameters">5.2.4. Overlap between parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stability-of-parameters">5.2.5. Stability of parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#key-types-and-algorithms">5.3. Key types and algorithms</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#structure-of-key-and-algorithm-types">5.3.1. Structure of key and algorithm types</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#concurrent-calls">5.4. Concurrent calls</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="implementation.html">6. Implementation considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">7. Usage considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/library/index.html">8. Library management reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/keys/index.html">9. Key management reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/ops/index.html">10. Cryptographic operation reference</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../appendix/example_header.html">Example header file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendix/specdef_values.html">Example macro implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendix/history.html">Changes to the API</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../psa_c-identifiers.html">Index of API elements</a></li>
+</ul>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
@@ -350,15 +362,12 @@ progress, the behavior is undefined.</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy; 2019-2020, Arm Limited or its affiliates. All rights reserved.
+      &copy; 2018-2020, Arm Limited or its affiliates. All rights reserved.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
-      |
-      <a href="../_sources/overview/conventions.rst.txt"
-          rel="nofollow">Page source</a>
     </div>
 
     

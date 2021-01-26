@@ -2,11 +2,20 @@
 
 body {
     font-family: Calibri, sans-serif;
-    font-size: 17px;
+    font-size: 15px;
 }
 
 div.document {
-    width: 1080px;
+    width: 900px;
+}
+
+div.bodywrapper {
+    margin: 0 0 0 180px;
+}
+
+div.sphinxsidebar {
+    width: 180px;
+    font-size: 12.5px;
 }
 
 div.body h1,
@@ -56,27 +65,70 @@ pre {
 
 table.docutils {
     border: 0;
-	width: 100%;
-	-moz-box-shadow: none;
+    width: 100%;
+    -moz-box-shadow: none;
     -webkit-box-shadow: none;
     box-shadow: none;
     border-top: 1px solid #AAA;
     border-bottom: 1px solid #AAA;
+	margin-bottom: 1em;
+}
+
+table.titletable {
+    margin-top: 40px;
+    width: auto;
+    border-top: none;
+    border-bottom: none;
+}
+
+table.docutils caption, div.figure p.caption {
+    font-size: 90%;
+    text-align: right;
+}
+
+table.docutils caption span.caption-number, div.figure p.caption span.caption-number {
+    font-weight: bold;
+    font-style: normal;
 }
 
 table.docutils td, table.docutils th {
-	border: 0;
+    border: 0;
     padding: 0.3em 0.5em 0.3em 0.5em;
     text-align: left;
     vertical-align: top;
 }
 
+table.docutils td p, table.docutils th p {
+	margin-block-start: .3em;
+	margin-block-end: .3em;
+}
+
+table.docutils th > p:first-child, table.docutils td > p:first-child {
+    margin-top: 0px;
+}
+
 table.docutils th {
+    font-weight: bold;
+    font-size: 90%;
+}
+
+table.docutils th.stub {
+    border-bottom: none;
+}
+
+table.docutils th.head {
     border-bottom: 1px solid #AAA;
 }
 
-.small-caps {
-    font-variant: small-caps;
+div.figure div.legend {
+    font-size: 80%;
+    font-style: italic;
+    text-align: center;
+}
+
+div.figure p.caption, div.figure div.legend p {
+    margin-block-start: 0.2em;
+    margin-block-end: 0.5em;
 }
 
 div.admonition {
@@ -87,18 +139,14 @@ div.admonition {
     border-left: 6px solid #DDD;
 }
 
-div.warning {
-    border-left: 6px solid #FBB;
-}
-
 div.admonition p.admonition-title {
     font-family: Calibri, sans-serif;
     font-weight: bold;
     font-size: 90%;
 }
 
-div.warning p.admonition-title {
-    color: darkred;
+p.admonition-title:after {
+    content: "";
 }
 
 div.admonition p {
@@ -106,6 +154,61 @@ div.admonition p {
     margin-bottom: 5px;
 }
 
-p.admonition-title:after {
-    content: "";
+div.warning {
+    border-left: 6px solid #FBB;
+}
+
+div.warning p.admonition-title {
+    color: darkred;
+}
+
+div.banner {
+    border: 2px solid #CC0;
+    background-color: #FFB;
+}
+
+div.rationale {
+    border-left: 6px solid #BFB;
+    background-color: #EFE;
+}
+
+div.rationale p.admonition-title {
+    color: darkgreen;
+}
+
+.scterm, .sc {
+    font-variant: small-caps;
+    text-transform: lowercase;
+}
+
+.term {
+    font-style: italic;
+}
+
+.license{
+    font-size: 80%;
+}
+
+.anchor {
+    color: #0091BD;
+}
+
+.issue {
+    color: red;
+}
+
+.secref {
+    font-style: italic;
+}
+
+.sectiontitle {
+    display: block;
+    margin-top: 30px;
+    font-weight: bold;
+    font-size: 180%;
+}
+
+p.titlecopyright {
+    font-size: 70%;
+    text-align: right;
 }

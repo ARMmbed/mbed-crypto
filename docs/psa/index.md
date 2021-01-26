@@ -7,8 +7,6 @@ For more information about the Platform Security Architecture, see [the Arm Deve
 
 The PSA Cryptography API is a C programming interface for applications that wish to store cryptographic keys and use them to perform cryptographic operations.
 
-**Status: beta** — version 1.0.0 beta 3. Minor changes and clarifications are planned before 1.0. Additional features are planned for 1.x releases.
-
 **Reference documentation**:
 [HTML](../html/index.html),
 [PDF](../PSA_Cryptography_API_Specification.pdf)
@@ -17,28 +15,23 @@ The PSA Cryptography API is a C programming interface for applications that wish
 
 ## Hardware abstraction layer
 
+### Unified driver interface
+
+There is work in progress to define a PSA cryptography driver interface, allowing an implementation of the PSA Cryptography API to make use of dedicated hardware (accelerators, secure elements, random generators, etc.) or other external systems such as a remote key store.
+The driver interface is being tried out in Mbed TLS. Arm expects to make it an official PSA specification once it has been sufficiently validated.
+
+For more information, please see the [proposed driver interface](https://github.com/ARMmbed/mbedtls/blob/development/docs/proposed/psa-driver-interface.md) as well as the [ongoing specification and implementation effort](https://github.com/ARMmbed/mbedtls/issues?q=+label%3AHwDrivers+).
+
 PSA includes functional specifications describing a hardware abstraction layer covering [cryptographic accelerators](accel/), [secure elements](se/) and [entropy sources](entropy/).
-
-### Accelerator driver interface
-
-The cryptographic accelerator driver interface lets you write drivers for hardware that performs cryptographic operations with keys in clear text.
-You can plug such drivers into any implementation of the PSA Cryptography API.
-
-For more information, see [PSA cryptography accelerator driver interface](accel/).
 
 ### Secure element driver interface
 
-The secure element driver interface lets you write drivers for external cryptoprocessors such as secure elements (SE), smart cards and hardware security modules (HSM) that perform operations on keys that never leave the external processor and are accessed only through opaque handles.
-You can plug such drivers into any implementation of the PSA Cryptography API.
+The dynamic secure element driver interface lets you write drivers for external cryptoprocessors such as secure elements (SE), smart cards and hardware security modules (HSM) that perform operations on keys that never leave the external processor and are accessed only through opaque handles.
+Such drivers can be loaded dynamically into an implementation of the PSA Cryptography API such as Mbed TLS.
+
+Work on this interface is currently frozen. The [unified driver interface](#unified-driver-interface) replaces the older dynamic secure element driver for most purposes. The older interface the advantage of allowing drivers to be dynamically loaded. If there is widespread demand for dynamic loading of secure element drivers, Arm may revive the effort on the older interface or merge it into the unified interface.
 
 For more information, see [PSA secure element driver interface](se/).
-
-### Entropy source driver interface
-
-The entropy source driver interface lets you write drivers for Hardware Random Number Generators (HRNG), also known as True Random Number Generators (TRNG).
-You can plug such drivers into any implementation of the PSA Cryptography API.
-
-For more information, see [PSA entropy source driver interface](entropy/).
 
 ## Feedback
 

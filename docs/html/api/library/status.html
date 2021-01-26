@@ -5,26 +5,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>PSA status codes &#8212; PSA Crypto API 1.0.0 documentation</title>
+    <title>8.1. PSA status codes &#8212; PSA Crypto API 1.0.1 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '1.0.0',
+        VERSION:     '1.0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
+        HAS_SOURCE:  false,
         SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="PSA Crypto library" href="library.html" />
-    <link rel="prev" title="Library management reference" href="index.html" />
+    <link rel="next" title="8.2. PSA Crypto library" href="library.html" />
+    <link rel="prev" title="8. Library management reference" href="index.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -40,9 +41,9 @@
           <div class="body" role="main">
             
   <div class="section" id="psa-status-codes">
-<span id="status-codes"></span><h1>PSA status codes</h1>
+<span id="status-codes"></span><h1>8.1. PSA status codes</h1>
 <div class="section" id="status-type">
-<h2>Status type</h2>
+<h2>8.1.1. Status type</h2>
 <div class="section" id="psa_status_t">
 <span id="c.psa_status_t"></span><h3><code class="docutils literal"><span class="pre">psa_status_t</span></code> (type)</h3>
 <p>Function return status.</p>
@@ -53,7 +54,7 @@ typedef int32_t <a class="reference internal" href="#c.psa_status_t" title="psa_
 </div>
 </div>
 <div class="section" id="success-codes">
-<h2>Success codes</h2>
+<h2>8.1.2. Success codes</h2>
 <div class="section" id="PSA_SUCCESS">
 <span id="c.PSA_SUCCESS"></span><h3><code class="docutils literal"><span class="pre">PSA_SUCCESS</span></code> (macro)</h3>
 <p>The action was completed successfully.</p>
@@ -63,7 +64,7 @@ typedef int32_t <a class="reference internal" href="#c.psa_status_t" title="psa_
 </div>
 </div>
 <div class="section" id="error-codes">
-<h2>Error codes</h2>
+<h2>8.1.3. Error codes</h2>
 <div class="section" id="PSA_ERROR_GENERIC_ERROR">
 <span id="c.PSA_ERROR_GENERIC_ERROR"></span><h3><code class="docutils literal"><span class="pre">PSA_ERROR_GENERIC_ERROR</span></code> (macro)</h3>
 <p>An error occurred that does not correspond to any defined failure cause.</p>
@@ -112,7 +113,7 @@ typedef int32_t <a class="reference internal" href="#c.psa_status_t" title="psa_
 <pre class="literal-block">
 #define <a class="reference internal" href="#c.PSA_ERROR_DOES_NOT_EXIST" title="PSA_ERROR_DOES_NOT_EXIST">PSA_ERROR_DOES_NOT_EXIST</a> ((<a class="reference internal" href="#c.psa_status_t" title="psa_status_t">psa_status_t</a>)-140)
 </pre>
-<p>It is recommended that implementations return this error code if a requested key does not exist.</p>
+<p>Implementations must not return this error code to indicate that a key identifier is invalid, but must return <a class="reference internal" href="#c.PSA_ERROR_INVALID_HANDLE" title="PSA_ERROR_INVALID_HANDLE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_INVALID_HANDLE</span></code></a> instead.</p>
 </div>
 <div class="section" id="PSA_ERROR_BAD_STATE">
 <span id="c.PSA_ERROR_BAD_STATE"></span><h3><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code> (macro)</h3>
@@ -121,7 +122,6 @@ typedef int32_t <a class="reference internal" href="#c.psa_status_t" title="psa_
 #define <a class="reference internal" href="#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE">PSA_ERROR_BAD_STATE</a> ((<a class="reference internal" href="#c.psa_status_t" title="psa_status_t">psa_status_t</a>)-137)
 </pre>
 <p>Multi-part operations return this error when one of the functions is called out of sequence. Refer to the function descriptions for permitted sequencing of functions.</p>
-<p>Implementations must not return this error code to indicate that a key either exists or not, but must instead return <a class="reference internal" href="#c.PSA_ERROR_ALREADY_EXISTS" title="PSA_ERROR_ALREADY_EXISTS"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_ALREADY_EXISTS</span></code></a> or <a class="reference internal" href="#c.PSA_ERROR_DOES_NOT_EXIST" title="PSA_ERROR_DOES_NOT_EXIST"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_DOES_NOT_EXIST</span></code></a> as applicable.</p>
 <p>Implementations must not return this error code to indicate that a key identifier is invalid, but must return <a class="reference internal" href="#c.PSA_ERROR_INVALID_HANDLE" title="PSA_ERROR_INVALID_HANDLE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_INVALID_HANDLE</span></code></a> instead.</p>
 </div>
 <div class="section" id="PSA_ERROR_INVALID_ARGUMENT">
@@ -195,7 +195,7 @@ typedef int32_t <a class="reference internal" href="#c.psa_status_t" title="psa_
 </ul>
 <p>Note that a storage corruption does not indicate that any data that was previously read is invalid. However this previously read data might no longer be readable from storage.</p>
 <p>When a storage failure occurs, it is no longer possible to ensure the global integrity of the keystore. Depending on the global integrity guarantees offered by the implementation, access to other data might fail even if the data is still readable but its integrity cannot be guaranteed.</p>
-<p>It is recommended to only use this error code to report when a storage component indicates that the stored data is corrupt, or fails an integrity check. For example, in situations that the PSA Internal Trusted Storage API reports <a class="reference internal" href="#c.PSA_ERROR_DATA_CORRUPT" title="PSA_ERROR_DATA_CORRUPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_DATA_CORRUPT</span></code></a> or <a class="reference internal" href="#c.PSA_ERROR_INVALID_SIGNATURE" title="PSA_ERROR_INVALID_SIGNATURE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_INVALID_SIGNATURE</span></code></a>.</p>
+<p>It is recommended to only use this error code to report when a storage component indicates that the stored data is corrupt, or fails an integrity check. For example, in situations that the <span><em>PSA Storage API</em> <a class="reference internal" href="../../about.html#citation-psa-its"><span class="cite">[PSA-ITS]</span></a></span> reports <a class="reference internal" href="#c.PSA_ERROR_DATA_CORRUPT" title="PSA_ERROR_DATA_CORRUPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_DATA_CORRUPT</span></code></a> or <a class="reference internal" href="#c.PSA_ERROR_INVALID_SIGNATURE" title="PSA_ERROR_INVALID_SIGNATURE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_INVALID_SIGNATURE</span></code></a>.</p>
 </div>
 <div class="section" id="PSA_ERROR_DATA_INVALID">
 <span id="c.PSA_ERROR_DATA_INVALID"></span><h3><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_INVALID</span></code> (macro)</h3>
@@ -274,7 +274,7 @@ typedef int32_t <a class="reference internal" href="#c.psa_status_t" title="psa_
 <pre class="literal-block">
 #define <a class="reference internal" href="#c.PSA_ERROR_INVALID_HANDLE" title="PSA_ERROR_INVALID_HANDLE">PSA_ERROR_INVALID_HANDLE</a> ((<a class="reference internal" href="#c.psa_status_t" title="psa_status_t">psa_status_t</a>)-136)
 </pre>
-<p>See also <em><a class="reference internal" href="../../overview/functionality.html#key-ids"><span class="std std-ref">Key identifiers</span></a></em>.</p>
+<p>See also <a class="reference internal" href="../../overview/functionality.html#key-ids"><span class="secref">Key identifiers</span></a>.</p>
 </div>
 </div>
 </div>
@@ -284,63 +284,43 @@ typedef int32_t <a class="reference internal" href="#c.psa_status_t" title="psa_
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="../../index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">PSA status codes</a><ul>
-<li><a class="reference internal" href="#status-type">Status type</a><ul>
-<li><a class="reference internal" href="#psa_status_t"><code class="docutils literal"><span class="pre">psa_status_t</span></code> (type)</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#success-codes">Success codes</a><ul>
-<li><a class="reference internal" href="#PSA_SUCCESS"><code class="docutils literal"><span class="pre">PSA_SUCCESS</span></code> (macro)</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#error-codes">Error codes</a><ul>
-<li><a class="reference internal" href="#PSA_ERROR_GENERIC_ERROR"><code class="docutils literal"><span class="pre">PSA_ERROR_GENERIC_ERROR</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ERROR_NOT_SUPPORTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_SUPPORTED</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ERROR_NOT_PERMITTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_PERMITTED</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ERROR_BUFFER_TOO_SMALL"><code class="docutils literal"><span class="pre">PSA_ERROR_BUFFER_TOO_SMALL</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ERROR_ALREADY_EXISTS"><code class="docutils literal"><span class="pre">PSA_ERROR_ALREADY_EXISTS</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ERROR_DOES_NOT_EXIST"><code class="docutils literal"><span class="pre">PSA_ERROR_DOES_NOT_EXIST</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ERROR_INSUFFICIENT_MEMORY"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_MEMORY</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ERROR_INSUFFICIENT_STORAGE"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_STORAGE</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ERROR_COMMUNICATION_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_COMMUNICATION_FAILURE</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ERROR_STORAGE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_STORAGE_FAILURE</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ERROR_DATA_CORRUPT"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_CORRUPT</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ERROR_DATA_INVALID"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_INVALID</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ERROR_HARDWARE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_HARDWARE_FAILURE</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ERROR_CORRUPTION_DETECTED"><code class="docutils literal"><span class="pre">PSA_ERROR_CORRUPTION_DETECTED</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ERROR_INSUFFICIENT_ENTROPY"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_ENTROPY</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ERROR_INVALID_SIGNATURE"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_SIGNATURE</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ERROR_INVALID_PADDING"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_PADDING</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ERROR_INSUFFICIENT_DATA"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_DATA</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ERROR_INVALID_HANDLE"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_HANDLE</span></code> (macro)</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
+        <div class="sphinxsidebarwrapper"><h3><a href="../../index.html"><b>PSA Crypto API</b></a></h3>
+IHI 0086<br/>
+Non-confidential<br/>
+Version 1.0.1
+<span style="color: red; font-weight: bold;"></span>
 <ul>
-  <li><a href="../../index.html">Documentation overview</a><ul>
-  <li><a href="index.html">Library management reference</a><ul>
-      <li>Previous: <a href="index.html" title="previous chapter">Library management reference</a></li>
-      <li>Next: <a href="library.html" title="next chapter">PSA Crypto library</a></li>
-  </ul></li>
-  </ul></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About this document</a></li>
 </ul>
-</div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../../_sources/api/library/status.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview/intro.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/goals.html">2. Design goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/functionality.html">3. Functionality overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/sample-arch.html">4. Sample architectures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/conventions.html">5. Library conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/implementation.html">6. Implementation considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/usage.html">7. Usage considerations</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">8. Library management reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">8.1. PSA status codes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#status-type">8.1.1. Status type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#success-codes">8.1.2. Success codes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#error-codes">8.1.3. Error codes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="library.html">8.2. PSA Crypto library</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../keys/index.html">9. Key management reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ops/index.html">10. Cryptographic operation reference</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../appendix/example_header.html">Example header file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendix/specdef_values.html">Example macro implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendix/history.html">Changes to the API</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../psa_c-identifiers.html">Index of API elements</a></li>
+</ul>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
@@ -356,15 +336,12 @@ typedef int32_t <a class="reference internal" href="#c.psa_status_t" title="psa_
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy; 2019-2020, Arm Limited or its affiliates. All rights reserved.
+      &copy; 2018-2020, Arm Limited or its affiliates. All rights reserved.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
-      |
-      <a href="../../_sources/api/library/status.rst.txt"
-          rel="nofollow">Page source</a>
     </div>
 
     

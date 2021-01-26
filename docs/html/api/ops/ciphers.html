@@ -5,26 +5,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Unauthenticated ciphers &#8212; PSA Crypto API 1.0.0 documentation</title>
+    <title>10.4. Unauthenticated ciphers &#8212; PSA Crypto API 1.0.1 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '1.0.0',
+        VERSION:     '1.0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
+        HAS_SOURCE:  false,
         SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Authenticated encryption with associated data (AEAD)" href="aead.html" />
-    <link rel="prev" title="Message authentication codes (MAC)" href="macs.html" />
+    <link rel="next" title="10.5. Authenticated encryption with associated data (AEAD)" href="aead.html" />
+    <link rel="prev" title="10.3. Message authentication codes (MAC)" href="macs.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -40,101 +41,168 @@
           <div class="body" role="main">
             
   <div class="section" id="unauthenticated-ciphers">
-<span id="ciphers"></span><h1>Unauthenticated ciphers</h1>
+<span id="ciphers"></span><h1>10.4. Unauthenticated ciphers</h1>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p>The unauthenticated cipher API is provided to implement legacy protocols and
 for use cases where the data integrity and authenticity is guaranteed by
 non-cryptographic means.</p>
-<p class="last">It is recommended that newer protocols use <em><a class="reference internal" href="aead.html#aead"><span class="std std-ref">Authenticated encryption with associated data (AEAD)</span></a></em>.</p>
+<p class="last">It is recommended that newer protocols use <a class="reference internal" href="aead.html#aead"><span class="secref">Authenticated encryption with associated data (AEAD)</span></a>.</p>
 </div>
 <div class="section" id="cipher-algorithms">
-<span id="id1"></span><h2>Cipher algorithms</h2>
+<span id="id1"></span><h2>10.4.1. Cipher algorithms</h2>
 <div class="section" id="PSA_ALG_STREAM_CIPHER">
 <span id="c.PSA_ALG_STREAM_CIPHER"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_STREAM_CIPHER</span></code> (macro)</h3>
 <p>The stream cipher mode of a stream cipher algorithm.</p>
 <pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_ALG_STREAM_CIPHER" title="PSA_ALG_STREAM_CIPHER">PSA_ALG_STREAM_CIPHER</a> ((<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x04800100)
+#define <a class="reference internal" href="#c.PSA_ALG_STREAM_CIPHER" title="PSA_ALG_STREAM_CIPHER">PSA_ALG_STREAM_CIPHER</a> ((<a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x04800100)
 </pre>
-<p>The underlying stream cipher is determined by the key type:</p>
+<p>The underlying stream cipher is determined by the key type. The ARC4 and ChaCha20 ciphers use this algorithm identifier.</p>
+<p class="rubric">ARC4</p>
+<p>To use ARC4, use a key type of <a class="reference internal" href="../keys/types.html#c.PSA_KEY_TYPE_ARC4" title="PSA_KEY_TYPE_ARC4"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_ARC4</span></code></a> and algorithm id <a class="reference internal" href="#c.PSA_ALG_STREAM_CIPHER" title="PSA_ALG_STREAM_CIPHER"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_STREAM_CIPHER</span></code></a>.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The ARC4 cipher is weak and deprecated and is only recommended for use in legacy protocols.</p>
+</div>
+<p>The ARC4 cipher does not use an initialization vector (IV). When using a multi-part cipher operation with the <a class="reference internal" href="#c.PSA_ALG_STREAM_CIPHER" title="PSA_ALG_STREAM_CIPHER"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_STREAM_CIPHER</span></code></a> algorithm and an ARC4 key, <a class="reference internal" href="#c.psa_cipher_generate_iv" title="psa_cipher_generate_iv"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_generate_iv()</span></code></a> and <a class="reference internal" href="#c.psa_cipher_set_iv" title="psa_cipher_set_iv"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_set_iv()</span></code></a> must not be called.</p>
+<p class="rubric">ChaCha20</p>
+<p>To use ChaCha20, use a key type of <a class="reference internal" href="../keys/types.html#c.PSA_KEY_TYPE_CHACHA20" title="PSA_KEY_TYPE_CHACHA20"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_CHACHA20</span></code></a> and algorithm id <a class="reference internal" href="#c.PSA_ALG_STREAM_CIPHER" title="PSA_ALG_STREAM_CIPHER"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_STREAM_CIPHER</span></code></a>.</p>
+<p>Implementations must support the variant that is defined in <span><em>ChaCha20 and Poly1305 for IETF Protocols</em> <a class="reference internal" href="../../about.html#citation-rfc7539"><span class="cite">[RFC7539]</span></a></span> <a class="reference external" href="https://tools.ietf.org/html/rfc7539.html#section-2.4">§2.4</a>, which has a 96-bit nonce and a 32-bit counter. Implementations can optionally also support the original variant, as defined in <span><em>ChaCha, a variant of Salsa20</em> <a class="reference internal" href="../../about.html#citation-chacha20"><span class="cite">[CHACHA20]</span></a></span>, which has a 64-bit nonce and a 64-bit counter. Except where noted, the <a class="reference internal" href="../../about.html#citation-rfc7539"><span class="cite">[RFC7539]</span></a> variant must be used.</p>
+<p>ChaCha20 defines a nonce and an initial counter to be provided to the encryption and decryption operations. When using a ChaCha20 key with the <a class="reference internal" href="#c.PSA_ALG_STREAM_CIPHER" title="PSA_ALG_STREAM_CIPHER"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_STREAM_CIPHER</span></code></a> algorithm, these values are provided using the initialization vector (IV) functions in the following ways:</p>
 <ul class="simple">
-<li>To use ChaCha20, use a key type of <a class="reference internal" href="../keys/types.html#c.PSA_KEY_TYPE_CHACHA20" title="PSA_KEY_TYPE_CHACHA20"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_CHACHA20</span></code></a> and algorithm id <a class="reference internal" href="#c.PSA_ALG_STREAM_CIPHER" title="PSA_ALG_STREAM_CIPHER"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_STREAM_CIPHER</span></code></a>.</li>
-<li>To use ARC4, use a key type of <a class="reference internal" href="../keys/types.html#c.PSA_KEY_TYPE_ARC4" title="PSA_KEY_TYPE_ARC4"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_ARC4</span></code></a> and algorithm id <a class="reference internal" href="#c.PSA_ALG_STREAM_CIPHER" title="PSA_ALG_STREAM_CIPHER"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_STREAM_CIPHER</span></code></a>.</li>
+<li>A call to <a class="reference internal" href="#c.psa_cipher_encrypt" title="psa_cipher_encrypt"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_encrypt()</span></code></a> will generate a random 12-byte nonce, and set the counter value to zero. The random nonce is output as a 12-byte IV value in the output.</li>
+<li>A call to <a class="reference internal" href="#c.psa_cipher_decrypt" title="psa_cipher_decrypt"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_decrypt()</span></code></a> will use first 12 bytes of the input buffer as the nonce and set the counter value to zero.</li>
+<li>A call to <a class="reference internal" href="#c.psa_cipher_generate_iv" title="psa_cipher_generate_iv"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_generate_iv()</span></code></a> on a multi-part cipher operation will generate and return a random 12-byte nonce and set the counter value to zero.</li>
+<li>A call to <a class="reference internal" href="#c.psa_cipher_set_iv" title="psa_cipher_set_iv"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_set_iv()</span></code></a> on a multi-part cipher operation can support the following IV sizes:<ul>
+<li>12 bytes: the provided IV is used as the nonce, and the counter value is set to zero.</li>
+<li>16 bytes: the first four bytes of the IV are used as the counter value (encoded as little-endian), and the remaining 12 bytes is used as the nonce.</li>
+<li>8 bytes: the cipher operation uses the original <a class="reference internal" href="../../about.html#citation-chacha20"><span class="cite">[CHACHA20]</span></a> definition of ChaCha20: the provided IV is used as the 64-bit nonce, and the 64-bit counter value is set to zero.</li>
+<li>It is recommended that implementations do not support other sizes of IV.</li>
+</ul>
+</li>
 </ul>
 </div>
 <div class="section" id="PSA_ALG_CTR">
 <span id="c.PSA_ALG_CTR"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_CTR</span></code> (macro)</h3>
 <p>A stream cipher built using the Counter (CTR) mode of a block cipher.</p>
 <pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_ALG_CTR" title="PSA_ALG_CTR">PSA_ALG_CTR</a> ((<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x04c01000)
+#define <a class="reference internal" href="#c.PSA_ALG_CTR" title="PSA_ALG_CTR">PSA_ALG_CTR</a> ((<a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x04c01000)
 </pre>
-<p>CTR is a stream cipher which is built from a block cipher. The underlying block cipher is determined by the key type. For example, to use AES-128-CTR, use this algorithm with a key of type <a class="reference internal" href="../keys/types.html#c.PSA_KEY_TYPE_AES" title="PSA_KEY_TYPE_AES"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_AES</span></code></a> and a length of 128 bits (16 bytes).</p>
+<p>CTR is a stream cipher which is built from a block cipher. The underlying block cipher is determined by the key type. For example, to use AES-128-CTR, use this algorithm with a key of type <a class="reference internal" href="../keys/types.html#c.PSA_KEY_TYPE_AES" title="PSA_KEY_TYPE_AES"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_AES</span></code></a> and a size of 128 bits (16 bytes).</p>
+<p>The CTR block cipher mode is defined in <span><em>NIST Special Publication 800-38A: Recommendation for Block Cipher Modes of Operation: Methods and Techniques</em> <a class="reference internal" href="../../about.html#citation-sp800-38a"><span class="cite">[SP800-38A]</span></a></span>.</p>
+<p>CTR mode requires a <em>counter block</em> which is the same size as the cipher block length. The counter block is updated for each block (or a partial final block) that is encrypted or decrypted.</p>
+<p>A counter block value must only be used once across all messages encrypted using the same key value. This is typically achieved by splitting the counter block into a nonce, which is unique among all message encrypted with the key, and a counter which is incremented for each block of a message.</p>
+<p>For example, when using AES-CTR encryption, which uses a 16-byte block, the application can provide a 12-byte nonce when setting the IV. This leaves 4 bytes for the counter, allowing up to 2^32 blocks (64GB) of message data to be encrypted in each message.</p>
+<p>The first counter block is constructed from the initialization vector (IV). The initial counter block is is constructed in the following ways:</p>
+<ul class="simple">
+<li>A call to <a class="reference internal" href="#c.psa_cipher_encrypt" title="psa_cipher_encrypt"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_encrypt()</span></code></a> will generate a random counter block value. This is the first block of output.</li>
+<li>A call to <a class="reference internal" href="#c.psa_cipher_decrypt" title="psa_cipher_decrypt"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_decrypt()</span></code></a> will use first block of the input buffer as the initial counter block value.</li>
+<li>A call to <a class="reference internal" href="#c.psa_cipher_generate_iv" title="psa_cipher_generate_iv"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_generate_iv()</span></code></a> on a multi-part cipher operation will generate and return a random counter block value.</li>
+<li>A call to <a class="reference internal" href="#c.psa_cipher_set_iv" title="psa_cipher_set_iv"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_set_iv()</span></code></a> on a multi-part cipher operation requires an IV must be between <code class="docutils literal"><span class="pre">1</span></code> and <em>n</em> bytes in length, where <em>n</em> is the cipher block length. The counter block is initialized using the IV, and padded with zero bytes up to the block length.</li>
+</ul>
+<p>During the counter block update operation, the counter block is treated as a single big-endian encoded integer and the update operation increments this integer by <code class="docutils literal"><span class="pre">1</span></code>.</p>
+<p>This scheme meets the recommendations in Appendix B of <a class="reference internal" href="../../about.html#citation-sp800-38a"><span class="cite psa_c psa_c-cite">[SP800-38A]</span></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The cipher block length can be determined using <a class="reference internal" href="#c.PSA_BLOCK_CIPHER_BLOCK_LENGTH" title="PSA_BLOCK_CIPHER_BLOCK_LENGTH"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_BLOCK_CIPHER_BLOCK_LENGTH()</span></code></a>.</p>
+</div>
 </div>
 <div class="section" id="PSA_ALG_CFB">
 <span id="c.PSA_ALG_CFB"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_CFB</span></code> (macro)</h3>
 <p>A stream cipher built using the Cipher Feedback (CFB) mode of a block cipher.</p>
 <pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_ALG_CFB" title="PSA_ALG_CFB">PSA_ALG_CFB</a> ((<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x04c01100)
+#define <a class="reference internal" href="#c.PSA_ALG_CFB" title="PSA_ALG_CFB">PSA_ALG_CFB</a> ((<a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x04c01100)
 </pre>
-<p>The underlying block cipher is determined by the key type.</p>
+<p>The underlying block cipher is determined by the key type. This is the variant of CFB where each iteration encrypts or decrypts a segment of the input that is the same length as the cipher block size. For example, using <a class="reference internal" href="#c.PSA_ALG_CFB" title="PSA_ALG_CFB"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_CFB</span></code></a> with a key of type <a class="reference internal" href="../keys/types.html#c.PSA_KEY_TYPE_AES" title="PSA_KEY_TYPE_AES"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_AES</span></code></a> will result in the AES-CFB-128 cipher.</p>
+<p>CFB mode requires an initialization vector (IV) that is the same size as the cipher block length.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The cipher block length can be determined using <a class="reference internal" href="#c.PSA_BLOCK_CIPHER_BLOCK_LENGTH" title="PSA_BLOCK_CIPHER_BLOCK_LENGTH"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_BLOCK_CIPHER_BLOCK_LENGTH()</span></code></a>.</p>
+</div>
+<p>The CFB block cipher mode is defined in <span><em>NIST Special Publication 800-38A: Recommendation for Block Cipher Modes of Operation: Methods and Techniques</em> <a class="reference internal" href="../../about.html#citation-sp800-38a"><span class="cite">[SP800-38A]</span></a></span>, using a segment size <em>s</em> equal to the block size <em>b</em>. The definition in <a class="reference internal" href="../../about.html#citation-sp800-38a"><span class="cite psa_c psa_c-cite">[SP800-38A]</span></a> is extended to allow an incomplete final block of input, in which case the algorithm discards the final bytes of the key stream when encrypting or decrypting the final partial block.</p>
 </div>
 <div class="section" id="PSA_ALG_OFB">
 <span id="c.PSA_ALG_OFB"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_OFB</span></code> (macro)</h3>
 <p>A stream cipher built using the Output Feedback (OFB) mode of a block cipher.</p>
 <pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_ALG_OFB" title="PSA_ALG_OFB">PSA_ALG_OFB</a> ((<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x04c01200)
+#define <a class="reference internal" href="#c.PSA_ALG_OFB" title="PSA_ALG_OFB">PSA_ALG_OFB</a> ((<a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x04c01200)
 </pre>
 <p>The underlying block cipher is determined by the key type.</p>
+<p>OFB mode requires an initialization vector (IV) that is the same size as the cipher block length. OFB mode requires that the IV is a nonce, and must be unique for each use of the mode with the same key.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The cipher block length can be determined using <a class="reference internal" href="#c.PSA_BLOCK_CIPHER_BLOCK_LENGTH" title="PSA_BLOCK_CIPHER_BLOCK_LENGTH"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_BLOCK_CIPHER_BLOCK_LENGTH()</span></code></a>.</p>
+</div>
+<p>The OFB block cipher mode is defined in <span><em>NIST Special Publication 800-38A: Recommendation for Block Cipher Modes of Operation: Methods and Techniques</em> <a class="reference internal" href="../../about.html#citation-sp800-38a"><span class="cite">[SP800-38A]</span></a></span>.</p>
 </div>
 <div class="section" id="PSA_ALG_XTS">
 <span id="c.PSA_ALG_XTS"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_XTS</span></code> (macro)</h3>
-<p>The XTS cipher mode of a block cipher.</p>
+<p>The XEX with Ciphertext Stealing (XTS) cipher mode of a block cipher.</p>
 <pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_ALG_XTS" title="PSA_ALG_XTS">PSA_ALG_XTS</a> ((<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x0440ff00)
+#define <a class="reference internal" href="#c.PSA_ALG_XTS" title="PSA_ALG_XTS">PSA_ALG_XTS</a> ((<a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x0440ff00)
 </pre>
-<p>XTS is a cipher mode which is built from a block cipher. It requires at least one full block of input, but beyond this minimum the input does not need to be a whole number of blocks.</p>
+<p>XTS is a cipher mode which is built from a block cipher, designed for use in disk encryption. It requires at least one full cipher block length of input, but beyond this minimum the input does not need to be a whole number of blocks.</p>
+<p>XTS mode uses two keys for the underlying block cipher. These are provided by using a key that is twice the normal key size for the cipher. For example, to use AES-256-XTS the application must create a key with type <a class="reference internal" href="../keys/types.html#c.PSA_KEY_TYPE_AES" title="PSA_KEY_TYPE_AES"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_AES</span></code></a> and bit size <code class="docutils literal"><span class="pre">512</span></code>.</p>
+<p>XTS mode requires an initialization vector (IV) that is the same size as the cipher block length. The IV for XTS is typically defined to be the sector number of the disk block being encrypted or decrypted.</p>
+<p>The XTS block cipher mode is defined in <span><em>1619-2018 - IEEE Standard for Cryptographic Protection of Data on Block-Oriented Storage Devices</em> <a class="reference internal" href="../../about.html#citation-ieee-xts"><span class="cite">[IEEE-XTS]</span></a></span>.</p>
 </div>
 <div class="section" id="PSA_ALG_ECB_NO_PADDING">
 <span id="c.PSA_ALG_ECB_NO_PADDING"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_ECB_NO_PADDING</span></code> (macro)</h3>
-<p>The Electronic Code Book (ECB) mode of a block cipher, with no padding.</p>
+<p>The Electronic Codebook (ECB) mode of a block cipher, with no padding.</p>
 <pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_ALG_ECB_NO_PADDING" title="PSA_ALG_ECB_NO_PADDING">PSA_ALG_ECB_NO_PADDING</a> ((<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x04404400)
+#define <a class="reference internal" href="#c.PSA_ALG_ECB_NO_PADDING" title="PSA_ALG_ECB_NO_PADDING">PSA_ALG_ECB_NO_PADDING</a> ((<a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x04404400)
 </pre>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">ECB mode does not protect the confidentiality of the encrypted data except in extremely narrow circumstances. It is recommended that applications only use ECB if they need to construct an operating mode that the implementation does not provide. Implementations are encouraged to provide the modes that applications need in preference to supporting direct access to ECB.</p>
 </div>
 <p>The underlying block cipher is determined by the key type.</p>
-<p>This symmetric cipher mode can only be used with messages whose lengths are whole number of blocks for the chosen block cipher.</p>
+<p>This symmetric cipher mode can only be used with messages whose lengths are a multiple of the block size of the chosen block cipher.</p>
 <p>ECB mode does not accept an initialization vector (IV). When using a multi-part cipher operation with this algorithm, <a class="reference internal" href="#c.psa_cipher_generate_iv" title="psa_cipher_generate_iv"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_generate_iv()</span></code></a> and <a class="reference internal" href="#c.psa_cipher_set_iv" title="psa_cipher_set_iv"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_set_iv()</span></code></a> must not be called.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The cipher block length can be determined using <a class="reference internal" href="#c.PSA_BLOCK_CIPHER_BLOCK_LENGTH" title="PSA_BLOCK_CIPHER_BLOCK_LENGTH"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_BLOCK_CIPHER_BLOCK_LENGTH()</span></code></a>.</p>
+</div>
+<p>The ECB block cipher mode is defined in <span><em>NIST Special Publication 800-38A: Recommendation for Block Cipher Modes of Operation: Methods and Techniques</em> <a class="reference internal" href="../../about.html#citation-sp800-38a"><span class="cite">[SP800-38A]</span></a></span>.</p>
 </div>
 <div class="section" id="PSA_ALG_CBC_NO_PADDING">
 <span id="c.PSA_ALG_CBC_NO_PADDING"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_CBC_NO_PADDING</span></code> (macro)</h3>
 <p>The Cipher Block Chaining (CBC) mode of a block cipher, with no padding.</p>
 <pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_ALG_CBC_NO_PADDING" title="PSA_ALG_CBC_NO_PADDING">PSA_ALG_CBC_NO_PADDING</a> ((<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x04404000)
+#define <a class="reference internal" href="#c.PSA_ALG_CBC_NO_PADDING" title="PSA_ALG_CBC_NO_PADDING">PSA_ALG_CBC_NO_PADDING</a> ((<a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x04404000)
 </pre>
 <p>The underlying block cipher is determined by the key type.</p>
-<p>This symmetric cipher mode can only be used with messages whose lengths are whole number of blocks for the chosen block cipher.</p>
+<p>This symmetric cipher mode can only be used with messages whose lengths are a multiple of the block size of the chosen block cipher.</p>
+<p>CBC mode requires an initialization vector (IV) that is the same size as the cipher block length.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The cipher block length can be determined using <a class="reference internal" href="#c.PSA_BLOCK_CIPHER_BLOCK_LENGTH" title="PSA_BLOCK_CIPHER_BLOCK_LENGTH"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_BLOCK_CIPHER_BLOCK_LENGTH()</span></code></a>.</p>
+</div>
+<p>The CBC block cipher mode is defined in <span><em>NIST Special Publication 800-38A: Recommendation for Block Cipher Modes of Operation: Methods and Techniques</em> <a class="reference internal" href="../../about.html#citation-sp800-38a"><span class="cite">[SP800-38A]</span></a></span>.</p>
 </div>
 <div class="section" id="PSA_ALG_CBC_PKCS7">
 <span id="c.PSA_ALG_CBC_PKCS7"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_CBC_PKCS7</span></code> (macro)</h3>
 <p>The Cipher Block Chaining (CBC) mode of a block cipher, with PKCS#7 padding.</p>
 <pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_ALG_CBC_PKCS7" title="PSA_ALG_CBC_PKCS7">PSA_ALG_CBC_PKCS7</a> ((<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x04404100)
+#define <a class="reference internal" href="#c.PSA_ALG_CBC_PKCS7" title="PSA_ALG_CBC_PKCS7">PSA_ALG_CBC_PKCS7</a> ((<a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x04404100)
 </pre>
 <p>The underlying block cipher is determined by the key type.</p>
-<p>This is the padding method defined by PKCS#7 <a class="reference external" href="https://tools.ietf.org/html/rfc2315.html#section-10.3">RFC 2315 §10.3</a>.</p>
+<p>CBC mode requires an initialization vector (IV) that is the same size as the cipher block length.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The cipher block length can be determined using <a class="reference internal" href="#c.PSA_BLOCK_CIPHER_BLOCK_LENGTH" title="PSA_BLOCK_CIPHER_BLOCK_LENGTH"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_BLOCK_CIPHER_BLOCK_LENGTH()</span></code></a>.</p>
+</div>
+<p>The CBC block cipher mode is defined in <span><em>NIST Special Publication 800-38A: Recommendation for Block Cipher Modes of Operation: Methods and Techniques</em> <a class="reference internal" href="../../about.html#citation-sp800-38a"><span class="cite">[SP800-38A]</span></a></span>. The padding operation is defined by <span><em>PKCS #7: Cryptographic Message Syntax Version 1.5</em> <a class="reference internal" href="../../about.html#citation-rfc2315"><span class="cite">[RFC2315]</span></a></span> <a class="reference external" href="https://tools.ietf.org/html/rfc2315.html#section-10.3">§10.3</a>.</p>
 </div>
 </div>
 <div class="section" id="single-part-cipher-functions">
-<h2>Single-part cipher functions</h2>
+<h2>10.4.2. Single-part cipher functions</h2>
 <div class="section" id="psa_cipher_encrypt">
 <span id="c.psa_cipher_encrypt"></span><h3><code class="docutils literal"><span class="pre">psa_cipher_encrypt</span></code> (function)</h3>
 <p>Encrypt a message using a symmetric cipher.</p>
 <pre class="literal-block">
-<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_cipher_encrypt" title="psa_cipher_encrypt">psa_cipher_encrypt</a>(<a class="reference internal" href="../keys/attributes.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> key,
-                                <a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a> alg,
+<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_cipher_encrypt" title="psa_cipher_encrypt">psa_cipher_encrypt</a>(<a class="reference internal" href="../keys/ids.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> key,
+                                <a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a> alg,
                                 const uint8_t * input,
                                 size_t input_length,
                                 uint8_t * output,
@@ -145,9 +213,9 @@ non-cryptographic means.</p>
 <dl class="docutils">
 <dt> <code class="docutils literal"><span class="pre">key</span></code></dt>
 <dd>Identifier of the key to use for the operation.
-It must allow the usage <a class="reference internal" href="../keys/usage.html#c.PSA_KEY_USAGE_ENCRYPT" title="PSA_KEY_USAGE_ENCRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_ENCRYPT</span></code></a>.</dd>
+It must allow the usage <a class="reference internal" href="../keys/policy.html#c.PSA_KEY_USAGE_ENCRYPT" title="PSA_KEY_USAGE_ENCRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_ENCRYPT</span></code></a>.</dd>
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>The cipher algorithm to compute (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_CIPHER" title="PSA_ALG_IS_CIPHER"><code class="docutils literal"><span class="pre">PSA_ALG_IS_CIPHER</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>The cipher algorithm to compute (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_CIPHER" title="PSA_ALG_IS_CIPHER"><code class="docutils literal"><span class="pre">PSA_ALG_IS_CIPHER</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 <dt> <code class="docutils literal"><span class="pre">input</span></code></dt>
 <dd>Buffer containing the message to encrypt.</dd>
 <dt> <code class="docutils literal"><span class="pre">input_length</span></code></dt>
@@ -171,9 +239,11 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_HANDLE" title="PSA_ERROR_INVALID_HANDLE"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_HANDLE</span></code></a></dt>
 <dd></dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_PERMITTED" title="PSA_ERROR_NOT_PERMITTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_PERMITTED</span></code></a></dt>
-<dd>The key does not have the <a class="reference internal" href="../keys/usage.html#c.PSA_KEY_USAGE_ENCRYPT" title="PSA_KEY_USAGE_ENCRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_ENCRYPT</span></code></a> flag, or it does not permit the requested algorithm.</dd>
+<dd>The key does not have the <a class="reference internal" href="../keys/policy.html#c.PSA_KEY_USAGE_ENCRYPT" title="PSA_KEY_USAGE_ENCRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_ENCRYPT</span></code></a> flag, or it does not permit the requested algorithm.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
 <dd><code class="docutils literal"><span class="pre">key</span></code> is not compatible with <code class="docutils literal"><span class="pre">alg</span></code>.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
+<dd>The <code class="docutils literal"><span class="pre">input_length</span></code> is not valid for the algorithm and key type. For example, the algorithm is a based on block cipher and requires a whole number of blocks, but the total input size is not a multiple of the block size.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_SUPPORTED" title="PSA_ERROR_NOT_SUPPORTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_SUPPORTED</span></code></a></dt>
 <dd><code class="docutils literal"><span class="pre">alg</span></code> is not supported or is not a cipher algorithm.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BUFFER_TOO_SMALL" title="PSA_ERROR_BUFFER_TOO_SMALL"><code class="docutils literal"><span class="pre">PSA_ERROR_BUFFER_TOO_SMALL</span></code></a></dt>
@@ -205,8 +275,8 @@ The output of <a class="reference internal" href="#c.psa_cipher_encrypt" title="
 <span id="c.psa_cipher_decrypt"></span><h3><code class="docutils literal"><span class="pre">psa_cipher_decrypt</span></code> (function)</h3>
 <p>Decrypt a message using a symmetric cipher.</p>
 <pre class="literal-block">
-<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_cipher_decrypt" title="psa_cipher_decrypt">psa_cipher_decrypt</a>(<a class="reference internal" href="../keys/attributes.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> key,
-                                <a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a> alg,
+<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_cipher_decrypt" title="psa_cipher_decrypt">psa_cipher_decrypt</a>(<a class="reference internal" href="../keys/ids.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> key,
+                                <a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a> alg,
                                 const uint8_t * input,
                                 size_t input_length,
                                 uint8_t * output,
@@ -217,9 +287,9 @@ The output of <a class="reference internal" href="#c.psa_cipher_encrypt" title="
 <dl class="docutils">
 <dt> <code class="docutils literal"><span class="pre">key</span></code></dt>
 <dd>Identifier of the key to use for the operation. It must remain valid until the operation terminates.
-It must allow the usage <a class="reference internal" href="../keys/usage.html#c.PSA_KEY_USAGE_DECRYPT" title="PSA_KEY_USAGE_DECRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_DECRYPT</span></code></a>.</dd>
+It must allow the usage <a class="reference internal" href="../keys/policy.html#c.PSA_KEY_USAGE_DECRYPT" title="PSA_KEY_USAGE_DECRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_DECRYPT</span></code></a>.</dd>
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>The cipher algorithm to compute (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_CIPHER" title="PSA_ALG_IS_CIPHER"><code class="docutils literal"><span class="pre">PSA_ALG_IS_CIPHER</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>The cipher algorithm to compute (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_CIPHER" title="PSA_ALG_IS_CIPHER"><code class="docutils literal"><span class="pre">PSA_ALG_IS_CIPHER</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 <dt> <code class="docutils literal"><span class="pre">input</span></code></dt>
 <dd>Buffer containing the message to decrypt. This consists of the IV followed by the ciphertext proper.</dd>
 <dt> <code class="docutils literal"><span class="pre">input_length</span></code></dt>
@@ -243,9 +313,11 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_HANDLE" title="PSA_ERROR_INVALID_HANDLE"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_HANDLE</span></code></a></dt>
 <dd></dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_PERMITTED" title="PSA_ERROR_NOT_PERMITTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_PERMITTED</span></code></a></dt>
-<dd>The key does not have the <a class="reference internal" href="../keys/usage.html#c.PSA_KEY_USAGE_DECRYPT" title="PSA_KEY_USAGE_DECRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_DECRYPT</span></code></a> flag, or it does not permit the requested algorithm.</dd>
+<dd>The key does not have the <a class="reference internal" href="../keys/policy.html#c.PSA_KEY_USAGE_DECRYPT" title="PSA_KEY_USAGE_DECRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_DECRYPT</span></code></a> flag, or it does not permit the requested algorithm.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
 <dd><code class="docutils literal"><span class="pre">key</span></code> is not compatible with <code class="docutils literal"><span class="pre">alg</span></code>.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
+<dd>The <code class="docutils literal"><span class="pre">input_length</span></code> is not valid for the algorithm and key type. For example, the algorithm is a based on block cipher and requires a whole number of blocks, but the total input size is not a multiple of the block size.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_SUPPORTED" title="PSA_ERROR_NOT_SUPPORTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_SUPPORTED</span></code></a></dt>
 <dd><code class="docutils literal"><span class="pre">alg</span></code> is not supported or is not a cipher algorithm.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BUFFER_TOO_SMALL" title="PSA_ERROR_BUFFER_TOO_SMALL"><code class="docutils literal"><span class="pre">PSA_ERROR_BUFFER_TOO_SMALL</span></code></a></dt>
@@ -274,7 +346,7 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 </div>
 </div>
 <div class="section" id="multi-part-cipher-operations">
-<h2>Multi-part cipher operations</h2>
+<h2>10.4.3. Multi-part cipher operations</h2>
 <div class="section" id="psa_cipher_operation_t">
 <span id="c.psa_cipher_operation_t"></span><h3><code class="docutils literal"><span class="pre">psa_cipher_operation_t</span></code> (type)</h3>
 <p>The type of the state object for multi-part cipher operations.</p>
@@ -328,8 +400,8 @@ operation = <a class="reference internal" href="#c.psa_cipher_operation_init" ti
 <p>Set the key for a multi-part symmetric encryption operation.</p>
 <pre class="literal-block">
 <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_cipher_encrypt_setup" title="psa_cipher_encrypt_setup">psa_cipher_encrypt_setup</a>(<a class="reference internal" href="#c.psa_cipher_operation_t" title="psa_cipher_operation_t">psa_cipher_operation_t</a> * operation,
-                                      <a class="reference internal" href="../keys/attributes.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> key,
-                                      <a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a> alg);
+                                      <a class="reference internal" href="../keys/ids.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> key,
+                                      <a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a> alg);
 </pre>
 <p class="rubric">Parameters</p>
 <dl class="docutils">
@@ -337,9 +409,9 @@ operation = <a class="reference internal" href="#c.psa_cipher_operation_init" ti
 <dd>The operation object to set up. It must have been initialized as per the documentation for <a class="reference internal" href="#c.psa_cipher_operation_t" title="psa_cipher_operation_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_cipher_operation_t</span></code></a> and not yet in use.</dd>
 <dt> <code class="docutils literal"><span class="pre">key</span></code></dt>
 <dd>Identifier of the key to use for the operation. It must remain valid until the operation terminates.
-It must allow the usage <a class="reference internal" href="../keys/usage.html#c.PSA_KEY_USAGE_ENCRYPT" title="PSA_KEY_USAGE_ENCRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_ENCRYPT</span></code></a>.</dd>
+It must allow the usage <a class="reference internal" href="../keys/policy.html#c.PSA_KEY_USAGE_ENCRYPT" title="PSA_KEY_USAGE_ENCRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_ENCRYPT</span></code></a>.</dd>
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>The cipher algorithm to compute (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_CIPHER" title="PSA_ALG_IS_CIPHER"><code class="docutils literal"><span class="pre">PSA_ALG_IS_CIPHER</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>The cipher algorithm to compute (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_CIPHER" title="PSA_ALG_IS_CIPHER"><code class="docutils literal"><span class="pre">PSA_ALG_IS_CIPHER</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 </dl>
 <p class="rubric">Returns: <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t"><code class="docutils literal"><span class="pre">psa_status_t</span></code></a></p>
 <dl class="docutils">
@@ -348,7 +420,7 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_HANDLE" title="PSA_ERROR_INVALID_HANDLE"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_HANDLE</span></code></a></dt>
 <dd></dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_PERMITTED" title="PSA_ERROR_NOT_PERMITTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_PERMITTED</span></code></a></dt>
-<dd>The key does not have the <a class="reference internal" href="../keys/usage.html#c.PSA_KEY_USAGE_ENCRYPT" title="PSA_KEY_USAGE_ENCRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_ENCRYPT</span></code></a> flag, or it does not permit the requested algorithm.</dd>
+<dd>The key does not have the <a class="reference internal" href="../keys/policy.html#c.PSA_KEY_USAGE_ENCRYPT" title="PSA_KEY_USAGE_ENCRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_ENCRYPT</span></code></a> flag, or it does not permit the requested algorithm.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
 <dd><code class="docutils literal"><span class="pre">key</span></code> is not compatible with <code class="docutils literal"><span class="pre">alg</span></code>.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_SUPPORTED" title="PSA_ERROR_NOT_SUPPORTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_SUPPORTED</span></code></a></dt>
@@ -394,8 +466,8 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 <p>Set the key for a multi-part symmetric decryption operation.</p>
 <pre class="literal-block">
 <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_cipher_decrypt_setup" title="psa_cipher_decrypt_setup">psa_cipher_decrypt_setup</a>(<a class="reference internal" href="#c.psa_cipher_operation_t" title="psa_cipher_operation_t">psa_cipher_operation_t</a> * operation,
-                                      <a class="reference internal" href="../keys/attributes.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> key,
-                                      <a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a> alg);
+                                      <a class="reference internal" href="../keys/ids.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> key,
+                                      <a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a> alg);
 </pre>
 <p class="rubric">Parameters</p>
 <dl class="docutils">
@@ -403,9 +475,9 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 <dd>The operation object to set up. It must have been initialized as per the documentation for <a class="reference internal" href="#c.psa_cipher_operation_t" title="psa_cipher_operation_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_cipher_operation_t</span></code></a> and not yet in use.</dd>
 <dt> <code class="docutils literal"><span class="pre">key</span></code></dt>
 <dd>Identifier of the key to use for the operation. It must remain valid until the operation terminates.
-It must allow the usage <a class="reference internal" href="../keys/usage.html#c.PSA_KEY_USAGE_DECRYPT" title="PSA_KEY_USAGE_DECRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_DECRYPT</span></code></a>.</dd>
+It must allow the usage <a class="reference internal" href="../keys/policy.html#c.PSA_KEY_USAGE_DECRYPT" title="PSA_KEY_USAGE_DECRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_DECRYPT</span></code></a>.</dd>
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>The cipher algorithm to compute (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_CIPHER" title="PSA_ALG_IS_CIPHER"><code class="docutils literal"><span class="pre">PSA_ALG_IS_CIPHER</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>The cipher algorithm to compute (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_CIPHER" title="PSA_ALG_IS_CIPHER"><code class="docutils literal"><span class="pre">PSA_ALG_IS_CIPHER</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 </dl>
 <p class="rubric">Returns: <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t"><code class="docutils literal"><span class="pre">psa_status_t</span></code></a></p>
 <dl class="docutils">
@@ -414,7 +486,7 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_HANDLE" title="PSA_ERROR_INVALID_HANDLE"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_HANDLE</span></code></a></dt>
 <dd></dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_PERMITTED" title="PSA_ERROR_NOT_PERMITTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_PERMITTED</span></code></a></dt>
-<dd>The key does not have the <a class="reference internal" href="../keys/usage.html#c.PSA_KEY_USAGE_DECRYPT" title="PSA_KEY_USAGE_DECRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_DECRYPT</span></code></a> flag, or it does not permit the requested algorithm.</dd>
+<dd>The key does not have the <a class="reference internal" href="../keys/policy.html#c.PSA_KEY_USAGE_DECRYPT" title="PSA_KEY_USAGE_DECRYPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_DECRYPT</span></code></a> flag, or it does not permit the requested algorithm.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
 <dd><code class="docutils literal"><span class="pre">key</span></code> is not compatible with <code class="docutils literal"><span class="pre">alg</span></code>.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_SUPPORTED" title="PSA_ERROR_NOT_SUPPORTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_SUPPORTED</span></code></a></dt>
@@ -723,7 +795,7 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 </div>
 </div>
 <div class="section" id="support-macros">
-<h2>Support macros</h2>
+<h2>10.4.4. Support macros</h2>
 <div class="section" id="PSA_ALG_IS_STREAM_CIPHER">
 <span id="c.PSA_ALG_IS_STREAM_CIPHER"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_IS_STREAM_CIPHER</span></code> (macro)</h3>
 <p>Whether the specified algorithm is a stream cipher.</p>
@@ -733,7 +805,7 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 <p class="rubric">Parameters</p>
 <dl class="docutils">
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>An algorithm identifier (value of type <a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_algorithm_t</span></code></a>).</dd>
+<dd>An algorithm identifier (value of type <a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_algorithm_t</span></code></a>).</dd>
 </dl>
 <p class="rubric">Returns</p>
 <p><code class="docutils literal"><span class="pre">1</span></code> if <code class="docutils literal"><span class="pre">alg</span></code> is a stream cipher algorithm, <code class="docutils literal"><span class="pre">0</span></code> otherwise. This macro can return either <code class="docutils literal"><span class="pre">0</span></code> or <code class="docutils literal"><span class="pre">1</span></code> if <code class="docutils literal"><span class="pre">alg</span></code> is not a supported algorithm identifier or if it is not a symmetric cipher algorithm.</p>
@@ -752,7 +824,7 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 <dt> <code class="docutils literal"><span class="pre">key_type</span></code></dt>
 <dd>A symmetric key type that is compatible with algorithm <code class="docutils literal"><span class="pre">alg</span></code>.</dd>
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>A cipher algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_CIPHER" title="PSA_ALG_IS_CIPHER"><code class="docutils literal"><span class="pre">PSA_ALG_IS_CIPHER</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>A cipher algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_CIPHER" title="PSA_ALG_IS_CIPHER"><code class="docutils literal"><span class="pre">PSA_ALG_IS_CIPHER</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 <dt> <code class="docutils literal"><span class="pre">input_length</span></code></dt>
 <dd>Size of the input in bytes.</dd>
 </dl>
@@ -790,7 +862,7 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 <dt> <code class="docutils literal"><span class="pre">key_type</span></code></dt>
 <dd>A symmetric key type that is compatible with algorithm <code class="docutils literal"><span class="pre">alg</span></code>.</dd>
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>A cipher algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_CIPHER" title="PSA_ALG_IS_CIPHER"><code class="docutils literal"><span class="pre">PSA_ALG_IS_CIPHER</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>A cipher algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_CIPHER" title="PSA_ALG_IS_CIPHER"><code class="docutils literal"><span class="pre">PSA_ALG_IS_CIPHER</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 <dt> <code class="docutils literal"><span class="pre">input_length</span></code></dt>
 <dd>Size of the input in bytes.</dd>
 </dl>
@@ -827,7 +899,7 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 <dt> <code class="docutils literal"><span class="pre">key_type</span></code></dt>
 <dd>A symmetric key type that is compatible with algorithm <code class="docutils literal"><span class="pre">alg</span></code>.</dd>
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>A cipher algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_CIPHER" title="PSA_ALG_IS_CIPHER"><code class="docutils literal"><span class="pre">PSA_ALG_IS_CIPHER</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>A cipher algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_CIPHER" title="PSA_ALG_IS_CIPHER"><code class="docutils literal"><span class="pre">PSA_ALG_IS_CIPHER</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 </dl>
 <p class="rubric">Returns</p>
 <p>The default IV size for the specified key type and algorithm.
@@ -859,7 +931,7 @@ An implementation can return either <code class="docutils literal"><span class="
 <dt> <code class="docutils literal"><span class="pre">key_type</span></code></dt>
 <dd>A symmetric key type that is compatible with algorithm <code class="docutils literal"><span class="pre">alg</span></code>.</dd>
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>A cipher algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_CIPHER" title="PSA_ALG_IS_CIPHER"><code class="docutils literal"><span class="pre">PSA_ALG_IS_CIPHER</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>A cipher algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_CIPHER" title="PSA_ALG_IS_CIPHER"><code class="docutils literal"><span class="pre">PSA_ALG_IS_CIPHER</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 <dt> <code class="docutils literal"><span class="pre">input_length</span></code></dt>
 <dd>Size of the input in bytes.</dd>
 </dl>
@@ -897,7 +969,7 @@ An implementation can return either <code class="docutils literal"><span class="
 <dt> <code class="docutils literal"><span class="pre">key_type</span></code></dt>
 <dd>A symmetric key type that is compatible with algorithm <code class="docutils literal"><span class="pre">alg</span></code>.</dd>
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>A cipher algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_CIPHER" title="PSA_ALG_IS_CIPHER"><code class="docutils literal"><span class="pre">PSA_ALG_IS_CIPHER</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>A cipher algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_CIPHER" title="PSA_ALG_IS_CIPHER"><code class="docutils literal"><span class="pre">PSA_ALG_IS_CIPHER</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 </dl>
 <p class="rubric">Returns</p>
 <p>A sufficient output size for the specified key type and algorithm. If the key type or cipher algorithm is not recognized, or the parameters are incompatible, return <code class="docutils literal"><span class="pre">0</span></code>. An implementation can return either <code class="docutils literal"><span class="pre">0</span></code> or a correct size for a key type and cipher algorithm that it recognizes, but does not support.</p>
@@ -922,7 +994,7 @@ An implementation can return either <code class="docutils literal"><span class="
 <p class="rubric">Parameters</p>
 <dl class="docutils">
 <dt> <code class="docutils literal"><span class="pre">type</span></code></dt>
-<dd>A cipher key type (value of type <a class="reference internal" href="../keys/attributes.html#c.psa_key_type_t" title="psa_key_type_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_type_t</span></code></a>).</dd>
+<dd>A cipher key type (value of type <a class="reference internal" href="../keys/types.html#c.psa_key_type_t" title="psa_key_type_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_type_t</span></code></a>).</dd>
 </dl>
 <p class="rubric">Returns</p>
 <p>The block size for a block cipher, or <code class="docutils literal"><span class="pre">1</span></code> for a stream cipher. The return value is undefined if <code class="docutils literal"><span class="pre">type</span></code> is not a supported cipher key type.</p>
@@ -957,76 +1029,52 @@ An implementation can return either <code class="docutils literal"><span class="
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="../../index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Unauthenticated ciphers</a><ul>
-<li><a class="reference internal" href="#cipher-algorithms">Cipher algorithms</a><ul>
-<li><a class="reference internal" href="#PSA_ALG_STREAM_CIPHER"><code class="docutils literal"><span class="pre">PSA_ALG_STREAM_CIPHER</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_CTR"><code class="docutils literal"><span class="pre">PSA_ALG_CTR</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_CFB"><code class="docutils literal"><span class="pre">PSA_ALG_CFB</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_OFB"><code class="docutils literal"><span class="pre">PSA_ALG_OFB</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_XTS"><code class="docutils literal"><span class="pre">PSA_ALG_XTS</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_ECB_NO_PADDING"><code class="docutils literal"><span class="pre">PSA_ALG_ECB_NO_PADDING</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_CBC_NO_PADDING"><code class="docutils literal"><span class="pre">PSA_ALG_CBC_NO_PADDING</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_CBC_PKCS7"><code class="docutils literal"><span class="pre">PSA_ALG_CBC_PKCS7</span></code> (macro)</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#single-part-cipher-functions">Single-part cipher functions</a><ul>
-<li><a class="reference internal" href="#psa_cipher_encrypt"><code class="docutils literal"><span class="pre">psa_cipher_encrypt</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_cipher_decrypt"><code class="docutils literal"><span class="pre">psa_cipher_decrypt</span></code> (function)</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#multi-part-cipher-operations">Multi-part cipher operations</a><ul>
-<li><a class="reference internal" href="#psa_cipher_operation_t"><code class="docutils literal"><span class="pre">psa_cipher_operation_t</span></code> (type)</a></li>
-<li><a class="reference internal" href="#PSA_CIPHER_OPERATION_INIT"><code class="docutils literal"><span class="pre">PSA_CIPHER_OPERATION_INIT</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#psa_cipher_operation_init"><code class="docutils literal"><span class="pre">psa_cipher_operation_init</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_cipher_encrypt_setup"><code class="docutils literal"><span class="pre">psa_cipher_encrypt_setup</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_cipher_decrypt_setup"><code class="docutils literal"><span class="pre">psa_cipher_decrypt_setup</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_cipher_generate_iv"><code class="docutils literal"><span class="pre">psa_cipher_generate_iv</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_cipher_set_iv"><code class="docutils literal"><span class="pre">psa_cipher_set_iv</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_cipher_update"><code class="docutils literal"><span class="pre">psa_cipher_update</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_cipher_finish"><code class="docutils literal"><span class="pre">psa_cipher_finish</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_cipher_abort"><code class="docutils literal"><span class="pre">psa_cipher_abort</span></code> (function)</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#support-macros">Support macros</a><ul>
-<li><a class="reference internal" href="#PSA_ALG_IS_STREAM_CIPHER"><code class="docutils literal"><span class="pre">PSA_ALG_IS_STREAM_CIPHER</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_CIPHER_ENCRYPT_OUTPUT_SIZE"><code class="docutils literal"><span class="pre">PSA_CIPHER_ENCRYPT_OUTPUT_SIZE</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_CIPHER_ENCRYPT_OUTPUT_MAX_SIZE"><code class="docutils literal"><span class="pre">PSA_CIPHER_ENCRYPT_OUTPUT_MAX_SIZE</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_CIPHER_DECRYPT_OUTPUT_SIZE"><code class="docutils literal"><span class="pre">PSA_CIPHER_DECRYPT_OUTPUT_SIZE</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_CIPHER_DECRYPT_OUTPUT_MAX_SIZE"><code class="docutils literal"><span class="pre">PSA_CIPHER_DECRYPT_OUTPUT_MAX_SIZE</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_CIPHER_IV_LENGTH"><code class="docutils literal"><span class="pre">PSA_CIPHER_IV_LENGTH</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_CIPHER_IV_MAX_SIZE"><code class="docutils literal"><span class="pre">PSA_CIPHER_IV_MAX_SIZE</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_CIPHER_UPDATE_OUTPUT_SIZE"><code class="docutils literal"><span class="pre">PSA_CIPHER_UPDATE_OUTPUT_SIZE</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_CIPHER_UPDATE_OUTPUT_MAX_SIZE"><code class="docutils literal"><span class="pre">PSA_CIPHER_UPDATE_OUTPUT_MAX_SIZE</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_CIPHER_FINISH_OUTPUT_SIZE"><code class="docutils literal"><span class="pre">PSA_CIPHER_FINISH_OUTPUT_SIZE</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_CIPHER_FINISH_OUTPUT_MAX_SIZE"><code class="docutils literal"><span class="pre">PSA_CIPHER_FINISH_OUTPUT_MAX_SIZE</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_BLOCK_CIPHER_BLOCK_LENGTH"><code class="docutils literal"><span class="pre">PSA_BLOCK_CIPHER_BLOCK_LENGTH</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_BLOCK_CIPHER_BLOCK_MAX_SIZE"><code class="docutils literal"><span class="pre">PSA_BLOCK_CIPHER_BLOCK_MAX_SIZE</span></code> (macro)</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
+        <div class="sphinxsidebarwrapper"><h3><a href="../../index.html"><b>PSA Crypto API</b></a></h3>
+IHI 0086<br/>
+Non-confidential<br/>
+Version 1.0.1
+<span style="color: red; font-weight: bold;"></span>
 <ul>
-  <li><a href="../../index.html">Documentation overview</a><ul>
-  <li><a href="index.html">Cryptographic operation reference</a><ul>
-      <li>Previous: <a href="macs.html" title="previous chapter">Message authentication codes (MAC)</a></li>
-      <li>Next: <a href="aead.html" title="next chapter">Authenticated encryption with associated data (AEAD)</a></li>
-  </ul></li>
-  </ul></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About this document</a></li>
 </ul>
-</div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../../_sources/api/ops/ciphers.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview/intro.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/goals.html">2. Design goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/functionality.html">3. Functionality overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/sample-arch.html">4. Sample architectures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/conventions.html">5. Library conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/implementation.html">6. Implementation considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/usage.html">7. Usage considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../library/index.html">8. Library management reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../keys/index.html">9. Key management reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">10. Cryptographic operation reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="algorithms.html">10.1. Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hashes.html">10.2. Message digests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="macs.html">10.3. Message authentication codes (MAC)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">10.4. Unauthenticated ciphers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cipher-algorithms">10.4.1. Cipher algorithms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#single-part-cipher-functions">10.4.2. Single-part cipher functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#multi-part-cipher-operations">10.4.3. Multi-part cipher operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#support-macros">10.4.4. Support macros</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="aead.html">10.5. Authenticated encryption with associated data (AEAD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kdf.html">10.6. Key derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sign.html">10.7. Asymmetric signature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pke.html">10.8. Asymmetric encryption</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ka.html">10.9. Key agreement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rng.html">10.10. Other cryptographic services</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../appendix/example_header.html">Example header file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendix/specdef_values.html">Example macro implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendix/history.html">Changes to the API</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../psa_c-identifiers.html">Index of API elements</a></li>
+</ul>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
@@ -1042,15 +1090,12 @@ An implementation can return either <code class="docutils literal"><span class="
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy; 2019-2020, Arm Limited or its affiliates. All rights reserved.
+      &copy; 2018-2020, Arm Limited or its affiliates. All rights reserved.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
-      |
-      <a href="../../_sources/api/ops/ciphers.rst.txt"
-          rel="nofollow">Page source</a>
     </div>
 
     

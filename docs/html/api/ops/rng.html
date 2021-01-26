@@ -5,26 +5,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Other cryptographic services &#8212; PSA Crypto API 1.0.0 documentation</title>
+    <title>10.10. Other cryptographic services &#8212; PSA Crypto API 1.0.1 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '1.0.0',
+        VERSION:     '1.0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
+        HAS_SOURCE:  false,
         SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Example header file" href="../../appendix/example_header.html" />
-    <link rel="prev" title="Key agreement" href="ka.html" />
+    <link rel="prev" title="10.9. Key agreement" href="ka.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -40,9 +41,9 @@
           <div class="body" role="main">
             
   <div class="section" id="other-cryptographic-services">
-<h1>Other cryptographic services</h1>
+<h1>10.10. Other cryptographic services</h1>
 <div class="section" id="random-number-generation">
-<span id="rng"></span><h2>Random number generation</h2>
+<span id="rng"></span><h2>10.10.1. Random number generation</h2>
 <div class="section" id="psa_generate_random">
 <span id="c.psa_generate_random"></span><h3><code class="docutils literal"><span class="pre">psa_generate_random</span></code> (function)</h3>
 <p>Generate random bytes.</p>
@@ -94,35 +95,49 @@
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="../../index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Other cryptographic services</a><ul>
-<li><a class="reference internal" href="#random-number-generation">Random number generation</a><ul>
-<li><a class="reference internal" href="#psa_generate_random"><code class="docutils literal"><span class="pre">psa_generate_random</span></code> (function)</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
+        <div class="sphinxsidebarwrapper"><h3><a href="../../index.html"><b>PSA Crypto API</b></a></h3>
+IHI 0086<br/>
+Non-confidential<br/>
+Version 1.0.1
+<span style="color: red; font-weight: bold;"></span>
 <ul>
-  <li><a href="../../index.html">Documentation overview</a><ul>
-  <li><a href="index.html">Cryptographic operation reference</a><ul>
-      <li>Previous: <a href="ka.html" title="previous chapter">Key agreement</a></li>
-      <li>Next: <a href="../../appendix/example_header.html" title="next chapter">Example header file</a></li>
-  </ul></li>
-  </ul></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About this document</a></li>
 </ul>
-</div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../../_sources/api/ops/rng.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview/intro.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/goals.html">2. Design goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/functionality.html">3. Functionality overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/sample-arch.html">4. Sample architectures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/conventions.html">5. Library conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/implementation.html">6. Implementation considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/usage.html">7. Usage considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../library/index.html">8. Library management reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../keys/index.html">9. Key management reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">10. Cryptographic operation reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="algorithms.html">10.1. Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hashes.html">10.2. Message digests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="macs.html">10.3. Message authentication codes (MAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ciphers.html">10.4. Unauthenticated ciphers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aead.html">10.5. Authenticated encryption with associated data (AEAD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kdf.html">10.6. Key derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sign.html">10.7. Asymmetric signature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pke.html">10.8. Asymmetric encryption</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ka.html">10.9. Key agreement</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">10.10. Other cryptographic services</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#random-number-generation">10.10.1. Random number generation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../appendix/example_header.html">Example header file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendix/specdef_values.html">Example macro implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendix/history.html">Changes to the API</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../psa_c-identifiers.html">Index of API elements</a></li>
+</ul>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
@@ -138,15 +153,12 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy; 2019-2020, Arm Limited or its affiliates. All rights reserved.
+      &copy; 2018-2020, Arm Limited or its affiliates. All rights reserved.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
-      |
-      <a href="../../_sources/api/ops/rng.rst.txt"
-          rel="nofollow">Page source</a>
     </div>
 
     

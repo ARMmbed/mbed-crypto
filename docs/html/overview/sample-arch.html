@@ -5,26 +5,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Sample architectures &#8212; PSA Crypto API 1.0.0 documentation</title>
+    <title>4. Sample architectures &#8212; PSA Crypto API 1.0.1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.0.0',
+        VERSION:     '1.0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
+        HAS_SOURCE:  false,
         SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Library conventions" href="conventions.html" />
-    <link rel="prev" title="Functionality overview" href="functionality.html" />
+    <link rel="next" title="5. Library conventions" href="conventions.html" />
+    <link rel="prev" title="3. Functionality overview" href="functionality.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -40,12 +41,12 @@
           <div class="body" role="main">
             
   <div class="section" id="sample-architectures">
-<span id="architectures"></span><h1>Sample architectures</h1>
+<span id="architectures"></span><h1>4. Sample architectures</h1>
 <p>This section describes some example architectures that can be used for
 implementations of the interface described in this specification. This list is
 not exhaustive and the section is entirely non-normative.</p>
 <div class="section" id="single-partition-architecture">
-<h2>Single-partition architecture</h2>
+<h2>4.1. Single-partition architecture</h2>
 <p>In the single-partition architecture, there is no security boundary inside the system. The
 application code can access all the system memory, including the memory used by
 the cryptographic services described in this specification. Thus, the
@@ -65,7 +66,7 @@ separate from the code of the main application, though it shares this
 high-security partition with other platform security services.</p>
 </div>
 <div class="section" id="cryptographic-token-and-single-application-processor">
-<span id="isolated-cryptoprocessor"></span><h2>Cryptographic token and single-application processor</h2>
+<span id="isolated-cryptoprocessor"></span><h2>4.2. Cryptographic token and single-application processor</h2>
 <p>This system is composed of two partitions: one is a cryptoprocessor and the
 other partition runs an application. There is a security boundary between the
 two partitions, so that the application cannot access the cryptoprocessor,
@@ -84,8 +85,8 @@ All cryptographic computations are, therefore, performed inside the
 cryptoprocessor. Non-volatile keys are stored inside the cryptoprocessor.</p>
 </div>
 <div class="section" id="cryptoprocessor-with-no-key-storage">
-<h2>Cryptoprocessor with no key storage</h2>
-<p>As in the <em><a class="reference internal" href="#isolated-cryptoprocessor"><span class="std std-ref">Cryptographic token and single-application processor</span></a></em> architecture, this system
+<h2>4.3. Cryptoprocessor with no key storage</h2>
+<p>As in the <a class="reference internal" href="#isolated-cryptoprocessor"><span class="secref">Cryptographic token and single-application processor</span></a> architecture, this system
 is also composed of two partitions separated by a security boundary and also
 provides <a class="reference internal" href="goals.html#isolation"><span class="std std-ref">cryptoprocessor isolation</span></a>.
 However, unlike the previous architecture, in this system, the cryptoprocessor
@@ -106,7 +107,7 @@ the hardware unique key.</li>
 </ul>
 </div>
 <div class="section" id="multi-client-cryptoprocessor">
-<h2>Multi-client cryptoprocessor</h2>
+<h2>4.4. Multi-client cryptoprocessor</h2>
 <p>This is an expanded variant of the <a class="reference internal" href="#isolated-cryptoprocessor"><span class="std std-ref">cryptographic token plus application
 architecture</span></a>. In this
 variant, the cryptoprocessor serves multiple applications that are mutually
@@ -118,7 +119,7 @@ segments its internal storage to ensure that a client’s data is never leaked t
 another client.</p>
 </div>
 <div class="section" id="multi-cryptoprocessor-architecture">
-<h2>Multi-cryptoprocessor architecture</h2>
+<h2>4.5. Multi-cryptoprocessor architecture</h2>
 <p>This system includes multiple cryptoprocessors. There are several reasons to
 have multiple cryptoprocessors:</p>
 <ul class="simple">
@@ -151,34 +152,41 @@ performance inside the implementation.</li>
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Sample architectures</a><ul>
-<li><a class="reference internal" href="#single-partition-architecture">Single-partition architecture</a></li>
-<li><a class="reference internal" href="#cryptographic-token-and-single-application-processor">Cryptographic token and single-application processor</a></li>
-<li><a class="reference internal" href="#cryptoprocessor-with-no-key-storage">Cryptoprocessor with no key storage</a></li>
-<li><a class="reference internal" href="#multi-client-cryptoprocessor">Multi-client cryptoprocessor</a></li>
-<li><a class="reference internal" href="#multi-cryptoprocessor-architecture">Multi-cryptoprocessor architecture</a></li>
+        <div class="sphinxsidebarwrapper"><h3><a href="../index.html"><b>PSA Crypto API</b></a></h3>
+IHI 0086<br/>
+Non-confidential<br/>
+Version 1.0.1
+<span style="color: red; font-weight: bold;"></span>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About this document</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="goals.html">2. Design goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functionality.html">3. Functionality overview</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">4. Sample architectures</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#single-partition-architecture">4.1. Single-partition architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cryptographic-token-and-single-application-processor">4.2. Cryptographic token and single-application processor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cryptoprocessor-with-no-key-storage">4.3. Cryptoprocessor with no key storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multi-client-cryptoprocessor">4.4. Multi-client cryptoprocessor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multi-cryptoprocessor-architecture">4.5. Multi-cryptoprocessor architecture</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="conventions.html">5. Library conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="implementation.html">6. Implementation considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">7. Usage considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/library/index.html">8. Library management reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/keys/index.html">9. Key management reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/ops/index.html">10. Cryptographic operation reference</a></li>
 </ul>
-<div class="relations">
-<h3>Related Topics</h3>
 <ul>
-  <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="functionality.html" title="previous chapter">Functionality overview</a></li>
-      <li>Next: <a href="conventions.html" title="next chapter">Library conventions</a></li>
-  </ul></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendix/example_header.html">Example header file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendix/specdef_values.html">Example macro implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendix/history.html">Changes to the API</a></li>
 </ul>
-</div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/overview/sample-arch.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../psa_c-identifiers.html">Index of API elements</a></li>
+</ul>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
@@ -194,15 +202,12 @@ performance inside the implementation.</li>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy; 2019-2020, Arm Limited or its affiliates. All rights reserved.
+      &copy; 2018-2020, Arm Limited or its affiliates. All rights reserved.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
-      |
-      <a href="../_sources/overview/sample-arch.rst.txt"
-          rel="nofollow">Page source</a>
     </div>
 
     

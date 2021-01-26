@@ -5,26 +5,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Key derivation &#8212; PSA Crypto API 1.0.0 documentation</title>
+    <title>10.6. Key derivation &#8212; PSA Crypto API 1.0.1 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '1.0.0',
+        VERSION:     '1.0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
+        HAS_SOURCE:  false,
         SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Asymmetric signature" href="sign.html" />
-    <link rel="prev" title="Authenticated encryption with associated data (AEAD)" href="aead.html" />
+    <link rel="next" title="10.7. Asymmetric signature" href="sign.html" />
+    <link rel="prev" title="10.5. Authenticated encryption with associated data (AEAD)" href="aead.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -40,9 +41,9 @@
           <div class="body" role="main">
             
   <div class="section" id="key-derivation">
-<span id="kdf"></span><h1>Key derivation</h1>
+<span id="kdf"></span><h1>10.6. Key derivation</h1>
 <div class="section" id="key-derivation-algorithms">
-<span id="id1"></span><h2>Key derivation algorithms</h2>
+<span id="id1"></span><h2>10.6.1. Key derivation algorithms</h2>
 <div class="section" id="PSA_ALG_HKDF">
 <span id="c.PSA_ALG_HKDF"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_HKDF</span></code> (macro)</h3>
 <p>Macro to build an HKDF algorithm.</p>
@@ -52,12 +53,13 @@
 <p class="rubric">Parameters</p>
 <dl class="docutils">
 <dt> <code class="docutils literal"><span class="pre">hash_alg</span></code></dt>
-<dd>A hash algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_HASH" title="PSA_ALG_IS_HASH"><code class="docutils literal"><span class="pre">PSA_ALG_IS_HASH</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">hash_alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>A hash algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_HASH" title="PSA_ALG_IS_HASH"><code class="docutils literal"><span class="pre">PSA_ALG_IS_HASH</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">hash_alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 </dl>
 <p class="rubric">Returns</p>
 <p>The corresponding HKDF algorithm. For example, <a class="reference internal" href="#c.PSA_ALG_HKDF" title="PSA_ALG_HKDF"><code class="docutils literal"><span class="pre">PSA_ALG_HKDF</span></code></a><code class="docutils literal"><span class="pre">(</span></code><a class="reference internal" href="hashes.html#c.PSA_ALG_SHA_256" title="PSA_ALG_SHA_256"><code class="docutils literal"><span class="pre">PSA_ALG_SHA_256</span></code></a><code class="docutils literal"><span class="pre">)</span></code> is HKDF using HMAC-SHA-256.</p>
 <p>Unspecified if <code class="docutils literal"><span class="pre">hash_alg</span></code> is not a supported hash algorithm.</p>
 <p class="rubric">Description</p>
+<p>This is the HMAC-based Extract-and-Expand Key Derivation Function (HKDF) specified by <span><em>HMAC-based Extract-and-Expand Key Derivation Function (HKDF)</em> <a class="reference internal" href="../../about.html#citation-rfc5869"><span class="cite">[RFC5869]</span></a></span>.</p>
 <p>This key derivation algorithm uses the following inputs:</p>
 <ul class="simple">
 <li><a class="reference internal" href="#c.PSA_KEY_DERIVATION_INPUT_SALT" title="PSA_KEY_DERIVATION_INPUT_SALT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_DERIVATION_INPUT_SALT</span></code></a> is the salt used in the “extract” step. It is optional; if omitted, the derivation uses an empty salt.</li>
@@ -65,6 +67,7 @@
 <li><a class="reference internal" href="#c.PSA_KEY_DERIVATION_INPUT_INFO" title="PSA_KEY_DERIVATION_INPUT_INFO"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_DERIVATION_INPUT_INFO</span></code></a> is the info string used in the “expand” step.</li>
 </ul>
 <p>If <a class="reference internal" href="#c.PSA_KEY_DERIVATION_INPUT_SALT" title="PSA_KEY_DERIVATION_INPUT_SALT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_DERIVATION_INPUT_SALT</span></code></a> is provided, it must be before <a class="reference internal" href="#c.PSA_KEY_DERIVATION_INPUT_SECRET" title="PSA_KEY_DERIVATION_INPUT_SECRET"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_DERIVATION_INPUT_SECRET</span></code></a>. <a class="reference internal" href="#c.PSA_KEY_DERIVATION_INPUT_INFO" title="PSA_KEY_DERIVATION_INPUT_INFO"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_DERIVATION_INPUT_INFO</span></code></a> can be provided at any time after setup and before starting to generate output.</p>
+<p>Each input may only be passed once.</p>
 </div>
 <div class="section" id="PSA_ALG_TLS12_PRF">
 <span id="c.PSA_ALG_TLS12_PRF"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_TLS12_PRF</span></code> (macro)</h3>
@@ -75,19 +78,20 @@
 <p class="rubric">Parameters</p>
 <dl class="docutils">
 <dt> <code class="docutils literal"><span class="pre">hash_alg</span></code></dt>
-<dd>A hash algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_HASH" title="PSA_ALG_IS_HASH"><code class="docutils literal"><span class="pre">PSA_ALG_IS_HASH</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">hash_alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>A hash algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_HASH" title="PSA_ALG_IS_HASH"><code class="docutils literal"><span class="pre">PSA_ALG_IS_HASH</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">hash_alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 </dl>
 <p class="rubric">Returns</p>
 <p>The corresponding TLS-1.2 PRF algorithm. For example, <a class="reference internal" href="#c.PSA_ALG_TLS12_PRF" title="PSA_ALG_TLS12_PRF"><code class="docutils literal"><span class="pre">PSA_ALG_TLS12_PRF</span></code></a><code class="docutils literal"><span class="pre">(</span></code><a class="reference internal" href="hashes.html#c.PSA_ALG_SHA_256" title="PSA_ALG_SHA_256"><code class="docutils literal"><span class="pre">PSA_ALG_SHA_256</span></code></a><code class="docutils literal"><span class="pre">)</span></code> represents the TLS 1.2 PRF using HMAC-SHA-256.</p>
 <p>Unspecified if <code class="docutils literal"><span class="pre">hash_alg</span></code> is not a supported hash algorithm.</p>
 <p class="rubric">Description</p>
-<p>TLS 1.2 uses a custom pseudorandom function (PRF) for key schedule, specified in <a class="reference external" href="https://tools.ietf.org/html/rfc5246.html#section-5">RFC 5246 §5</a>. It is based on HMAC and can be used with either SHA-256 or SHA-384.</p>
+<p>TLS 1.2 uses a custom pseudorandom function (PRF) for key schedule, specified in <span><em>The Transport Layer Security (TLS) Protocol Version 1.2</em> <a class="reference internal" href="../../about.html#citation-rfc5246"><span class="cite">[RFC5246]</span></a></span> <a class="reference external" href="https://tools.ietf.org/html/rfc5246.html#section-5">§5</a>. It is based on HMAC and can be used with either SHA-256 or SHA-384.</p>
 <p>This key derivation algorithm uses the following inputs, which must be passed in the order given here:</p>
 <ul class="simple">
 <li><a class="reference internal" href="#c.PSA_KEY_DERIVATION_INPUT_SEED" title="PSA_KEY_DERIVATION_INPUT_SEED"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_DERIVATION_INPUT_SEED</span></code></a> is the seed.</li>
 <li><a class="reference internal" href="#c.PSA_KEY_DERIVATION_INPUT_SECRET" title="PSA_KEY_DERIVATION_INPUT_SECRET"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_DERIVATION_INPUT_SECRET</span></code></a> is the secret key.</li>
 <li><a class="reference internal" href="#c.PSA_KEY_DERIVATION_INPUT_LABEL" title="PSA_KEY_DERIVATION_INPUT_LABEL"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_DERIVATION_INPUT_LABEL</span></code></a> is the label.</li>
 </ul>
+<p>Each input may only be passed once.</p>
 <p>For the application to TLS-1.2 key expansion:</p>
 <ul class="simple">
 <li>The seed is the concatenation of <code class="docutils literal"><span class="pre">ServerHello.Random</span> <span class="pre">+</span> <span class="pre">ClientHello.Random</span></code>.</li>
@@ -103,19 +107,20 @@
 <p class="rubric">Parameters</p>
 <dl class="docutils">
 <dt> <code class="docutils literal"><span class="pre">hash_alg</span></code></dt>
-<dd>A hash algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_HASH" title="PSA_ALG_IS_HASH"><code class="docutils literal"><span class="pre">PSA_ALG_IS_HASH</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">hash_alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>A hash algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_HASH" title="PSA_ALG_IS_HASH"><code class="docutils literal"><span class="pre">PSA_ALG_IS_HASH</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">hash_alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 </dl>
 <p class="rubric">Returns</p>
 <p>The corresponding TLS-1.2 PSK to MS algorithm. For example, <a class="reference internal" href="#c.PSA_ALG_TLS12_PSK_TO_MS" title="PSA_ALG_TLS12_PSK_TO_MS"><code class="docutils literal"><span class="pre">PSA_ALG_TLS12_PSK_TO_MS</span></code></a><code class="docutils literal"><span class="pre">(</span></code><a class="reference internal" href="hashes.html#c.PSA_ALG_SHA_256" title="PSA_ALG_SHA_256"><code class="docutils literal"><span class="pre">PSA_ALG_SHA_256</span></code></a><code class="docutils literal"><span class="pre">)</span></code> represents the TLS-1.2 PSK to MasterSecret derivation PRF using HMAC-SHA-256.</p>
 <p>Unspecified if <code class="docutils literal"><span class="pre">hash_alg</span></code> is not a supported hash algorithm.</p>
 <p class="rubric">Description</p>
-<p>In a pure-PSK handshake in TLS 1.2, the master secret (MS) is derived from the pre-shared key (PSK) through the application of padding (<a class="reference external" href="https://tools.ietf.org/html/rfc4279.html#section-2">RFC 4279 §2</a>) and the TLS-1.2 PRF (<a class="reference external" href="https://tools.ietf.org/html/rfc5246.html#section-5">RFC 5246 §5</a>). The latter is based on HMAC and can be used with either SHA-256 or SHA-384.</p>
+<p>In a pure-PSK handshake in TLS 1.2, the master secret (MS) is derived from the pre-shared key (PSK) through the application of padding (<span><em>Pre-Shared Key Ciphersuites for Transport Layer Security (TLS)</em> <a class="reference internal" href="../../about.html#citation-rfc4279"><span class="cite">[RFC4279]</span></a></span> <a class="reference external" href="https://tools.ietf.org/html/rfc4279.html#section-2">§2</a>) and the TLS-1.2 PRF (<span><em>The Transport Layer Security (TLS) Protocol Version 1.2</em> <a class="reference internal" href="../../about.html#citation-rfc5246"><span class="cite">[RFC5246]</span></a></span> <a class="reference external" href="https://tools.ietf.org/html/rfc5246.html#section-5">§5</a>). The latter is based on HMAC and can be used with either SHA-256 or SHA-384.</p>
 <p>This key derivation algorithm uses the following inputs, which must be passed in the order given here:</p>
 <ul class="simple">
 <li><a class="reference internal" href="#c.PSA_KEY_DERIVATION_INPUT_SEED" title="PSA_KEY_DERIVATION_INPUT_SEED"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_DERIVATION_INPUT_SEED</span></code></a> is the seed.</li>
 <li><a class="reference internal" href="#c.PSA_KEY_DERIVATION_INPUT_SECRET" title="PSA_KEY_DERIVATION_INPUT_SECRET"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_DERIVATION_INPUT_SECRET</span></code></a> is the PSK. The PSK must not be larger than <a class="reference internal" href="#c.PSA_TLS12_PSK_TO_MS_PSK_MAX_SIZE" title="PSA_TLS12_PSK_TO_MS_PSK_MAX_SIZE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_TLS12_PSK_TO_MS_PSK_MAX_SIZE</span></code></a>.</li>
 <li><a class="reference internal" href="#c.PSA_KEY_DERIVATION_INPUT_LABEL" title="PSA_KEY_DERIVATION_INPUT_LABEL"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_DERIVATION_INPUT_LABEL</span></code></a> is the label.</li>
 </ul>
+<p>Each input may only be passed once.</p>
 <p>For the application to TLS-1.2:</p>
 <ul class="simple">
 <li>The seed, which is forwarded to the TLS-1.2 PRF, is the concatenation of the <code class="docutils literal"><span class="pre">ClientHello.Random</span> <span class="pre">+</span> <span class="pre">ServerHello.Random</span></code>.</li>
@@ -124,7 +129,7 @@
 </div>
 </div>
 <div class="section" id="input-step-types">
-<h2>Input step types</h2>
+<h2>10.6.2. Input step types</h2>
 <div class="section" id="psa_key_derivation_step_t">
 <span id="c.psa_key_derivation_step_t"></span><h3><code class="docutils literal"><span class="pre">psa_key_derivation_step_t</span></code> (type)</h3>
 <p>Encoding of the step of a key derivation.</p>
@@ -183,7 +188,7 @@ typedef uint16_t <a class="reference internal" href="#c.psa_key_derivation_step_
 </div>
 </div>
 <div class="section" id="key-derivation-functions">
-<h2>Key derivation functions</h2>
+<h2>10.6.3. Key derivation functions</h2>
 <div class="section" id="psa_key_derivation_operation_t">
 <span id="c.psa_key_derivation_operation_t"></span><h3><code class="docutils literal"><span class="pre">psa_key_derivation_operation_t</span></code> (type)</h3>
 <p>The type of the state object for key derivation operations.</p>
@@ -237,14 +242,14 @@ operation = <a class="reference internal" href="#c.psa_key_derivation_operation_
 <p>Set up a key derivation operation.</p>
 <pre class="literal-block">
 <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_key_derivation_setup" title="psa_key_derivation_setup">psa_key_derivation_setup</a>(<a class="reference internal" href="#c.psa_key_derivation_operation_t" title="psa_key_derivation_operation_t">psa_key_derivation_operation_t</a> * operation,
-                                      <a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a> alg);
+                                      <a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a> alg);
 </pre>
 <p class="rubric">Parameters</p>
 <dl class="docutils">
 <dt> <code class="docutils literal"><span class="pre">operation</span></code></dt>
 <dd>The key derivation operation object to set up. It must have been initialized but not set up yet.</dd>
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>The key derivation algorithm to compute (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_KEY_DERIVATION" title="PSA_ALG_IS_KEY_DERIVATION"><code class="docutils literal"><span class="pre">PSA_ALG_IS_KEY_DERIVATION</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>The key derivation algorithm to compute (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_KEY_DERIVATION" title="PSA_ALG_IS_KEY_DERIVATION"><code class="docutils literal"><span class="pre">PSA_ALG_IS_KEY_DERIVATION</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 </dl>
 <p class="rubric">Returns: <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t"><code class="docutils literal"><span class="pre">psa_status_t</span></code></a></p>
 <dl class="docutils">
@@ -401,7 +406,7 @@ operation = <a class="reference internal" href="#c.psa_key_derivation_operation_
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_DATA_INVALID" title="PSA_ERROR_DATA_INVALID"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_INVALID</span></code></a></dt>
 <dd></dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
-<dd>The operation state is not valid for this input <code class="docutils literal"><span class="pre">step</span></code>.</dd>
+<dd>The operation state is not valid for this input <code class="docutils literal"><span class="pre">step</span></code>. This can happen if the application provides a step out of order or repeats a step that may not be repeated.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
 <dd>The library has not been previously initialized by <a class="reference internal" href="../library/library.html#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_crypto_init()</span></code></a>. It is implementation-dependent whether a failure to initialize results in this error code.</dd>
 </dl>
@@ -416,7 +421,7 @@ operation = <a class="reference internal" href="#c.psa_key_derivation_operation_
 <pre class="literal-block">
 <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_key_derivation_input_key" title="psa_key_derivation_input_key">psa_key_derivation_input_key</a>(<a class="reference internal" href="#c.psa_key_derivation_operation_t" title="psa_key_derivation_operation_t">psa_key_derivation_operation_t</a> * operation,
                                           <a class="reference internal" href="#c.psa_key_derivation_step_t" title="psa_key_derivation_step_t">psa_key_derivation_step_t</a> step,
-                                          <a class="reference internal" href="../keys/attributes.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> key);
+                                          <a class="reference internal" href="../keys/ids.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> key);
 </pre>
 <p class="rubric">Parameters</p>
 <dl class="docutils">
@@ -425,7 +430,7 @@ operation = <a class="reference internal" href="#c.psa_key_derivation_operation_
 <dt> <code class="docutils literal"><span class="pre">step</span></code></dt>
 <dd>Which step the input data is for.</dd>
 <dt> <code class="docutils literal"><span class="pre">key</span></code></dt>
-<dd>Identifier of the key. It must have an appropriate type for <code class="docutils literal"><span class="pre">step</span></code> and must allow the usage <a class="reference internal" href="../keys/usage.html#c.PSA_KEY_USAGE_DERIVE" title="PSA_KEY_USAGE_DERIVE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_DERIVE</span></code></a>.</dd>
+<dd>Identifier of the key. It must have an appropriate type for <code class="docutils literal"><span class="pre">step</span></code> and must allow the usage <a class="reference internal" href="../keys/policy.html#c.PSA_KEY_USAGE_DERIVE" title="PSA_KEY_USAGE_DERIVE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_DERIVE</span></code></a>.</dd>
 </dl>
 <p class="rubric">Returns: <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t"><code class="docutils literal"><span class="pre">psa_status_t</span></code></a></p>
 <dl class="docutils">
@@ -434,7 +439,7 @@ operation = <a class="reference internal" href="#c.psa_key_derivation_operation_
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_HANDLE" title="PSA_ERROR_INVALID_HANDLE"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_HANDLE</span></code></a></dt>
 <dd></dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_PERMITTED" title="PSA_ERROR_NOT_PERMITTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_PERMITTED</span></code></a></dt>
-<dd>The key does not have the <a class="reference internal" href="../keys/usage.html#c.PSA_KEY_USAGE_DERIVE" title="PSA_KEY_USAGE_DERIVE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_DERIVE</span></code></a> flag.</dd>
+<dd>The key does not have the <a class="reference internal" href="../keys/policy.html#c.PSA_KEY_USAGE_DERIVE" title="PSA_KEY_USAGE_DERIVE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_DERIVE</span></code></a> flag.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
 <dd><code class="docutils literal"><span class="pre">step</span></code> is not compatible with the operation’s algorithm.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
@@ -454,7 +459,7 @@ operation = <a class="reference internal" href="#c.psa_key_derivation_operation_
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_DATA_INVALID" title="PSA_ERROR_DATA_INVALID"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_INVALID</span></code></a></dt>
 <dd></dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
-<dd>The operation state is not valid for this input <code class="docutils literal"><span class="pre">step</span></code>.</dd>
+<dd>The operation state is not valid for this input <code class="docutils literal"><span class="pre">step</span></code>. This can happen if the application provides a step out of order or repeats a step that may not be repeated.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
 <dd>The library has not been previously initialized by <a class="reference internal" href="../library/library.html#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_crypto_init()</span></code></a>. It is implementation-dependent whether a failure to initialize results in this error code.</dd>
 </dl>
@@ -506,7 +511,7 @@ operation = <a class="reference internal" href="#c.psa_key_derivation_operation_
 <dd>The library has not been previously initialized by <a class="reference internal" href="../library/library.html#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_crypto_init()</span></code></a>. It is implementation-dependent whether a failure to initialize results in this error code.</dd>
 </dl>
 <p class="rubric">Description</p>
-<p>This function calculates output bytes from a key derivation algorithm and return those bytes. If the key derivation’s output is viewed as a stream of bytes, this function consumes the requested number of bytes from the stream and returns them to the caller. The operation’s capacity decreases by the number of bytes read.</p>
+<p>This function calculates output bytes from a key derivation algorithm and returns those bytes. If the key derivation’s output is viewed as a stream of bytes, this function consumes the requested number of bytes from the stream and returns them to the caller. The operation’s capacity decreases by the number of bytes read.</p>
 <p>If this function returns an error status other than <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INSUFFICIENT_DATA" title="PSA_ERROR_INSUFFICIENT_DATA"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_DATA</span></code></a>, the operation enters an error state and must be aborted by calling <a class="reference internal" href="#c.psa_key_derivation_abort" title="psa_key_derivation_abort"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_abort()</span></code></a>.</p>
 </div>
 <div class="section" id="psa_key_derivation_output_key">
@@ -515,16 +520,29 @@ operation = <a class="reference internal" href="#c.psa_key_derivation_operation_
 <pre class="literal-block">
 <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_key_derivation_output_key" title="psa_key_derivation_output_key">psa_key_derivation_output_key</a>(const <a class="reference internal" href="../keys/attributes.html#c.psa_key_attributes_t" title="psa_key_attributes_t">psa_key_attributes_t</a> * attributes,
                                            <a class="reference internal" href="#c.psa_key_derivation_operation_t" title="psa_key_derivation_operation_t">psa_key_derivation_operation_t</a> * operation,
-                                           <a class="reference internal" href="../keys/attributes.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> * key);
+                                           <a class="reference internal" href="../keys/ids.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> * key);
 </pre>
 <p class="rubric">Parameters</p>
 <dl class="docutils">
 <dt> <code class="docutils literal"><span class="pre">attributes</span></code></dt>
-<dd>The attributes for the new key.</dd>
+<dd><p class="first">The attributes for the new key.
+This function uses the attributes as follows:</p>
+<ul class="simple">
+<li>The key type is required. It cannot be an asymmetric public key.</li>
+<li>The key size is required. It must be a valid size for the key type.</li>
+<li>The key permitted-algorithm policy is required for keys that will be used for a cryptographic operation, see <a class="reference internal" href="../keys/policy.html#permitted-algorithms"><span class="secref">Permitted algorithms</span></a>.</li>
+<li>The key usage flags define what operations are permitted with the key, see <a class="reference internal" href="../keys/policy.html#key-usage-flags"><span class="secref">Key usage flags</span></a>.</li>
+<li>The key lifetime and identifier are required for a persistent key.</li>
+</ul>
+<div class="last admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is an input parameter: it is not updated with the final key attributes. The final attributes of the new key can be queried by calling <a class="reference internal" href="../keys/attributes.html#c.psa_get_key_attributes" title="psa_get_key_attributes"><code class="xref any c c-func docutils literal"><span class="pre">psa_get_key_attributes()</span></code></a> with the key’s identifier.</p>
+</div>
+</dd>
 <dt> <code class="docutils literal"><span class="pre">operation</span></code></dt>
 <dd>The key derivation operation object to read from.</dd>
 <dt> <code class="docutils literal"><span class="pre">key</span></code></dt>
-<dd>On success, an identifier for the newly created key. <a class="reference internal" href="../keys/locations.html#c.PSA_KEY_ID_NULL" title="PSA_KEY_ID_NULL"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_ID_NULL</span></code></a> on failure.</dd>
+<dd>On success, an identifier for the newly created key. <a class="reference internal" href="../keys/ids.html#c.PSA_KEY_ID_NULL" title="PSA_KEY_ID_NULL"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_ID_NULL</span></code></a> on failure.</dd>
 </dl>
 <p class="rubric">Returns: <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t"><code class="docutils literal"><span class="pre">psa_status_t</span></code></a></p>
 <dl class="docutils">
@@ -537,9 +555,13 @@ operation = <a class="reference internal" href="#c.psa_key_derivation_operation_
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_SUPPORTED" title="PSA_ERROR_NOT_SUPPORTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_SUPPORTED</span></code></a></dt>
 <dd>The key type or key size is not supported, either by the implementation in general or in this particular location.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
-<dd>The provided key attributes are not valid for the operation.</dd>
+<dd>The key attributes, as a whole, are invalid.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
+<dd>The key type is an asymmetric public key type.</dd>
+<dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
+<dd>The key size is not a valid size for the key type.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_PERMITTED" title="PSA_ERROR_NOT_PERMITTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_PERMITTED</span></code></a></dt>
-<dd>The <a class="reference internal" href="#c.PSA_KEY_DERIVATION_INPUT_SECRET" title="PSA_KEY_DERIVATION_INPUT_SECRET"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_DERIVATION_INPUT_SECRET</span></code></a> input was not provided through a key.</dd>
+<dd>The <a class="reference internal" href="#c.PSA_KEY_DERIVATION_INPUT_SECRET" title="PSA_KEY_DERIVATION_INPUT_SECRET"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_DERIVATION_INPUT_SECRET</span></code></a> input was neither provided through a key nor the result of a key agreement.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a></dt>
 <dd>The operation state is not valid: it must be active and completed all required input steps.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INSUFFICIENT_MEMORY" title="PSA_ERROR_INSUFFICIENT_MEMORY"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_MEMORY</span></code></a></dt>
@@ -562,43 +584,98 @@ operation = <a class="reference internal" href="#c.psa_key_derivation_operation_
 <dd>The library has not been previously initialized by <a class="reference internal" href="../library/library.html#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_crypto_init()</span></code></a>. It is implementation-dependent whether a failure to initialize results in this error code.</dd>
 </dl>
 <p class="rubric">Description</p>
-<p>This function calculates output bytes from a key derivation algorithm and uses those bytes to generate a key deterministically. The key’s location, usage policy, type and size are taken from <code class="docutils literal"><span class="pre">attributes</span></code>.</p>
+<p>This function calculates output bytes from a key derivation algorithm and uses those bytes to generate a key deterministically. The key’s location, policy, type and size are taken from <code class="docutils literal"><span class="pre">attributes</span></code>.</p>
 <p>If the key derivation’s output is viewed as a stream of bytes, this function consumes the required number of bytes from the stream. The operation’s capacity decreases by the number of bytes used to derive the key.</p>
 <p>If this function returns an error status other than <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INSUFFICIENT_DATA" title="PSA_ERROR_INSUFFICIENT_DATA"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_DATA</span></code></a>, the operation enters an error state and must be aborted by calling <a class="reference internal" href="#c.psa_key_derivation_abort" title="psa_key_derivation_abort"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_abort()</span></code></a>.</p>
-<p>How much output is produced and consumed from the operation, and how the key is derived, depends on the key type:</p>
-<ul>
-<li><p class="first">For key types for which the key is an arbitrary sequence of bytes of a given size, this function is functionally equivalent to calling <a class="reference internal" href="#c.psa_key_derivation_output_bytes" title="psa_key_derivation_output_bytes"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_output_bytes()</span></code></a> and passing the resulting output to <a class="reference internal" href="../keys/management.html#c.psa_import_key" title="psa_import_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_import_key()</span></code></a>. However, this function has a security benefit: if the implementation provides an isolation boundary then the key material is not exposed outside the isolation boundary. As a consequence, for these key types, this function always consumes exactly <code class="docutils literal"><span class="pre">(bits/8)</span></code> bytes from the operation. The following key types defined in this specification follow this scheme:</p>
-<ul class="simple">
-<li><a class="reference internal" href="../keys/types.html#c.PSA_KEY_TYPE_AES" title="PSA_KEY_TYPE_AES"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_AES</span></code></a>;</li>
-<li><a class="reference internal" href="../keys/types.html#c.PSA_KEY_TYPE_ARC4" title="PSA_KEY_TYPE_ARC4"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_ARC4</span></code></a>;</li>
-<li><a class="reference internal" href="../keys/types.html#c.PSA_KEY_TYPE_CAMELLIA" title="PSA_KEY_TYPE_CAMELLIA"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_CAMELLIA</span></code></a>;</li>
-<li><a class="reference internal" href="../keys/types.html#c.PSA_KEY_TYPE_DERIVE" title="PSA_KEY_TYPE_DERIVE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_DERIVE</span></code></a>;</li>
-<li><a class="reference internal" href="../keys/types.html#c.PSA_KEY_TYPE_HMAC" title="PSA_KEY_TYPE_HMAC"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_HMAC</span></code></a>.</li>
-</ul>
-</li>
-<li><p class="first">For ECC keys on a Montgomery elliptic curve (<a class="reference internal" href="../keys/types.html#c.PSA_KEY_TYPE_ECC_KEY_PAIR" title="PSA_KEY_TYPE_ECC_KEY_PAIR"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_ECC_KEY_PAIR</span></code></a><code class="docutils literal"><span class="pre">(</span></code><a class="reference internal" href="../keys/types.html#c.PSA_ECC_FAMILY_MONTGOMERY" title="PSA_ECC_FAMILY_MONTGOMERY"><code class="docutils literal"><span class="pre">PSA_ECC_FAMILY_MONTGOMERY</span></code></a><code class="docutils literal"><span class="pre">)</span></code>), this function always draws a byte string whose length is determined by the curve, and sets the mandatory bits accordingly. That is:</p>
-<ul class="simple">
-<li>Curve25519 (<a class="reference internal" href="../keys/types.html#c.PSA_ECC_FAMILY_MONTGOMERY" title="PSA_ECC_FAMILY_MONTGOMERY"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ECC_FAMILY_MONTGOMERY</span></code></a>, 255 bits): draw a 32-byte string and process it as specified in <a class="reference external" href="https://tools.ietf.org/html/rfc7748.html#section-5">RFC 7748 §5</a>.</li>
-<li>Curve448 (<a class="reference internal" href="../keys/types.html#c.PSA_ECC_FAMILY_MONTGOMERY" title="PSA_ECC_FAMILY_MONTGOMERY"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ECC_FAMILY_MONTGOMERY</span></code></a>, 448 bits): draw a 56-byte string and process it as specified in <a class="reference external" href="https://tools.ietf.org/html/rfc7748.html#section-5">RFC 7748 §5</a>.</li>
-</ul>
-</li>
-<li><p class="first">For key types for which the key is represented by a single sequence of <code class="docutils literal"><span class="pre">bits</span></code> bits with constraints as to which bit sequences are acceptable, this function draws a byte string of length <code class="docutils literal"><span class="pre">ceiling(bits/8)</span></code> bytes. If the resulting byte string is acceptable, it becomes the key, otherwise the drawn bytes are discarded. This process is repeated until an acceptable byte string is drawn. The byte string drawn from the operation is interpreted as specified for the output produced by <a class="reference internal" href="../keys/management.html#c.psa_export_key" title="psa_export_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_export_key()</span></code></a>. The following key types defined in this specification follow this scheme:</p>
-<ul>
-<li><p class="first"><a class="reference internal" href="../keys/types.html#c.PSA_KEY_TYPE_DES" title="PSA_KEY_TYPE_DES"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_DES</span></code></a>. Force-set the parity bits, but discard forbidden weak keys. For 2-key and 3-key triple-DES, the three keys are generated successively. For example, for 3-key triple-DES, if the first 8 bytes specify a weak key and the next 8 bytes do not, discard the first 8 bytes, use the next 8 bytes as the first key, and continue reading output from the operation to derive the other two keys.</p>
-</li>
-<li><p class="first">Finite-field Diffie-Hellman keys (<a class="reference internal" href="../keys/types.html#c.PSA_KEY_TYPE_DH_KEY_PAIR" title="PSA_KEY_TYPE_DH_KEY_PAIR"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_DH_KEY_PAIR</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">dh_family</span></code><code class="docutils literal"><span class="pre">)</span></code> where <code class="docutils literal"><span class="pre">dh_family</span></code> designates any Diffie-Hellman family) and ECC keys on a Weierstrass elliptic curve (<a class="reference internal" href="../keys/types.html#c.PSA_KEY_TYPE_ECC_KEY_PAIR" title="PSA_KEY_TYPE_ECC_KEY_PAIR"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_ECC_KEY_PAIR</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">ecc_family</span></code><code class="docutils literal"><span class="pre">)</span></code> where <code class="docutils literal"><span class="pre">ecc_family</span></code> designates a Weierstrass curve family). For these key types, interpret the byte string as integer in big-endian order. Discard it if it is not in the range [0, <em>N</em> - 2] where <em>N</em> is the boundary of the private key domain: <em>N</em> is the prime <em>p</em> for Diffie-Hellman, or the order of the curve’s base point for ECC. Add <code class="docutils literal"><span class="pre">1</span></code> to the resulting integer and use this as the private key <em>x</em>.</p>
-<p>This method allows compliance to NIST standards, specifically the methods titled <em>Key-Pair Generation by Testing Candidates</em> in the following publications:</p>
-<ul class="simple">
-<li><a class="reference external" href="https://doi.org/10.6028/NIST.SP.800-56Ar3"><em>NIST Special Publication 800-56A: Recommendation for Pair-Wise Key-Establishment Schemes Using Discrete Logarithm Cryptography</em></a> (NIST SP 800-56A) §5.6.1.1.4 for Diffie-Hellman keys.</li>
-<li><a class="reference external" href="https://doi.org/10.6028/NIST.SP.800-56Ar3">NIST SP 800-56A</a> §5.6.1.2.2 or <a class="reference external" href="https://doi.org/10.6028/NIST.FIPS.186-4"><em>FIPS Publication 186-4: Digital Signature Standard (DSS)</em></a> (FIPS 186-4) §B.4.2 for elliptic curve keys.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p class="first">For other key types, including <a class="reference internal" href="../keys/types.html#c.PSA_KEY_TYPE_RSA_KEY_PAIR" title="PSA_KEY_TYPE_RSA_KEY_PAIR"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_RSA_KEY_PAIR</span></code></a>, the way in which the operation output is consumed is implementation-defined.</p>
-</li>
-</ul>
+<p>How much output is produced and consumed from the operation, and how the key is derived, depends on the key type. <span><a class="reference internal" href="#std-key-derivation"><span class="numref">Table 5</span></a></span> describes the required key derivation procedures for standard key derivation algorithms. Implementations can use other methods for implementation-specific algorithms.</p>
 <p>In all cases, the data that is read is discarded from the operation. The operation’s capacity is decreased by the number of bytes read.</p>
+<table border="1" class="colwidths-given longtable docutils align-right" id="std-key-derivation">
+<caption><span class="caption-number">Table 5 </span><span class="caption-text">Standard key derivation process</span></caption>
+<colgroup>
+<col width="29%" />
+<col width="71%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Key type</th>
+<th class="head">Key type details and derivation procedure</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><p class="first">AES</p>
+<p>ARC4</p>
+<p>CAMELLIA</p>
+<p>ChaCha20</p>
+<p>SM4</p>
+<p>Secrets for derivation</p>
+<p class="last">HMAC</p>
+</td>
+<td><p class="first"><a class="reference internal" href="../keys/types.html#c.PSA_KEY_TYPE_AES" title="PSA_KEY_TYPE_AES"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_AES</span></code></a></p>
+<p><a class="reference internal" href="../keys/types.html#c.PSA_KEY_TYPE_ARC4" title="PSA_KEY_TYPE_ARC4"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_ARC4</span></code></a></p>
+<p><a class="reference internal" href="../keys/types.html#c.PSA_KEY_TYPE_CAMELLIA" title="PSA_KEY_TYPE_CAMELLIA"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_CAMELLIA</span></code></a></p>
+<p><a class="reference internal" href="../keys/types.html#c.PSA_KEY_TYPE_CHACHA20" title="PSA_KEY_TYPE_CHACHA20"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_CHACHA20</span></code></a></p>
+<p><a class="reference internal" href="../keys/types.html#c.PSA_KEY_TYPE_SM4" title="PSA_KEY_TYPE_SM4"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_SM4</span></code></a></p>
+<p><a class="reference internal" href="../keys/types.html#c.PSA_KEY_TYPE_DERIVE" title="PSA_KEY_TYPE_DERIVE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_DERIVE</span></code></a></p>
+<p><a class="reference internal" href="../keys/types.html#c.PSA_KEY_TYPE_HMAC" title="PSA_KEY_TYPE_HMAC"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_HMAC</span></code></a></p>
+<p class="last">For key types for which the key is an arbitrary sequence of bytes of a given size, this function is functionally equivalent to calling <a class="reference internal" href="#c.psa_key_derivation_output_bytes" title="psa_key_derivation_output_bytes"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_output_bytes()</span></code></a> and passing the resulting output to <a class="reference internal" href="../keys/management.html#c.psa_import_key" title="psa_import_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_import_key()</span></code></a>. However, this function has a security benefit: if the implementation provides an isolation boundary then the key material is not exposed outside the isolation boundary. As a consequence, for these key types, this function always consumes exactly <code class="docutils literal"><span class="pre">(bits/8)</span></code> bytes from the operation.</p>
+</td>
+</tr>
+<tr class="row-odd"><td>DES</td>
+<td><p class="first"><a class="reference internal" href="../keys/types.html#c.PSA_KEY_TYPE_DES" title="PSA_KEY_TYPE_DES"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_DES</span></code></a>, 64 bits.</p>
+<p>This function generates a key using the following process:</p>
+<ol class="last arabic simple">
+<li>Draw an 8-byte string.</li>
+<li>Set/clear the parity bits in each byte.</li>
+<li>If the result is a forbidden weak key, discard the result and return to step 1.</li>
+<li>Output the string.</li>
+</ol>
+</td>
+</tr>
+<tr class="row-even"><td><p class="first">2-key 3DES</p>
+<p class="last">3-key 3DES</p>
+</td>
+<td><p class="first"><a class="reference internal" href="../keys/types.html#c.PSA_KEY_TYPE_DES" title="PSA_KEY_TYPE_DES"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_DES</span></code></a>, 192 bits.</p>
+<p><a class="reference internal" href="../keys/types.html#c.PSA_KEY_TYPE_DES" title="PSA_KEY_TYPE_DES"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_DES</span></code></a>, 128 bits.</p>
+<p>The two or three keys are generated by repeated application of the process used to generate a DES key.</p>
+<p class="last">For example, for 3-key 3DES, if the first 8 bytes specify a weak key and the next 8 bytes do not, discard the first 8 bytes, use the next 8 bytes as the first key, and continue reading output from the operation to derive the other two keys.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p class="first">Finite-field Diffie-Hellman keys</p>
+<p class="last">ECC keys on a Weierstrass elliptic curve</p>
+</td>
+<td><p class="first"><a class="reference internal" href="../keys/types.html#c.PSA_KEY_TYPE_DH_KEY_PAIR" title="PSA_KEY_TYPE_DH_KEY_PAIR"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_DH_KEY_PAIR</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">dh_family</span></code><code class="docutils literal"><span class="pre">)</span></code> where <code class="docutils literal"><span class="pre">dh_family</span></code> designates any Diffie-Hellman family.</p>
+<p><a class="reference internal" href="../keys/types.html#c.PSA_KEY_TYPE_ECC_KEY_PAIR" title="PSA_KEY_TYPE_ECC_KEY_PAIR"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_ECC_KEY_PAIR</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">ecc_family</span></code><code class="docutils literal"><span class="pre">)</span></code> where <code class="docutils literal"><span class="pre">ecc_family</span></code> designates a Weierstrass curve family.</p>
+<p>These key types require the generation of a private key which is an integer in the range [1, <em>N</em> - 1], where <em>N</em> is the boundary of the private key domain: <em>N</em> is the prime <em>p</em> for Diffie-Hellman, or the order of the curve’s base point for ECC.</p>
+<p>Let <code class="docutils literal"><span class="pre">m</span></code> be the bit size of <em>N</em>, such that <code class="docutils literal"><span class="pre">2^m</span></code> &gt; <em>N</em> &gt;= <code class="docutils literal"><span class="pre">2^(m-1)</span></code>. This function generates the private key using the following process:</p>
+<ol class="arabic simple">
+<li>Draw a byte string of length <code class="docutils literal"><span class="pre">ceiling(m/8)</span></code> bytes.</li>
+<li>If <code class="docutils literal"><span class="pre">m</span></code> is not a multiple of <code class="docutils literal"><span class="pre">8</span></code>, set the most significant <code class="docutils literal"><span class="pre">(8</span> <span class="pre">*</span> <span class="pre">ceiling(m/8)</span> <span class="pre">-</span> <span class="pre">m)</span></code> bits of the first byte in the string to zero.</li>
+<li>Convert the string to integer <em>k</em> by decoding it as a big-endian byte string.</li>
+<li>If <em>k</em> &gt; <em>N</em> - <code class="docutils literal"><span class="pre">2</span></code>, discard the result and return to step 1.</li>
+<li>Output <em>k</em> + <code class="docutils literal"><span class="pre">1</span></code> as the private key.</li>
+</ol>
+<p>This method allows compliance to NIST standards, specifically the methods titled <em>Key-Pair Generation by Testing Candidates</em> in the following publications:</p>
+<ul class="last simple">
+<li><span><em>NIST Special Publication 800-56A: Recommendation for Pair-Wise Key-Establishment Schemes Using Discrete Logarithm Cryptography</em> <a class="reference internal" href="../../about.html#citation-sp800-56a"><span class="cite">[SP800-56A]</span></a></span> §5.6.1.1.4 for Diffie-Hellman keys.</li>
+<li><a class="reference internal" href="../../about.html#citation-sp800-56a"><span class="cite">[SP800-56A]</span></a> §5.6.1.2.2 or <span><em>FIPS Publication 186-4: Digital Signature Standard (DSS)</em> <a class="reference internal" href="../../about.html#citation-fips186-4"><span class="cite">[FIPS186-4]</span></a></span> §B.4.2 for elliptic curve keys.</li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>ECC keys on a Montgomery elliptic curve</td>
+<td><p class="first"><a class="reference internal" href="../keys/types.html#c.PSA_KEY_TYPE_ECC_KEY_PAIR" title="PSA_KEY_TYPE_ECC_KEY_PAIR"><code class="docutils literal"><span class="pre">PSA_KEY_TYPE_ECC_KEY_PAIR</span></code></a><code class="docutils literal"><span class="pre">(</span></code><a class="reference internal" href="../keys/types.html#c.PSA_ECC_FAMILY_MONTGOMERY" title="PSA_ECC_FAMILY_MONTGOMERY"><code class="docutils literal"><span class="pre">PSA_ECC_FAMILY_MONTGOMERY</span></code></a><code class="docutils literal"><span class="pre">)</span></code></p>
+<p>This function always draws a byte string whose length is determined by the curve, and sets the mandatory bits accordingly. That is:</p>
+<ul class="last simple">
+<li>Curve25519 (<a class="reference internal" href="../keys/types.html#c.PSA_ECC_FAMILY_MONTGOMERY" title="PSA_ECC_FAMILY_MONTGOMERY"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ECC_FAMILY_MONTGOMERY</span></code></a>, 255 bits): draw a 32-byte string and process it as specified in <span><em>Elliptic Curves for Security</em> <a class="reference internal" href="../../about.html#citation-rfc7748"><span class="cite">[RFC7748]</span></a></span> <a class="reference external" href="https://tools.ietf.org/html/rfc7748.html#section-5">§5</a>.</li>
+<li>Curve448 (<a class="reference internal" href="../keys/types.html#c.PSA_ECC_FAMILY_MONTGOMERY" title="PSA_ECC_FAMILY_MONTGOMERY"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ECC_FAMILY_MONTGOMERY</span></code></a>, 448 bits): draw a 56-byte string and process it as specified in <a class="reference internal" href="../../about.html#citation-rfc7748"><span class="cite">[RFC7748]</span></a> <a class="reference external" href="https://tools.ietf.org/html/rfc7748.html#section-5">§5</a>.</li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><em>Other key types</em></td>
+<td><p class="first">This includes <a class="reference internal" href="../keys/types.html#c.PSA_KEY_TYPE_RSA_KEY_PAIR" title="PSA_KEY_TYPE_RSA_KEY_PAIR"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_RSA_KEY_PAIR</span></code></a>.</p>
+<p class="last">The way in which the operation output is consumed is implementation-defined.</p>
+</td>
+</tr>
+</tbody>
+</table>
 <p>For algorithms that take an input step <a class="reference internal" href="#c.PSA_KEY_DERIVATION_INPUT_SECRET" title="PSA_KEY_DERIVATION_INPUT_SECRET"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_DERIVATION_INPUT_SECRET</span></code></a>, the input to that step must be provided with <a class="reference internal" href="#c.psa_key_derivation_input_key" title="psa_key_derivation_input_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_input_key()</span></code></a>. Future versions of this specification might include additional restrictions on the derived key based on the attributes and strength of the secret key.</p>
 </div>
 <div class="section" id="psa_key_derivation_abort">
@@ -632,7 +709,7 @@ operation = <a class="reference internal" href="#c.psa_key_derivation_operation_
 </div>
 </div>
 <div class="section" id="support-macros">
-<h2>Support macros</h2>
+<h2>10.6.4. Support macros</h2>
 <div class="section" id="PSA_ALG_IS_HKDF">
 <span id="c.PSA_ALG_IS_HKDF"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_IS_HKDF</span></code> (macro)</h3>
 <p>Whether the specified algorithm is an HKDF algorithm.</p>
@@ -642,7 +719,7 @@ operation = <a class="reference internal" href="#c.psa_key_derivation_operation_
 <p class="rubric">Parameters</p>
 <dl class="docutils">
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>An algorithm identifier (value of type <a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_algorithm_t</span></code></a>).</dd>
+<dd>An algorithm identifier (value of type <a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_algorithm_t</span></code></a>).</dd>
 </dl>
 <p class="rubric">Returns</p>
 <p><code class="docutils literal"><span class="pre">1</span></code> if <code class="docutils literal"><span class="pre">alg</span></code> is an HKDF algorithm, <code class="docutils literal"><span class="pre">0</span></code> otherwise. This macro can return either <code class="docutils literal"><span class="pre">0</span></code> or <code class="docutils literal"><span class="pre">1</span></code> if <code class="docutils literal"><span class="pre">alg</span></code> is not a supported key derivation algorithm identifier.</p>
@@ -658,7 +735,7 @@ operation = <a class="reference internal" href="#c.psa_key_derivation_operation_
 <p class="rubric">Parameters</p>
 <dl class="docutils">
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>An algorithm identifier (value of type <a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_algorithm_t</span></code></a>).</dd>
+<dd>An algorithm identifier (value of type <a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_algorithm_t</span></code></a>).</dd>
 </dl>
 <p class="rubric">Returns</p>
 <p><code class="docutils literal"><span class="pre">1</span></code> if <code class="docutils literal"><span class="pre">alg</span></code> is a TLS-1.2 PRF algorithm, <code class="docutils literal"><span class="pre">0</span></code> otherwise. This macro can return either <code class="docutils literal"><span class="pre">0</span></code> or <code class="docutils literal"><span class="pre">1</span></code> if <code class="docutils literal"><span class="pre">alg</span></code> is not a supported key derivation algorithm identifier.</p>
@@ -672,7 +749,7 @@ operation = <a class="reference internal" href="#c.psa_key_derivation_operation_
 <p class="rubric">Parameters</p>
 <dl class="docutils">
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>An algorithm identifier (value of type <a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_algorithm_t</span></code></a>).</dd>
+<dd>An algorithm identifier (value of type <a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_algorithm_t</span></code></a>).</dd>
 </dl>
 <p class="rubric">Returns</p>
 <p><code class="docutils literal"><span class="pre">1</span></code> if <code class="docutils literal"><span class="pre">alg</span></code> is a TLS-1.2 PSK to MS algorithm, <code class="docutils literal"><span class="pre">0</span></code> otherwise. This macro can return either <code class="docutils literal"><span class="pre">0</span></code> or <code class="docutils literal"><span class="pre">1</span></code> if <code class="docutils literal"><span class="pre">alg</span></code> is not a supported key derivation algorithm identifier.</p>
@@ -693,9 +770,9 @@ operation = <a class="reference internal" href="#c.psa_key_derivation_operation_
 #define <a class="reference internal" href="#c.PSA_TLS12_PSK_TO_MS_PSK_MAX_SIZE" title="PSA_TLS12_PSK_TO_MS_PSK_MAX_SIZE">PSA_TLS12_PSK_TO_MS_PSK_MAX_SIZE</a> <em><a class="reference internal" href="../../overview/implementation.html#implementation-defined-value"><span class="std std-ref">/* implementation-defined value */</span></a></em>
 </pre>
 <p>This implementation-defined value specifies the maximum length for the PSK input used with a <a class="reference internal" href="#c.PSA_ALG_TLS12_PSK_TO_MS" title="PSA_ALG_TLS12_PSK_TO_MS"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_TLS12_PSK_TO_MS()</span></code></a> key agreement algorithm.</p>
-<p>Quoting <a class="reference external" href="https://tools.ietf.org/html/rfc4279.html#section-5.3">RFC 4279 §5.3</a>:</p>
+<p>Quoting <span><em>Pre-Shared Key Ciphersuites for Transport Layer Security (TLS)</em> <a class="reference internal" href="../../about.html#citation-rfc4279"><span class="cite">[RFC4279]</span></a></span> <a class="reference external" href="https://tools.ietf.org/html/rfc4279.html#section-5.3">§5.3</a>:</p>
 <blockquote>
-<div>TLS implementations supporting these ciphersuites MUST support arbitrary PSK identities up to 128 octets in length, and arbitrary PSKs up to 64 octets in length. Supporting longer identities and keys is RECOMMENDED.</div></blockquote>
+<div>TLS implementations supporting these cipher suites MUST support arbitrary PSK identities up to 128 octets in length, and arbitrary PSKs up to 64 octets in length. Supporting longer identities and keys is RECOMMENDED.</div></blockquote>
 <p>Therefore, it is recommended that implementations define <a class="reference internal" href="#c.PSA_TLS12_PSK_TO_MS_PSK_MAX_SIZE" title="PSA_TLS12_PSK_TO_MS_PSK_MAX_SIZE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_TLS12_PSK_TO_MS_PSK_MAX_SIZE</span></code></a> with a value greater than or equal to <code class="docutils literal"><span class="pre">64</span></code>.</p>
 </div>
 </div>
@@ -706,69 +783,52 @@ operation = <a class="reference internal" href="#c.psa_key_derivation_operation_
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="../../index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Key derivation</a><ul>
-<li><a class="reference internal" href="#key-derivation-algorithms">Key derivation algorithms</a><ul>
-<li><a class="reference internal" href="#PSA_ALG_HKDF"><code class="docutils literal"><span class="pre">PSA_ALG_HKDF</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_TLS12_PRF"><code class="docutils literal"><span class="pre">PSA_ALG_TLS12_PRF</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_TLS12_PSK_TO_MS"><code class="docutils literal"><span class="pre">PSA_ALG_TLS12_PSK_TO_MS</span></code> (macro)</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#input-step-types">Input step types</a><ul>
-<li><a class="reference internal" href="#psa_key_derivation_step_t"><code class="docutils literal"><span class="pre">psa_key_derivation_step_t</span></code> (type)</a></li>
-<li><a class="reference internal" href="#PSA_KEY_DERIVATION_INPUT_SECRET"><code class="docutils literal"><span class="pre">PSA_KEY_DERIVATION_INPUT_SECRET</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_KEY_DERIVATION_INPUT_LABEL"><code class="docutils literal"><span class="pre">PSA_KEY_DERIVATION_INPUT_LABEL</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_KEY_DERIVATION_INPUT_CONTEXT"><code class="docutils literal"><span class="pre">PSA_KEY_DERIVATION_INPUT_CONTEXT</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_KEY_DERIVATION_INPUT_SALT"><code class="docutils literal"><span class="pre">PSA_KEY_DERIVATION_INPUT_SALT</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_KEY_DERIVATION_INPUT_INFO"><code class="docutils literal"><span class="pre">PSA_KEY_DERIVATION_INPUT_INFO</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_KEY_DERIVATION_INPUT_SEED"><code class="docutils literal"><span class="pre">PSA_KEY_DERIVATION_INPUT_SEED</span></code> (macro)</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#key-derivation-functions">Key derivation functions</a><ul>
-<li><a class="reference internal" href="#psa_key_derivation_operation_t"><code class="docutils literal"><span class="pre">psa_key_derivation_operation_t</span></code> (type)</a></li>
-<li><a class="reference internal" href="#PSA_KEY_DERIVATION_OPERATION_INIT"><code class="docutils literal"><span class="pre">PSA_KEY_DERIVATION_OPERATION_INIT</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#psa_key_derivation_operation_init"><code class="docutils literal"><span class="pre">psa_key_derivation_operation_init</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_key_derivation_setup"><code class="docutils literal"><span class="pre">psa_key_derivation_setup</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_key_derivation_get_capacity"><code class="docutils literal"><span class="pre">psa_key_derivation_get_capacity</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_key_derivation_set_capacity"><code class="docutils literal"><span class="pre">psa_key_derivation_set_capacity</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_key_derivation_input_bytes"><code class="docutils literal"><span class="pre">psa_key_derivation_input_bytes</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_key_derivation_input_key"><code class="docutils literal"><span class="pre">psa_key_derivation_input_key</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_key_derivation_output_bytes"><code class="docutils literal"><span class="pre">psa_key_derivation_output_bytes</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_key_derivation_output_key"><code class="docutils literal"><span class="pre">psa_key_derivation_output_key</span></code> (function)</a></li>
-<li><a class="reference internal" href="#psa_key_derivation_abort"><code class="docutils literal"><span class="pre">psa_key_derivation_abort</span></code> (function)</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#support-macros">Support macros</a><ul>
-<li><a class="reference internal" href="#PSA_ALG_IS_HKDF"><code class="docutils literal"><span class="pre">PSA_ALG_IS_HKDF</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_IS_TLS12_PRF"><code class="docutils literal"><span class="pre">PSA_ALG_IS_TLS12_PRF</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_IS_TLS12_PSK_TO_MS"><code class="docutils literal"><span class="pre">PSA_ALG_IS_TLS12_PSK_TO_MS</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_KEY_DERIVATION_UNLIMITED_CAPACITY"><code class="docutils literal"><span class="pre">PSA_KEY_DERIVATION_UNLIMITED_CAPACITY</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_TLS12_PSK_TO_MS_PSK_MAX_SIZE"><code class="docutils literal"><span class="pre">PSA_TLS12_PSK_TO_MS_PSK_MAX_SIZE</span></code> (macro)</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
+        <div class="sphinxsidebarwrapper"><h3><a href="../../index.html"><b>PSA Crypto API</b></a></h3>
+IHI 0086<br/>
+Non-confidential<br/>
+Version 1.0.1
+<span style="color: red; font-weight: bold;"></span>
 <ul>
-  <li><a href="../../index.html">Documentation overview</a><ul>
-  <li><a href="index.html">Cryptographic operation reference</a><ul>
-      <li>Previous: <a href="aead.html" title="previous chapter">Authenticated encryption with associated data (AEAD)</a></li>
-      <li>Next: <a href="sign.html" title="next chapter">Asymmetric signature</a></li>
-  </ul></li>
-  </ul></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About this document</a></li>
 </ul>
-</div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../../_sources/api/ops/kdf.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview/intro.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/goals.html">2. Design goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/functionality.html">3. Functionality overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/sample-arch.html">4. Sample architectures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/conventions.html">5. Library conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/implementation.html">6. Implementation considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/usage.html">7. Usage considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../library/index.html">8. Library management reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../keys/index.html">9. Key management reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">10. Cryptographic operation reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="algorithms.html">10.1. Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hashes.html">10.2. Message digests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="macs.html">10.3. Message authentication codes (MAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ciphers.html">10.4. Unauthenticated ciphers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aead.html">10.5. Authenticated encryption with associated data (AEAD)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">10.6. Key derivation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#key-derivation-algorithms">10.6.1. Key derivation algorithms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#input-step-types">10.6.2. Input step types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#key-derivation-functions">10.6.3. Key derivation functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#support-macros">10.6.4. Support macros</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="sign.html">10.7. Asymmetric signature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pke.html">10.8. Asymmetric encryption</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ka.html">10.9. Key agreement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rng.html">10.10. Other cryptographic services</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../appendix/example_header.html">Example header file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendix/specdef_values.html">Example macro implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendix/history.html">Changes to the API</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../psa_c-identifiers.html">Index of API elements</a></li>
+</ul>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
@@ -784,15 +844,12 @@ operation = <a class="reference internal" href="#c.psa_key_derivation_operation_
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy; 2019-2020, Arm Limited or its affiliates. All rights reserved.
+      &copy; 2018-2020, Arm Limited or its affiliates. All rights reserved.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
-      |
-      <a href="../../_sources/api/ops/kdf.rst.txt"
-          rel="nofollow">Page source</a>
     </div>
 
     

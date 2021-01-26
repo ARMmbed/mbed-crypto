@@ -5,26 +5,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Implementation considerations &#8212; PSA Crypto API 1.0.0 documentation</title>
+    <title>6. Implementation considerations &#8212; PSA Crypto API 1.0.1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.0.0',
+        VERSION:     '1.0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
+        HAS_SOURCE:  false,
         SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Usage considerations" href="usage.html" />
-    <link rel="prev" title="Library conventions" href="conventions.html" />
+    <link rel="next" title="7. Usage considerations" href="usage.html" />
+    <link rel="prev" title="5. Library conventions" href="conventions.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -40,11 +41,11 @@
           <div class="body" role="main">
             
   <div class="section" id="implementation-considerations">
-<span id="id1"></span><h1>Implementation considerations</h1>
+<span id="id1"></span><h1>6. Implementation considerations</h1>
 <div class="section" id="implementation-specific-aspects-of-the-interface">
-<h2>Implementation-specific aspects of the interface</h2>
+<h2>6.1. Implementation-specific aspects of the interface</h2>
 <div class="section" id="implementation-profile">
-<h3>Implementation profile</h3>
+<h3>6.1.1. Implementation profile</h3>
 <p>Implementations can implement a subset of the API and a subset of the available
 algorithms. The implemented subset is known as the implementation’s profile. The
 documentation for each implementation must describe the profile that it
@@ -52,21 +53,21 @@ implements. This specification’s companion documents also define a number of
 standard profiles.</p>
 </div>
 <div class="section" id="implementation-specific-types">
-<span id="implementation-defined-type"></span><h3>Implementation-specific types</h3>
+<span id="implementation-defined-type"></span><h3>6.1.2. Implementation-specific types</h3>
 <p>This specification defines a number of implementation-specific types, which
 represent objects whose content depends on the implementation. These are defined
 as C <code class="docutils literal"><span class="pre">typedef</span></code> types in this specification, with a comment
 <em><a class="reference internal" href="#implementation-defined-type"><span class="std std-ref">/* implementation-defined type */</span></a></em> in place of the underlying type
 definition. For some types the specification constrains the type, for example,
 by requiring that the type is a <code class="docutils literal"><span class="pre">struct</span></code>, or that it is convertible to and
-from an unsigned integer. In the implementation’s version of <strong>psa/crypto.h</strong>,
+from an unsigned integer. In the implementation’s version of <code class="file docutils literal"><span class="pre">psa/crypto.h</span></code>,
 these types need to be defined as complete C types so that objects of these
 types can be instantiated by application code.</p>
 <p>Applications that rely on the implementation specific definition of any of these
 types might not be portable to other implementations of this specification.</p>
 </div>
 <div class="section" id="implementation-specific-macros">
-<span id="implementation-specific-macro"></span><h3>Implementation-specific macros</h3>
+<span id="implementation-specific-macro"></span><h3>6.1.3. Implementation-specific macros</h3>
 <p>Some macro constants and function-like macros are precisely defined by this
 specification. The use of an exact definition is essential if the definition can
 appear in more than one header file within a compilation.</p>
@@ -90,7 +91,7 @@ implementation.</p>
 <p>For function-like macros with specification-defined values:</p>
 <ul class="simple">
 <li>Example implementations are provided in an appendix to this specification.
-See <em><a class="reference internal" href="../appendix/specdef_values.html#appendix-specdef-values"><span class="std std-ref">Example macro implementations</span></a></em>.</li>
+See <a class="reference internal" href="../appendix/specdef_values.html#appendix-specdef-values"><span class="secref">Example macro implementations</span></a>.</li>
 <li>The expected computation for valid and supported input arguments will be
 defined as pseudo-code in a future version of this specification.</li>
 </ul>
@@ -119,27 +120,27 @@ to each macro’s documentation for the applicable requirements.</p>
 </div>
 </div>
 <div class="section" id="porting-to-a-platform">
-<h2>Porting to a platform</h2>
+<h2>6.2. Porting to a platform</h2>
 <div class="section" id="platform-assumptions">
-<h3>Platform assumptions</h3>
+<h3>6.2.1. Platform assumptions</h3>
 <p>This specification is designed for a C99 platform. The interface is defined in
 terms of C macros, functions and objects.</p>
 <p>The specification assumes 8-bit bytes, and “byte” and “octet” are used
 synonymously.</p>
 </div>
 <div class="section" id="platform-specific-types">
-<h3>Platform-specific types</h3>
+<h3>6.2.2. Platform-specific types</h3>
 <p>The specification makes use of some types defined in C99. These types must be
-defined in the implementation version of <strong>psa/crypto.h</strong> or by a header
+defined in the implementation version of <code class="file docutils literal"><span class="pre">psa/crypto.h</span></code> or by a header
 included in this file. The following C99 types are used:</p>
 <dl class="docutils">
 <dt><code class="docutils literal"><span class="pre">uint8_t</span></code>, <code class="docutils literal"><span class="pre">uint16_t</span></code>, <code class="docutils literal"><span class="pre">uint32_t</span></code></dt>
 <dd>Unsigned integer types with 8, 16 and 32 value bits respectively.
-These types are defined by the C99 header <strong>stdint.h</strong>.</dd>
+These types are defined by the C99 header <code class="file docutils literal"><span class="pre">stdint.h</span></code>.</dd>
 </dl>
 </div>
 <div class="section" id="cryptographic-hardware-support">
-<h3>Cryptographic hardware support</h3>
+<h3>6.2.3. Cryptographic hardware support</h3>
 <p>Implementations are encouraged to make use of hardware accelerators where
 available. A future version of this specification will define a function
 interface that calls drivers for hardware accelerators and external
@@ -147,9 +148,9 @@ cryptographic hardware.</p>
 </div>
 </div>
 <div class="section" id="security-requirements-and-recommendations">
-<h2>Security requirements and recommendations</h2>
+<h2>6.3. Security requirements and recommendations</h2>
 <div class="section" id="error-detection">
-<h3>Error detection</h3>
+<h3>6.3.1. Error detection</h3>
 <p>Implementations that provide isolation between the caller and the cryptography
 processing environment must validate parameters to ensure that the cryptography
 processing environment is protected from attacks caused by passing invalid
@@ -158,7 +159,7 @@ parameters.</p>
 parameters and fail-safe where possible.</p>
 </div>
 <div class="section" id="indirect-object-references">
-<h3>Indirect object references</h3>
+<h3>6.3.2. Indirect object references</h3>
 <p>Implementations can use different strategies for allocating key identifiers,
 and other types of indirect object reference.</p>
 <p>Implementations that provide isolation between the caller and the cryptography
@@ -185,7 +186,7 @@ different key. This reduces the risk of an attack that is able to exploit a key
 identifier reuse vulnerability within an application.</p>
 </div>
 <div class="section" id="memory-cleanup">
-<span id="id2"></span><h3>Memory cleanup</h3>
+<span id="id2"></span><h3>6.3.3. Memory cleanup</h3>
 <p>Implementations must wipe all sensitive data from memory when it is no longer
 used. It is recommended that they wipe this sensitive data as soon as possible. All
 temporary data used during the execution of a function, such as stack buffers,
@@ -197,9 +198,9 @@ system is compromised. If sensitive data is wiped immediately after use, only
 data that is currently in use can be leaked. It does not compromise past data.</p>
 </div>
 <div class="section" id="managing-key-material">
-<span id="key-material"></span><h3>Managing key material</h3>
+<span id="key-material"></span><h3>6.3.4. Managing key material</h3>
 <p>In implementations that have limited volatile memory for keys, the
-implementation is permitted to store a <a class="reference internal" href="functionality.html#volatile-keys"><span class="std std-ref">volatile key</span></a> to a
+implementation is permitted to store a <a class="reference internal" href="../api/keys/lifetimes.html#key-lifetimes"><span class="std std-ref">volatile key</span></a> to a
 temporary location in non-volatile memory. The implementation must delete any
 such copies when the key is destroyed, and it is recommended that these copies
 are deleted as soon as the key is reloaded into volatile memory. An
@@ -208,8 +209,8 @@ on startup.</p>
 <p>Implementing the <a class="reference internal" href="#memory-cleanup"><span class="std std-ref">memory cleanup rule</span></a> for persistent keys
 can result in inefficiencies when the same persistent key is used sequentially
 in multiple cryptographic operations. The inefficiency stems from loading the
-key from non-volatile storage on each use of the key. The <a class="reference internal" href="../api/keys/usage.html#c.PSA_KEY_USAGE_CACHE" title="PSA_KEY_USAGE_CACHE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_CACHE</span></code></a>
-policy allows an application to request that the implementation does not cleanup
+key from non-volatile storage on each use of the key. The <a class="reference internal" href="../api/keys/policy.html#c.PSA_KEY_USAGE_CACHE" title="PSA_KEY_USAGE_CACHE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_CACHE</span></code></a>
+usage flag in a key policy allows an application to request that the implementation does not cleanup
 non-essential copies of persistent key material, effectively suspending the
 cleanup rules for that key. The effects of this policy depend on the
 implementation and the key, for example:</p>
@@ -226,7 +227,7 @@ keep the key open in the secure element.</li>
 <a class="reference internal" href="../api/keys/management.html#c.psa_purge_key" title="psa_purge_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_purge_key()</span></code></a>, to request that the key material is cleaned from memory.</p>
 </div>
 <div class="section" id="safe-outputs-on-error">
-<h3>Safe outputs on error</h3>
+<h3>6.3.5. Safe outputs on error</h3>
 <p>Implementations must ensure that confidential data is not written to output
 parameters before validating that the disclosure of this confidential data is
 authorized. This requirement is particularly important for implementations where
@@ -244,7 +245,7 @@ strategies are to leave output parameters unchanged, in case of errors, or
 zeroing them out.</p>
 </div>
 <div class="section" id="attack-resistance">
-<h3>Attack resistance</h3>
+<h3>6.3.6. Attack resistance</h3>
 <p>Cryptographic code tends to manipulate high-value secrets, from which other
 secrets can be unlocked. As such, it is a high-value target for attacks. There
 is a vast body of literature on attack types, such as side channel attacks and
@@ -258,9 +259,9 @@ certain use cases.</p>
 </div>
 </div>
 <div class="section" id="other-implementation-considerations">
-<h2>Other implementation considerations</h2>
+<h2>6.4. Other implementation considerations</h2>
 <div class="section" id="philosophy-of-resource-management">
-<h3>Philosophy of resource management</h3>
+<h3>6.4.1. Philosophy of resource management</h3>
 <p>The specification allows most functions to return
 <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_INSUFFICIENT_MEMORY" title="PSA_ERROR_INSUFFICIENT_MEMORY"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_MEMORY</span></code></a>. This gives implementations the freedom to
 manage memory as they please.</p>
@@ -286,54 +287,61 @@ number of operations inside the cryptoprocessor.</li>
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Implementation considerations</a><ul>
-<li><a class="reference internal" href="#implementation-specific-aspects-of-the-interface">Implementation-specific aspects of the interface</a><ul>
-<li><a class="reference internal" href="#implementation-profile">Implementation profile</a></li>
-<li><a class="reference internal" href="#implementation-specific-types">Implementation-specific types</a></li>
-<li><a class="reference internal" href="#implementation-specific-macros">Implementation-specific macros</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#porting-to-a-platform">Porting to a platform</a><ul>
-<li><a class="reference internal" href="#platform-assumptions">Platform assumptions</a></li>
-<li><a class="reference internal" href="#platform-specific-types">Platform-specific types</a></li>
-<li><a class="reference internal" href="#cryptographic-hardware-support">Cryptographic hardware support</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#security-requirements-and-recommendations">Security requirements and recommendations</a><ul>
-<li><a class="reference internal" href="#error-detection">Error detection</a></li>
-<li><a class="reference internal" href="#indirect-object-references">Indirect object references</a></li>
-<li><a class="reference internal" href="#memory-cleanup">Memory cleanup</a></li>
-<li><a class="reference internal" href="#managing-key-material">Managing key material</a></li>
-<li><a class="reference internal" href="#safe-outputs-on-error">Safe outputs on error</a></li>
-<li><a class="reference internal" href="#attack-resistance">Attack resistance</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#other-implementation-considerations">Other implementation considerations</a><ul>
-<li><a class="reference internal" href="#philosophy-of-resource-management">Philosophy of resource management</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
+        <div class="sphinxsidebarwrapper"><h3><a href="../index.html"><b>PSA Crypto API</b></a></h3>
+IHI 0086<br/>
+Non-confidential<br/>
+Version 1.0.1
+<span style="color: red; font-weight: bold;"></span>
 <ul>
-  <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="conventions.html" title="previous chapter">Library conventions</a></li>
-      <li>Next: <a href="usage.html" title="next chapter">Usage considerations</a></li>
-  </ul></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About this document</a></li>
 </ul>
-</div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/overview/implementation.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="goals.html">2. Design goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functionality.html">3. Functionality overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sample-arch.html">4. Sample architectures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conventions.html">5. Library conventions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">6. Implementation considerations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#implementation-specific-aspects-of-the-interface">6.1. Implementation-specific aspects of the interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#implementation-profile">6.1.1. Implementation profile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#implementation-specific-types">6.1.2. Implementation-specific types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#implementation-specific-macros">6.1.3. Implementation-specific macros</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#porting-to-a-platform">6.2. Porting to a platform</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#platform-assumptions">6.2.1. Platform assumptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#platform-specific-types">6.2.2. Platform-specific types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cryptographic-hardware-support">6.2.3. Cryptographic hardware support</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#security-requirements-and-recommendations">6.3. Security requirements and recommendations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#error-detection">6.3.1. Error detection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#indirect-object-references">6.3.2. Indirect object references</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#memory-cleanup">6.3.3. Memory cleanup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#managing-key-material">6.3.4. Managing key material</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#safe-outputs-on-error">6.3.5. Safe outputs on error</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#attack-resistance">6.3.6. Attack resistance</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#other-implementation-considerations">6.4. Other implementation considerations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#philosophy-of-resource-management">6.4.1. Philosophy of resource management</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">7. Usage considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/library/index.html">8. Library management reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/keys/index.html">9. Key management reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/ops/index.html">10. Cryptographic operation reference</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../appendix/example_header.html">Example header file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendix/specdef_values.html">Example macro implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendix/history.html">Changes to the API</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../psa_c-identifiers.html">Index of API elements</a></li>
+</ul>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
@@ -349,15 +357,12 @@ number of operations inside the cryptoprocessor.</li>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy; 2019-2020, Arm Limited or its affiliates. All rights reserved.
+      &copy; 2018-2020, Arm Limited or its affiliates. All rights reserved.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
-      |
-      <a href="../_sources/overview/implementation.rst.txt"
-          rel="nofollow">Page source</a>
     </div>
 
     

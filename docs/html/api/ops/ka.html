@@ -5,26 +5,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Key agreement &#8212; PSA Crypto API 1.0.0 documentation</title>
+    <title>10.9. Key agreement &#8212; PSA Crypto API 1.0.1 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '1.0.0',
+        VERSION:     '1.0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
+        HAS_SOURCE:  false,
         SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Other cryptographic services" href="rng.html" />
-    <link rel="prev" title="Asymmetric encryption" href="pke.html" />
+    <link rel="next" title="10.10. Other cryptographic services" href="rng.html" />
+    <link rel="prev" title="10.8. Asymmetric encryption" href="pke.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -40,9 +41,9 @@
           <div class="body" role="main">
             
   <div class="section" id="key-agreement">
-<span id="id1"></span><h1>Key agreement</h1>
+<span id="id1"></span><h1>10.9. Key agreement</h1>
 <div class="section" id="key-agreement-algorithms">
-<span id="id2"></span><h2>Key agreement algorithms</h2>
+<span id="id2"></span><h2>10.9.1. Key agreement algorithms</h2>
 <div class="section" id="PSA_ALG_KEY_AGREEMENT">
 <span id="c.PSA_ALG_KEY_AGREEMENT"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_KEY_AGREEMENT</span></code> (macro)</h3>
 <p>Macro to build a combined algorithm that chains a key agreement with a key derivation.</p>
@@ -53,46 +54,65 @@
 <p class="rubric">Parameters</p>
 <dl class="docutils">
 <dt> <code class="docutils literal"><span class="pre">ka_alg</span></code></dt>
-<dd>A key agreement algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_KEY_AGREEMENT" title="PSA_ALG_IS_KEY_AGREEMENT"><code class="docutils literal"><span class="pre">PSA_ALG_IS_KEY_AGREEMENT</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">ka_alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>A key agreement algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_KEY_AGREEMENT" title="PSA_ALG_IS_KEY_AGREEMENT"><code class="docutils literal"><span class="pre">PSA_ALG_IS_KEY_AGREEMENT</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">ka_alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 <dt> <code class="docutils literal"><span class="pre">kdf_alg</span></code></dt>
-<dd>A key derivation algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_KEY_DERIVATION" title="PSA_ALG_IS_KEY_DERIVATION"><code class="docutils literal"><span class="pre">PSA_ALG_IS_KEY_DERIVATION</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">kdf_alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>A key derivation algorithm (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_KEY_DERIVATION" title="PSA_ALG_IS_KEY_DERIVATION"><code class="docutils literal"><span class="pre">PSA_ALG_IS_KEY_DERIVATION</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">kdf_alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 </dl>
 <p class="rubric">Returns</p>
 <p>The corresponding key agreement and derivation algorithm.</p>
 <p>Unspecified if <code class="docutils literal"><span class="pre">ka_alg</span></code> is not a supported key agreement algorithm or <code class="docutils literal"><span class="pre">kdf_alg</span></code> is not a supported key derivation algorithm.</p>
 <p class="rubric">Description</p>
+<p>A combined key agreement algorithm is used with a multi-part key derivation operation, using a call to <a class="reference internal" href="#c.psa_key_derivation_key_agreement" title="psa_key_derivation_key_agreement"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_key_agreement()</span></code></a>.</p>
 <p>The component parts of a key agreement algorithm can be extracted using <a class="reference internal" href="#c.PSA_ALG_KEY_AGREEMENT_GET_BASE" title="PSA_ALG_KEY_AGREEMENT_GET_BASE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_KEY_AGREEMENT_GET_BASE()</span></code></a> and <a class="reference internal" href="#c.PSA_ALG_KEY_AGREEMENT_GET_KDF" title="PSA_ALG_KEY_AGREEMENT_GET_KDF"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_KEY_AGREEMENT_GET_KDF()</span></code></a>.</p>
 </div>
 <div class="section" id="PSA_ALG_FFDH">
 <span id="c.PSA_ALG_FFDH"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_FFDH</span></code> (macro)</h3>
 <p>The finite-field Diffie-Hellman (DH) key agreement algorithm.</p>
 <pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_ALG_FFDH" title="PSA_ALG_FFDH">PSA_ALG_FFDH</a> ((<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x09010000)
+#define <a class="reference internal" href="#c.PSA_ALG_FFDH" title="PSA_ALG_FFDH">PSA_ALG_FFDH</a> ((<a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x09010000)
 </pre>
-<p>The shared secret produced by key agreement is <code class="docutils literal"><span class="pre">g^{ab}</span></code> in big-endian format. It is <code class="docutils literal"><span class="pre">ceiling(m</span> <span class="pre">/</span> <span class="pre">8)</span></code> bytes long where <code class="docutils literal"><span class="pre">m</span></code> is the size of the prime <code class="docutils literal"><span class="pre">p</span></code> in bits.</p>
+<p>This algorithm can be used directly in a call to <a class="reference internal" href="#c.psa_raw_key_agreement" title="psa_raw_key_agreement"><code class="xref any c c-func docutils literal"><span class="pre">psa_raw_key_agreement()</span></code></a>, or combined with a key derivation operation using <a class="reference internal" href="#c.PSA_ALG_KEY_AGREEMENT" title="PSA_ALG_KEY_AGREEMENT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_KEY_AGREEMENT()</span></code></a> for use with <a class="reference internal" href="#c.psa_key_derivation_key_agreement" title="psa_key_derivation_key_agreement"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_key_agreement()</span></code></a>.</p>
+<p>When used as part of a multi-part key derivation operation, this implements a Diffie-Hellman key agreement scheme using a single Diffie-Hellman key-pair for each participant. This includes the <em>dhEphem</em>, <em>dhOneFlow</em>, and <em>dhStatic</em> schemes. The input step <a class="reference internal" href="kdf.html#c.PSA_KEY_DERIVATION_INPUT_SECRET" title="PSA_KEY_DERIVATION_INPUT_SECRET"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_DERIVATION_INPUT_SECRET</span></code></a> is used when providing the secret and peer keys to the operation.</p>
+<p>The shared secret produced by this key agreement algorithm is <code class="docutils literal"><span class="pre">g^{ab}</span></code> in big-endian format. It is <code class="docutils literal"><span class="pre">ceiling(m</span> <span class="pre">/</span> <span class="pre">8)</span></code> bytes long where <code class="docutils literal"><span class="pre">m</span></code> is the size of the prime <code class="docutils literal"><span class="pre">p</span></code> in bits.</p>
+<p>This key agreement scheme is defined by <span><em>NIST Special Publication 800-56A: Recommendation for Pair-Wise Key-Establishment Schemes Using Discrete Logarithm Cryptography</em> <a class="reference internal" href="../../about.html#citation-sp800-56a"><span class="cite">[SP800-56A]</span></a></span> §5.7.1.1 under the name FFC DH.</p>
 </div>
 <div class="section" id="PSA_ALG_ECDH">
 <span id="c.PSA_ALG_ECDH"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_ECDH</span></code> (macro)</h3>
 <p>The elliptic curve Diffie-Hellman (ECDH) key agreement algorithm.</p>
 <pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_ALG_ECDH" title="PSA_ALG_ECDH">PSA_ALG_ECDH</a> ((<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x09020000)
+#define <a class="reference internal" href="#c.PSA_ALG_ECDH" title="PSA_ALG_ECDH">PSA_ALG_ECDH</a> ((<a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>)0x09020000)
 </pre>
+<p>This algorithm can be used directly in a call to <a class="reference internal" href="#c.psa_raw_key_agreement" title="psa_raw_key_agreement"><code class="xref any c c-func docutils literal"><span class="pre">psa_raw_key_agreement()</span></code></a>, or combined with a key derivation operation using <a class="reference internal" href="#c.PSA_ALG_KEY_AGREEMENT" title="PSA_ALG_KEY_AGREEMENT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_KEY_AGREEMENT()</span></code></a> for use with <a class="reference internal" href="#c.psa_key_derivation_key_agreement" title="psa_key_derivation_key_agreement"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_key_agreement()</span></code></a>.</p>
+<p>When used as part of a multi-part key derivation operation, this implements a Diffie-Hellman key agreement scheme using a single elliptic curve key-pair for each participant. This includes the <em>Ephemeral unified model</em>, the <em>Static unified model</em>, and the <em>One-pass Diffie-Hellman</em> schemes. The input step <a class="reference internal" href="kdf.html#c.PSA_KEY_DERIVATION_INPUT_SECRET" title="PSA_KEY_DERIVATION_INPUT_SECRET"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_DERIVATION_INPUT_SECRET</span></code></a> is used when providing the secret and peer keys to the operation.</p>
 <p>The shared secret produced by key agreement is the x-coordinate of the shared secret point. It is always <code class="docutils literal"><span class="pre">ceiling(m</span> <span class="pre">/</span> <span class="pre">8)</span></code> bytes long where <code class="docutils literal"><span class="pre">m</span></code> is the bit size associated with the curve, i.e. the bit size of the order of the curve’s coordinate field. When <code class="docutils literal"><span class="pre">m</span></code> is not a multiple of 8, the byte containing the most significant bit of the shared secret is padded with zero bits. The byte order is either little-endian or big-endian depending on the curve type.</p>
+<ul>
+<li><p class="first">For Montgomery curves (curve family <a class="reference internal" href="../keys/types.html#c.PSA_ECC_FAMILY_MONTGOMERY" title="PSA_ECC_FAMILY_MONTGOMERY"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ECC_FAMILY_MONTGOMERY</span></code></a>), the shared secret is the x-coordinate of <code class="docutils literal"><span class="pre">Z</span> <span class="pre">=</span> <span class="pre">d_A</span> <span class="pre">Q_B</span> <span class="pre">=</span> <span class="pre">d_B</span> <span class="pre">Q_A</span></code> in little-endian byte order.</p>
 <ul class="simple">
-<li>For Montgomery curves (curve family <a class="reference internal" href="../keys/types.html#c.PSA_ECC_FAMILY_MONTGOMERY" title="PSA_ECC_FAMILY_MONTGOMERY"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ECC_FAMILY_MONTGOMERY</span></code></a>), the shared secret is the x-coordinate of <code class="docutils literal"><span class="pre">d_A</span> <span class="pre">Q_B</span> <span class="pre">=</span> <span class="pre">d_B</span> <span class="pre">Q_A</span></code> in little-endian byte order. The bit size is 448 for Curve448 and 255 for Curve25519.</li>
-<li>For Weierstrass curves over prime fields (curve families <code class="docutils literal"><span class="pre">PSA_ECC_FAMILY_SECP_XX</span></code>, <a class="reference internal" href="../keys/types.html#c.PSA_ECC_FAMILY_BRAINPOOL_P_R1" title="PSA_ECC_FAMILY_BRAINPOOL_P_R1"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ECC_FAMILY_BRAINPOOL_P_R1</span></code></a> and <a class="reference internal" href="../keys/types.html#c.PSA_ECC_FAMILY_FRP" title="PSA_ECC_FAMILY_FRP"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ECC_FAMILY_FRP</span></code></a>), the shared secret is the x-coordinate of <code class="docutils literal"><span class="pre">d_A</span> <span class="pre">Q_B</span> <span class="pre">=</span> <span class="pre">d_B</span> <span class="pre">Q_A</span></code> in big-endian byte order. The bit size is <code class="docutils literal"><span class="pre">m</span> <span class="pre">=</span> <span class="pre">ceiling(log_2(p))</span></code> for the field <code class="docutils literal"><span class="pre">F_p</span></code>.</li>
-<li>For Weierstrass curves over binary fields (curve families <code class="docutils literal"><span class="pre">PSA_ECC_FAMILY_SECT_XX</span></code>), the shared secret is the x-coordinate of <code class="docutils literal"><span class="pre">d_A</span> <span class="pre">Q_B</span> <span class="pre">=</span> <span class="pre">d_B</span> <span class="pre">Q_A</span></code> in big-endian byte order. The bit size is <code class="docutils literal"><span class="pre">m</span></code> for the field <code class="docutils literal"><span class="pre">F_{2^m}</span></code>.</li>
+<li>For Curve25519, this is the X25519 function defined in <span><em>Curve25519: new Diffie-Hellman speed records</em> <a class="reference internal" href="../../about.html#citation-curve25519"><span class="cite">[Curve25519]</span></a></span>. The bit size <code class="docutils literal"><span class="pre">m</span></code> is 255.</li>
+<li>For Curve448, this is the X448 function defined in <span><em>Ed448-Goldilocks, a new elliptic curve</em> <a class="reference internal" href="../../about.html#citation-curve448"><span class="cite">[Curve448]</span></a></span>. The bit size <code class="docutils literal"><span class="pre">m</span></code> is 448.</li>
+</ul>
+</li>
+<li><p class="first">For Weierstrass curves (curve families <code class="docutils literal"><span class="pre">PSA_ECC_FAMILY_SECP_XX</span></code>, <code class="docutils literal"><span class="pre">PSA_ECC_FAMILY_SECT_XX</span></code>, <a class="reference internal" href="../keys/types.html#c.PSA_ECC_FAMILY_BRAINPOOL_P_R1" title="PSA_ECC_FAMILY_BRAINPOOL_P_R1"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ECC_FAMILY_BRAINPOOL_P_R1</span></code></a> and <a class="reference internal" href="../keys/types.html#c.PSA_ECC_FAMILY_FRP" title="PSA_ECC_FAMILY_FRP"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ECC_FAMILY_FRP</span></code></a>) the shared secret is the x-coordinate of <code class="docutils literal"><span class="pre">Z</span> <span class="pre">=</span> <span class="pre">h</span> <span class="pre">d_A</span> <span class="pre">Q_B</span> <span class="pre">=</span> <span class="pre">h</span> <span class="pre">d_B</span> <span class="pre">Q_A</span></code> in big-endian byte order. This is the Elliptic Curve Cryptography Cofactor Diffie-Hellman primitive defined by <span><em>SEC 1: Elliptic Curve Cryptography</em> <a class="reference internal" href="../../about.html#citation-sec1"><span class="cite">[SEC1]</span></a></span> §3.3.2 as, and also as ECC CDH by <span><em>NIST Special Publication 800-56A: Recommendation for Pair-Wise Key-Establishment Schemes Using Discrete Logarithm Cryptography</em> <a class="reference internal" href="../../about.html#citation-sp800-56a"><span class="cite">[SP800-56A]</span></a></span> §5.7.1.2.</p>
+<ul class="simple">
+<li>Over prime fields (curve families <code class="docutils literal"><span class="pre">PSA_ECC_FAMILY_SECP_XX</span></code>, <a class="reference internal" href="../keys/types.html#c.PSA_ECC_FAMILY_BRAINPOOL_P_R1" title="PSA_ECC_FAMILY_BRAINPOOL_P_R1"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ECC_FAMILY_BRAINPOOL_P_R1</span></code></a> and <a class="reference internal" href="../keys/types.html#c.PSA_ECC_FAMILY_FRP" title="PSA_ECC_FAMILY_FRP"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ECC_FAMILY_FRP</span></code></a>), the bit size is <code class="docutils literal"><span class="pre">m</span> <span class="pre">=</span> <span class="pre">ceiling(log_2(p))</span></code> for the field <code class="docutils literal"><span class="pre">F_p</span></code>.</li>
+<li>Over binary fields (curve families <code class="docutils literal"><span class="pre">PSA_ECC_FAMILY_SECT_XX</span></code>), the bit size is <code class="docutils literal"><span class="pre">m</span></code> for the field <code class="docutils literal"><span class="pre">F_{2^m}</span></code>.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The cofactor Diffie-Hellman primitive is equivalent to the standard elliptic curve Diffie-Hellman calculation <code class="docutils literal"><span class="pre">Z</span> <span class="pre">=</span> <span class="pre">d_A</span> <span class="pre">Q_B</span> <span class="pre">=</span> <span class="pre">d_B</span> <span class="pre">Q_A</span></code> (<a class="reference internal" href="../../about.html#citation-sec1"><span class="cite psa_c psa_c-cite">[SEC1]</span></a> §3.3.1) for curves where the cofactor <code class="docutils literal"><span class="pre">h</span></code> is <code class="docutils literal"><span class="pre">1</span></code>. This is true for all curves in the <code class="docutils literal"><span class="pre">PSA_ECC_FAMILY_SECP_XX</span></code>, <a class="reference internal" href="../keys/types.html#c.PSA_ECC_FAMILY_BRAINPOOL_P_R1" title="PSA_ECC_FAMILY_BRAINPOOL_P_R1"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ECC_FAMILY_BRAINPOOL_P_R1</span></code></a>, and <a class="reference internal" href="../keys/types.html#c.PSA_ECC_FAMILY_FRP" title="PSA_ECC_FAMILY_FRP"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ECC_FAMILY_FRP</span></code></a> families.</p>
+</div>
+</li>
 </ul>
 </div>
 </div>
 <div class="section" id="standalone-key-agreement">
-<h2>Standalone key agreement</h2>
+<h2>10.9.2. Standalone key agreement</h2>
 <div class="section" id="psa_raw_key_agreement">
 <span id="c.psa_raw_key_agreement"></span><h3><code class="docutils literal"><span class="pre">psa_raw_key_agreement</span></code> (function)</h3>
 <p>Perform a key agreement and return the raw shared secret.</p>
 <pre class="literal-block">
-<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_raw_key_agreement" title="psa_raw_key_agreement">psa_raw_key_agreement</a>(<a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a> alg,
-                                   <a class="reference internal" href="../keys/attributes.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> private_key,
+<a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_raw_key_agreement" title="psa_raw_key_agreement">psa_raw_key_agreement</a>(<a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a> alg,
+                                   <a class="reference internal" href="../keys/ids.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> private_key,
                                    const uint8_t * peer_key,
                                    size_t peer_key_length,
                                    uint8_t * output,
@@ -105,13 +125,13 @@
 <dd>The key agreement algorithm to compute (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="#c.PSA_ALG_IS_RAW_KEY_AGREEMENT" title="PSA_ALG_IS_RAW_KEY_AGREEMENT"><code class="docutils literal"><span class="pre">PSA_ALG_IS_RAW_KEY_AGREEMENT</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 <dt> <code class="docutils literal"><span class="pre">private_key</span></code></dt>
 <dd>Identifier of the private key to use.
-It must allow the usage <a class="reference internal" href="../keys/usage.html#c.PSA_KEY_USAGE_DERIVE" title="PSA_KEY_USAGE_DERIVE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_DERIVE</span></code></a>.</dd>
+It must allow the usage <a class="reference internal" href="../keys/policy.html#c.PSA_KEY_USAGE_DERIVE" title="PSA_KEY_USAGE_DERIVE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_DERIVE</span></code></a>.</dd>
 <dt> <code class="docutils literal"><span class="pre">peer_key</span></code></dt>
 <dd>Public key of the peer. It must be in the same format that <a class="reference internal" href="../keys/management.html#c.psa_import_key" title="psa_import_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_import_key()</span></code></a> accepts. The standard formats for public keys are documented in the documentation of <a class="reference internal" href="../keys/management.html#c.psa_export_public_key" title="psa_export_public_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_export_public_key()</span></code></a>.</dd>
 <dt> <code class="docutils literal"><span class="pre">peer_key_length</span></code></dt>
 <dd>Size of <code class="docutils literal"><span class="pre">peer_key</span></code> in bytes.</dd>
 <dt> <code class="docutils literal"><span class="pre">output</span></code></dt>
-<dd>Buffer where the decrypted message is to be written.</dd>
+<dd>Buffer where the raw shared secret is to be written.</dd>
 <dt> <code class="docutils literal"><span class="pre">output_size</span></code></dt>
 <dd><p class="first">Size of the <code class="docutils literal"><span class="pre">output</span></code> buffer in bytes.
 This must be appropriate for the keys:</p>
@@ -130,7 +150,7 @@ This must be appropriate for the keys:</p>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_HANDLE" title="PSA_ERROR_INVALID_HANDLE"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_HANDLE</span></code></a></dt>
 <dd></dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_PERMITTED" title="PSA_ERROR_NOT_PERMITTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_PERMITTED</span></code></a></dt>
-<dd>The key does not have the <a class="reference internal" href="../keys/usage.html#c.PSA_KEY_USAGE_DERIVE" title="PSA_KEY_USAGE_DERIVE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_DERIVE</span></code></a> flag, or it does not permit the requested algorithm.</dd>
+<dd>The key does not have the <a class="reference internal" href="../keys/policy.html#c.PSA_KEY_USAGE_DERIVE" title="PSA_KEY_USAGE_DERIVE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_DERIVE</span></code></a> flag, or it does not permit the requested algorithm.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
 <dd><code class="docutils literal"><span class="pre">alg</span></code> is not a key agreement algorithm</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
@@ -165,26 +185,26 @@ This must be appropriate for the keys:</p>
 </div>
 </div>
 <div class="section" id="combining-key-agreement-and-key-derivation">
-<h2>Combining key agreement and key derivation</h2>
+<h2>10.9.3. Combining key agreement and key derivation</h2>
 <div class="section" id="psa_key_derivation_key_agreement">
 <span id="c.psa_key_derivation_key_agreement"></span><h3><code class="docutils literal"><span class="pre">psa_key_derivation_key_agreement</span></code> (function)</h3>
 <p>Perform a key agreement and use the shared secret as input to a key derivation.</p>
 <pre class="literal-block">
 <a class="reference internal" href="../library/status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_key_derivation_key_agreement" title="psa_key_derivation_key_agreement">psa_key_derivation_key_agreement</a>(<a class="reference internal" href="kdf.html#c.psa_key_derivation_operation_t" title="psa_key_derivation_operation_t">psa_key_derivation_operation_t</a> * operation,
                                               <a class="reference internal" href="kdf.html#c.psa_key_derivation_step_t" title="psa_key_derivation_step_t">psa_key_derivation_step_t</a> step,
-                                              <a class="reference internal" href="../keys/attributes.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> private_key,
+                                              <a class="reference internal" href="../keys/ids.html#c.psa_key_id_t" title="psa_key_id_t">psa_key_id_t</a> private_key,
                                               const uint8_t * peer_key,
                                               size_t peer_key_length);
 </pre>
 <p class="rubric">Parameters</p>
 <dl class="docutils">
 <dt> <code class="docutils literal"><span class="pre">operation</span></code></dt>
-<dd>The key derivation operation object to use. It must have been set up with <a class="reference internal" href="kdf.html#c.psa_key_derivation_setup" title="psa_key_derivation_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_setup()</span></code></a> with a key agreement and derivation algorithm <code class="docutils literal"><span class="pre">alg</span></code> (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_KEY_AGREEMENT" title="PSA_ALG_IS_KEY_AGREEMENT"><code class="docutils literal"><span class="pre">PSA_ALG_IS_KEY_AGREEMENT</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true and <a class="reference internal" href="#c.PSA_ALG_IS_RAW_KEY_AGREEMENT" title="PSA_ALG_IS_RAW_KEY_AGREEMENT"><code class="docutils literal"><span class="pre">PSA_ALG_IS_RAW_KEY_AGREEMENT</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is false). The operation must be ready for an input of the type given by <code class="docutils literal"><span class="pre">step</span></code>.</dd>
+<dd>The key derivation operation object to use. It must have been set up with <a class="reference internal" href="kdf.html#c.psa_key_derivation_setup" title="psa_key_derivation_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_setup()</span></code></a> with a key agreement and derivation algorithm <code class="docutils literal"><span class="pre">alg</span></code> (<code class="docutils literal"><span class="pre">PSA_ALG_XXX</span></code> value such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_KEY_AGREEMENT" title="PSA_ALG_IS_KEY_AGREEMENT"><code class="docutils literal"><span class="pre">PSA_ALG_IS_KEY_AGREEMENT</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true and <a class="reference internal" href="#c.PSA_ALG_IS_RAW_KEY_AGREEMENT" title="PSA_ALG_IS_RAW_KEY_AGREEMENT"><code class="docutils literal"><span class="pre">PSA_ALG_IS_RAW_KEY_AGREEMENT</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is false). The operation must be ready for an input of the type given by <code class="docutils literal"><span class="pre">step</span></code>.</dd>
 <dt> <code class="docutils literal"><span class="pre">step</span></code></dt>
 <dd>Which step the input data is for.</dd>
 <dt> <code class="docutils literal"><span class="pre">private_key</span></code></dt>
 <dd>Identifier of the private key to use.
-It must allow the usage <a class="reference internal" href="../keys/usage.html#c.PSA_KEY_USAGE_DERIVE" title="PSA_KEY_USAGE_DERIVE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_DERIVE</span></code></a>.</dd>
+It must allow the usage <a class="reference internal" href="../keys/policy.html#c.PSA_KEY_USAGE_DERIVE" title="PSA_KEY_USAGE_DERIVE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_DERIVE</span></code></a>.</dd>
 <dt> <code class="docutils literal"><span class="pre">peer_key</span></code></dt>
 <dd>Public key of the peer. The peer key must be in the same format that <a class="reference internal" href="../keys/management.html#c.psa_import_key" title="psa_import_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_import_key()</span></code></a> accepts for the public key type corresponding to the type of private_key. That is, this function performs the equivalent of <a class="reference internal" href="../keys/management.html#c.psa_import_key" title="psa_import_key"><code class="docutils literal"><span class="pre">psa_import_key</span></code></a><code class="docutils literal"><span class="pre">(...,</span> </code><code class="docutils literal"><span class="pre">peer_key</span></code><code class="docutils literal"><span class="pre">,</span> </code><code class="docutils literal"><span class="pre">peer_key_length</span></code><code class="docutils literal"><span class="pre">)</span></code> where with key attributes indicating the public key type corresponding to the type of <code class="docutils literal"><span class="pre">private_key</span></code>. For example, for EC keys, this means that peer_key is interpreted as a point on the curve that the private key is on. The standard formats for public keys are documented in the documentation of <a class="reference internal" href="../keys/management.html#c.psa_export_public_key" title="psa_export_public_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_export_public_key()</span></code></a>.</dd>
 <dt> <code class="docutils literal"><span class="pre">peer_key_length</span></code></dt>
@@ -199,7 +219,7 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_HANDLE" title="PSA_ERROR_INVALID_HANDLE"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_HANDLE</span></code></a></dt>
 <dd></dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_PERMITTED" title="PSA_ERROR_NOT_PERMITTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_PERMITTED</span></code></a></dt>
-<dd>The key does not have the <a class="reference internal" href="../keys/usage.html#c.PSA_KEY_USAGE_DERIVE" title="PSA_KEY_USAGE_DERIVE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_DERIVE</span></code></a> flag, or it does not permit the requested algorithm.</dd>
+<dd>The key does not have the <a class="reference internal" href="../keys/policy.html#c.PSA_KEY_USAGE_DERIVE" title="PSA_KEY_USAGE_DERIVE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_DERIVE</span></code></a> flag, or it does not permit the requested algorithm.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_INVALID_ARGUMENT" title="PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code></a></dt>
 <dd><code class="docutils literal"><span class="pre">private_key</span></code> is not compatible with <code class="docutils literal"><span class="pre">alg</span></code>, or <code class="docutils literal"><span class="pre">peer_key</span></code> is not valid for <code class="docutils literal"><span class="pre">alg</span></code> or not compatible with <code class="docutils literal"><span class="pre">private_key</span></code>.</dd>
 <dt> <a class="reference internal" href="../library/status.html#c.PSA_ERROR_NOT_SUPPORTED" title="PSA_ERROR_NOT_SUPPORTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_SUPPORTED</span></code></a></dt>
@@ -229,7 +249,7 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 </div>
 </div>
 <div class="section" id="support-macros">
-<h2>Support macros</h2>
+<h2>10.9.4. Support macros</h2>
 <div class="section" id="PSA_ALG_KEY_AGREEMENT_GET_BASE">
 <span id="c.PSA_ALG_KEY_AGREEMENT_GET_BASE"></span><h3><code class="docutils literal"><span class="pre">PSA_ALG_KEY_AGREEMENT_GET_BASE</span></code> (macro)</h3>
 <p>Get the raw key agreement algorithm from a full key agreement algorithm.</p>
@@ -239,7 +259,7 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 <p class="rubric">Parameters</p>
 <dl class="docutils">
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>A key agreement algorithm identifier (value of type <a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_algorithm_t</span></code></a> such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_KEY_AGREEMENT" title="PSA_ALG_IS_KEY_AGREEMENT"><code class="docutils literal"><span class="pre">PSA_ALG_IS_KEY_AGREEMENT</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>A key agreement algorithm identifier (value of type <a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_algorithm_t</span></code></a> such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_KEY_AGREEMENT" title="PSA_ALG_IS_KEY_AGREEMENT"><code class="docutils literal"><span class="pre">PSA_ALG_IS_KEY_AGREEMENT</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 </dl>
 <p class="rubric">Returns</p>
 <p>The underlying raw key agreement algorithm if <code class="docutils literal"><span class="pre">alg</span></code> is a key agreement algorithm.</p>
@@ -256,7 +276,7 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 <p class="rubric">Parameters</p>
 <dl class="docutils">
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>A key agreement algorithm identifier (value of type <a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_algorithm_t</span></code></a> such that <a class="reference internal" href="../keys/algorithms.html#c.PSA_ALG_IS_KEY_AGREEMENT" title="PSA_ALG_IS_KEY_AGREEMENT"><code class="docutils literal"><span class="pre">PSA_ALG_IS_KEY_AGREEMENT</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
+<dd>A key agreement algorithm identifier (value of type <a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_algorithm_t</span></code></a> such that <a class="reference internal" href="algorithms.html#c.PSA_ALG_IS_KEY_AGREEMENT" title="PSA_ALG_IS_KEY_AGREEMENT"><code class="docutils literal"><span class="pre">PSA_ALG_IS_KEY_AGREEMENT</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">alg</span></code><code class="docutils literal"><span class="pre">)</span></code> is true).</dd>
 </dl>
 <p class="rubric">Returns</p>
 <p>The underlying key derivation algorithm if <code class="docutils literal"><span class="pre">alg</span></code> is a key agreement algorithm.</p>
@@ -273,7 +293,7 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 <p class="rubric">Parameters</p>
 <dl class="docutils">
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>An algorithm identifier (value of type <a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_algorithm_t</span></code></a>).</dd>
+<dd>An algorithm identifier (value of type <a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_algorithm_t</span></code></a>).</dd>
 </dl>
 <p class="rubric">Returns</p>
 <p><code class="docutils literal"><span class="pre">1</span></code> if <code class="docutils literal"><span class="pre">alg</span></code> is a raw key agreement algorithm, <code class="docutils literal"><span class="pre">0</span></code> otherwise. This macro can return either <code class="docutils literal"><span class="pre">0</span></code> or <code class="docutils literal"><span class="pre">1</span></code> if <code class="docutils literal"><span class="pre">alg</span></code> is not a supported algorithm identifier.</p>
@@ -290,7 +310,7 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 <p class="rubric">Parameters</p>
 <dl class="docutils">
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>An algorithm identifier (value of type <a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_algorithm_t</span></code></a>).</dd>
+<dd>An algorithm identifier (value of type <a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_algorithm_t</span></code></a>).</dd>
 </dl>
 <p class="rubric">Returns</p>
 <p><code class="docutils literal"><span class="pre">1</span></code> if <code class="docutils literal"><span class="pre">alg</span></code> is a finite field Diffie-Hellman algorithm, <code class="docutils literal"><span class="pre">0</span></code> otherwise. This macro can return either <code class="docutils literal"><span class="pre">0</span></code> or <code class="docutils literal"><span class="pre">1</span></code> if <code class="docutils literal"><span class="pre">alg</span></code> is not a supported key agreement algorithm identifier.</p>
@@ -306,7 +326,7 @@ It must allow the usage <a class="reference internal" href="../keys/usage.html#c
 <p class="rubric">Parameters</p>
 <dl class="docutils">
 <dt> <code class="docutils literal"><span class="pre">alg</span></code></dt>
-<dd>An algorithm identifier (value of type <a class="reference internal" href="../keys/attributes.html#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_algorithm_t</span></code></a>).</dd>
+<dd>An algorithm identifier (value of type <a class="reference internal" href="algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_algorithm_t</span></code></a>).</dd>
 </dl>
 <p class="rubric">Returns</p>
 <p><code class="docutils literal"><span class="pre">1</span></code> if <code class="docutils literal"><span class="pre">alg</span></code> is an elliptic curve Diffie-Hellman algorithm, <code class="docutils literal"><span class="pre">0</span></code> otherwise. This macro can return either <code class="docutils literal"><span class="pre">0</span></code> or <code class="docutils literal"><span class="pre">1</span></code> if <code class="docutils literal"><span class="pre">alg</span></code> is not a supported key agreement algorithm identifier.</p>
@@ -356,55 +376,52 @@ It is recommended that this value is the maximum size of the output any raw key 
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="../../index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Key agreement</a><ul>
-<li><a class="reference internal" href="#key-agreement-algorithms">Key agreement algorithms</a><ul>
-<li><a class="reference internal" href="#PSA_ALG_KEY_AGREEMENT"><code class="docutils literal"><span class="pre">PSA_ALG_KEY_AGREEMENT</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_FFDH"><code class="docutils literal"><span class="pre">PSA_ALG_FFDH</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_ECDH"><code class="docutils literal"><span class="pre">PSA_ALG_ECDH</span></code> (macro)</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#standalone-key-agreement">Standalone key agreement</a><ul>
-<li><a class="reference internal" href="#psa_raw_key_agreement"><code class="docutils literal"><span class="pre">psa_raw_key_agreement</span></code> (function)</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#combining-key-agreement-and-key-derivation">Combining key agreement and key derivation</a><ul>
-<li><a class="reference internal" href="#psa_key_derivation_key_agreement"><code class="docutils literal"><span class="pre">psa_key_derivation_key_agreement</span></code> (function)</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#support-macros">Support macros</a><ul>
-<li><a class="reference internal" href="#PSA_ALG_KEY_AGREEMENT_GET_BASE"><code class="docutils literal"><span class="pre">PSA_ALG_KEY_AGREEMENT_GET_BASE</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_KEY_AGREEMENT_GET_KDF"><code class="docutils literal"><span class="pre">PSA_ALG_KEY_AGREEMENT_GET_KDF</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_IS_RAW_KEY_AGREEMENT"><code class="docutils literal"><span class="pre">PSA_ALG_IS_RAW_KEY_AGREEMENT</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_IS_FFDH"><code class="docutils literal"><span class="pre">PSA_ALG_IS_FFDH</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_ALG_IS_ECDH"><code class="docutils literal"><span class="pre">PSA_ALG_IS_ECDH</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_RAW_KEY_AGREEMENT_OUTPUT_SIZE"><code class="docutils literal"><span class="pre">PSA_RAW_KEY_AGREEMENT_OUTPUT_SIZE</span></code> (macro)</a></li>
-<li><a class="reference internal" href="#PSA_RAW_KEY_AGREEMENT_OUTPUT_MAX_SIZE"><code class="docutils literal"><span class="pre">PSA_RAW_KEY_AGREEMENT_OUTPUT_MAX_SIZE</span></code> (macro)</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
+        <div class="sphinxsidebarwrapper"><h3><a href="../../index.html"><b>PSA Crypto API</b></a></h3>
+IHI 0086<br/>
+Non-confidential<br/>
+Version 1.0.1
+<span style="color: red; font-weight: bold;"></span>
 <ul>
-  <li><a href="../../index.html">Documentation overview</a><ul>
-  <li><a href="index.html">Cryptographic operation reference</a><ul>
-      <li>Previous: <a href="pke.html" title="previous chapter">Asymmetric encryption</a></li>
-      <li>Next: <a href="rng.html" title="next chapter">Other cryptographic services</a></li>
-  </ul></li>
-  </ul></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About this document</a></li>
 </ul>
-</div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../../_sources/api/ops/ka.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview/intro.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/goals.html">2. Design goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/functionality.html">3. Functionality overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/sample-arch.html">4. Sample architectures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/conventions.html">5. Library conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/implementation.html">6. Implementation considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/usage.html">7. Usage considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../library/index.html">8. Library management reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../keys/index.html">9. Key management reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">10. Cryptographic operation reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="algorithms.html">10.1. Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hashes.html">10.2. Message digests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="macs.html">10.3. Message authentication codes (MAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ciphers.html">10.4. Unauthenticated ciphers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aead.html">10.5. Authenticated encryption with associated data (AEAD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kdf.html">10.6. Key derivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sign.html">10.7. Asymmetric signature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pke.html">10.8. Asymmetric encryption</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">10.9. Key agreement</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#key-agreement-algorithms">10.9.1. Key agreement algorithms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#standalone-key-agreement">10.9.2. Standalone key agreement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#combining-key-agreement-and-key-derivation">10.9.3. Combining key agreement and key derivation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#support-macros">10.9.4. Support macros</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rng.html">10.10. Other cryptographic services</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../appendix/example_header.html">Example header file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendix/specdef_values.html">Example macro implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendix/history.html">Changes to the API</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../psa_c-identifiers.html">Index of API elements</a></li>
+</ul>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
@@ -420,15 +437,12 @@ It is recommended that this value is the maximum size of the output any raw key 
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy; 2019-2020, Arm Limited or its affiliates. All rights reserved.
+      &copy; 2018-2020, Arm Limited or its affiliates. All rights reserved.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
-      |
-      <a href="../../_sources/api/ops/ka.rst.txt"
-          rel="nofollow">Page source</a>
     </div>
 
     
