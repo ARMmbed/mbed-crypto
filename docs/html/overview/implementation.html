@@ -1,26 +1,17 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>6. Implementation considerations &#8212; PSA Crypto API 1.0.1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '1.0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  false,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -29,15 +20,17 @@
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
+  
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="implementation-considerations">
@@ -56,11 +49,11 @@ standard profiles.</p>
 <span id="implementation-defined-type"></span><h3>6.1.2. Implementation-specific types</h3>
 <p>This specification defines a number of implementation-specific types, which
 represent objects whose content depends on the implementation. These are defined
-as C <code class="docutils literal"><span class="pre">typedef</span></code> types in this specification, with a comment
+as C <code class="docutils literal notranslate"><span class="pre">typedef</span></code> types in this specification, with a comment
 <em><a class="reference internal" href="#implementation-defined-type"><span class="std std-ref">/* implementation-defined type */</span></a></em> in place of the underlying type
 definition. For some types the specification constrains the type, for example,
-by requiring that the type is a <code class="docutils literal"><span class="pre">struct</span></code>, or that it is convertible to and
-from an unsigned integer. In the implementation’s version of <code class="file docutils literal"><span class="pre">psa/crypto.h</span></code>,
+by requiring that the type is a <code class="docutils literal notranslate"><span class="pre">struct</span></code>, or that it is convertible to and
+from an unsigned integer. In the implementation’s version of <code class="file docutils literal notranslate"><span class="pre">psa/crypto.h</span></code>,
 these types need to be defined as complete C types so that objects of these
 types can be instantiated by application code.</p>
 <p>Applications that rely on the implementation specific definition of any of these
@@ -75,10 +68,10 @@ appear in more than one header file within a compilation.</p>
 implementation-specific. The description of an implementation-specific macro can
 optionally specify each of the following requirements:</p>
 <ul class="simple">
-<li>Input domains: the macro must be valid for arguments within the input domain.</li>
-<li>A return type: the macro result must be compatible with this type.</li>
-<li>Output range: the macro result must lie in the output range.</li>
-<li>Computed value: A precise mapping of valid input to output values.</li>
+<li><p>Input domains: the macro must be valid for arguments within the input domain.</p></li>
+<li><p>A return type: the macro result must be compatible with this type.</p></li>
+<li><p>Output range: the macro result must lie in the output range.</p></li>
+<li><p>Computed value: A precise mapping of valid input to output values.</p></li>
 </ul>
 <p>Each implementation-specific macro is in one of following categories:</p>
 <p id="specification-defined-value"><em>Specification-defined value</em></p>
@@ -90,10 +83,10 @@ implementation.</p>
 <em><a class="reference internal" href="#specification-defined-value"><span class="std std-ref">/* specification-defined value */</span></a></em>.</p>
 <p>For function-like macros with specification-defined values:</p>
 <ul class="simple">
-<li>Example implementations are provided in an appendix to this specification.
-See <a class="reference internal" href="../appendix/specdef_values.html#appendix-specdef-values"><span class="secref">Example macro implementations</span></a>.</li>
-<li>The expected computation for valid and supported input arguments will be
-defined as pseudo-code in a future version of this specification.</li>
+<li><p>Example implementations are provided in an appendix to this specification.
+See <a class="reference internal" href="../appendix/specdef_values.html#appendix-specdef-values"><span class="secref">Example macro implementations</span></a>.</p></li>
+<li><p>The expected computation for valid and supported input arguments will be
+defined as pseudo-code in a future version of this specification.</p></li>
 </ul>
 </div></blockquote>
 <p id="implementation-defined-value"><em>Implementation-defined value</em></p>
@@ -131,12 +124,12 @@ synonymously.</p>
 <div class="section" id="platform-specific-types">
 <h3>6.2.2. Platform-specific types</h3>
 <p>The specification makes use of some types defined in C99. These types must be
-defined in the implementation version of <code class="file docutils literal"><span class="pre">psa/crypto.h</span></code> or by a header
+defined in the implementation version of <code class="file docutils literal notranslate"><span class="pre">psa/crypto.h</span></code> or by a header
 included in this file. The following C99 types are used:</p>
-<dl class="docutils">
-<dt><code class="docutils literal"><span class="pre">uint8_t</span></code>, <code class="docutils literal"><span class="pre">uint16_t</span></code>, <code class="docutils literal"><span class="pre">uint32_t</span></code></dt>
-<dd>Unsigned integer types with 8, 16 and 32 value bits respectively.
-These types are defined by the C99 header <code class="file docutils literal"><span class="pre">stdint.h</span></code>.</dd>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">uint8_t</span></code>, <code class="docutils literal notranslate"><span class="pre">uint16_t</span></code>, <code class="docutils literal notranslate"><span class="pre">uint32_t</span></code></dt><dd><p>Unsigned integer types with 8, 16 and 32 value bits respectively.
+These types are defined by the C99 header <code class="file docutils literal notranslate"><span class="pre">stdint.h</span></code>.</p>
+</dd>
 </dl>
 </div>
 <div class="section" id="cryptographic-hardware-support">
@@ -174,11 +167,11 @@ able to obtain a reference to another client’s key by guessing the key
 identifier value. Isolation of key identifiers can be achieved in several ways.
 For example:</p>
 <ul class="simple">
-<li>There is a single identifier namespace for all clients, and the
+<li><p>There is a single identifier namespace for all clients, and the
 implementation verifies that the client is the owner of the identifier when
-looking up the key.</li>
-<li>Each client has an independent identifier namespace, and the implementation
-uses a client specific identifier-to-key mapping when looking up the key.</li>
+looking up the key.</p></li>
+<li><p>Each client has an independent identifier namespace, and the implementation
+uses a client specific identifier-to-key mapping when looking up the key.</p></li>
 </ul>
 <p>After a volatile key identifier is destroyed, it is recommended that the
 implementation does not immediately reuse the same identifier value for a
@@ -209,22 +202,22 @@ on startup.</p>
 <p>Implementing the <a class="reference internal" href="#memory-cleanup"><span class="std std-ref">memory cleanup rule</span></a> for persistent keys
 can result in inefficiencies when the same persistent key is used sequentially
 in multiple cryptographic operations. The inefficiency stems from loading the
-key from non-volatile storage on each use of the key. The <a class="reference internal" href="../api/keys/policy.html#c.PSA_KEY_USAGE_CACHE" title="PSA_KEY_USAGE_CACHE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_CACHE</span></code></a>
+key from non-volatile storage on each use of the key. The <a class="reference internal" href="../api/keys/policy.html#c.PSA_KEY_USAGE_CACHE" title="PSA_KEY_USAGE_CACHE"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_KEY_USAGE_CACHE</span></code></a>
 usage flag in a key policy allows an application to request that the implementation does not cleanup
 non-essential copies of persistent key material, effectively suspending the
 cleanup rules for that key. The effects of this policy depend on the
 implementation and the key, for example:</p>
 <ul class="simple">
-<li>For volatile keys or keys in a secure element with no open/close mechanism,
-this is likely to have no effect.</li>
-<li>For persistent keys that are not in a secure element, this allows the
+<li><p>For volatile keys or keys in a secure element with no open/close mechanism,
+this is likely to have no effect.</p></li>
+<li><p>For persistent keys that are not in a secure element, this allows the
 implementation to keep the key in a memory cache outside of the memory used
-by ongoing operations.</li>
-<li>For keys in a secure element with an open/close mechanism, this is a hint to
-keep the key open in the secure element.</li>
+by ongoing operations.</p></li>
+<li><p>For keys in a secure element with an open/close mechanism, this is a hint to
+keep the key open in the secure element.</p></li>
 </ul>
 <p>The application can indicate when it has finished using the key by calling
-<a class="reference internal" href="../api/keys/management.html#c.psa_purge_key" title="psa_purge_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_purge_key()</span></code></a>, to request that the key material is cleaned from memory.</p>
+<a class="reference internal" href="../api/keys/management.html#c.psa_purge_key" title="psa_purge_key"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_purge_key()</span></code></a>, to request that the key material is cleaned from memory.</p>
 </div>
 <div class="section" id="safe-outputs-on-error">
 <h3>6.3.5. Safe outputs on error</h3>
@@ -263,20 +256,20 @@ certain use cases.</p>
 <div class="section" id="philosophy-of-resource-management">
 <h3>6.4.1. Philosophy of resource management</h3>
 <p>The specification allows most functions to return
-<a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_INSUFFICIENT_MEMORY" title="PSA_ERROR_INSUFFICIENT_MEMORY"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_MEMORY</span></code></a>. This gives implementations the freedom to
+<a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_INSUFFICIENT_MEMORY" title="PSA_ERROR_INSUFFICIENT_MEMORY"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_ERROR_INSUFFICIENT_MEMORY</span></code></a>. This gives implementations the freedom to
 manage memory as they please.</p>
 <p>Alternatively, the interface is also designed for conservative strategies of
 memory management. An implementation can avoid dynamic memory allocation
 altogether by obeying certain restrictions:</p>
 <ul class="simple">
-<li>Pre-allocate memory for a predefined number of keys, each with sufficient
-memory for all key types that can be stored.</li>
-<li>For multi-part operations, in an implementation without isolation, place all
+<li><p>Pre-allocate memory for a predefined number of keys, each with sufficient
+memory for all key types that can be stored.</p></li>
+<li><p>For multi-part operations, in an implementation without isolation, place all
 the data that needs to be carried over from one step to the next in the
 operation object. The application is then fully in control of how memory is
-allocated for the operation.</li>
-<li>In an implementation with isolation, pre-allocate memory for a predefined
-number of operations inside the cryptoprocessor.</li>
+allocated for the operation.</p></li>
+<li><p>In an implementation with isolation, pre-allocate memory for a predefined
+number of operations inside the cryptoprocessor.</p></li>
 </ul>
 </div>
 </div>
@@ -284,6 +277,7 @@ number of operations inside the cryptoprocessor.</li>
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -343,13 +337,13 @@ Version 1.0.1
 <li class="toctree-l1"><a class="reference internal" href="../psa_c-identifiers.html">Index of API elements</a></li>
 </ul>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -360,8 +354,8 @@ Version 1.0.1
       &copy; 2018-2020, Arm Limited or its affiliates. All rights reserved.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
 

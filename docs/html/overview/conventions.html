@@ -1,26 +1,17 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>5. Library conventions &#8212; PSA Crypto API 1.0.1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '1.0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  false,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -29,15 +20,17 @@
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
+  
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="library-conventions">
@@ -46,12 +39,12 @@
 <h2>5.1. Error handling</h2>
 <div class="section" id="return-status">
 <h3>5.1.1. Return status</h3>
-<p>Almost all functions return a status indication of type <a class="reference internal" href="../api/library/status.html#c.psa_status_t" title="psa_status_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_status_t</span></code></a>. This
-is an enumeration of integer values, with <code class="docutils literal"><span class="pre">0</span></code> (<a class="reference internal" href="../api/library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_SUCCESS</span></code></a>) indicating
+<p>Almost all functions return a status indication of type <a class="reference internal" href="../api/library/status.html#c.psa_status_t" title="psa_status_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_status_t</span></code></a>. This
+is an enumeration of integer values, with <code class="docutils literal notranslate"><span class="pre">0</span></code> (<a class="reference internal" href="../api/library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_SUCCESS</span></code></a>) indicating
 successful operation and other values indicating errors. The exceptions are
 functions which only access objects that are intended to be implemented as
 simple data structures. Such functions cannot fail and either return
-<code class="docutils literal"><span class="pre">void</span></code> or a data value.</p>
+<code class="docutils literal notranslate"><span class="pre">void</span></code> or a data value.</p>
 <p>Unless specified otherwise, if multiple error conditions apply, an
 implementation is free to return any of the applicable error codes. The choice
 of error code is considered an implementation quality issue. Different
@@ -67,46 +60,46 @@ undefined behavior condition can be detected. However, application developers ne
 <h3>5.1.2. Behavior on error</h3>
 <p>All function calls must be implemented atomically:</p>
 <ul class="simple">
-<li>When a function returns a type other than <a class="reference internal" href="../api/library/status.html#c.psa_status_t" title="psa_status_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_status_t</span></code></a>, the requested
-action has been carried out.</li>
-<li>When a function returns the status <a class="reference internal" href="../api/library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_SUCCESS</span></code></a>, the requested action has
-been carried out.</li>
-<li>When a function returns another status of type <a class="reference internal" href="../api/library/status.html#c.psa_status_t" title="psa_status_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_status_t</span></code></a>, no action
+<li><p>When a function returns a type other than <a class="reference internal" href="../api/library/status.html#c.psa_status_t" title="psa_status_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_status_t</span></code></a>, the requested
+action has been carried out.</p></li>
+<li><p>When a function returns the status <a class="reference internal" href="../api/library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_SUCCESS</span></code></a>, the requested action has
+been carried out.</p></li>
+<li><p>When a function returns another status of type <a class="reference internal" href="../api/library/status.html#c.psa_status_t" title="psa_status_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_status_t</span></code></a>, no action
 has been carried out. The content of the output parameters is undefined, but
-otherwise the state of the system has not changed, except as described below.</li>
+otherwise the state of the system has not changed, except as described below.</p></li>
 </ul>
 <p>In general, functions that modify the system state, for example, creating or
 destroying a key, must leave the system state unchanged if they return an error
 code. There are specific conditions that can result in different behavior:</p>
 <ul class="simple">
-<li>The status <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a> indicates that a parameter was not in a
+<li><p>The status <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a> indicates that a parameter was not in a
 valid state for the requested action. This parameter might have been modified
 by the call and is now in an undefined state. The only valid action on an
 object in an undefined state is to abort it with the appropriate
-<code class="docutils literal"><span class="pre">psa_abort_xxx()</span></code> function.</li>
-<li>The status <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_INSUFFICIENT_DATA" title="PSA_ERROR_INSUFFICIENT_DATA"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_DATA</span></code></a> indicates that a key
+<code class="docutils literal notranslate"><span class="pre">psa_abort_xxx()</span></code> function.</p></li>
+<li><p>The status <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_INSUFFICIENT_DATA" title="PSA_ERROR_INSUFFICIENT_DATA"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_ERROR_INSUFFICIENT_DATA</span></code></a> indicates that a key
 derivation object has reached its maximum capacity. The key derivation
 operation might have been modified by the call. Any further attempt to obtain
 output from the key derivation operation will return
-<a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_INSUFFICIENT_DATA" title="PSA_ERROR_INSUFFICIENT_DATA"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_DATA</span></code></a>.</li>
-<li>The status <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_COMMUNICATION_FAILURE" title="PSA_ERROR_COMMUNICATION_FAILURE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_COMMUNICATION_FAILURE</span></code></a> indicates that the
+<a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_INSUFFICIENT_DATA" title="PSA_ERROR_INSUFFICIENT_DATA"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_ERROR_INSUFFICIENT_DATA</span></code></a>.</p></li>
+<li><p>The status <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_COMMUNICATION_FAILURE" title="PSA_ERROR_COMMUNICATION_FAILURE"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_ERROR_COMMUNICATION_FAILURE</span></code></a> indicates that the
 communication between the application and the cryptoprocessor has broken
 down. In this case, the cryptoprocessor must either finish the requested
 action successfully, or interrupt the action and roll back the system to its
 original state. Because it is often impossible to report the outcome to the
 application after a communication failure, this specification does not
 provide a way for the application to determine whether the action was
-successful.</li>
-<li>The statuses <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_STORAGE_FAILURE" title="PSA_ERROR_STORAGE_FAILURE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_STORAGE_FAILURE</span></code></a>, <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_DATA_CORRUPT" title="PSA_ERROR_DATA_CORRUPT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_DATA_CORRUPT</span></code></a>, <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_HARDWARE_FAILURE" title="PSA_ERROR_HARDWARE_FAILURE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_HARDWARE_FAILURE</span></code></a>
-and <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_CORRUPTION_DETECTED" title="PSA_ERROR_CORRUPTION_DETECTED"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_CORRUPTION_DETECTED</span></code></a> might indicate data corruption in the
+successful.</p></li>
+<li><p>The statuses <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_STORAGE_FAILURE" title="PSA_ERROR_STORAGE_FAILURE"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_ERROR_STORAGE_FAILURE</span></code></a>, <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_DATA_CORRUPT" title="PSA_ERROR_DATA_CORRUPT"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_ERROR_DATA_CORRUPT</span></code></a>, <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_HARDWARE_FAILURE" title="PSA_ERROR_HARDWARE_FAILURE"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_ERROR_HARDWARE_FAILURE</span></code></a>
+and <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_CORRUPTION_DETECTED" title="PSA_ERROR_CORRUPTION_DETECTED"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_ERROR_CORRUPTION_DETECTED</span></code></a> might indicate data corruption in the
 system state. When a function returns one of these statuses, the system state
 might have changed from its previous state before the function call, even
-though the function call failed.</li>
-<li>Some system states cannot be rolled back, for example, the internal state of
-the random number generator or the content of access logs.</li>
+though the function call failed.</p></li>
+<li><p>Some system states cannot be rolled back, for example, the internal state of
+the random number generator or the content of access logs.</p></li>
 </ul>
 <p>Unless otherwise documented, the content of output parameters is not defined
-when a function returns a status other than <a class="reference internal" href="../api/library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_SUCCESS</span></code></a>. It is recommended
+when a function returns a status other than <a class="reference internal" href="../api/library/status.html#c.PSA_SUCCESS" title="PSA_SUCCESS"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_SUCCESS</span></code></a>. It is recommended
 that implementations set output parameters to safe defaults to avoid leaking
 confidential data and limit risk, in case an application does not properly
 handle all errors.</p>
@@ -119,11 +112,11 @@ handle all errors.</p>
 <p>Unless explicitly stated in the documentation of a function, all pointers must
 be valid pointers to an object of the specified type.</p>
 <p>A parameter is considered a <strong>buffer</strong> if it points to an array of bytes. A
-buffer parameter always has the type <code class="docutils literal"><span class="pre">uint8_t</span> <span class="pre">*</span></code> or <code class="docutils literal"><span class="pre">const</span> <span class="pre">uint8_t</span> <span class="pre">*</span></code>, and
+buffer parameter always has the type <code class="docutils literal notranslate"><span class="pre">uint8_t</span> <span class="pre">*</span></code> or <code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">uint8_t</span> <span class="pre">*</span></code>, and
 always has an associated parameter indicating the size of the array. Note that a
-parameter of type <code class="docutils literal"><span class="pre">void</span> <span class="pre">*</span></code> is never considered a buffer.</p>
+parameter of type <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*</span></code> is never considered a buffer.</p>
 <p>All parameters of pointer type must be valid non-null pointers, unless the
-pointer is to a buffer of length <code class="docutils literal"><span class="pre">0</span></code> or the function’s documentation
+pointer is to a buffer of length <code class="docutils literal notranslate"><span class="pre">0</span></code> or the function’s documentation
 explicitly describes the behavior when the pointer is null. Passing a null
 pointer as a function parameter in other cases is expected to abort the caller
 on implementations where this is the normal behavior for a null pointer
@@ -137,33 +130,33 @@ parameter and read back the same value, as explained in the
 <div class="section" id="input-buffer-sizes">
 <h3>5.2.2. Input buffer sizes</h3>
 <p>For input buffers, the parameter convention is:</p>
-<dl class="docutils">
-<dt><code class="docutils literal"><span class="pre">const</span> <span class="pre">uint8_t</span> <span class="pre">*foo</span></code></dt>
-<dd>Pointer to the first byte of the data. The pointer
-can be invalid if the buffer size is <code class="docutils literal"><span class="pre">0</span></code>.</dd>
-<dt><code class="docutils literal"><span class="pre">size_t</span> <span class="pre">foo_length</span></code></dt>
-<dd>Size of the buffer in bytes.</dd>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">uint8_t</span> <span class="pre">*foo</span></code></dt><dd><p>Pointer to the first byte of the data. The pointer
+can be invalid if the buffer size is <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">foo_length</span></code></dt><dd><p>Size of the buffer in bytes.</p>
+</dd>
 </dl>
 <p>The interface never uses input-output buffers.</p>
 </div>
 <div class="section" id="output-buffer-sizes">
 <h3>5.2.3. Output buffer sizes</h3>
 <p>For output buffers, the parameter convention is:</p>
-<dl class="docutils">
-<dt><code class="docutils literal"><span class="pre">uint8_t</span> <span class="pre">*foo</span></code></dt>
-<dd>Pointer to the first byte of the data. The pointer can be
-invalid if the buffer size is <code class="docutils literal"><span class="pre">0</span></code>.</dd>
-<dt><code class="docutils literal"><span class="pre">size_t</span> <span class="pre">foo_size</span></code></dt>
-<dd>The size of the buffer in bytes.</dd>
-<dt><code class="docutils literal"><span class="pre">size_t</span> <span class="pre">*foo_length</span></code></dt>
-<dd>On successful return, contains the length of the
-output in bytes.</dd>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">uint8_t</span> <span class="pre">*foo</span></code></dt><dd><p>Pointer to the first byte of the data. The pointer can be
+invalid if the buffer size is <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">foo_size</span></code></dt><dd><p>The size of the buffer in bytes.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">*foo_length</span></code></dt><dd><p>On successful return, contains the length of the
+output in bytes.</p>
+</dd>
 </dl>
-<p>The content of the data buffer and of <code class="docutils literal"><span class="pre">*foo_length</span></code> on errors is unspecified,
+<p>The content of the data buffer and of <code class="docutils literal notranslate"><span class="pre">*foo_length</span></code> on errors is unspecified,
 unless explicitly mentioned in the function description. They might be unmodified
 or set to a safe default. On successful completion, the content of the buffer
-between the offsets <code class="docutils literal"><span class="pre">*foo_length</span></code> and <code class="docutils literal"><span class="pre">foo_size</span></code> is also unspecified.</p>
-<p>Functions return <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_BUFFER_TOO_SMALL" title="PSA_ERROR_BUFFER_TOO_SMALL"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_BUFFER_TOO_SMALL</span></code></a> if the buffer size is
+between the offsets <code class="docutils literal notranslate"><span class="pre">*foo_length</span></code> and <code class="docutils literal notranslate"><span class="pre">foo_size</span></code> is also unspecified.</p>
+<p>Functions return <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_BUFFER_TOO_SMALL" title="PSA_ERROR_BUFFER_TOO_SMALL"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_ERROR_BUFFER_TOO_SMALL</span></code></a> if the buffer size is
 insufficient to carry out the requested operation. The interface defines macros
 to calculate a sufficient buffer size for each operation that has an output
 buffer. These macros return compile-time constants if their arguments are
@@ -172,13 +165,13 @@ Refer to an individual function’s documentation for the associated output size
 macro.</p>
 <p>Some functions always return exactly as much data as the size of the output
 buffer. In this case, the parameter convention changes to:</p>
-<dl class="docutils">
-<dt><code class="docutils literal"><span class="pre">uint8_t</span> <span class="pre">*foo</span></code></dt>
-<dd>Pointer to the first byte of the output. The pointer can be
-invalid if the buffer size is <code class="docutils literal"><span class="pre">0</span></code>.</dd>
-<dt><code class="docutils literal"><span class="pre">size_t</span> <span class="pre">foo_length</span></code></dt>
-<dd>The number of bytes to return in <code class="docutils literal"><span class="pre">foo</span></code> if
-successful.</dd>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">uint8_t</span> <span class="pre">*foo</span></code></dt><dd><p>Pointer to the first byte of the output. The pointer can be
+invalid if the buffer size is <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">foo_length</span></code></dt><dd><p>The number of bytes to return in <code class="docutils literal notranslate"><span class="pre">foo</span></code> if
+successful.</p>
+</dd>
 </dl>
 </div>
 <div class="section" id="overlap-between-parameters">
@@ -233,17 +226,17 @@ parameter once a function call has returned.</p>
 <div class="section" id="key-types-and-algorithms">
 <h2>5.3. Key types and algorithms</h2>
 <p>Types of cryptographic keys and cryptographic algorithms are encoded separately.
-Each is encoded by using an integral type: <a class="reference internal" href="../api/keys/types.html#c.psa_key_type_t" title="psa_key_type_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_type_t</span></code></a> and
-<a class="reference internal" href="../api/ops/algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_algorithm_t</span></code></a>, respectively.</p>
+Each is encoded by using an integral type: <a class="reference internal" href="../api/keys/types.html#c.psa_key_type_t" title="psa_key_type_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_key_type_t</span></code></a> and
+<a class="reference internal" href="../api/ops/algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_algorithm_t</span></code></a>, respectively.</p>
 <p>There is some overlap in the information conveyed by key types and algorithms.
 Both types contain enough information, so that the meaning of an algorithm type
 value does not depend on what type of key it is used with, and vice versa.
 However, the particular instance of an algorithm might depend on the key type. For
-example, the algorithm <a class="reference internal" href="../api/ops/aead.html#c.PSA_ALG_GCM" title="PSA_ALG_GCM"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_GCM</span></code></a> can be instantiated as any AEAD algorithm
+example, the algorithm <a class="reference internal" href="../api/ops/aead.html#c.PSA_ALG_GCM" title="PSA_ALG_GCM"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_ALG_GCM</span></code></a> can be instantiated as any AEAD algorithm
 using the GCM mode over a block cipher. The underlying block cipher is
 determined by the key type.</p>
 <p>Key types do not encode the key size. For example, AES-128, AES-192 and AES-256
-share a key type <a class="reference internal" href="../api/keys/types.html#c.PSA_KEY_TYPE_AES" title="PSA_KEY_TYPE_AES"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_TYPE_AES</span></code></a>.</p>
+share a key type <a class="reference internal" href="../api/keys/types.html#c.PSA_KEY_TYPE_AES" title="PSA_KEY_TYPE_AES"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_KEY_TYPE_AES</span></code></a>.</p>
 <div class="section" id="structure-of-key-and-algorithm-types">
 <h3>5.3.1. Structure of key and algorithm types</h3>
 <p>Both types use a partial bitmask structure, which allows the analysis and
@@ -252,18 +245,18 @@ applications do not need to depend on the encoding, and an implementation might
 only care about the encoding for code size optimization.</p>
 <p>The encodings follows a few conventions:</p>
 <ul class="simple">
-<li>The highest bit is a vendor flag. Current and future versions of this
+<li><p>The highest bit is a vendor flag. Current and future versions of this
 specification will only define values where this bit is clear.
 Implementations that wish to define additional implementation-specific values
 must use values where this bit is set, to avoid conflicts with future
-versions of this specification.</li>
-<li>The next few highest bits indicate the corresponding algorithm category:
-hash, MAC, symmetric cipher, asymmetric encryption, and so on.</li>
-<li>The following bits identify a family of algorithms in a category-dependent
-manner.</li>
-<li>In some categories and algorithm families, the lowest-order bits indicate a
+versions of this specification.</p></li>
+<li><p>The next few highest bits indicate the corresponding algorithm category:
+hash, MAC, symmetric cipher, asymmetric encryption, and so on.</p></li>
+<li><p>The following bits identify a family of algorithms in a category-dependent
+manner.</p></li>
+<li><p>In some categories and algorithm families, the lowest-order bits indicate a
 variant in a systematic way. For example, algorithm families that are
-parametrized around a hash function encode the hash in the 8 lowest bits.</li>
+parametrized around a hash function encode the hash in the 8 lowest bits.</p></li>
 </ul>
 </div>
 </div>
@@ -275,17 +268,18 @@ calls to the API whose execution can overlap in time.</p>
 <p>Concurrent calls are performed correctly, as if the calls were executed in
 sequence, provided that they obey the following constraints:</p>
 <ul class="simple">
-<li>There is no overlap between an output parameter of one call and an input or
+<li><p>There is no overlap between an output parameter of one call and an input or
 output parameter of another call. Overlap between input parameters is
-permitted.</li>
-<li>A call to destroy a key must not overlap with a concurrent call to any of
-the following functions:<ul>
-<li>Any call where the same key identifier is a parameter to the call.</li>
-<li>Any call in a multi-part operation, where the same key identifier was
-used as a parameter to a previous step in the multi-part operation.</li>
+permitted.</p></li>
+<li><p>A call to destroy a key must not overlap with a concurrent call to any of
+the following functions:</p>
+<ul>
+<li><p>Any call where the same key identifier is a parameter to the call.</p></li>
+<li><p>Any call in a multi-part operation, where the same key identifier was
+used as a parameter to a previous step in the multi-part operation.</p></li>
 </ul>
 </li>
-<li>Concurrent calls must not use the same operation object.</li>
+<li><p>Concurrent calls must not use the same operation object.</p></li>
 </ul>
 <p>If any of these constraints are violated, the behavior is undefined.</p>
 <p>If the application modifies an input parameter while a function call is in
@@ -296,6 +290,7 @@ progress, the behavior is undefined.</p>
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -348,13 +343,13 @@ Version 1.0.1
 <li class="toctree-l1"><a class="reference internal" href="../psa_c-identifiers.html">Index of API elements</a></li>
 </ul>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -365,8 +360,8 @@ Version 1.0.1
       &copy; 2018-2020, Arm Limited or its affiliates. All rights reserved.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
 

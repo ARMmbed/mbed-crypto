@@ -1,26 +1,17 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>Example macro implementations &#8212; PSA Crypto API 1.0.1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '1.0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  false,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -29,33 +20,34 @@
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
+  
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="example-macro-implementations">
 <span id="appendix-specdef-values"></span><h1>Example macro implementations</h1>
 <p>This appendix provides example implementations of the function-like macros that have specification-defined values.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">In a future version of this specification, these example implementations will be replaced with a pseudo-code representation of the macro’s computation in the macro description.</p>
+<p class="admonition-title">Note</p>
+<p>In a future version of this specification, these example implementations will be replaced with a pseudo-code representation of the macro’s computation in the macro description.</p>
 </div>
 <p>The examples here provide correct results for the valid inputs defined by each API, for an implementation that supports all of the defined algorithms and key types. An implementation can provide alternative definitions of these macros:</p>
 <ul class="simple">
-<li>If the implementation does not support all of the algorithms or key types, it can provide a simpler definition of applicable macros.</li>
-<li>If the implementation provides vendor-specific algorithms or key types, it needs to extend the definitions of applicable macros.</li>
+<li><p>If the implementation does not support all of the algorithms or key types, it can provide a simpler definition of applicable macros.</p></li>
+<li><p>If the implementation provides vendor-specific algorithms or key types, it needs to extend the definitions of applicable macros.</p></li>
 </ul>
 <div class="section" id="algorithm-macros">
 <h2>Algorithm macros</h2>
-<pre class="literal-block">
-#define <a class="reference internal" href="../api/ops/aead.html#c.PSA_ALG_AEAD_WITH_DEFAULT_LENGTH_TAG" title="PSA_ALG_AEAD_WITH_DEFAULT_LENGTH_TAG">PSA_ALG_AEAD_WITH_DEFAULT_LENGTH_TAG</a>(aead_alg) \
+<pre class="literal-block">#define <a class="reference internal" href="../api/ops/aead.html#c.PSA_ALG_AEAD_WITH_DEFAULT_LENGTH_TAG" title="PSA_ALG_AEAD_WITH_DEFAULT_LENGTH_TAG">PSA_ALG_AEAD_WITH_DEFAULT_LENGTH_TAG</a>(aead_alg) \
     ((((aead_alg) &amp; ~0x003f0000) == 0x05400100) ? <a class="reference internal" href="../api/ops/aead.html#c.PSA_ALG_CCM" title="PSA_ALG_CCM">PSA_ALG_CCM</a> : \
      (((aead_alg) &amp; ~0x003f0000) == 0x05400200) ? <a class="reference internal" href="../api/ops/aead.html#c.PSA_ALG_GCM" title="PSA_ALG_GCM">PSA_ALG_GCM</a> : \
      (((aead_alg) &amp; ~0x003f0000) == 0x05000500) ? <a class="reference internal" href="../api/ops/aead.html#c.PSA_ALG_CHACHA20_POLY1305" title="PSA_ALG_CHACHA20_POLY1305">PSA_ALG_CHACHA20_POLY1305</a> : \
@@ -192,13 +184,11 @@
     ((<a class="reference internal" href="../api/ops/algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>) (0x08000300 | ((hash_alg) &amp; 0x000000ff)))
 
 #define <a class="reference internal" href="../api/ops/macs.html#c.PSA_ALG_TRUNCATED_MAC" title="PSA_ALG_TRUNCATED_MAC">PSA_ALG_TRUNCATED_MAC</a>(mac_alg, mac_length) \
-    ((<a class="reference internal" href="../api/ops/algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>) (((mac_alg) &amp; ~0x003f0000) | (((mac_length) &amp; 0x3f) &lt;&lt; 16)))
-</pre>
+    ((<a class="reference internal" href="../api/ops/algorithms.html#c.psa_algorithm_t" title="psa_algorithm_t">psa_algorithm_t</a>) (((mac_alg) &amp; ~0x003f0000) | (((mac_length) &amp; 0x3f) &lt;&lt; 16)))</pre>
 </div>
 <div class="section" id="key-type-macros">
 <h2>Key type macros</h2>
-<pre class="literal-block">
-#define <a class="reference internal" href="../api/ops/ciphers.html#c.PSA_BLOCK_CIPHER_BLOCK_LENGTH" title="PSA_BLOCK_CIPHER_BLOCK_LENGTH">PSA_BLOCK_CIPHER_BLOCK_LENGTH</a>(type) \
+<pre class="literal-block">#define <a class="reference internal" href="../api/ops/ciphers.html#c.PSA_BLOCK_CIPHER_BLOCK_LENGTH" title="PSA_BLOCK_CIPHER_BLOCK_LENGTH">PSA_BLOCK_CIPHER_BLOCK_LENGTH</a>(type) \
     (1u &lt;&lt; (((type) &gt;&gt; 8) &amp; 7))
 
 #define <a class="reference internal" href="../api/keys/types.html#c.PSA_KEY_TYPE_DH_GET_FAMILY" title="PSA_KEY_TYPE_DH_GET_FAMILY">PSA_KEY_TYPE_DH_GET_FAMILY</a>(type) \
@@ -256,13 +246,11 @@
     ((<a class="reference internal" href="../api/keys/types.html#c.psa_key_type_t" title="psa_key_type_t">psa_key_type_t</a>) ((type) | 0x3000))
 
 #define <a class="reference internal" href="../api/keys/types.html#c.PSA_KEY_TYPE_PUBLIC_KEY_OF_KEY_PAIR" title="PSA_KEY_TYPE_PUBLIC_KEY_OF_KEY_PAIR">PSA_KEY_TYPE_PUBLIC_KEY_OF_KEY_PAIR</a>(type) \
-    ((<a class="reference internal" href="../api/keys/types.html#c.psa_key_type_t" title="psa_key_type_t">psa_key_type_t</a>) ((type) &amp; ~0x3000))
-</pre>
+    ((<a class="reference internal" href="../api/keys/types.html#c.psa_key_type_t" title="psa_key_type_t">psa_key_type_t</a>) ((type) &amp; ~0x3000))</pre>
 </div>
 <div class="section" id="hash-suspend-state-macros">
 <h2>Hash suspend state macros</h2>
-<pre class="literal-block">
-#define <a class="reference internal" href="../api/ops/hashes.html#c.PSA_HASH_SUSPEND_HASH_STATE_FIELD_LENGTH" title="PSA_HASH_SUSPEND_HASH_STATE_FIELD_LENGTH">PSA_HASH_SUSPEND_HASH_STATE_FIELD_LENGTH</a>(alg) \
+<pre class="literal-block">#define <a class="reference internal" href="../api/ops/hashes.html#c.PSA_HASH_SUSPEND_HASH_STATE_FIELD_LENGTH" title="PSA_HASH_SUSPEND_HASH_STATE_FIELD_LENGTH">PSA_HASH_SUSPEND_HASH_STATE_FIELD_LENGTH</a>(alg) \
     ((alg)==<a class="reference internal" href="../api/ops/hashes.html#c.PSA_ALG_MD2" title="PSA_ALG_MD2">PSA_ALG_MD2</a> ? 64 : \
      (alg)==<a class="reference internal" href="../api/ops/hashes.html#c.PSA_ALG_MD4" title="PSA_ALG_MD4">PSA_ALG_MD4</a> || (alg)==<a class="reference internal" href="../api/ops/hashes.html#c.PSA_ALG_MD5" title="PSA_ALG_MD5">PSA_ALG_MD5</a> ? 16 : \
      (alg)==<a class="reference internal" href="../api/ops/hashes.html#c.PSA_ALG_RIPEMD160" title="PSA_ALG_RIPEMD160">PSA_ALG_RIPEMD160</a> || (alg)==<a class="reference internal" href="../api/ops/hashes.html#c.PSA_ALG_SHA_1" title="PSA_ALG_SHA_1">PSA_ALG_SHA_1</a> ? 20 : \
@@ -281,13 +269,13 @@
     (<a class="reference internal" href="../api/ops/hashes.html#c.PSA_HASH_SUSPEND_ALGORITHM_FIELD_LENGTH" title="PSA_HASH_SUSPEND_ALGORITHM_FIELD_LENGTH">PSA_HASH_SUSPEND_ALGORITHM_FIELD_LENGTH</a> + \
      <a class="reference internal" href="../api/ops/hashes.html#c.PSA_HASH_SUSPEND_INPUT_LENGTH_FIELD_LENGTH" title="PSA_HASH_SUSPEND_INPUT_LENGTH_FIELD_LENGTH">PSA_HASH_SUSPEND_INPUT_LENGTH_FIELD_LENGTH</a>(alg) + \
      <a class="reference internal" href="../api/ops/hashes.html#c.PSA_HASH_SUSPEND_HASH_STATE_FIELD_LENGTH" title="PSA_HASH_SUSPEND_HASH_STATE_FIELD_LENGTH">PSA_HASH_SUSPEND_HASH_STATE_FIELD_LENGTH</a>(alg) + \
-     <a class="reference internal" href="../api/ops/hashes.html#c.PSA_HASH_BLOCK_LENGTH" title="PSA_HASH_BLOCK_LENGTH">PSA_HASH_BLOCK_LENGTH</a>(alg) - 1)
-</pre>
+     <a class="reference internal" href="../api/ops/hashes.html#c.PSA_HASH_BLOCK_LENGTH" title="PSA_HASH_BLOCK_LENGTH">PSA_HASH_BLOCK_LENGTH</a>(alg) - 1)</pre>
 </div>
 </div>
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -325,13 +313,13 @@ Version 1.0.1
 <li class="toctree-l1"><a class="reference internal" href="../psa_c-identifiers.html">Index of API elements</a></li>
 </ul>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -342,8 +330,8 @@ Version 1.0.1
       &copy; 2018-2020, Arm Limited or its affiliates. All rights reserved.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
 

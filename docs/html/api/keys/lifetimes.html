@@ -1,26 +1,17 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>9.3. Key lifetimes &#8212; PSA Crypto API 1.0.1 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '1.0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  false,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -29,15 +20,17 @@
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
+  
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="key-lifetimes">
@@ -45,20 +38,20 @@
 <p>The lifetime of a key indicates where it is stored and which application and system actions will create and destroy it.</p>
 <p>Lifetime values are composed from:</p>
 <ul class="simple">
-<li>A persistence level, which indicates what device management actions can cause it to be destroyed. In particular, it indicates whether the key is volatile or persistent. See <a class="reference internal" href="#c.psa_key_persistence_t" title="psa_key_persistence_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_persistence_t</span></code></a> for more information.</li>
-<li>A location indicator, which indicates where the key is stored and where operations on the key are performed. See <a class="reference internal" href="#c.psa_key_location_t" title="psa_key_location_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_location_t</span></code></a> for more information.</li>
+<li><p>A persistence level, which indicates what device management actions can cause it to be destroyed. In particular, it indicates whether the key is volatile or persistent. See <a class="reference internal" href="#c.psa_key_persistence_t" title="psa_key_persistence_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_key_persistence_t</span></code></a> for more information.</p></li>
+<li><p>A location indicator, which indicates where the key is stored and where operations on the key are performed. See <a class="reference internal" href="#c.psa_key_location_t" title="psa_key_location_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_key_location_t</span></code></a> for more information.</p></li>
 </ul>
 <p>There are two main types of lifetime, indicated by the persistence level: <em>volatile</em> and <em>persistent</em>.</p>
 <div class="section" id="volatile-keys">
 <h2>9.3.1. Volatile keys</h2>
 <p>Volatile keys are automatically destroyed when the application instance terminates or on a power reset of the device. Volatile keys can be explicitly destroyed by the application.</p>
-<p>Conceptually, a volatile key is stored in RAM. Volatile keys have the lifetime <a class="reference internal" href="#c.PSA_KEY_LIFETIME_VOLATILE" title="PSA_KEY_LIFETIME_VOLATILE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_LIFETIME_VOLATILE</span></code></a>.</p>
+<p>Conceptually, a volatile key is stored in RAM. Volatile keys have the lifetime <a class="reference internal" href="#c.PSA_KEY_LIFETIME_VOLATILE" title="PSA_KEY_LIFETIME_VOLATILE"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_KEY_LIFETIME_VOLATILE</span></code></a>.</p>
 <p>To create a volatile key:</p>
 <ol class="arabic simple">
-<li>Populate a <a class="reference internal" href="attributes.html#c.psa_key_attributes_t" title="psa_key_attributes_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_attributes_t</span></code></a> object with the required type, size, policy and other key attributes.</li>
-<li>Create the key with one of the key creation functions. If successful, these functions output a transient <a class="reference internal" href="ids.html#key-identifiers"><span class="std std-ref">key identifier</span></a>.</li>
+<li><p>Populate a <a class="reference internal" href="attributes.html#c.psa_key_attributes_t" title="psa_key_attributes_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_key_attributes_t</span></code></a> object with the required type, size, policy and other key attributes.</p></li>
+<li><p>Create the key with one of the key creation functions. If successful, these functions output a transient <a class="reference internal" href="ids.html#key-identifiers"><span class="std std-ref">key identifier</span></a>.</p></li>
 </ol>
-<p>To destroy a volatile key: call <a class="reference internal" href="management.html#c.psa_destroy_key" title="psa_destroy_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_destroy_key()</span></code></a> with the key identifier. There must be a matching call to <a class="reference internal" href="management.html#c.psa_destroy_key" title="psa_destroy_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_destroy_key()</span></code></a> for each successful call to a create a volatile key.</p>
+<p>To destroy a volatile key: call <a class="reference internal" href="management.html#c.psa_destroy_key" title="psa_destroy_key"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_destroy_key()</span></code></a> with the key identifier. There must be a matching call to <a class="reference internal" href="management.html#c.psa_destroy_key" title="psa_destroy_key"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_destroy_key()</span></code></a> for each successful call to a create a volatile key.</p>
 </div>
 <div class="section" id="persistent-keys">
 <h2>9.3.2. Persistent keys</h2>
@@ -67,261 +60,235 @@
 Within an application, the key identifier corresponds to a single key. The
 application specifies the key identifier when the key is created and when
 using the key.</p>
-<p>The lifetime attribute of a persistent key indicates how and where it is stored. The default lifetime value for a persistent key is <a class="reference internal" href="#c.PSA_KEY_LIFETIME_PERSISTENT" title="PSA_KEY_LIFETIME_PERSISTENT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_LIFETIME_PERSISTENT</span></code></a>, which corresponds to a default storage area. This specification defines how implementations can provide other lifetime values corresponding to
+<p>The lifetime attribute of a persistent key indicates how and where it is stored. The default lifetime value for a persistent key is <a class="reference internal" href="#c.PSA_KEY_LIFETIME_PERSISTENT" title="PSA_KEY_LIFETIME_PERSISTENT"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_KEY_LIFETIME_PERSISTENT</span></code></a>, which corresponds to a default storage area. This specification defines how implementations can provide other lifetime values corresponding to
 different storage areas with different retention policies, or to secure elements
 with different security characteristics.</p>
 <p>To create a persistent key:</p>
 <ol class="arabic simple">
-<li>Populate a <a class="reference internal" href="attributes.html#c.psa_key_attributes_t" title="psa_key_attributes_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_attributes_t</span></code></a> object with the key’s type, size, policy and other attributes.</li>
-<li>In the attributes object, set the desired lifetime and persistent identifier for the key.</li>
-<li>Create the key with one of the key creation functions. If successful, these functions output the <a class="reference internal" href="ids.html#key-identifiers"><span class="std std-ref">key identifier</span></a> that was specified by the application in step 2.</li>
+<li><p>Populate a <a class="reference internal" href="attributes.html#c.psa_key_attributes_t" title="psa_key_attributes_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_key_attributes_t</span></code></a> object with the key’s type, size, policy and other attributes.</p></li>
+<li><p>In the attributes object, set the desired lifetime and persistent identifier for the key.</p></li>
+<li><p>Create the key with one of the key creation functions. If successful, these functions output the <a class="reference internal" href="ids.html#key-identifiers"><span class="std std-ref">key identifier</span></a> that was specified by the application in step 2.</p></li>
 </ol>
 <p>To access an existing persistent key: use the key identifier in any API that requires a key.</p>
-<p>To destroy a persistent key: call <a class="reference internal" href="management.html#c.psa_destroy_key" title="psa_destroy_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_destroy_key()</span></code></a> with the key identifier. Destroying a persistent key permanently removes it from memory and storage.</p>
-<p>By default, persistent key material is removed from volatile memory when not in use. Frequently used persistent keys can benefit from caching, depending on the implementation and the application. Caching can be enabled by creating the key with the <a class="reference internal" href="policy.html#c.PSA_KEY_USAGE_CACHE" title="PSA_KEY_USAGE_CACHE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_USAGE_CACHE</span></code></a> policy. Cached keys can be removed from volatile memory by calling <a class="reference internal" href="management.html#c.psa_purge_key" title="psa_purge_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_purge_key()</span></code></a>. See also <a class="reference internal" href="../../overview/implementation.html#memory-cleanup"><span class="secref">Memory cleanup</span></a> and <a class="reference internal" href="../../overview/implementation.html#key-material"><span class="secref">Managing key material</span></a>.</p>
+<p>To destroy a persistent key: call <a class="reference internal" href="management.html#c.psa_destroy_key" title="psa_destroy_key"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_destroy_key()</span></code></a> with the key identifier. Destroying a persistent key permanently removes it from memory and storage.</p>
+<p>By default, persistent key material is removed from volatile memory when not in use. Frequently used persistent keys can benefit from caching, depending on the implementation and the application. Caching can be enabled by creating the key with the <a class="reference internal" href="policy.html#c.PSA_KEY_USAGE_CACHE" title="PSA_KEY_USAGE_CACHE"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_KEY_USAGE_CACHE</span></code></a> policy. Cached keys can be removed from volatile memory by calling <a class="reference internal" href="management.html#c.psa_purge_key" title="psa_purge_key"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_purge_key()</span></code></a>. See also <a class="reference internal" href="../../overview/implementation.html#memory-cleanup"><span class="secref">Memory cleanup</span></a> and <a class="reference internal" href="../../overview/implementation.html#key-material"><span class="secref">Managing key material</span></a>.</p>
 </div>
 <div class="section" id="lifetime-encodings">
 <h2>9.3.3. Lifetime encodings</h2>
 <div class="section" id="psa_key_lifetime_t">
-<span id="c.psa_key_lifetime_t"></span><h3><code class="docutils literal"><span class="pre">psa_key_lifetime_t</span></code> (type)</h3>
+<span id="c.psa_key_lifetime_t"></span><h3><code class="docutils literal notranslate"><span class="pre">psa_key_lifetime_t</span></code> (type)</h3>
 <p>Encoding of key lifetimes.</p>
-<pre class="literal-block">
-typedef uint32_t <a class="reference internal" href="#c.psa_key_lifetime_t" title="psa_key_lifetime_t">psa_key_lifetime_t</a>;
-</pre>
+<pre class="literal-block">typedef uint32_t <a class="reference internal" href="#c.psa_key_lifetime_t" title="psa_key_lifetime_t">psa_key_lifetime_t</a>;</pre>
 <p>The lifetime of a key indicates where it is stored and which application and system actions will create and destroy it.</p>
 <p>Lifetime values have the following structure:</p>
-<dl class="docutils">
-<dt>Bits[7:0]: Persistence level</dt>
-<dd><p class="first">This value indicates what device management actions can cause it to be destroyed. In particular, it indicates whether the key is <em>volatile</em> or <em>persistent</em>. See <a class="reference internal" href="#c.psa_key_persistence_t" title="psa_key_persistence_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_persistence_t</span></code></a> for more information.</p>
-<p class="last"><a class="reference internal" href="#c.PSA_KEY_LIFETIME_GET_PERSISTENCE" title="PSA_KEY_LIFETIME_GET_PERSISTENCE"><code class="docutils literal"><span class="pre">PSA_KEY_LIFETIME_GET_PERSISTENCE</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">lifetime</span></code><code class="docutils literal"><span class="pre">)</span></code> returns the persistence level for a key <code class="docutils literal"><span class="pre">lifetime</span></code> value.</p>
+<dl>
+<dt>Bits[7:0]: Persistence level</dt><dd><p>This value indicates what device management actions can cause it to be destroyed. In particular, it indicates whether the key is <em>volatile</em> or <em>persistent</em>. See <a class="reference internal" href="#c.psa_key_persistence_t" title="psa_key_persistence_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_key_persistence_t</span></code></a> for more information.</p>
+<p><a class="reference internal" href="#c.PSA_KEY_LIFETIME_GET_PERSISTENCE" title="PSA_KEY_LIFETIME_GET_PERSISTENCE"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_LIFETIME_GET_PERSISTENCE</span></code></a><code class="docutils literal notranslate"><span class="pre">(</span></code><code class="docutils literal notranslate"><span class="pre">lifetime</span></code><code class="docutils literal notranslate"><span class="pre">)</span></code> returns the persistence level for a key <code class="docutils literal notranslate"><span class="pre">lifetime</span></code> value.</p>
 </dd>
-<dt>Bits[31:8]: Location indicator</dt>
-<dd><p class="first">This value indicates where the key material is stored (or at least where it is accessible in cleartext) and where operations on the key are performed. See <a class="reference internal" href="#c.psa_key_location_t" title="psa_key_location_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_location_t</span></code></a> for more information.</p>
-<p class="last"><a class="reference internal" href="#c.PSA_KEY_LIFETIME_GET_LOCATION" title="PSA_KEY_LIFETIME_GET_LOCATION"><code class="docutils literal"><span class="pre">PSA_KEY_LIFETIME_GET_LOCATION</span></code></a><code class="docutils literal"><span class="pre">(</span></code><code class="docutils literal"><span class="pre">lifetime</span></code><code class="docutils literal"><span class="pre">)</span></code> returns the location indicator for a key <code class="docutils literal"><span class="pre">lifetime</span></code> value.</p>
+<dt>Bits[31:8]: Location indicator</dt><dd><p>This value indicates where the key material is stored (or at least where it is accessible in cleartext) and where operations on the key are performed. See <a class="reference internal" href="#c.psa_key_location_t" title="psa_key_location_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_key_location_t</span></code></a> for more information.</p>
+<p><a class="reference internal" href="#c.PSA_KEY_LIFETIME_GET_LOCATION" title="PSA_KEY_LIFETIME_GET_LOCATION"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_LIFETIME_GET_LOCATION</span></code></a><code class="docutils literal notranslate"><span class="pre">(</span></code><code class="docutils literal notranslate"><span class="pre">lifetime</span></code><code class="docutils literal notranslate"><span class="pre">)</span></code> returns the location indicator for a key <code class="docutils literal notranslate"><span class="pre">lifetime</span></code> value.</p>
 </dd>
 </dl>
 <p>Volatile keys are automatically destroyed when the application instance terminates or on a power reset of the device. Persistent keys are preserved until the application explicitly destroys them or until an implementation-specific device management event occurs, for example, a factory reset.</p>
-<p>Persistent keys have a key identifier of type <a class="reference internal" href="ids.html#c.psa_key_id_t" title="psa_key_id_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_id_t</span></code></a>. This identifier remains valid throughout the lifetime of the key, even if the application instance that created the key terminates.</p>
+<p>Persistent keys have a key identifier of type <a class="reference internal" href="ids.html#c.psa_key_id_t" title="psa_key_id_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_key_id_t</span></code></a>. This identifier remains valid throughout the lifetime of the key, even if the application instance that created the key terminates.</p>
 <p>This specification defines two basic lifetime values:</p>
 <ul class="simple">
-<li>Keys with the lifetime <a class="reference internal" href="#c.PSA_KEY_LIFETIME_VOLATILE" title="PSA_KEY_LIFETIME_VOLATILE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_LIFETIME_VOLATILE</span></code></a> are volatile. All implementations should support this lifetime.</li>
-<li>Keys with the lifetime <a class="reference internal" href="#c.PSA_KEY_LIFETIME_PERSISTENT" title="PSA_KEY_LIFETIME_PERSISTENT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_LIFETIME_PERSISTENT</span></code></a> are persistent. All implementations that have access to persistent storage with appropriate security guarantees should support this lifetime.</li>
+<li><p>Keys with the lifetime <a class="reference internal" href="#c.PSA_KEY_LIFETIME_VOLATILE" title="PSA_KEY_LIFETIME_VOLATILE"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_KEY_LIFETIME_VOLATILE</span></code></a> are volatile. All implementations should support this lifetime.</p></li>
+<li><p>Keys with the lifetime <a class="reference internal" href="#c.PSA_KEY_LIFETIME_PERSISTENT" title="PSA_KEY_LIFETIME_PERSISTENT"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_KEY_LIFETIME_PERSISTENT</span></code></a> are persistent. All implementations that have access to persistent storage with appropriate security guarantees should support this lifetime.</p></li>
 </ul>
 </div>
 <div class="section" id="psa_key_persistence_t">
-<span id="c.psa_key_persistence_t"></span><h3><code class="docutils literal"><span class="pre">psa_key_persistence_t</span></code> (type)</h3>
+<span id="c.psa_key_persistence_t"></span><h3><code class="docutils literal notranslate"><span class="pre">psa_key_persistence_t</span></code> (type)</h3>
 <p>Encoding of key persistence levels.</p>
-<pre class="literal-block">
-typedef uint8_t <a class="reference internal" href="#c.psa_key_persistence_t" title="psa_key_persistence_t">psa_key_persistence_t</a>;
-</pre>
+<pre class="literal-block">typedef uint8_t <a class="reference internal" href="#c.psa_key_persistence_t" title="psa_key_persistence_t">psa_key_persistence_t</a>;</pre>
 <p>What distinguishes different persistence levels is which device management events can cause keys to be destroyed. For example, power reset, transfer of device ownership, or a factory reset are device management events that can affect keys at different persistence levels. The specific management events which affect persistent keys at different levels is outside the scope of the PSA Cryptography specification.</p>
 <p>Values for persistence levels defined by this specification are shown in <span><a class="reference internal" href="#persistence-levels"><span class="numref">Table 3</span></a></span>.</p>
-<table border="1" class="colwidths-given longtable docutils align-left" id="persistence-levels">
+<table class="colwidths-given longtable docutils align-left" id="persistence-levels">
 <caption><span class="caption-number">Table 3 </span><span class="caption-text">Key persistence level values</span></caption>
 <colgroup>
-<col width="40%" />
-<col width="60%" />
+<col style="width: 40%" />
+<col style="width: 60%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Persistence level</th>
-<th class="head">Definition</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Persistence level</p></th>
+<th class="head"><p>Definition</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">0</span> <span class="pre">=</span> </code><a class="reference internal" href="#c.PSA_KEY_PERSISTENCE_VOLATILE" title="PSA_KEY_PERSISTENCE_VOLATILE"><code class="docutils literal"><span class="pre">PSA_KEY_PERSISTENCE_VOLATILE</span></code></a></td>
-<td><p class="first">Volatile key.</p>
-<p class="last">A volatile key is automatically destroyed by the implementation when the application instance terminates. In particular, a volatile key is automatically destroyed on a power reset of the device.</p>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">=</span> </code><a class="reference internal" href="#c.PSA_KEY_PERSISTENCE_VOLATILE" title="PSA_KEY_PERSISTENCE_VOLATILE"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_PERSISTENCE_VOLATILE</span></code></a></p></td>
+<td><p>Volatile key.</p>
+<p>A volatile key is automatically destroyed by the implementation when the application instance terminates. In particular, a volatile key is automatically destroyed on a power reset of the device.</p>
 </td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">1</span> <span class="pre">=</span> </code><a class="reference internal" href="#c.PSA_KEY_PERSISTENCE_DEFAULT" title="PSA_KEY_PERSISTENCE_DEFAULT"><code class="docutils literal"><span class="pre">PSA_KEY_PERSISTENCE_DEFAULT</span></code></a></td>
-<td><p class="first">Persistent key with a default lifetime.</p>
-<p class="last">Implementations should support this value if they support persistent keys at all. Applications should use this value if they have no specific needs that are only met by implementation-specific features.</p>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">=</span> </code><a class="reference internal" href="#c.PSA_KEY_PERSISTENCE_DEFAULT" title="PSA_KEY_PERSISTENCE_DEFAULT"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_PERSISTENCE_DEFAULT</span></code></a></p></td>
+<td><p>Persistent key with a default lifetime.</p>
+<p>Implementations should support this value if they support persistent keys at all. Applications should use this value if they have no specific needs that are only met by implementation-specific features.</p>
 </td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">2</span> <span class="pre">-</span> <span class="pre">127</span></code></td>
-<td><p class="first">Persistent key with a PSA-specified lifetime.</p>
-<p class="last">The PSA Cryptography specification does not define the meaning of these values, but other PSA specifications may do so.</p>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">-</span> <span class="pre">127</span></code></p></td>
+<td><p>Persistent key with a PSA-specified lifetime.</p>
+<p>The PSA Cryptography specification does not define the meaning of these values, but other PSA specifications may do so.</p>
 </td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">128</span> <span class="pre">-</span> <span class="pre">254</span></code></td>
-<td><p class="first">Persistent key with a vendor-specified lifetime.</p>
-<p class="last">No PSA specification will define the meaning of these values, so implementations may choose the meaning freely. As a guideline, higher persistence levels should cause a key to survive more management events than lower levels.</p>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">128</span> <span class="pre">-</span> <span class="pre">254</span></code></p></td>
+<td><p>Persistent key with a vendor-specified lifetime.</p>
+<p>No PSA specification will define the meaning of these values, so implementations may choose the meaning freely. As a guideline, higher persistence levels should cause a key to survive more management events than lower levels.</p>
 </td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">255</span> <span class="pre">=</span> </code><a class="reference internal" href="#c.PSA_KEY_PERSISTENCE_READ_ONLY" title="PSA_KEY_PERSISTENCE_READ_ONLY"><code class="docutils literal"><span class="pre">PSA_KEY_PERSISTENCE_READ_ONLY</span></code></a></td>
-<td><p class="first">Read-only or write-once key.</p>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">255</span> <span class="pre">=</span> </code><a class="reference internal" href="#c.PSA_KEY_PERSISTENCE_READ_ONLY" title="PSA_KEY_PERSISTENCE_READ_ONLY"><code class="docutils literal notranslate"><span class="pre">PSA_KEY_PERSISTENCE_READ_ONLY</span></code></a></p></td>
+<td><p>Read-only or write-once key.</p>
 <p>A key with this persistence level cannot be destroyed. Implementations that support such keys may either allow their creation through the PSA Cryptography API, preferably only to applications with the appropriate privilege, or only expose keys created through implementation-specific means such as a factory ROM engraving process.</p>
-<p class="last">Note that keys that are read-only due to policy restrictions rather than due to physical limitations should not have this persistence level.</p>
+<p>Note that keys that are read-only due to policy restrictions rather than due to physical limitations should not have this persistence level.</p>
 </td>
 </tr>
 </tbody>
 </table>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Key persistence levels are 8-bit values. Key management interfaces operate on lifetimes (type <a class="reference internal" href="#c.psa_key_lifetime_t" title="psa_key_lifetime_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_lifetime_t</span></code></a>), and encode the persistence value as the lower 8 bits of a 32-bit value.</p>
+<p class="admonition-title">Note</p>
+<p>Key persistence levels are 8-bit values. Key management interfaces operate on lifetimes (type <a class="reference internal" href="#c.psa_key_lifetime_t" title="psa_key_lifetime_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_key_lifetime_t</span></code></a>), and encode the persistence value as the lower 8 bits of a 32-bit value.</p>
 </div>
 </div>
 <div class="section" id="psa_key_location_t">
-<span id="c.psa_key_location_t"></span><h3><code class="docutils literal"><span class="pre">psa_key_location_t</span></code> (type)</h3>
+<span id="c.psa_key_location_t"></span><h3><code class="docutils literal notranslate"><span class="pre">psa_key_location_t</span></code> (type)</h3>
 <p>Encoding of key location indicators.</p>
-<pre class="literal-block">
-typedef uint32_t <a class="reference internal" href="#c.psa_key_location_t" title="psa_key_location_t">psa_key_location_t</a>;
-</pre>
+<pre class="literal-block">typedef uint32_t <a class="reference internal" href="#c.psa_key_location_t" title="psa_key_location_t">psa_key_location_t</a>;</pre>
 <p>If an implementation of this API can make calls to external cryptoprocessors such as secure elements, the location of a key indicates which secure element performs the operations on the key. If the key material is not stored persistently inside the secure element, it must be stored in a wrapped form such that only the secure element can access the key material in cleartext.</p>
 <p>Values for location indicators defined by this specification are shown in <span><a class="reference internal" href="#location-indicators"><span class="numref">Table 4</span></a></span>.</p>
-<table border="1" class="colwidths-given longtable docutils align-left" id="location-indicators">
+<table class="colwidths-given longtable docutils align-left" id="location-indicators">
 <caption><span class="caption-number">Table 4 </span><span class="caption-text">Key location indicator values</span></caption>
 <colgroup>
-<col width="25%" />
-<col width="75%" />
+<col style="width: 25%" />
+<col style="width: 75%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Location indicator</th>
-<th class="head">Definition</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Location indicator</p></th>
+<th class="head"><p>Definition</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">0</span></code></td>
-<td><p class="first">Primary local storage.</p>
-<p class="last">All implementations should support this value. The primary local storage is typically the same storage area that contains the key metadata.</p>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p></td>
+<td><p>Primary local storage.</p>
+<p>All implementations should support this value. The primary local storage is typically the same storage area that contains the key metadata.</p>
 </td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">1</span></code></td>
-<td><p class="first">Primary secure element.</p>
-<p class="last">Implementations should support this value if there is a secure element attached to the operating environment. As a guideline, secure elements may provide higher resistance against side channel and physical attacks than the primary local storage, but may have restrictions on supported key types, sizes, policies and operations and may have different performance characteristics.</p>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p>Primary secure element.</p>
+<p>Implementations should support this value if there is a secure element attached to the operating environment. As a guideline, secure elements may provide higher resistance against side channel and physical attacks than the primary local storage, but may have restrictions on supported key types, sizes, policies and operations and may have different performance characteristics.</p>
 </td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">2</span> <span class="pre">-</span> <span class="pre">0x7fffff</span></code></td>
-<td><p class="first">Other locations defined by a PSA specification.</p>
-<p class="last">The PSA Cryptography API does not currently assign any meaning to these locations, but future versions of this specification or other PSA specifications may do so.</p>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">-</span> <span class="pre">0x7fffff</span></code></p></td>
+<td><p>Other locations defined by a PSA specification.</p>
+<p>The PSA Cryptography API does not currently assign any meaning to these locations, but future versions of this specification or other PSA specifications may do so.</p>
 </td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">0x800000</span> <span class="pre">-</span> <span class="pre">0xffffff</span></code></td>
-<td><p class="first">Vendor-defined locations.</p>
-<p class="last">No PSA specification will assign a meaning to locations in this range.</p>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">0x800000</span> <span class="pre">-</span> <span class="pre">0xffffff</span></code></p></td>
+<td><p>Vendor-defined locations.</p>
+<p>No PSA specification will assign a meaning to locations in this range.</p>
 </td>
 </tr>
 </tbody>
 </table>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Key location indicators are 24-bit values. Key management interfaces operate on lifetimes (type <a class="reference internal" href="#c.psa_key_lifetime_t" title="psa_key_lifetime_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_lifetime_t</span></code></a>), and encode the location as the upper 24 bits of a 32-bit value.</p>
+<p class="admonition-title">Note</p>
+<p>Key location indicators are 24-bit values. Key management interfaces operate on lifetimes (type <a class="reference internal" href="#c.psa_key_lifetime_t" title="psa_key_lifetime_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_key_lifetime_t</span></code></a>), and encode the location as the upper 24 bits of a 32-bit value.</p>
 </div>
 </div>
 </div>
 <div class="section" id="lifetime-values">
 <h2>9.3.4. Lifetime values</h2>
 <div class="section" id="PSA_KEY_LIFETIME_VOLATILE">
-<span id="c.PSA_KEY_LIFETIME_VOLATILE"></span><h3><code class="docutils literal"><span class="pre">PSA_KEY_LIFETIME_VOLATILE</span></code> (macro)</h3>
+<span id="c.PSA_KEY_LIFETIME_VOLATILE"></span><h3><code class="docutils literal notranslate"><span class="pre">PSA_KEY_LIFETIME_VOLATILE</span></code> (macro)</h3>
 <p>The default lifetime for volatile keys.</p>
-<pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_KEY_LIFETIME_VOLATILE" title="PSA_KEY_LIFETIME_VOLATILE">PSA_KEY_LIFETIME_VOLATILE</a> ((<a class="reference internal" href="#c.psa_key_lifetime_t" title="psa_key_lifetime_t">psa_key_lifetime_t</a>) 0x00000000)
-</pre>
+<pre class="literal-block">#define <a class="reference internal" href="#c.PSA_KEY_LIFETIME_VOLATILE" title="PSA_KEY_LIFETIME_VOLATILE">PSA_KEY_LIFETIME_VOLATILE</a> ((<a class="reference internal" href="#c.psa_key_lifetime_t" title="psa_key_lifetime_t">psa_key_lifetime_t</a>) 0x00000000)</pre>
 <p>A volatile key only exists as long as its identifier is not destroyed. The key material is guaranteed to be erased on a power reset.</p>
 <p>A key with this lifetime is typically stored in the RAM area of the PSA Crypto subsystem. However this is an implementation choice. If an implementation stores data about the key in a non-volatile memory, it must release all the resources associated with the key and erase the key material if the calling application terminates.</p>
 </div>
 <div class="section" id="PSA_KEY_LIFETIME_PERSISTENT">
-<span id="c.PSA_KEY_LIFETIME_PERSISTENT"></span><h3><code class="docutils literal"><span class="pre">PSA_KEY_LIFETIME_PERSISTENT</span></code> (macro)</h3>
+<span id="c.PSA_KEY_LIFETIME_PERSISTENT"></span><h3><code class="docutils literal notranslate"><span class="pre">PSA_KEY_LIFETIME_PERSISTENT</span></code> (macro)</h3>
 <p>The default lifetime for persistent keys.</p>
-<pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_KEY_LIFETIME_PERSISTENT" title="PSA_KEY_LIFETIME_PERSISTENT">PSA_KEY_LIFETIME_PERSISTENT</a> ((<a class="reference internal" href="#c.psa_key_lifetime_t" title="psa_key_lifetime_t">psa_key_lifetime_t</a>) 0x00000001)
-</pre>
+<pre class="literal-block">#define <a class="reference internal" href="#c.PSA_KEY_LIFETIME_PERSISTENT" title="PSA_KEY_LIFETIME_PERSISTENT">PSA_KEY_LIFETIME_PERSISTENT</a> ((<a class="reference internal" href="#c.psa_key_lifetime_t" title="psa_key_lifetime_t">psa_key_lifetime_t</a>) 0x00000001)</pre>
 <p>A persistent key remains in storage until it is explicitly destroyed or until the corresponding storage area is wiped. This specification does not define any mechanism to wipe a storage area. Implementations are permitted to provide their own mechanism, for example, to perform a factory reset, to prepare for device refurbishment, or to uninstall an application.</p>
 <p>This lifetime value is the default storage area for the calling application. Implementations can offer other storage areas designated by other lifetime values as implementation-specific extensions.</p>
 </div>
 <div class="section" id="PSA_KEY_PERSISTENCE_VOLATILE">
-<span id="c.PSA_KEY_PERSISTENCE_VOLATILE"></span><h3><code class="docutils literal"><span class="pre">PSA_KEY_PERSISTENCE_VOLATILE</span></code> (macro)</h3>
+<span id="c.PSA_KEY_PERSISTENCE_VOLATILE"></span><h3><code class="docutils literal notranslate"><span class="pre">PSA_KEY_PERSISTENCE_VOLATILE</span></code> (macro)</h3>
 <p>The persistence level of volatile keys.</p>
-<pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_KEY_PERSISTENCE_VOLATILE" title="PSA_KEY_PERSISTENCE_VOLATILE">PSA_KEY_PERSISTENCE_VOLATILE</a> ((<a class="reference internal" href="#c.psa_key_persistence_t" title="psa_key_persistence_t">psa_key_persistence_t</a>) 0x00)
-</pre>
-<p>See <a class="reference internal" href="#c.psa_key_persistence_t" title="psa_key_persistence_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_persistence_t</span></code></a> for more information.</p>
+<pre class="literal-block">#define <a class="reference internal" href="#c.PSA_KEY_PERSISTENCE_VOLATILE" title="PSA_KEY_PERSISTENCE_VOLATILE">PSA_KEY_PERSISTENCE_VOLATILE</a> ((<a class="reference internal" href="#c.psa_key_persistence_t" title="psa_key_persistence_t">psa_key_persistence_t</a>) 0x00)</pre>
+<p>See <a class="reference internal" href="#c.psa_key_persistence_t" title="psa_key_persistence_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_key_persistence_t</span></code></a> for more information.</p>
 </div>
 <div class="section" id="PSA_KEY_PERSISTENCE_DEFAULT">
-<span id="c.PSA_KEY_PERSISTENCE_DEFAULT"></span><h3><code class="docutils literal"><span class="pre">PSA_KEY_PERSISTENCE_DEFAULT</span></code> (macro)</h3>
+<span id="c.PSA_KEY_PERSISTENCE_DEFAULT"></span><h3><code class="docutils literal notranslate"><span class="pre">PSA_KEY_PERSISTENCE_DEFAULT</span></code> (macro)</h3>
 <p>The default persistence level for persistent keys.</p>
-<pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_KEY_PERSISTENCE_DEFAULT" title="PSA_KEY_PERSISTENCE_DEFAULT">PSA_KEY_PERSISTENCE_DEFAULT</a> ((<a class="reference internal" href="#c.psa_key_persistence_t" title="psa_key_persistence_t">psa_key_persistence_t</a>) 0x01)
-</pre>
-<p>See <a class="reference internal" href="#c.psa_key_persistence_t" title="psa_key_persistence_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_persistence_t</span></code></a> for more information.</p>
+<pre class="literal-block">#define <a class="reference internal" href="#c.PSA_KEY_PERSISTENCE_DEFAULT" title="PSA_KEY_PERSISTENCE_DEFAULT">PSA_KEY_PERSISTENCE_DEFAULT</a> ((<a class="reference internal" href="#c.psa_key_persistence_t" title="psa_key_persistence_t">psa_key_persistence_t</a>) 0x01)</pre>
+<p>See <a class="reference internal" href="#c.psa_key_persistence_t" title="psa_key_persistence_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_key_persistence_t</span></code></a> for more information.</p>
 </div>
 <div class="section" id="PSA_KEY_PERSISTENCE_READ_ONLY">
-<span id="c.PSA_KEY_PERSISTENCE_READ_ONLY"></span><h3><code class="docutils literal"><span class="pre">PSA_KEY_PERSISTENCE_READ_ONLY</span></code> (macro)</h3>
+<span id="c.PSA_KEY_PERSISTENCE_READ_ONLY"></span><h3><code class="docutils literal notranslate"><span class="pre">PSA_KEY_PERSISTENCE_READ_ONLY</span></code> (macro)</h3>
 <p>A persistence level indicating that a key is never destroyed.</p>
-<pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_KEY_PERSISTENCE_READ_ONLY" title="PSA_KEY_PERSISTENCE_READ_ONLY">PSA_KEY_PERSISTENCE_READ_ONLY</a> ((<a class="reference internal" href="#c.psa_key_persistence_t" title="psa_key_persistence_t">psa_key_persistence_t</a>) 0xff)
-</pre>
-<p>See <a class="reference internal" href="#c.psa_key_persistence_t" title="psa_key_persistence_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_persistence_t</span></code></a> for more information.</p>
+<pre class="literal-block">#define <a class="reference internal" href="#c.PSA_KEY_PERSISTENCE_READ_ONLY" title="PSA_KEY_PERSISTENCE_READ_ONLY">PSA_KEY_PERSISTENCE_READ_ONLY</a> ((<a class="reference internal" href="#c.psa_key_persistence_t" title="psa_key_persistence_t">psa_key_persistence_t</a>) 0xff)</pre>
+<p>See <a class="reference internal" href="#c.psa_key_persistence_t" title="psa_key_persistence_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_key_persistence_t</span></code></a> for more information.</p>
 </div>
 <div class="section" id="PSA_KEY_LOCATION_LOCAL_STORAGE">
-<span id="c.PSA_KEY_LOCATION_LOCAL_STORAGE"></span><h3><code class="docutils literal"><span class="pre">PSA_KEY_LOCATION_LOCAL_STORAGE</span></code> (macro)</h3>
+<span id="c.PSA_KEY_LOCATION_LOCAL_STORAGE"></span><h3><code class="docutils literal notranslate"><span class="pre">PSA_KEY_LOCATION_LOCAL_STORAGE</span></code> (macro)</h3>
 <p>The local storage area for persistent keys.</p>
-<pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_KEY_LOCATION_LOCAL_STORAGE" title="PSA_KEY_LOCATION_LOCAL_STORAGE">PSA_KEY_LOCATION_LOCAL_STORAGE</a> ((<a class="reference internal" href="#c.psa_key_location_t" title="psa_key_location_t">psa_key_location_t</a>) 0x000000)
-</pre>
+<pre class="literal-block">#define <a class="reference internal" href="#c.PSA_KEY_LOCATION_LOCAL_STORAGE" title="PSA_KEY_LOCATION_LOCAL_STORAGE">PSA_KEY_LOCATION_LOCAL_STORAGE</a> ((<a class="reference internal" href="#c.psa_key_location_t" title="psa_key_location_t">psa_key_location_t</a>) 0x000000)</pre>
 <p>This storage area is available on all systems that can store persistent keys without delegating the storage to a third-party cryptoprocessor.</p>
-<p>See <a class="reference internal" href="#c.psa_key_location_t" title="psa_key_location_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_location_t</span></code></a> for more information.</p>
+<p>See <a class="reference internal" href="#c.psa_key_location_t" title="psa_key_location_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_key_location_t</span></code></a> for more information.</p>
 </div>
 <div class="section" id="PSA_KEY_LOCATION_PRIMARY_SECURE_ELEMENT">
-<span id="c.PSA_KEY_LOCATION_PRIMARY_SECURE_ELEMENT"></span><h3><code class="docutils literal"><span class="pre">PSA_KEY_LOCATION_PRIMARY_SECURE_ELEMENT</span></code> (macro)</h3>
+<span id="c.PSA_KEY_LOCATION_PRIMARY_SECURE_ELEMENT"></span><h3><code class="docutils literal notranslate"><span class="pre">PSA_KEY_LOCATION_PRIMARY_SECURE_ELEMENT</span></code> (macro)</h3>
 <p>The default secure element storage area for persistent keys.</p>
-<pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_KEY_LOCATION_PRIMARY_SECURE_ELEMENT" title="PSA_KEY_LOCATION_PRIMARY_SECURE_ELEMENT">PSA_KEY_LOCATION_PRIMARY_SECURE_ELEMENT</a> ((<a class="reference internal" href="#c.psa_key_location_t" title="psa_key_location_t">psa_key_location_t</a>) 0x000001)
-</pre>
+<pre class="literal-block">#define <a class="reference internal" href="#c.PSA_KEY_LOCATION_PRIMARY_SECURE_ELEMENT" title="PSA_KEY_LOCATION_PRIMARY_SECURE_ELEMENT">PSA_KEY_LOCATION_PRIMARY_SECURE_ELEMENT</a> ((<a class="reference internal" href="#c.psa_key_location_t" title="psa_key_location_t">psa_key_location_t</a>) 0x000001)</pre>
 <p>This storage location is available on systems that have one or more secure elements that are able to store keys.</p>
 <p>Vendor-defined locations must be provided by the system for storing keys in additional secure elements.</p>
-<p>See <a class="reference internal" href="#c.psa_key_location_t" title="psa_key_location_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_location_t</span></code></a> for more information.</p>
+<p>See <a class="reference internal" href="#c.psa_key_location_t" title="psa_key_location_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_key_location_t</span></code></a> for more information.</p>
 </div>
 </div>
 <div class="section" id="attribute-accessors">
 <h2>9.3.5. Attribute accessors</h2>
 <div class="section" id="psa_set_key_lifetime">
-<span id="c.psa_set_key_lifetime"></span><h3><code class="docutils literal"><span class="pre">psa_set_key_lifetime</span></code> (function)</h3>
+<span id="c.psa_set_key_lifetime"></span><h3><code class="docutils literal notranslate"><span class="pre">psa_set_key_lifetime</span></code> (function)</h3>
 <p>Set the location of a persistent key.</p>
-<pre class="literal-block">
-void <a class="reference internal" href="#c.psa_set_key_lifetime" title="psa_set_key_lifetime">psa_set_key_lifetime</a>(<a class="reference internal" href="attributes.html#c.psa_key_attributes_t" title="psa_key_attributes_t">psa_key_attributes_t</a> * attributes,
-                          <a class="reference internal" href="#c.psa_key_lifetime_t" title="psa_key_lifetime_t">psa_key_lifetime_t</a> lifetime);
-</pre>
+<pre class="literal-block">void <a class="reference internal" href="#c.psa_set_key_lifetime" title="psa_set_key_lifetime">psa_set_key_lifetime</a>(<a class="reference internal" href="attributes.html#c.psa_key_attributes_t" title="psa_key_attributes_t">psa_key_attributes_t</a> * attributes,
+                          <a class="reference internal" href="#c.psa_key_lifetime_t" title="psa_key_lifetime_t">psa_key_lifetime_t</a> lifetime);</pre>
 <p class="rubric">Parameters</p>
-<dl class="docutils">
-<dt> <code class="docutils literal"><span class="pre">attributes</span></code></dt>
-<dd>The attribute object to write to.</dd>
-<dt> <code class="docutils literal"><span class="pre">lifetime</span></code></dt>
-<dd>The lifetime for the key. If this is <a class="reference internal" href="#c.PSA_KEY_LIFETIME_VOLATILE" title="PSA_KEY_LIFETIME_VOLATILE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_LIFETIME_VOLATILE</span></code></a>, the key will be volatile, and the key identifier attribute is reset to <a class="reference internal" href="ids.html#c.PSA_KEY_ID_NULL" title="PSA_KEY_ID_NULL"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_ID_NULL</span></code></a>.</dd>
+<dl class="simple">
+<dt> <code class="docutils literal notranslate"><span class="pre">attributes</span></code></dt><dd><p>The attribute object to write to.</p>
+</dd>
+<dt> <code class="docutils literal notranslate"><span class="pre">lifetime</span></code></dt><dd><p>The lifetime for the key. If this is <a class="reference internal" href="#c.PSA_KEY_LIFETIME_VOLATILE" title="PSA_KEY_LIFETIME_VOLATILE"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_KEY_LIFETIME_VOLATILE</span></code></a>, the key will be volatile, and the key identifier attribute is reset to <a class="reference internal" href="ids.html#c.PSA_KEY_ID_NULL" title="PSA_KEY_ID_NULL"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_KEY_ID_NULL</span></code></a>.</p>
+</dd>
 </dl>
-<p class="rubric">Returns: <code class="docutils literal"><span class="pre">void</span></code></p>
+<p class="rubric">Returns: <code class="docutils literal notranslate"><span class="pre">void</span></code></p>
 <p class="rubric">Description</p>
-<p>To make a key persistent, give it a persistent key identifier by using <a class="reference internal" href="ids.html#c.psa_set_key_id" title="psa_set_key_id"><code class="xref any c c-func docutils literal"><span class="pre">psa_set_key_id()</span></code></a>. By default, a key that has a persistent identifier is stored in the default storage area identifier by <a class="reference internal" href="#c.PSA_KEY_LIFETIME_PERSISTENT" title="PSA_KEY_LIFETIME_PERSISTENT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_LIFETIME_PERSISTENT</span></code></a>. Call this function to choose a storage area, or to explicitly declare the key as volatile.</p>
-<p>This function does not access storage, it merely stores the given value in the attribute object. The persistent key will be written to storage when the attribute object is passed to a key creation function such as <a class="reference internal" href="management.html#c.psa_import_key" title="psa_import_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_import_key()</span></code></a>, <a class="reference internal" href="management.html#c.psa_generate_key" title="psa_generate_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_generate_key()</span></code></a>, <a class="reference internal" href="../ops/kdf.html#c.psa_key_derivation_output_key" title="psa_key_derivation_output_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_output_key()</span></code></a> or <a class="reference internal" href="management.html#c.psa_copy_key" title="psa_copy_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_copy_key()</span></code></a>.</p>
+<p>To make a key persistent, give it a persistent key identifier by using <a class="reference internal" href="ids.html#c.psa_set_key_id" title="psa_set_key_id"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_set_key_id()</span></code></a>. By default, a key that has a persistent identifier is stored in the default storage area identifier by <a class="reference internal" href="#c.PSA_KEY_LIFETIME_PERSISTENT" title="PSA_KEY_LIFETIME_PERSISTENT"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_KEY_LIFETIME_PERSISTENT</span></code></a>. Call this function to choose a storage area, or to explicitly declare the key as volatile.</p>
+<p>This function does not access storage, it merely stores the given value in the attribute object. The persistent key will be written to storage when the attribute object is passed to a key creation function such as <a class="reference internal" href="management.html#c.psa_import_key" title="psa_import_key"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_import_key()</span></code></a>, <a class="reference internal" href="management.html#c.psa_generate_key" title="psa_generate_key"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_generate_key()</span></code></a>, <a class="reference internal" href="../ops/kdf.html#c.psa_key_derivation_output_key" title="psa_key_derivation_output_key"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_key_derivation_output_key()</span></code></a> or <a class="reference internal" href="management.html#c.psa_copy_key" title="psa_copy_key"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_copy_key()</span></code></a>.</p>
 <div class="admonition-implementation-note admonition">
-<p class="first admonition-title">Implementation note</p>
+<p class="admonition-title">Implementation note</p>
 <p>This is a simple accessor function that is not required to validate its inputs. The following approaches can be used to provide an efficient implementation:</p>
-<ul class="last simple">
-<li>This function can be declared as <code class="docutils literal"><span class="pre">static</span></code> or <code class="docutils literal"><span class="pre">inline</span></code>, instead of using the default external linkage.</li>
-<li>This function can be provided as a function-like macro. In this form, the macro must evaluate each of its arguments exactly once, as if it was a function call.</li>
+<ul class="simple">
+<li><p>This function can be declared as <code class="docutils literal notranslate"><span class="pre">static</span></code> or <code class="docutils literal notranslate"><span class="pre">inline</span></code>, instead of using the default external linkage.</p></li>
+<li><p>This function can be provided as a function-like macro. In this form, the macro must evaluate each of its arguments exactly once, as if it was a function call.</p></li>
 </ul>
 </div>
 </div>
 <div class="section" id="psa_get_key_lifetime">
-<span id="c.psa_get_key_lifetime"></span><h3><code class="docutils literal"><span class="pre">psa_get_key_lifetime</span></code> (function)</h3>
+<span id="c.psa_get_key_lifetime"></span><h3><code class="docutils literal notranslate"><span class="pre">psa_get_key_lifetime</span></code> (function)</h3>
 <p>Retrieve the lifetime from key attributes.</p>
-<pre class="literal-block">
-<a class="reference internal" href="#c.psa_key_lifetime_t" title="psa_key_lifetime_t">psa_key_lifetime_t</a> <a class="reference internal" href="#c.psa_get_key_lifetime" title="psa_get_key_lifetime">psa_get_key_lifetime</a>(const <a class="reference internal" href="attributes.html#c.psa_key_attributes_t" title="psa_key_attributes_t">psa_key_attributes_t</a> * attributes);
-</pre>
+<pre class="literal-block"><a class="reference internal" href="#c.psa_key_lifetime_t" title="psa_key_lifetime_t">psa_key_lifetime_t</a> <a class="reference internal" href="#c.psa_get_key_lifetime" title="psa_get_key_lifetime">psa_get_key_lifetime</a>(const <a class="reference internal" href="attributes.html#c.psa_key_attributes_t" title="psa_key_attributes_t">psa_key_attributes_t</a> * attributes);</pre>
 <p class="rubric">Parameters</p>
-<dl class="docutils">
-<dt> <code class="docutils literal"><span class="pre">attributes</span></code></dt>
-<dd>The key attribute object to query.</dd>
+<dl class="simple">
+<dt> <code class="docutils literal notranslate"><span class="pre">attributes</span></code></dt><dd><p>The key attribute object to query.</p>
+</dd>
 </dl>
-<p class="rubric">Returns: <a class="reference internal" href="#c.psa_key_lifetime_t" title="psa_key_lifetime_t"><code class="docutils literal"><span class="pre">psa_key_lifetime_t</span></code></a></p>
+<p class="rubric">Returns: <a class="reference internal" href="#c.psa_key_lifetime_t" title="psa_key_lifetime_t"><code class="docutils literal notranslate"><span class="pre">psa_key_lifetime_t</span></code></a></p>
 <p>The lifetime value stored in the attribute object.</p>
 <p class="rubric">Description</p>
 <div class="admonition-implementation-note admonition">
-<p class="first admonition-title">Implementation note</p>
+<p class="admonition-title">Implementation note</p>
 <p>This is a simple accessor function that is not required to validate its inputs. The following approaches can be used to provide an efficient implementation:</p>
-<ul class="last simple">
-<li>This function can be declared as <code class="docutils literal"><span class="pre">static</span></code> or <code class="docutils literal"><span class="pre">inline</span></code>, instead of using the default external linkage.</li>
-<li>This function can be provided as a function-like macro. In this form, the macro must evaluate each of its arguments exactly once, as if it was a function call.</li>
+<ul class="simple">
+<li><p>This function can be declared as <code class="docutils literal notranslate"><span class="pre">static</span></code> or <code class="docutils literal notranslate"><span class="pre">inline</span></code>, instead of using the default external linkage.</p></li>
+<li><p>This function can be provided as a function-like macro. In this form, the macro must evaluate each of its arguments exactly once, as if it was a function call.</p></li>
 </ul>
 </div>
 </div>
@@ -329,62 +296,54 @@ void <a class="reference internal" href="#c.psa_set_key_lifetime" title="psa_set
 <div class="section" id="support-macros">
 <h2>9.3.6. Support macros</h2>
 <div class="section" id="PSA_KEY_LIFETIME_GET_PERSISTENCE">
-<span id="c.PSA_KEY_LIFETIME_GET_PERSISTENCE"></span><h3><code class="docutils literal"><span class="pre">PSA_KEY_LIFETIME_GET_PERSISTENCE</span></code> (macro)</h3>
+<span id="c.PSA_KEY_LIFETIME_GET_PERSISTENCE"></span><h3><code class="docutils literal notranslate"><span class="pre">PSA_KEY_LIFETIME_GET_PERSISTENCE</span></code> (macro)</h3>
 <p>Extract the persistence level from a key lifetime.</p>
-<pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_KEY_LIFETIME_GET_PERSISTENCE" title="PSA_KEY_LIFETIME_GET_PERSISTENCE">PSA_KEY_LIFETIME_GET_PERSISTENCE</a>(lifetime) \
-    ((<a class="reference internal" href="#c.psa_key_persistence_t" title="psa_key_persistence_t">psa_key_persistence_t</a>) ((lifetime) &amp; 0x000000ff))
-</pre>
+<pre class="literal-block">#define <a class="reference internal" href="#c.PSA_KEY_LIFETIME_GET_PERSISTENCE" title="PSA_KEY_LIFETIME_GET_PERSISTENCE">PSA_KEY_LIFETIME_GET_PERSISTENCE</a>(lifetime) \
+    ((<a class="reference internal" href="#c.psa_key_persistence_t" title="psa_key_persistence_t">psa_key_persistence_t</a>) ((lifetime) &amp; 0x000000ff))</pre>
 <p class="rubric">Parameters</p>
-<dl class="docutils">
-<dt> <code class="docutils literal"><span class="pre">lifetime</span></code></dt>
-<dd>The lifetime value to query (value of type <a class="reference internal" href="#c.psa_key_lifetime_t" title="psa_key_lifetime_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_lifetime_t</span></code></a>).</dd>
+<dl class="simple">
+<dt> <code class="docutils literal notranslate"><span class="pre">lifetime</span></code></dt><dd><p>The lifetime value to query (value of type <a class="reference internal" href="#c.psa_key_lifetime_t" title="psa_key_lifetime_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_key_lifetime_t</span></code></a>).</p>
+</dd>
 </dl>
 </div>
 <div class="section" id="PSA_KEY_LIFETIME_GET_LOCATION">
-<span id="c.PSA_KEY_LIFETIME_GET_LOCATION"></span><h3><code class="docutils literal"><span class="pre">PSA_KEY_LIFETIME_GET_LOCATION</span></code> (macro)</h3>
+<span id="c.PSA_KEY_LIFETIME_GET_LOCATION"></span><h3><code class="docutils literal notranslate"><span class="pre">PSA_KEY_LIFETIME_GET_LOCATION</span></code> (macro)</h3>
 <p>Extract the location indicator from a key lifetime.</p>
-<pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_KEY_LIFETIME_GET_LOCATION" title="PSA_KEY_LIFETIME_GET_LOCATION">PSA_KEY_LIFETIME_GET_LOCATION</a>(lifetime) \
-    ((<a class="reference internal" href="#c.psa_key_location_t" title="psa_key_location_t">psa_key_location_t</a>) ((lifetime) &gt;&gt; 8))
-</pre>
+<pre class="literal-block">#define <a class="reference internal" href="#c.PSA_KEY_LIFETIME_GET_LOCATION" title="PSA_KEY_LIFETIME_GET_LOCATION">PSA_KEY_LIFETIME_GET_LOCATION</a>(lifetime) \
+    ((<a class="reference internal" href="#c.psa_key_location_t" title="psa_key_location_t">psa_key_location_t</a>) ((lifetime) &gt;&gt; 8))</pre>
 <p class="rubric">Parameters</p>
-<dl class="docutils">
-<dt> <code class="docutils literal"><span class="pre">lifetime</span></code></dt>
-<dd>The lifetime value to query (value of type <a class="reference internal" href="#c.psa_key_lifetime_t" title="psa_key_lifetime_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_lifetime_t</span></code></a>).</dd>
+<dl class="simple">
+<dt> <code class="docutils literal notranslate"><span class="pre">lifetime</span></code></dt><dd><p>The lifetime value to query (value of type <a class="reference internal" href="#c.psa_key_lifetime_t" title="psa_key_lifetime_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_key_lifetime_t</span></code></a>).</p>
+</dd>
 </dl>
 </div>
 <div class="section" id="PSA_KEY_LIFETIME_IS_VOLATILE">
-<span id="c.PSA_KEY_LIFETIME_IS_VOLATILE"></span><h3><code class="docutils literal"><span class="pre">PSA_KEY_LIFETIME_IS_VOLATILE</span></code> (macro)</h3>
+<span id="c.PSA_KEY_LIFETIME_IS_VOLATILE"></span><h3><code class="docutils literal notranslate"><span class="pre">PSA_KEY_LIFETIME_IS_VOLATILE</span></code> (macro)</h3>
 <p>Whether a key lifetime indicates that the key is volatile.</p>
-<pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_KEY_LIFETIME_IS_VOLATILE" title="PSA_KEY_LIFETIME_IS_VOLATILE">PSA_KEY_LIFETIME_IS_VOLATILE</a>(lifetime) \
-    (<a class="reference internal" href="#c.PSA_KEY_LIFETIME_GET_PERSISTENCE" title="PSA_KEY_LIFETIME_GET_PERSISTENCE">PSA_KEY_LIFETIME_GET_PERSISTENCE</a>(lifetime) == <a class="reference internal" href="#c.PSA_KEY_PERSISTENCE_VOLATILE" title="PSA_KEY_PERSISTENCE_VOLATILE">PSA_KEY_PERSISTENCE_VOLATILE</a>)
-</pre>
+<pre class="literal-block">#define <a class="reference internal" href="#c.PSA_KEY_LIFETIME_IS_VOLATILE" title="PSA_KEY_LIFETIME_IS_VOLATILE">PSA_KEY_LIFETIME_IS_VOLATILE</a>(lifetime) \
+    (<a class="reference internal" href="#c.PSA_KEY_LIFETIME_GET_PERSISTENCE" title="PSA_KEY_LIFETIME_GET_PERSISTENCE">PSA_KEY_LIFETIME_GET_PERSISTENCE</a>(lifetime) == <a class="reference internal" href="#c.PSA_KEY_PERSISTENCE_VOLATILE" title="PSA_KEY_PERSISTENCE_VOLATILE">PSA_KEY_PERSISTENCE_VOLATILE</a>)</pre>
 <p class="rubric">Parameters</p>
-<dl class="docutils">
-<dt> <code class="docutils literal"><span class="pre">lifetime</span></code></dt>
-<dd>The lifetime value to query (value of type <a class="reference internal" href="#c.psa_key_lifetime_t" title="psa_key_lifetime_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_lifetime_t</span></code></a>).</dd>
+<dl class="simple">
+<dt> <code class="docutils literal notranslate"><span class="pre">lifetime</span></code></dt><dd><p>The lifetime value to query (value of type <a class="reference internal" href="#c.psa_key_lifetime_t" title="psa_key_lifetime_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_key_lifetime_t</span></code></a>).</p>
+</dd>
 </dl>
 <p class="rubric">Returns</p>
-<p><code class="docutils literal"><span class="pre">1</span></code> if the key is volatile, otherwise <code class="docutils literal"><span class="pre">0</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">1</span></code> if the key is volatile, otherwise <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
 <p class="rubric">Description</p>
 <p>A volatile key is automatically destroyed by the implementation when the application instance terminates. In particular, a volatile key is automatically destroyed on a power reset of the device.</p>
 <p>A key that is not volatile is persistent. Persistent keys are preserved until the application explicitly destroys them or until an implementation-specific device management event occurs, for example, a factory reset.</p>
 </div>
 <div class="section" id="PSA_KEY_LIFETIME_FROM_PERSISTENCE_AND_LOCATION">
-<span id="c.PSA_KEY_LIFETIME_FROM_PERSISTENCE_AND_LOCATION"></span><h3><code class="docutils literal"><span class="pre">PSA_KEY_LIFETIME_FROM_PERSISTENCE_AND_LOCATION</span></code> (macro)</h3>
+<span id="c.PSA_KEY_LIFETIME_FROM_PERSISTENCE_AND_LOCATION"></span><h3><code class="docutils literal notranslate"><span class="pre">PSA_KEY_LIFETIME_FROM_PERSISTENCE_AND_LOCATION</span></code> (macro)</h3>
 <p>Construct a lifetime from a persistence level and a location.</p>
-<pre class="literal-block">
-#define <a class="reference internal" href="#c.PSA_KEY_LIFETIME_FROM_PERSISTENCE_AND_LOCATION" title="PSA_KEY_LIFETIME_FROM_PERSISTENCE_AND_LOCATION">PSA_KEY_LIFETIME_FROM_PERSISTENCE_AND_LOCATION</a>(persistence, location) \
-    ((location) &lt;&lt; 8 | (persistence))
-</pre>
+<pre class="literal-block">#define <a class="reference internal" href="#c.PSA_KEY_LIFETIME_FROM_PERSISTENCE_AND_LOCATION" title="PSA_KEY_LIFETIME_FROM_PERSISTENCE_AND_LOCATION">PSA_KEY_LIFETIME_FROM_PERSISTENCE_AND_LOCATION</a>(persistence, location) \
+    ((location) &lt;&lt; 8 | (persistence))</pre>
 <p class="rubric">Parameters</p>
-<dl class="docutils">
-<dt> <code class="docutils literal"><span class="pre">persistence</span></code></dt>
-<dd>The persistence level (value of type <a class="reference internal" href="#c.psa_key_persistence_t" title="psa_key_persistence_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_persistence_t</span></code></a>).</dd>
-<dt> <code class="docutils literal"><span class="pre">location</span></code></dt>
-<dd>The location indicator (value of type <a class="reference internal" href="#c.psa_key_location_t" title="psa_key_location_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_location_t</span></code></a>).</dd>
+<dl class="simple">
+<dt> <code class="docutils literal notranslate"><span class="pre">persistence</span></code></dt><dd><p>The persistence level (value of type <a class="reference internal" href="#c.psa_key_persistence_t" title="psa_key_persistence_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_key_persistence_t</span></code></a>).</p>
+</dd>
+<dt> <code class="docutils literal notranslate"><span class="pre">location</span></code></dt><dd><p>The location indicator (value of type <a class="reference internal" href="#c.psa_key_location_t" title="psa_key_location_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_key_location_t</span></code></a>).</p>
+</dd>
 </dl>
 <p class="rubric">Returns</p>
 <p>The constructed lifetime value.</p>
@@ -394,6 +353,7 @@ void <a class="reference internal" href="#c.psa_set_key_lifetime" title="psa_set
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -442,13 +402,13 @@ Version 1.0.1
 <li class="toctree-l1"><a class="reference internal" href="../../psa_c-identifiers.html">Index of API elements</a></li>
 </ul>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -459,8 +419,8 @@ Version 1.0.1
       &copy; 2018-2020, Arm Limited or its affiliates. All rights reserved.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
 

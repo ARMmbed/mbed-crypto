@@ -1,26 +1,17 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>4. Sample architectures &#8212; PSA Crypto API 1.0.1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '1.0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  false,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -29,15 +20,17 @@
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
+  
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="sample-architectures">
@@ -100,10 +93,10 @@ one key. This might be a hardware unique key that is burnt to one-time
 programmable memory during the manufacturing of the device. This key can be used
 for one or more purposes:</p>
 <ul class="simple">
-<li>Encrypt and authenticate data stored in the application processor.</li>
-<li>Communicate with a paired device.</li>
-<li>Allow the application to perform operations with keys that are derived from
-the hardware unique key.</li>
+<li><p>Encrypt and authenticate data stored in the application processor.</p></li>
+<li><p>Communicate with a paired device.</p></li>
+<li><p>Allow the application to perform operations with keys that are derived from
+the hardware unique key.</p></li>
 </ul>
 </div>
 <div class="section" id="multi-client-cryptoprocessor">
@@ -123,32 +116,33 @@ another client.</p>
 <p>This system includes multiple cryptoprocessors. There are several reasons to
 have multiple cryptoprocessors:</p>
 <ul class="simple">
-<li>Different compromises between security and performance for different keys.
+<li><p>Different compromises between security and performance for different keys.
 Typically, this means a cryptoprocessor that runs on the same hardware as the
 main application and processes short-term secrets, a secure element or a
-similar separate chip that retains long-term secrets.</li>
-<li>Independent provisioning of certain secrets.</li>
-<li>A combination of a non-removable cryptoprocessor and removable ones, for
-example, a smartcard or HSM.</li>
-<li>Cryptoprocessors managed by different stakeholders who do not trust each
-other.</li>
+similar separate chip that retains long-term secrets.</p></li>
+<li><p>Independent provisioning of certain secrets.</p></li>
+<li><p>A combination of a non-removable cryptoprocessor and removable ones, for
+example, a smartcard or HSM.</p></li>
+<li><p>Cryptoprocessors managed by different stakeholders who do not trust each
+other.</p></li>
 </ul>
 <p>The keystore implementation needs to dispatch each request to the correct
 processor. For example:</p>
 <ul class="simple">
-<li>All requests involving a non-extractable key must be processed in the
-cryptoprocessor that holds that key.</li>
-<li>Requests involving a persistent key must be processed in the cryptoprocessor
-that corresponds to the key’s lifetime value.</li>
-<li>Requests involving a volatile key might target a cryptoprocessor based on
+<li><p>All requests involving a non-extractable key must be processed in the
+cryptoprocessor that holds that key.</p></li>
+<li><p>Requests involving a persistent key must be processed in the cryptoprocessor
+that corresponds to the key’s lifetime value.</p></li>
+<li><p>Requests involving a volatile key might target a cryptoprocessor based on
 parameters supplied by the application, or based on considerations such as
-performance inside the implementation.</li>
+performance inside the implementation.</p></li>
 </ul>
 </div>
 </div>
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -188,13 +182,13 @@ Version 1.0.1
 <li class="toctree-l1"><a class="reference internal" href="../psa_c-identifiers.html">Index of API elements</a></li>
 </ul>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -205,8 +199,8 @@ Version 1.0.1
       &copy; 2018-2020, Arm Limited or its affiliates. All rights reserved.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
 
