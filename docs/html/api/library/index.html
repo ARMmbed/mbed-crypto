@@ -1,26 +1,17 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>8. Library management reference &#8212; PSA Crypto API 1.0.1 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '1.0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  false,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -29,15 +20,17 @@
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
+  
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="library-management-reference">
@@ -46,47 +39,47 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="status.html">8.1. PSA status codes</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="status.html#status-type">8.1.1. Status type</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="status.html#psa_status_t"><code class="docutils literal"><span class="pre">psa_status_t</span></code> (type)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="status.html#psa_status_t"><code class="docutils literal notranslate"><span class="pre">psa_status_t</span></code> (type)</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="status.html#success-codes">8.1.2. Success codes</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_SUCCESS"><code class="docutils literal"><span class="pre">PSA_SUCCESS</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_SUCCESS"><code class="docutils literal notranslate"><span class="pre">PSA_SUCCESS</span></code> (macro)</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="status.html#error-codes">8.1.3. Error codes</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_GENERIC_ERROR"><code class="docutils literal"><span class="pre">PSA_ERROR_GENERIC_ERROR</span></code> (macro)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_NOT_SUPPORTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_SUPPORTED</span></code> (macro)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_NOT_PERMITTED"><code class="docutils literal"><span class="pre">PSA_ERROR_NOT_PERMITTED</span></code> (macro)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_BUFFER_TOO_SMALL"><code class="docutils literal"><span class="pre">PSA_ERROR_BUFFER_TOO_SMALL</span></code> (macro)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_ALREADY_EXISTS"><code class="docutils literal"><span class="pre">PSA_ERROR_ALREADY_EXISTS</span></code> (macro)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_DOES_NOT_EXIST"><code class="docutils literal"><span class="pre">PSA_ERROR_DOES_NOT_EXIST</span></code> (macro)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_BAD_STATE"><code class="docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code> (macro)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code> (macro)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_INSUFFICIENT_MEMORY"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_MEMORY</span></code> (macro)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_INSUFFICIENT_STORAGE"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_STORAGE</span></code> (macro)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_COMMUNICATION_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_COMMUNICATION_FAILURE</span></code> (macro)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_STORAGE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_STORAGE_FAILURE</span></code> (macro)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_DATA_CORRUPT"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_CORRUPT</span></code> (macro)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_DATA_INVALID"><code class="docutils literal"><span class="pre">PSA_ERROR_DATA_INVALID</span></code> (macro)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_HARDWARE_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_HARDWARE_FAILURE</span></code> (macro)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_CORRUPTION_DETECTED"><code class="docutils literal"><span class="pre">PSA_ERROR_CORRUPTION_DETECTED</span></code> (macro)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_INSUFFICIENT_ENTROPY"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_ENTROPY</span></code> (macro)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_INVALID_SIGNATURE"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_SIGNATURE</span></code> (macro)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_INVALID_PADDING"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_PADDING</span></code> (macro)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_INSUFFICIENT_DATA"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_DATA</span></code> (macro)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_INVALID_HANDLE"><code class="docutils literal"><span class="pre">PSA_ERROR_INVALID_HANDLE</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_GENERIC_ERROR"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_GENERIC_ERROR</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_NOT_SUPPORTED"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_NOT_SUPPORTED</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_NOT_PERMITTED"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_NOT_PERMITTED</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_BUFFER_TOO_SMALL"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_BUFFER_TOO_SMALL</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_ALREADY_EXISTS"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_ALREADY_EXISTS</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_DOES_NOT_EXIST"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_DOES_NOT_EXIST</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_BAD_STATE"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_BAD_STATE</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_INVALID_ARGUMENT"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_INVALID_ARGUMENT</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_INSUFFICIENT_MEMORY"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_INSUFFICIENT_MEMORY</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_INSUFFICIENT_STORAGE"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_INSUFFICIENT_STORAGE</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_COMMUNICATION_FAILURE"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_COMMUNICATION_FAILURE</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_STORAGE_FAILURE"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_STORAGE_FAILURE</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_DATA_CORRUPT"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_DATA_CORRUPT</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_DATA_INVALID"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_DATA_INVALID</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_HARDWARE_FAILURE"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_HARDWARE_FAILURE</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_CORRUPTION_DETECTED"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_CORRUPTION_DETECTED</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_INSUFFICIENT_ENTROPY"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_INSUFFICIENT_ENTROPY</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_INVALID_SIGNATURE"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_INVALID_SIGNATURE</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_INVALID_PADDING"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_INVALID_PADDING</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_INSUFFICIENT_DATA"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_INSUFFICIENT_DATA</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="status.html#PSA_ERROR_INVALID_HANDLE"><code class="docutils literal notranslate"><span class="pre">PSA_ERROR_INVALID_HANDLE</span></code> (macro)</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="library.html">8.2. PSA Crypto library</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="library.html#api-version">8.2.1. API version</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="library.html#PSA_CRYPTO_API_VERSION_MAJOR"><code class="docutils literal"><span class="pre">PSA_CRYPTO_API_VERSION_MAJOR</span></code> (macro)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="library.html#PSA_CRYPTO_API_VERSION_MINOR"><code class="docutils literal"><span class="pre">PSA_CRYPTO_API_VERSION_MINOR</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library.html#PSA_CRYPTO_API_VERSION_MAJOR"><code class="docutils literal notranslate"><span class="pre">PSA_CRYPTO_API_VERSION_MAJOR</span></code> (macro)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library.html#PSA_CRYPTO_API_VERSION_MINOR"><code class="docutils literal notranslate"><span class="pre">PSA_CRYPTO_API_VERSION_MINOR</span></code> (macro)</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="library.html#library-initialization">8.2.2. Library initialization</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="library.html#psa_crypto_init"><code class="docutils literal"><span class="pre">psa_crypto_init</span></code> (function)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library.html#psa_crypto_init"><code class="docutils literal notranslate"><span class="pre">psa_crypto_init</span></code> (function)</a></li>
 </ul>
 </li>
 </ul>
@@ -97,6 +90,7 @@
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -133,13 +127,13 @@ Version 1.0.1
 <li class="toctree-l1"><a class="reference internal" href="../../psa_c-identifiers.html">Index of API elements</a></li>
 </ul>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -150,8 +144,8 @@ Version 1.0.1
       &copy; 2018-2020, Arm Limited or its affiliates. All rights reserved.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
 

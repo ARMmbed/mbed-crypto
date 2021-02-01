@@ -1,26 +1,17 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>3. Functionality overview &#8212; PSA Crypto API 1.0.1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '1.0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  false,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -29,15 +20,17 @@
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
+  
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="functionality-overview">
@@ -48,10 +41,10 @@ interface defined in this specification. Refer to the
 <p><a class="reference internal" href="../appendix/history.html#future"><span class="std std-ref">Future additions</span></a> describes features that might be included in future versions of this
 specification.</p>
 <p>Due to the modularity of the interface, almost every part of the library is
-optional. The only mandatory function is <a class="reference internal" href="../api/library/library.html#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_crypto_init()</span></code></a>.</p>
+optional. The only mandatory function is <a class="reference internal" href="../api/library/library.html#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_crypto_init()</span></code></a>.</p>
 <div class="section" id="library-management">
 <h2>3.1. Library management</h2>
-<p>Applications must call <a class="reference internal" href="../api/library/library.html#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_crypto_init()</span></code></a> to initialize the library before
+<p>Applications must call <a class="reference internal" href="../api/library/library.html#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_crypto_init()</span></code></a> to initialize the library before
 using any other function.</p>
 </div>
 <div class="section" id="key-management">
@@ -62,28 +55,28 @@ be <em>non-extractable</em>, where an application can use a key but is not permi
 obtain the key material. Non-extractable keys are bound to the device, can be
 rate-limited and can have their usage restricted by policies.</p>
 <p>Each key has a set of attributes that describe the key and the policy for using
-the key. A <a class="reference internal" href="../api/keys/attributes.html#c.psa_key_attributes_t" title="psa_key_attributes_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_attributes_t</span></code></a> object contains all of the attributes, which
+the key. A <a class="reference internal" href="../api/keys/attributes.html#c.psa_key_attributes_t" title="psa_key_attributes_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_key_attributes_t</span></code></a> object contains all of the attributes, which
 is used when creating a key and when querying key attributes.</p>
 <p>The key attributes include:</p>
 <ul class="simple">
-<li>A <a class="reference internal" href="../api/keys/types.html#key-types"><span class="std std-ref">type</span></a> and size that describe the key material.</li>
-<li>The key <a class="reference internal" href="#key-ids"><span class="std std-ref">identifier</span></a> that the application uses to refer to the key.</li>
-<li>A <a class="reference internal" href="#key-life"><span class="std std-ref">lifetime</span></a> that determines when the key material is destroyed, and where it is stored.</li>
-<li>A <a class="reference internal" href="#key-usage-policies"><span class="std std-ref">policy</span></a> that determines how the key can be used.</li>
+<li><p>A <a class="reference internal" href="../api/keys/types.html#key-types"><span class="std std-ref">type</span></a> and size that describe the key material.</p></li>
+<li><p>The key <a class="reference internal" href="#key-ids"><span class="std std-ref">identifier</span></a> that the application uses to refer to the key.</p></li>
+<li><p>A <a class="reference internal" href="#key-life"><span class="std std-ref">lifetime</span></a> that determines when the key material is destroyed, and where it is stored.</p></li>
+<li><p>A <a class="reference internal" href="#key-usage-policies"><span class="std std-ref">policy</span></a> that determines how the key can be used.</p></li>
 </ul>
 <p>Keys are created using one of the <em>key creation functions</em>:</p>
 <ul class="simple">
-<li><a class="reference internal" href="../api/keys/management.html#c.psa_import_key" title="psa_import_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_import_key()</span></code></a></li>
-<li><a class="reference internal" href="../api/keys/management.html#c.psa_generate_key" title="psa_generate_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_generate_key()</span></code></a></li>
-<li><a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_output_key" title="psa_key_derivation_output_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_output_key()</span></code></a></li>
-<li><a class="reference internal" href="../api/keys/management.html#c.psa_copy_key" title="psa_copy_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_copy_key()</span></code></a></li>
+<li><p><a class="reference internal" href="../api/keys/management.html#c.psa_import_key" title="psa_import_key"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_import_key()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../api/keys/management.html#c.psa_generate_key" title="psa_generate_key"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_generate_key()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_output_key" title="psa_key_derivation_output_key"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_key_derivation_output_key()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../api/keys/management.html#c.psa_copy_key" title="psa_copy_key"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_copy_key()</span></code></a></p></li>
 </ul>
 <p>These output the key identifier, that is used to access the key in all other parts of the API.</p>
 <p>All of the key attributes are set when the key is created and cannot be changed
 without destroying the key first. If the original key permits copying, then the
 application can specify a different lifetime or restricted policy for the
 copy of the key.</p>
-<p>A call to <a class="reference internal" href="../api/keys/management.html#c.psa_destroy_key" title="psa_destroy_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_destroy_key()</span></code></a> destroys the key material, and will cause any active
+<p>A call to <a class="reference internal" href="../api/keys/management.html#c.psa_destroy_key" title="psa_destroy_key"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_destroy_key()</span></code></a> destroys the key material, and will cause any active
 operations that are using the key to fail. Therefore an application must not
 destroy a key while an operation using that key is in progress, unless the
 application is prepared to handle a failure of the operation.</p>
@@ -101,7 +94,7 @@ applications corresponds to two different keys.</p>
 <span id="key-life"></span><h3>3.2.2. Key lifetimes</h3>
 <p>The lifetime of a key indicates where it is stored and which application and system actions will create and destroy it.</p>
 <p>There are two main types of lifetimes: <em>volatile</em> and <em>persistent</em>.</p>
-<p>Volatile keys are automatically destroyed when the application instance terminates or on a power reset of the device. Volatile key identifiers are allocated by the implementation when the key is created. Volatile keys can be explicitly destroyed with a call to <a class="reference internal" href="../api/keys/management.html#c.psa_destroy_key" title="psa_destroy_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_destroy_key()</span></code></a>.</p>
+<p>Volatile keys are automatically destroyed when the application instance terminates or on a power reset of the device. Volatile key identifiers are allocated by the implementation when the key is created. Volatile keys can be explicitly destroyed with a call to <a class="reference internal" href="../api/keys/management.html#c.psa_destroy_key" title="psa_destroy_key"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_destroy_key()</span></code></a>.</p>
 <p>Persistent keys are preserved until the application explicitly destroys them or until an implementation-specific device management event occurs, for example, a factory reset. The key identifier for a persistent key is set by the application when creating the key, and remains valid throughout the lifetime of the key, even if the application instance that created the key terminates.</p>
 <p>See <a class="reference internal" href="../api/keys/lifetimes.html#key-lifetimes"><span class="secref">Key lifetimes</span></a>.</p>
 </div>
@@ -113,19 +106,19 @@ applications corresponds to two different keys.</p>
 <h3>3.2.4. Recommendations of minimum standards for key management</h3>
 <p>Most implementations provide the following functions:</p>
 <ul class="simple">
-<li><a class="reference internal" href="../api/keys/management.html#c.psa_import_key" title="psa_import_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_import_key()</span></code></a>. The exceptions are implementations that only give access
+<li><p><a class="reference internal" href="../api/keys/management.html#c.psa_import_key" title="psa_import_key"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_import_key()</span></code></a>. The exceptions are implementations that only give access
 to a key or keys that are provisioned by proprietary means, and do not allow
-the main application to use its own cryptographic material.</li>
-<li><a class="reference internal" href="../api/keys/attributes.html#c.psa_get_key_attributes" title="psa_get_key_attributes"><code class="xref any c c-func docutils literal"><span class="pre">psa_get_key_attributes()</span></code></a> and the <code class="docutils literal"><span class="pre">psa_get_key_xxx()</span></code> accessor functions.
+the main application to use its own cryptographic material.</p></li>
+<li><p><a class="reference internal" href="../api/keys/attributes.html#c.psa_get_key_attributes" title="psa_get_key_attributes"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_get_key_attributes()</span></code></a> and the <code class="docutils literal notranslate"><span class="pre">psa_get_key_xxx()</span></code> accessor functions.
 They are easy to implement, and it is difficult to write applications and to
-diagnose issues without being able to check the metadata.</li>
-<li><a class="reference internal" href="../api/keys/management.html#c.psa_export_public_key" title="psa_export_public_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_export_public_key()</span></code></a>. This function is usually provided if the
+diagnose issues without being able to check the metadata.</p></li>
+<li><p><a class="reference internal" href="../api/keys/management.html#c.psa_export_public_key" title="psa_export_public_key"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_export_public_key()</span></code></a>. This function is usually provided if the
 implementation supports any asymmetric algorithm, since public-key
 cryptography often requires the delivery of a public key that is associated
-with a protected private key.</li>
-<li><a class="reference internal" href="../api/keys/management.html#c.psa_export_key" title="psa_export_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_export_key()</span></code></a>. However, highly constrained implementations that are
+with a protected private key.</p></li>
+<li><p><a class="reference internal" href="../api/keys/management.html#c.psa_export_key" title="psa_export_key"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_export_key()</span></code></a>. However, highly constrained implementations that are
 designed to work only with short-term keys, or only with long-term
-non-extractable keys, do not need to provide this function.</li>
+non-extractable keys, do not need to provide this function.</p></li>
 </ul>
 </div>
 </div>
@@ -134,16 +127,16 @@ non-extractable keys, do not need to provide this function.</li>
 <p>This specification defines interfaces for the following types of symmetric
 cryptographic operation:</p>
 <ul class="simple">
-<li>Message digests, commonly known as hash functions.</li>
-<li>Message authentication codes (MAC).</li>
-<li>Symmetric ciphers.</li>
-<li>Authenticated encryption with associated data (AEAD).</li>
+<li><p>Message digests, commonly known as hash functions.</p></li>
+<li><p>Message authentication codes (MAC).</p></li>
+<li><p>Symmetric ciphers.</p></li>
+<li><p>Authenticated encryption with associated data (AEAD).</p></li>
 </ul>
 <p>For each type of symmetric cryptographic operation, the API includes:</p>
 <ul class="simple">
-<li>A pair of <em>single-part</em> functions. For example, compute and verify, or
-encrypt and decrypt.</li>
-<li>A series of functions that permit <em>multi-part operations</em>.</li>
+<li><p>A pair of <em>single-part</em> functions. For example, compute and verify, or
+encrypt and decrypt.</p></li>
+<li><p>A series of functions that permit <em>multi-part operations</em>.</p></li>
 </ul>
 <div class="section" id="single-part-functions">
 <h3>3.3.1. Single-part Functions</h3>
@@ -162,49 +155,48 @@ of the cryptographic operation, and allows the message data to be processed in
 fragments instead of all at once. For example, the following situations require
 the use of a multi-part operation:</p>
 <ul class="simple">
-<li>Processing messages that cannot be assembled in memory.</li>
-<li>Using a deterministic IV for unauthenticated encryption.</li>
-<li>Providing the IV separately for unauthenticated encryption or decryption.</li>
-<li>Separating the AEAD authentication tag from the cipher text.</li>
+<li><p>Processing messages that cannot be assembled in memory.</p></li>
+<li><p>Using a deterministic IV for unauthenticated encryption.</p></li>
+<li><p>Providing the IV separately for unauthenticated encryption or decryption.</p></li>
+<li><p>Separating the AEAD authentication tag from the cipher text.</p></li>
 </ul>
 <p>Each multi-part operation defines a specific object type to maintain the state
 of the operation. These types are implementation-defined. All multi-part
 operations follow the same pattern of use:</p>
 <ol class="arabic">
-<li><p class="first"><strong>Allocate:</strong> Allocate memory for an operation object of the appropriate
-type. The application can use any allocation strategy: stack, heap, static, etc.</p>
-</li>
-<li><p class="first"><strong>Initialize:</strong> Initialize or assign the operation object by one of the
+<li><p><strong>Allocate:</strong> Allocate memory for an operation object of the appropriate
+type. The application can use any allocation strategy: stack, heap, static, etc.</p></li>
+<li><p><strong>Initialize:</strong> Initialize or assign the operation object by one of the
 following methods:</p>
 <blockquote>
 <div><ul class="simple">
-<li>Set it to logical zero. This is automatic for static and global
+<li><p>Set it to logical zero. This is automatic for static and global
 variables. Explicit initialization must use the associated
-<code class="docutils literal"><span class="pre">PSA_xxx_INIT</span></code> macro as the type is implementation-defined.</li>
-<li>Set it to all-bits zero. This is automatic if the object was
-allocated with <code class="docutils literal"><span class="pre">calloc()</span></code>.</li>
-<li>Assign the value of the associated macro <code class="docutils literal"><span class="pre">PSA_xxx_INIT</span></code>.</li>
-<li>Assign the result of calling the associated function
-<code class="docutils literal"><span class="pre">psa_xxx_init()</span></code>.</li>
+<code class="docutils literal notranslate"><span class="pre">PSA_xxx_INIT</span></code> macro as the type is implementation-defined.</p></li>
+<li><p>Set it to all-bits zero. This is automatic if the object was
+allocated with <code class="docutils literal notranslate"><span class="pre">calloc()</span></code>.</p></li>
+<li><p>Assign the value of the associated macro <code class="docutils literal notranslate"><span class="pre">PSA_xxx_INIT</span></code>.</p></li>
+<li><p>Assign the result of calling the associated function
+<code class="docutils literal notranslate"><span class="pre">psa_xxx_init()</span></code>.</p></li>
 </ul>
 </div></blockquote>
 <p>The resulting object is now <em>inactive</em>.</p>
 <p>It is an error to initialize an operation object that is in <em>active</em> or
 <em>error</em> states. This can leak memory or other resources.</p>
 </li>
-<li><p class="first"><strong>Setup:</strong> Start a new multi-part operation on an <em>inactive</em> operation
+<li><p><strong>Setup:</strong> Start a new multi-part operation on an <em>inactive</em> operation
 object. Each operation object will define one or more setup functions to
 start a specific operation.</p>
 <p>On success, a setup function will put an operation object into an <em>active</em>
 state. On failure, the operation object will remain <em>inactive</em>.</p>
 </li>
-<li><p class="first"><strong>Update:</strong> Update an <em>active</em> operation object. The update function can
+<li><p><strong>Update:</strong> Update an <em>active</em> operation object. The update function can
 provide additional parameters, supply data for processing or generate
 outputs.</p>
 <p>On success, the operation object remains <em>active</em>. On failure, the
 operation object will enter an <em>error</em> state.</p>
 </li>
-<li><p class="first"><strong>Finish:</strong> To end the operation, call the applicable finishing function.
+<li><p><strong>Finish:</strong> To end the operation, call the applicable finishing function.
 This will take any final inputs, produce any final outputs, and then
 release any resources associated with the operation.</p>
 <p>On success, the operation object returns to the <em>inactive</em> state. On
@@ -212,21 +204,21 @@ failure, the operation object will enter an <em>error</em> state.</p>
 </li>
 </ol>
 <p>An operation can be aborted at any stage during its use by calling the
-associated <code class="docutils literal"><span class="pre">psa_xxx_abort()</span></code> function. This will release any resources
+associated <code class="docutils literal notranslate"><span class="pre">psa_xxx_abort()</span></code> function. This will release any resources
 associated with the operation and return the operation object to the <em>inactive</em>
 state.</p>
 <p>Any error that occurs to an operation while it is in an <em>active</em> state will
 result in the operation entering an <em>error</em> state. The application must call the
-associated <code class="docutils literal"><span class="pre">psa_xxx_abort()</span></code> function to release the operation resources and
+associated <code class="docutils literal notranslate"><span class="pre">psa_xxx_abort()</span></code> function to release the operation resources and
 return the object to the <em>inactive</em> state.</p>
 <p>Once an operation object is returned to the <em>inactive</em> state, it can be reused
 by calling one of the applicable setup functions again.</p>
 <p>If a multi-part operation object is not initialized before use, the behavior is
 undefined.</p>
 <p>If a multi-part operation function determines that the operation object is not in
-any valid state, it can return <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_CORRUPTION_DETECTED" title="PSA_ERROR_CORRUPTION_DETECTED"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_CORRUPTION_DETECTED</span></code></a>.</p>
+any valid state, it can return <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_CORRUPTION_DETECTED" title="PSA_ERROR_CORRUPTION_DETECTED"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_ERROR_CORRUPTION_DETECTED</span></code></a>.</p>
 <p>If a multi-part operation function is called with an operation object in the
-wrong state, the function will return <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a> and the operation
+wrong state, the function will return <a class="reference internal" href="../api/library/status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a> and the operation
 object will enter the <em>error</em> state.</p>
 <p>It is safe to move a multi-part operation object to a different memory location,
 for example, using a bitwise copy, and then to use the object in the new
@@ -235,11 +227,11 @@ stack and return it, or the operation object can be allocated within memory
 managed by a garbage collector. However, this does not permit the following
 behaviors:</p>
 <ul class="simple">
-<li>Moving the object while a function is being called on the object. This is
-not safe. See also <a class="reference internal" href="conventions.html#concurrency"><span class="std std-ref">Concurrent calls</span></a>.</li>
-<li>Working with both the original and the copied operation objects. This
+<li><p>Moving the object while a function is being called on the object. This is
+not safe. See also <a class="reference internal" href="conventions.html#concurrency"><span class="std std-ref">Concurrent calls</span></a>.</p></li>
+<li><p>Working with both the original and the copied operation objects. This
 requires cloning the operation, which is only available for hash operations
-using <a class="reference internal" href="../api/ops/hashes.html#c.psa_hash_clone" title="psa_hash_clone"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_clone()</span></code></a>.</li>
+using <a class="reference internal" href="../api/ops/hashes.html#c.psa_hash_clone" title="psa_hash_clone"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_hash_clone()</span></code></a>.</p></li>
 </ul>
 <p>Each type of multi-part operation can have multiple <em>active</em> states.
 Documentation for the specific operation describes the configuration and update
@@ -249,60 +241,62 @@ functions, and any requirements about their usage and ordering.</p>
 <h3>3.3.3. Message digests (Hashes)</h3>
 <p>The single-part hash functions are:</p>
 <ul class="simple">
-<li><a class="reference internal" href="../api/ops/hashes.html#c.psa_hash_compute" title="psa_hash_compute"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_compute()</span></code></a> to calculate the hash of a message.</li>
-<li><a class="reference internal" href="../api/ops/hashes.html#c.psa_hash_compare" title="psa_hash_compare"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_compare()</span></code></a> to compare the hash of a message with a reference value.</li>
+<li><p><a class="reference internal" href="../api/ops/hashes.html#c.psa_hash_compute" title="psa_hash_compute"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_hash_compute()</span></code></a> to calculate the hash of a message.</p></li>
+<li><p><a class="reference internal" href="../api/ops/hashes.html#c.psa_hash_compare" title="psa_hash_compare"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_hash_compare()</span></code></a> to compare the hash of a message with a reference value.</p></li>
 </ul>
-<p>The <a class="reference internal" href="../api/ops/hashes.html#c.psa_hash_operation_t" title="psa_hash_operation_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_hash_operation_t</span></code></a> <a class="reference internal" href="#multi-part-operations"><span class="std std-ref">multi-part operation</span></a>
+<p>The <a class="reference internal" href="../api/ops/hashes.html#c.psa_hash_operation_t" title="psa_hash_operation_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_hash_operation_t</span></code></a> <a class="reference internal" href="#multi-part-operations"><span class="std std-ref">multi-part operation</span></a>
 allows messages to be processed in fragments:</p>
 <ol class="arabic simple">
-<li>Initialize the <a class="reference internal" href="../api/ops/hashes.html#c.psa_hash_operation_t" title="psa_hash_operation_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_hash_operation_t</span></code></a> object to zero, or by assigning the
-value of the associated macro <a class="reference internal" href="../api/ops/hashes.html#c.PSA_HASH_OPERATION_INIT" title="PSA_HASH_OPERATION_INIT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_HASH_OPERATION_INIT</span></code></a>.</li>
-<li>Call <a class="reference internal" href="../api/ops/hashes.html#c.psa_hash_setup" title="psa_hash_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_setup()</span></code></a> to specify the required hash algorithm, call
-<a class="reference internal" href="../api/ops/hashes.html#c.psa_hash_clone" title="psa_hash_clone"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_clone()</span></code></a> to duplicate the state of <em>active</em> <a class="reference internal" href="../api/ops/hashes.html#c.psa_hash_operation_t" title="psa_hash_operation_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_hash_operation_t</span></code></a>
-object, or call <a class="reference internal" href="../api/ops/hashes.html#c.psa_hash_resume" title="psa_hash_resume"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_resume()</span></code></a> to restart a hash operation with the
-output from a previously suspended hash operation.</li>
-<li>Call the <a class="reference internal" href="../api/ops/hashes.html#c.psa_hash_update" title="psa_hash_update"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_update()</span></code></a> function on successive chunks of the message.</li>
-<li>At the end of the message, call the required finishing function:<ul>
-<li>To suspend the hash operation and extract a hash suspend state,
-call <a class="reference internal" href="../api/ops/hashes.html#c.psa_hash_suspend" title="psa_hash_suspend"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_suspend()</span></code></a>. The output state can subsequently be used
-to resume the hash operation.</li>
-<li>To calculate the digest of a message, call <a class="reference internal" href="../api/ops/hashes.html#c.psa_hash_finish" title="psa_hash_finish"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_finish()</span></code></a>.</li>
-<li>To verify the digest of a message against a reference value, call
-<a class="reference internal" href="../api/ops/hashes.html#c.psa_hash_verify" title="psa_hash_verify"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_verify()</span></code></a>.</li>
+<li><p>Initialize the <a class="reference internal" href="../api/ops/hashes.html#c.psa_hash_operation_t" title="psa_hash_operation_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_hash_operation_t</span></code></a> object to zero, or by assigning the
+value of the associated macro <a class="reference internal" href="../api/ops/hashes.html#c.PSA_HASH_OPERATION_INIT" title="PSA_HASH_OPERATION_INIT"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_HASH_OPERATION_INIT</span></code></a>.</p></li>
+<li><p>Call <a class="reference internal" href="../api/ops/hashes.html#c.psa_hash_setup" title="psa_hash_setup"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_hash_setup()</span></code></a> to specify the required hash algorithm, call
+<a class="reference internal" href="../api/ops/hashes.html#c.psa_hash_clone" title="psa_hash_clone"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_hash_clone()</span></code></a> to duplicate the state of <em>active</em> <a class="reference internal" href="../api/ops/hashes.html#c.psa_hash_operation_t" title="psa_hash_operation_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_hash_operation_t</span></code></a>
+object, or call <a class="reference internal" href="../api/ops/hashes.html#c.psa_hash_resume" title="psa_hash_resume"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_hash_resume()</span></code></a> to restart a hash operation with the
+output from a previously suspended hash operation.</p></li>
+<li><p>Call the <a class="reference internal" href="../api/ops/hashes.html#c.psa_hash_update" title="psa_hash_update"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_hash_update()</span></code></a> function on successive chunks of the message.</p></li>
+<li><p>At the end of the message, call the required finishing function:</p>
+<ul class="simple">
+<li><p>To suspend the hash operation and extract a hash suspend state,
+call <a class="reference internal" href="../api/ops/hashes.html#c.psa_hash_suspend" title="psa_hash_suspend"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_hash_suspend()</span></code></a>. The output state can subsequently be used
+to resume the hash operation.</p></li>
+<li><p>To calculate the digest of a message, call <a class="reference internal" href="../api/ops/hashes.html#c.psa_hash_finish" title="psa_hash_finish"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_hash_finish()</span></code></a>.</p></li>
+<li><p>To verify the digest of a message against a reference value, call
+<a class="reference internal" href="../api/ops/hashes.html#c.psa_hash_verify" title="psa_hash_verify"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_hash_verify()</span></code></a>.</p></li>
 </ul>
 </li>
 </ol>
-<p>To abort the operation or recover from an error, call <a class="reference internal" href="../api/ops/hashes.html#c.psa_hash_abort" title="psa_hash_abort"><code class="xref any c c-func docutils literal"><span class="pre">psa_hash_abort()</span></code></a>.</p>
+<p>To abort the operation or recover from an error, call <a class="reference internal" href="../api/ops/hashes.html#c.psa_hash_abort" title="psa_hash_abort"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_hash_abort()</span></code></a>.</p>
 </div>
 <div class="section" id="message-authentication-codes-macs">
 <h3>3.3.4. Message authentication codes (MACs)</h3>
 <p>The single-part MAC functions are:</p>
 <ul class="simple">
-<li><a class="reference internal" href="../api/ops/macs.html#c.psa_mac_compute" title="psa_mac_compute"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_compute()</span></code></a> to calculate the MAC of a message.</li>
-<li><a class="reference internal" href="../api/ops/macs.html#c.psa_mac_verify" title="psa_mac_verify"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_verify()</span></code></a> to compare the MAC of a message with a reference value.</li>
+<li><p><a class="reference internal" href="../api/ops/macs.html#c.psa_mac_compute" title="psa_mac_compute"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_mac_compute()</span></code></a> to calculate the MAC of a message.</p></li>
+<li><p><a class="reference internal" href="../api/ops/macs.html#c.psa_mac_verify" title="psa_mac_verify"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_mac_verify()</span></code></a> to compare the MAC of a message with a reference value.</p></li>
 </ul>
-<p>The <a class="reference internal" href="../api/ops/macs.html#c.psa_mac_operation_t" title="psa_mac_operation_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_mac_operation_t</span></code></a> <a class="reference internal" href="#multi-part-operations"><span class="std std-ref">multi-part operation</span></a>
+<p>The <a class="reference internal" href="../api/ops/macs.html#c.psa_mac_operation_t" title="psa_mac_operation_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_mac_operation_t</span></code></a> <a class="reference internal" href="#multi-part-operations"><span class="std std-ref">multi-part operation</span></a>
 allows messages to be processed in fragments:</p>
 <ol class="arabic simple">
-<li>Initialize the <a class="reference internal" href="../api/ops/macs.html#c.psa_mac_operation_t" title="psa_mac_operation_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_mac_operation_t</span></code></a> object to zero, or by assigning the
-value of the associated macro <a class="reference internal" href="../api/ops/macs.html#c.PSA_MAC_OPERATION_INIT" title="PSA_MAC_OPERATION_INIT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_MAC_OPERATION_INIT</span></code></a>.</li>
-<li>Call <a class="reference internal" href="../api/ops/macs.html#c.psa_mac_sign_setup" title="psa_mac_sign_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_sign_setup()</span></code></a> or <a class="reference internal" href="../api/ops/macs.html#c.psa_mac_verify_setup" title="psa_mac_verify_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_verify_setup()</span></code></a> to specify the
-algorithm and key.</li>
-<li>Call the <a class="reference internal" href="../api/ops/macs.html#c.psa_mac_update" title="psa_mac_update"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_update()</span></code></a> function on successive chunks of the message.</li>
-<li>At the end of the message, call the required finishing function:<ul>
-<li>To calculate the MAC of the message, call <a class="reference internal" href="../api/ops/macs.html#c.psa_mac_sign_finish" title="psa_mac_sign_finish"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_sign_finish()</span></code></a>.</li>
-<li>To verify the MAC of the message against a reference value, call
-<a class="reference internal" href="../api/ops/macs.html#c.psa_mac_verify_finish" title="psa_mac_verify_finish"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_verify_finish()</span></code></a>.</li>
+<li><p>Initialize the <a class="reference internal" href="../api/ops/macs.html#c.psa_mac_operation_t" title="psa_mac_operation_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_mac_operation_t</span></code></a> object to zero, or by assigning the
+value of the associated macro <a class="reference internal" href="../api/ops/macs.html#c.PSA_MAC_OPERATION_INIT" title="PSA_MAC_OPERATION_INIT"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_MAC_OPERATION_INIT</span></code></a>.</p></li>
+<li><p>Call <a class="reference internal" href="../api/ops/macs.html#c.psa_mac_sign_setup" title="psa_mac_sign_setup"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_mac_sign_setup()</span></code></a> or <a class="reference internal" href="../api/ops/macs.html#c.psa_mac_verify_setup" title="psa_mac_verify_setup"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_mac_verify_setup()</span></code></a> to specify the
+algorithm and key.</p></li>
+<li><p>Call the <a class="reference internal" href="../api/ops/macs.html#c.psa_mac_update" title="psa_mac_update"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_mac_update()</span></code></a> function on successive chunks of the message.</p></li>
+<li><p>At the end of the message, call the required finishing function:</p>
+<ul class="simple">
+<li><p>To calculate the MAC of the message, call <a class="reference internal" href="../api/ops/macs.html#c.psa_mac_sign_finish" title="psa_mac_sign_finish"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_mac_sign_finish()</span></code></a>.</p></li>
+<li><p>To verify the MAC of the message against a reference value, call
+<a class="reference internal" href="../api/ops/macs.html#c.psa_mac_verify_finish" title="psa_mac_verify_finish"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_mac_verify_finish()</span></code></a>.</p></li>
 </ul>
 </li>
 </ol>
-<p>To abort the operation or recover from an error, call <a class="reference internal" href="../api/ops/macs.html#c.psa_mac_abort" title="psa_mac_abort"><code class="xref any c c-func docutils literal"><span class="pre">psa_mac_abort()</span></code></a>.</p>
+<p>To abort the operation or recover from an error, call <a class="reference internal" href="../api/ops/macs.html#c.psa_mac_abort" title="psa_mac_abort"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_mac_abort()</span></code></a>.</p>
 </div>
 <div class="section" id="encryption-and-decryption">
 <h3>3.3.5. Encryption and decryption</h3>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The unauthenticated cipher API is provided to implement legacy protocols and
+<p class="admonition-title">Note</p>
+<p>The unauthenticated cipher API is provided to implement legacy protocols and
 for use cases where the data integrity and authenticity is guaranteed by
 non-cryptographic means. It is recommended that newer protocols use
 <a class="reference internal" href="#func-aead"><span class="secref">Authenticated encryption (AEAD)</span></a>.</p>
@@ -310,89 +304,92 @@ non-cryptographic means. It is recommended that newer protocols use
 <p>The single-part functions for encrypting or decrypting a message using an
 unauthenticated symmetric cipher are:</p>
 <ul class="simple">
-<li><a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_encrypt" title="psa_cipher_encrypt"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_encrypt()</span></code></a> to encrypt a message using an unauthenticated symmetric
+<li><p><a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_encrypt" title="psa_cipher_encrypt"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_cipher_encrypt()</span></code></a> to encrypt a message using an unauthenticated symmetric
 cipher. The encryption function generates a random IV. Use the multi-part API
 to provide a deterministic IV: this is not secure in general, but
-can be secure in some conditions that depend on the algorithm.</li>
-<li><a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_decrypt" title="psa_cipher_decrypt"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_decrypt()</span></code></a> to decrypt a message using an unauthenticated symmetric
-cipher.</li>
+can be secure in some conditions that depend on the algorithm.</p></li>
+<li><p><a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_decrypt" title="psa_cipher_decrypt"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_cipher_decrypt()</span></code></a> to decrypt a message using an unauthenticated symmetric
+cipher.</p></li>
 </ul>
-<p>The <a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_operation_t" title="psa_cipher_operation_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_cipher_operation_t</span></code></a> <a class="reference internal" href="#multi-part-operations"><span class="std std-ref">multi-part operation</span></a>
+<p>The <a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_operation_t" title="psa_cipher_operation_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_cipher_operation_t</span></code></a> <a class="reference internal" href="#multi-part-operations"><span class="std std-ref">multi-part operation</span></a>
 permits alternative initialization parameters and allows messages to be
 processed in fragments:</p>
 <ol class="arabic simple">
-<li>Initialize the <a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_operation_t" title="psa_cipher_operation_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_cipher_operation_t</span></code></a> object to zero, or by assigning the
-value of the associated macro <a class="reference internal" href="../api/ops/ciphers.html#c.PSA_CIPHER_OPERATION_INIT" title="PSA_CIPHER_OPERATION_INIT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_CIPHER_OPERATION_INIT</span></code></a>.</li>
-<li>Call <a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_encrypt_setup" title="psa_cipher_encrypt_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_encrypt_setup()</span></code></a> or <a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_decrypt_setup" title="psa_cipher_decrypt_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_decrypt_setup()</span></code></a> to specify the
-algorithm and key.</li>
-<li>Provide additional parameters:<ul>
-<li>When encrypting data, generate or set an initialization vector (IV),
+<li><p>Initialize the <a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_operation_t" title="psa_cipher_operation_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_cipher_operation_t</span></code></a> object to zero, or by assigning the
+value of the associated macro <a class="reference internal" href="../api/ops/ciphers.html#c.PSA_CIPHER_OPERATION_INIT" title="PSA_CIPHER_OPERATION_INIT"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_CIPHER_OPERATION_INIT</span></code></a>.</p></li>
+<li><p>Call <a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_encrypt_setup" title="psa_cipher_encrypt_setup"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_cipher_encrypt_setup()</span></code></a> or <a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_decrypt_setup" title="psa_cipher_decrypt_setup"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_cipher_decrypt_setup()</span></code></a> to specify the
+algorithm and key.</p></li>
+<li><p>Provide additional parameters:</p>
+<ul class="simple">
+<li><p>When encrypting data, generate or set an initialization vector (IV),
 nonce, or similar initial value such as an initial counter value. To
 generate a random IV, which is recommended in most protocols, call
-<a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_generate_iv" title="psa_cipher_generate_iv"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_generate_iv()</span></code></a>. To set the IV, call <a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_set_iv" title="psa_cipher_set_iv"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_set_iv()</span></code></a>.</li>
-<li>When decrypting, set the IV or nonce. To set the IV, call
-<a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_set_iv" title="psa_cipher_set_iv"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_set_iv()</span></code></a>.</li>
+<a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_generate_iv" title="psa_cipher_generate_iv"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_cipher_generate_iv()</span></code></a>. To set the IV, call <a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_set_iv" title="psa_cipher_set_iv"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_cipher_set_iv()</span></code></a>.</p></li>
+<li><p>When decrypting, set the IV or nonce. To set the IV, call
+<a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_set_iv" title="psa_cipher_set_iv"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_cipher_set_iv()</span></code></a>.</p></li>
 </ul>
 </li>
-<li>Call the <a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_update" title="psa_cipher_update"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_update()</span></code></a> function on successive chunks of the message.</li>
-<li>Call <a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_finish" title="psa_cipher_finish"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_finish()</span></code></a> to complete the operation and return any final
-output.</li>
+<li><p>Call the <a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_update" title="psa_cipher_update"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_cipher_update()</span></code></a> function on successive chunks of the message.</p></li>
+<li><p>Call <a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_finish" title="psa_cipher_finish"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_cipher_finish()</span></code></a> to complete the operation and return any final
+output.</p></li>
 </ol>
-<p>To abort the operation or recover from an error, call <a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_abort" title="psa_cipher_abort"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_abort()</span></code></a>.</p>
+<p>To abort the operation or recover from an error, call <a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_abort" title="psa_cipher_abort"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_cipher_abort()</span></code></a>.</p>
 </div>
 <div class="section" id="authenticated-encryption-aead">
 <span id="func-aead"></span><h3>3.3.6. Authenticated encryption (AEAD)</h3>
 <p>The single-part AEAD functions are:</p>
 <ul class="simple">
-<li><a class="reference internal" href="../api/ops/aead.html#c.psa_aead_encrypt" title="psa_aead_encrypt"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_encrypt()</span></code></a> to encrypt a message using an authenticated symmetric
-cipher.</li>
-<li><a class="reference internal" href="../api/ops/aead.html#c.psa_aead_decrypt" title="psa_aead_decrypt"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_decrypt()</span></code></a> to decrypt a message using an authenticated symmetric
-cipher.</li>
+<li><p><a class="reference internal" href="../api/ops/aead.html#c.psa_aead_encrypt" title="psa_aead_encrypt"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_aead_encrypt()</span></code></a> to encrypt a message using an authenticated symmetric
+cipher.</p></li>
+<li><p><a class="reference internal" href="../api/ops/aead.html#c.psa_aead_decrypt" title="psa_aead_decrypt"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_aead_decrypt()</span></code></a> to decrypt a message using an authenticated symmetric
+cipher.</p></li>
 </ul>
 <p>These functions follow the interface recommended by <span><em>An Interface and Algorithms for Authenticated Encryption</em> <a class="reference internal" href="../about.html#citation-rfc5116"><span class="cite">[RFC5116]</span></a></span>.</p>
 <p>The encryption function requires a nonce to be provided. To generate a random
-nonce, either call <a class="reference internal" href="../api/ops/rng.html#c.psa_generate_random" title="psa_generate_random"><code class="xref any c c-func docutils literal"><span class="pre">psa_generate_random()</span></code></a> or use the AEAD multi-part API.</p>
-<p>The <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_operation_t" title="psa_aead_operation_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_aead_operation_t</span></code></a> <a class="reference internal" href="#multi-part-operations"><span class="std std-ref">multi-part operation</span></a>
+nonce, either call <a class="reference internal" href="../api/ops/rng.html#c.psa_generate_random" title="psa_generate_random"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_generate_random()</span></code></a> or use the AEAD multi-part API.</p>
+<p>The <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_operation_t" title="psa_aead_operation_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_aead_operation_t</span></code></a> <a class="reference internal" href="#multi-part-operations"><span class="std std-ref">multi-part operation</span></a>
 permits alternative initialization parameters and allows messages to be
 processed in fragments:</p>
 <ol class="arabic simple">
-<li>Initialize the <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_operation_t" title="psa_aead_operation_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_aead_operation_t</span></code></a> object to zero, or by assigning the
-value of the associated macro <a class="reference internal" href="../api/ops/aead.html#c.PSA_AEAD_OPERATION_INIT" title="PSA_AEAD_OPERATION_INIT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_AEAD_OPERATION_INIT</span></code></a>.</li>
-<li>Call <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_encrypt_setup" title="psa_aead_encrypt_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_encrypt_setup()</span></code></a> or <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_decrypt_setup" title="psa_aead_decrypt_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_decrypt_setup()</span></code></a> to specify the
-algorithm and key.</li>
-<li>Provide additional parameters:<ul>
-<li>If the algorithm requires it, call <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_set_lengths" title="psa_aead_set_lengths"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_set_lengths()</span></code></a> to specify the
-length of the non-encrypted and encrypted inputs to the operation.</li>
-<li>When encrypting, call either <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_generate_nonce" title="psa_aead_generate_nonce"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_generate_nonce()</span></code></a> or
-<a class="reference internal" href="../api/ops/aead.html#c.psa_aead_set_nonce" title="psa_aead_set_nonce"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_set_nonce()</span></code></a> to generate or set the nonce.</li>
-<li>When decrypting, call <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_set_nonce" title="psa_aead_set_nonce"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_set_nonce()</span></code></a> to set the nonce.</li>
+<li><p>Initialize the <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_operation_t" title="psa_aead_operation_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_aead_operation_t</span></code></a> object to zero, or by assigning the
+value of the associated macro <a class="reference internal" href="../api/ops/aead.html#c.PSA_AEAD_OPERATION_INIT" title="PSA_AEAD_OPERATION_INIT"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_AEAD_OPERATION_INIT</span></code></a>.</p></li>
+<li><p>Call <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_encrypt_setup" title="psa_aead_encrypt_setup"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_aead_encrypt_setup()</span></code></a> or <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_decrypt_setup" title="psa_aead_decrypt_setup"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_aead_decrypt_setup()</span></code></a> to specify the
+algorithm and key.</p></li>
+<li><p>Provide additional parameters:</p>
+<ul class="simple">
+<li><p>If the algorithm requires it, call <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_set_lengths" title="psa_aead_set_lengths"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_aead_set_lengths()</span></code></a> to specify the
+length of the non-encrypted and encrypted inputs to the operation.</p></li>
+<li><p>When encrypting, call either <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_generate_nonce" title="psa_aead_generate_nonce"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_aead_generate_nonce()</span></code></a> or
+<a class="reference internal" href="../api/ops/aead.html#c.psa_aead_set_nonce" title="psa_aead_set_nonce"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_aead_set_nonce()</span></code></a> to generate or set the nonce.</p></li>
+<li><p>When decrypting, call <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_set_nonce" title="psa_aead_set_nonce"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_aead_set_nonce()</span></code></a> to set the nonce.</p></li>
 </ul>
 </li>
-<li>Call <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_update_ad" title="psa_aead_update_ad"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_update_ad()</span></code></a> zero or more times with fragments of the
-non-encrypted additional data.</li>
-<li>Call <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_update" title="psa_aead_update"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_update()</span></code></a> zero or more times with fragments of the plaintext
-or ciphertext to encrypt or decrypt.</li>
-<li>At the end of the message, call the required finishing function:<ul>
-<li>To complete an encryption operation, call <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_finish" title="psa_aead_finish"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_finish()</span></code></a> to compute
-and return authentication tag.</li>
-<li>To complete a decryption operation, call <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_verify" title="psa_aead_verify"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_verify()</span></code></a> to
-compute the authentication tag and verify it against a reference value.</li>
+<li><p>Call <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_update_ad" title="psa_aead_update_ad"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_aead_update_ad()</span></code></a> zero or more times with fragments of the
+non-encrypted additional data.</p></li>
+<li><p>Call <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_update" title="psa_aead_update"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_aead_update()</span></code></a> zero or more times with fragments of the plaintext
+or ciphertext to encrypt or decrypt.</p></li>
+<li><p>At the end of the message, call the required finishing function:</p>
+<ul class="simple">
+<li><p>To complete an encryption operation, call <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_finish" title="psa_aead_finish"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_aead_finish()</span></code></a> to compute
+and return authentication tag.</p></li>
+<li><p>To complete a decryption operation, call <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_verify" title="psa_aead_verify"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_aead_verify()</span></code></a> to
+compute the authentication tag and verify it against a reference value.</p></li>
 </ul>
 </li>
 </ol>
-<p>To abort the operation or recover from an error, call <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_abort" title="psa_aead_abort"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_abort()</span></code></a>.</p>
+<p>To abort the operation or recover from an error, call <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_abort" title="psa_aead_abort"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_aead_abort()</span></code></a>.</p>
 <p>Having a multi-part interface to authenticated encryption raises specific issues.</p>
 <p>Multi-part authenticated decryption produces partial results that are not
 authenticated. Applications must not use or expose partial results of
-authenticated decryption until <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_verify" title="psa_aead_verify"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_verify()</span></code></a> has returned a success
+authenticated decryption until <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_verify" title="psa_aead_verify"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_aead_verify()</span></code></a> has returned a success
 status and must destroy all partial results without revealing them if
-<a class="reference internal" href="../api/ops/aead.html#c.psa_aead_verify" title="psa_aead_verify"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_verify()</span></code></a> returns a failure status. Revealing partial results, either directly or indirectly through the application’s behavior, can compromise the
+<a class="reference internal" href="../api/ops/aead.html#c.psa_aead_verify" title="psa_aead_verify"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_aead_verify()</span></code></a> returns a failure status. Revealing partial results, either directly or indirectly through the application’s behavior, can compromise the
 confidentiality of all inputs that are encrypted with the same key.</p>
 <p>For encryption, some common algorithms cannot be processed in a streaming
 fashion. For SIV mode, the whole plaintext must be known before the encryption
 can start; the multi-part AEAD API is not meant to be usable with SIV mode. For
 CCM mode, the length of the plaintext must be known before the encryption can
-start; the application can call the function <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_set_lengths" title="psa_aead_set_lengths"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_set_lengths()</span></code></a> to provide
+start; the application can call the function <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_set_lengths" title="psa_aead_set_lengths"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_aead_set_lengths()</span></code></a> to provide
 these lengths before providing input.</p>
 </div>
 <div class="section" id="key-derivation">
@@ -403,11 +400,11 @@ chunks. If two key derivation operations are constructed with the same
 parameters, then they produce the same output.</p>
 <p>A key derivation consists of two phases:</p>
 <ol class="arabic simple">
-<li>Input collection. This is sometimes known as <em>extraction</em>: the operation
+<li><p>Input collection. This is sometimes known as <em>extraction</em>: the operation
 “extracts” information from the inputs to generate a pseudorandom
-intermediate secret value.</li>
-<li>Output generation. This is sometimes known as <em>expansion</em>: the operation
-“expands” the intermediate secret value to the desired output length.</li>
+intermediate secret value.</p></li>
+<li><p>Output generation. This is sometimes known as <em>expansion</em>: the operation
+“expands” the intermediate secret value to the desired output length.</p></li>
 </ol>
 <p>The specification defines a <a class="reference internal" href="#multi-part-operations"><span class="std std-ref">multi-part operation</span></a>
 API for key derivation that allows for multiple key and non-key outputs to be
@@ -416,30 +413,30 @@ extracted from a single derivation operation object.</p>
 state of the key derivation is not visible to the caller, and if an output of
 the derivation is a non-exportable key, then this key cannot be recovered
 outside the isolation boundary.</p>
-<p>Applications use the <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_operation_t" title="psa_key_derivation_operation_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_derivation_operation_t</span></code></a> type to create key
+<p>Applications use the <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_operation_t" title="psa_key_derivation_operation_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_key_derivation_operation_t</span></code></a> type to create key
 derivation operations. The operation object is used as follows:</p>
 <ol class="arabic simple">
-<li>Initialize a <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_operation_t" title="psa_key_derivation_operation_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_derivation_operation_t</span></code></a> object to zero or to
-<a class="reference internal" href="../api/ops/kdf.html#c.PSA_KEY_DERIVATION_OPERATION_INIT" title="PSA_KEY_DERIVATION_OPERATION_INIT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_DERIVATION_OPERATION_INIT</span></code></a>.</li>
-<li>Call <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_setup" title="psa_key_derivation_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_setup()</span></code></a> to select a key derivation algorithm.</li>
-<li>Call the functions <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_input_bytes" title="psa_key_derivation_input_bytes"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_input_bytes()</span></code></a> and
-<a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_input_key" title="psa_key_derivation_input_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_input_key()</span></code></a>, or <a class="reference internal" href="../api/ops/ka.html#c.psa_key_derivation_key_agreement" title="psa_key_derivation_key_agreement"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_key_agreement()</span></code></a> to
+<li><p>Initialize a <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_operation_t" title="psa_key_derivation_operation_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_key_derivation_operation_t</span></code></a> object to zero or to
+<a class="reference internal" href="../api/ops/kdf.html#c.PSA_KEY_DERIVATION_OPERATION_INIT" title="PSA_KEY_DERIVATION_OPERATION_INIT"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_KEY_DERIVATION_OPERATION_INIT</span></code></a>.</p></li>
+<li><p>Call <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_setup" title="psa_key_derivation_setup"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_key_derivation_setup()</span></code></a> to select a key derivation algorithm.</p></li>
+<li><p>Call the functions <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_input_bytes" title="psa_key_derivation_input_bytes"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_key_derivation_input_bytes()</span></code></a> and
+<a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_input_key" title="psa_key_derivation_input_key"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_key_derivation_input_key()</span></code></a>, or <a class="reference internal" href="../api/ops/ka.html#c.psa_key_derivation_key_agreement" title="psa_key_derivation_key_agreement"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_key_derivation_key_agreement()</span></code></a> to
 provide the inputs to the key derivation algorithm. Many key derivation
-algorithms take multiple inputs; the <code class="docutils literal"><span class="pre">step</span></code> parameter to these functions
+algorithms take multiple inputs; the <code class="docutils literal notranslate"><span class="pre">step</span></code> parameter to these functions
 indicates which input is being provided. The documentation for each key
 derivation algorithm describes the expected inputs for that algorithm and
-in what order to pass them.</li>
-<li>Optionally, call <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_set_capacity" title="psa_key_derivation_set_capacity"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_set_capacity()</span></code></a> to set a limit on the
-amount of data that can be output from the key derivation operation.</li>
-<li>Call <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_output_key" title="psa_key_derivation_output_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_output_key()</span></code></a> to create a derived key, or
-<a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_output_bytes" title="psa_key_derivation_output_bytes"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_output_bytes()</span></code></a> to export the derived data. These
+in what order to pass them.</p></li>
+<li><p>Optionally, call <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_set_capacity" title="psa_key_derivation_set_capacity"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_key_derivation_set_capacity()</span></code></a> to set a limit on the
+amount of data that can be output from the key derivation operation.</p></li>
+<li><p>Call <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_output_key" title="psa_key_derivation_output_key"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_key_derivation_output_key()</span></code></a> to create a derived key, or
+<a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_output_bytes" title="psa_key_derivation_output_bytes"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_key_derivation_output_bytes()</span></code></a> to export the derived data. These
 functions can be called multiple times to read successive output from the key
-derivation, until the stream is exhausted when its capacity has been reached.</li>
-<li>Key derivation does not finish in the same way as other multi-part
-operations. Call <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_abort" title="psa_key_derivation_abort"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_abort()</span></code></a> to release the key derivation
-operation memory when the object is no longer required.</li>
+derivation, until the stream is exhausted when its capacity has been reached.</p></li>
+<li><p>Key derivation does not finish in the same way as other multi-part
+operations. Call <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_abort" title="psa_key_derivation_abort"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_key_derivation_abort()</span></code></a> to release the key derivation
+operation memory when the object is no longer required.</p></li>
 </ol>
-<p>To recover from an error, call <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_abort" title="psa_key_derivation_abort"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_abort()</span></code></a> to release the key
+<p>To recover from an error, call <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_abort" title="psa_key_derivation_abort"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_key_derivation_abort()</span></code></a> to release the key
 derivation operation memory.</p>
 <p>A key derivation operation cannot be rewound. Once a part of the stream has been
 output, it cannot be output again. This ensures that the same part of the output
@@ -451,33 +448,35 @@ will not be used for different purposes.</p>
 message encryption key and an IV for the encryption, and the derived key and IV
 are then used to encrypt a message.</p>
 <ol class="arabic simple">
-<li>Derive the message encryption material from the master key.<ol class="loweralpha">
-<li>Initialize a <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_operation_t" title="psa_key_derivation_operation_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_derivation_operation_t</span></code></a> object to zero or to
-<a class="reference internal" href="../api/ops/kdf.html#c.PSA_KEY_DERIVATION_OPERATION_INIT" title="PSA_KEY_DERIVATION_OPERATION_INIT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_DERIVATION_OPERATION_INIT</span></code></a>.</li>
-<li>Call <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_setup" title="psa_key_derivation_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_setup()</span></code></a> with <a class="reference internal" href="../api/ops/kdf.html#c.PSA_ALG_HKDF" title="PSA_ALG_HKDF"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_HKDF</span></code></a> as the algorithm.</li>
-<li>Call <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_input_key" title="psa_key_derivation_input_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_input_key()</span></code></a> with the step
-<a class="reference internal" href="../api/ops/kdf.html#c.PSA_KEY_DERIVATION_INPUT_SECRET" title="PSA_KEY_DERIVATION_INPUT_SECRET"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_DERIVATION_INPUT_SECRET</span></code></a> and the master key.</li>
-<li>Call <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_input_bytes" title="psa_key_derivation_input_bytes"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_input_bytes()</span></code></a> with the step
-<a class="reference internal" href="../api/ops/kdf.html#c.PSA_KEY_DERIVATION_INPUT_INFO" title="PSA_KEY_DERIVATION_INPUT_INFO"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_KEY_DERIVATION_INPUT_INFO</span></code></a> and a public value that uniquely
-identifies the message.</li>
-<li>Populate a <a class="reference internal" href="../api/keys/attributes.html#c.psa_key_attributes_t" title="psa_key_attributes_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_key_attributes_t</span></code></a> object with the derived message
-encryption key’s attributes.</li>
-<li>Call <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_output_key" title="psa_key_derivation_output_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_output_key()</span></code></a> to create the derived message key.</li>
-<li>Call <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_output_bytes" title="psa_key_derivation_output_bytes"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_output_bytes()</span></code></a> to generate the derived IV.</li>
-<li>Call <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_abort" title="psa_key_derivation_abort"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_abort()</span></code></a> to release the key derivation operation
-memory.</li>
+<li><p>Derive the message encryption material from the master key.</p>
+<ol class="loweralpha simple">
+<li><p>Initialize a <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_operation_t" title="psa_key_derivation_operation_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_key_derivation_operation_t</span></code></a> object to zero or to
+<a class="reference internal" href="../api/ops/kdf.html#c.PSA_KEY_DERIVATION_OPERATION_INIT" title="PSA_KEY_DERIVATION_OPERATION_INIT"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_KEY_DERIVATION_OPERATION_INIT</span></code></a>.</p></li>
+<li><p>Call <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_setup" title="psa_key_derivation_setup"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_key_derivation_setup()</span></code></a> with <a class="reference internal" href="../api/ops/kdf.html#c.PSA_ALG_HKDF" title="PSA_ALG_HKDF"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_ALG_HKDF</span></code></a> as the algorithm.</p></li>
+<li><p>Call <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_input_key" title="psa_key_derivation_input_key"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_key_derivation_input_key()</span></code></a> with the step
+<a class="reference internal" href="../api/ops/kdf.html#c.PSA_KEY_DERIVATION_INPUT_SECRET" title="PSA_KEY_DERIVATION_INPUT_SECRET"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_KEY_DERIVATION_INPUT_SECRET</span></code></a> and the master key.</p></li>
+<li><p>Call <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_input_bytes" title="psa_key_derivation_input_bytes"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_key_derivation_input_bytes()</span></code></a> with the step
+<a class="reference internal" href="../api/ops/kdf.html#c.PSA_KEY_DERIVATION_INPUT_INFO" title="PSA_KEY_DERIVATION_INPUT_INFO"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_KEY_DERIVATION_INPUT_INFO</span></code></a> and a public value that uniquely
+identifies the message.</p></li>
+<li><p>Populate a <a class="reference internal" href="../api/keys/attributes.html#c.psa_key_attributes_t" title="psa_key_attributes_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_key_attributes_t</span></code></a> object with the derived message
+encryption key’s attributes.</p></li>
+<li><p>Call <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_output_key" title="psa_key_derivation_output_key"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_key_derivation_output_key()</span></code></a> to create the derived message key.</p></li>
+<li><p>Call <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_output_bytes" title="psa_key_derivation_output_bytes"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_key_derivation_output_bytes()</span></code></a> to generate the derived IV.</p></li>
+<li><p>Call <a class="reference internal" href="../api/ops/kdf.html#c.psa_key_derivation_abort" title="psa_key_derivation_abort"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_key_derivation_abort()</span></code></a> to release the key derivation operation
+memory.</p></li>
 </ol>
 </li>
-<li>Encrypt the message with the derived material.<ol class="loweralpha">
-<li>Initialize a <a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_operation_t" title="psa_cipher_operation_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_cipher_operation_t</span></code></a> object to zero or to
-<a class="reference internal" href="../api/ops/ciphers.html#c.PSA_CIPHER_OPERATION_INIT" title="PSA_CIPHER_OPERATION_INIT"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_CIPHER_OPERATION_INIT</span></code></a>.</li>
-<li>Call <a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_encrypt_setup" title="psa_cipher_encrypt_setup"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_encrypt_setup()</span></code></a> with the derived message encryption key.</li>
-<li>Call <a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_set_iv" title="psa_cipher_set_iv"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_set_iv()</span></code></a> using the derived IV retrieved above.</li>
-<li>Call <a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_update" title="psa_cipher_update"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_update()</span></code></a> one or more times to encrypt the message.</li>
-<li>Call <a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_finish" title="psa_cipher_finish"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_finish()</span></code></a> at the end of the message.</li>
+<li><p>Encrypt the message with the derived material.</p>
+<ol class="loweralpha simple">
+<li><p>Initialize a <a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_operation_t" title="psa_cipher_operation_t"><code class="xref any c c-type docutils literal notranslate"><span class="pre">psa_cipher_operation_t</span></code></a> object to zero or to
+<a class="reference internal" href="../api/ops/ciphers.html#c.PSA_CIPHER_OPERATION_INIT" title="PSA_CIPHER_OPERATION_INIT"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_CIPHER_OPERATION_INIT</span></code></a>.</p></li>
+<li><p>Call <a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_encrypt_setup" title="psa_cipher_encrypt_setup"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_cipher_encrypt_setup()</span></code></a> with the derived message encryption key.</p></li>
+<li><p>Call <a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_set_iv" title="psa_cipher_set_iv"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_cipher_set_iv()</span></code></a> using the derived IV retrieved above.</p></li>
+<li><p>Call <a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_update" title="psa_cipher_update"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_cipher_update()</span></code></a> one or more times to encrypt the message.</p></li>
+<li><p>Call <a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_finish" title="psa_cipher_finish"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_cipher_finish()</span></code></a> at the end of the message.</p></li>
 </ol>
 </li>
-<li>Call <a class="reference internal" href="../api/keys/management.html#c.psa_destroy_key" title="psa_destroy_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_destroy_key()</span></code></a> to clear the generated key.</li>
+<li><p>Call <a class="reference internal" href="../api/keys/management.html#c.psa_destroy_key" title="psa_destroy_key"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_destroy_key()</span></code></a> to clear the generated key.</p></li>
 </ol>
 </div>
 </div>
@@ -488,18 +487,18 @@ asymmetric encryption, asymmetric signature, and two-way key agreement.</p>
 <div class="section" id="asymmetric-encryption">
 <h3>3.4.1. Asymmetric encryption</h3>
 <p>Asymmetric encryption is provided through the functions
-<a class="reference internal" href="../api/ops/pke.html#c.psa_asymmetric_encrypt" title="psa_asymmetric_encrypt"><code class="xref any c c-func docutils literal"><span class="pre">psa_asymmetric_encrypt()</span></code></a> and <a class="reference internal" href="../api/ops/pke.html#c.psa_asymmetric_decrypt" title="psa_asymmetric_decrypt"><code class="xref any c c-func docutils literal"><span class="pre">psa_asymmetric_decrypt()</span></code></a>.</p>
+<a class="reference internal" href="../api/ops/pke.html#c.psa_asymmetric_encrypt" title="psa_asymmetric_encrypt"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_asymmetric_encrypt()</span></code></a> and <a class="reference internal" href="../api/ops/pke.html#c.psa_asymmetric_decrypt" title="psa_asymmetric_decrypt"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_asymmetric_decrypt()</span></code></a>.</p>
 </div>
 <div class="section" id="hash-and-sign">
 <h3>3.4.2. Hash-and-sign</h3>
-<p>The signature and verification functions <a class="reference internal" href="../api/ops/sign.html#c.psa_sign_message" title="psa_sign_message"><code class="xref any c c-func docutils literal"><span class="pre">psa_sign_message()</span></code></a> and
-<a class="reference internal" href="../api/ops/sign.html#c.psa_verify_message" title="psa_verify_message"><code class="xref any c c-func docutils literal"><span class="pre">psa_verify_message()</span></code></a> take a message as one of their inputs and perform a
+<p>The signature and verification functions <a class="reference internal" href="../api/ops/sign.html#c.psa_sign_message" title="psa_sign_message"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_sign_message()</span></code></a> and
+<a class="reference internal" href="../api/ops/sign.html#c.psa_verify_message" title="psa_verify_message"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_verify_message()</span></code></a> take a message as one of their inputs and perform a
 hash-and-sign algorithm.</p>
-<p>The functions <a class="reference internal" href="../api/ops/sign.html#c.psa_sign_hash" title="psa_sign_hash"><code class="xref any c c-func docutils literal"><span class="pre">psa_sign_hash()</span></code></a> and <a class="reference internal" href="../api/ops/sign.html#c.psa_verify_hash" title="psa_verify_hash"><code class="xref any c c-func docutils literal"><span class="pre">psa_verify_hash()</span></code></a> take a message hash as
+<p>The functions <a class="reference internal" href="../api/ops/sign.html#c.psa_sign_hash" title="psa_sign_hash"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_sign_hash()</span></code></a> and <a class="reference internal" href="../api/ops/sign.html#c.psa_verify_hash" title="psa_verify_hash"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_verify_hash()</span></code></a> take a message hash as
 one of their inputs. This is useful for signing pre-computed hashes, or for
 implementing hash-and-sign using a <a class="reference internal" href="../api/ops/hashes.html#hash-mp"><span class="std std-ref">multi-part hash operation</span></a>
 before signing the resulting hash. To determine which
-hash algorithm to use, call the macro <a class="reference internal" href="../api/ops/algorithms.html#c.PSA_ALG_GET_HASH" title="PSA_ALG_GET_HASH"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ALG_GET_HASH()</span></code></a> on the
+hash algorithm to use, call the macro <a class="reference internal" href="../api/ops/algorithms.html#c.PSA_ALG_GET_HASH" title="PSA_ALG_GET_HASH"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">PSA_ALG_GET_HASH()</span></code></a> on the
 corresponding signature algorithm.</p>
 <p>Some hash-and-sign algorithms add padding to the message hash before completing
 the signing operation. The format of the padding that is used depends on the
@@ -512,10 +511,10 @@ agreement where each party combines its own private key with the peer’s public
 key.</p>
 <p>The recommended approach is to use a
 <a class="reference internal" href="#key-derivation"><span class="std std-ref">key derivation operation</span></a> with the
-<a class="reference internal" href="../api/ops/ka.html#c.psa_key_derivation_key_agreement" title="psa_key_derivation_key_agreement"><code class="xref any c c-func docutils literal"><span class="pre">psa_key_derivation_key_agreement()</span></code></a> input function, which calculates a shared
+<a class="reference internal" href="../api/ops/ka.html#c.psa_key_derivation_key_agreement" title="psa_key_derivation_key_agreement"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_key_derivation_key_agreement()</span></code></a> input function, which calculates a shared
 secret for the key derivation function.</p>
 <p>Where an application needs direct access to the shared secret, it can call
-<a class="reference internal" href="../api/ops/ka.html#c.psa_raw_key_agreement" title="psa_raw_key_agreement"><code class="xref any c c-func docutils literal"><span class="pre">psa_raw_key_agreement()</span></code></a> instead. Note that in general the shared secret is not
+<a class="reference internal" href="../api/ops/ka.html#c.psa_raw_key_agreement" title="psa_raw_key_agreement"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_raw_key_agreement()</span></code></a> instead. Note that in general the shared secret is not
 directly suitable for use as a key because it is biased.</p>
 </div>
 </div>
@@ -529,15 +528,16 @@ implementations can omit the random generation functionality if they do not
 implement any algorithm that requires randomness internally, and they do not
 provide a key generation functionality. For example, a special-purpose component
 for signature verification can omit this.</p>
-<p>It is recommended that applications use <a class="reference internal" href="../api/keys/management.html#c.psa_generate_key" title="psa_generate_key"><code class="xref any c c-func docutils literal"><span class="pre">psa_generate_key()</span></code></a>,
-<a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_generate_iv" title="psa_cipher_generate_iv"><code class="xref any c c-func docutils literal"><span class="pre">psa_cipher_generate_iv()</span></code></a> or <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_generate_nonce" title="psa_aead_generate_nonce"><code class="xref any c c-func docutils literal"><span class="pre">psa_aead_generate_nonce()</span></code></a> to generate
+<p>It is recommended that applications use <a class="reference internal" href="../api/keys/management.html#c.psa_generate_key" title="psa_generate_key"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_generate_key()</span></code></a>,
+<a class="reference internal" href="../api/ops/ciphers.html#c.psa_cipher_generate_iv" title="psa_cipher_generate_iv"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_cipher_generate_iv()</span></code></a> or <a class="reference internal" href="../api/ops/aead.html#c.psa_aead_generate_nonce" title="psa_aead_generate_nonce"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_aead_generate_nonce()</span></code></a> to generate
 suitably-formatted random data, as applicable. In addition, the API includes a
-function <a class="reference internal" href="../api/ops/rng.html#c.psa_generate_random" title="psa_generate_random"><code class="xref any c c-func docutils literal"><span class="pre">psa_generate_random()</span></code></a> to generate and extract arbitrary random data.</p>
+function <a class="reference internal" href="../api/ops/rng.html#c.psa_generate_random" title="psa_generate_random"><code class="xref any c c-func docutils literal notranslate"><span class="pre">psa_generate_random()</span></code></a> to generate and extract arbitrary random data.</p>
 </div>
 </div>
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -598,13 +598,13 @@ Version 1.0.1
 <li class="toctree-l1"><a class="reference internal" href="../psa_c-identifiers.html">Index of API elements</a></li>
 </ul>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -615,8 +615,8 @@ Version 1.0.1
       &copy; 2018-2020, Arm Limited or its affiliates. All rights reserved.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
 

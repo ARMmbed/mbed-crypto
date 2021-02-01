@@ -1,26 +1,17 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>2. Design goals &#8212; PSA Crypto API 1.0.1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '1.0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  false,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -29,15 +20,17 @@
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
+  
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="design-goals">
@@ -50,10 +43,10 @@ devices running custom application code, such as microcontrollers, and
 multi-application devices, such as servers. Consequentially, the interface is
 scalable and modular.</p>
 <ul class="simple">
-<li><em>Scalable</em>: devices only need to implement the functionality that they will
-use.</li>
-<li><em>Modular</em>: larger devices implement larger subsets of the same interface,
-rather than different interfaces.</li>
+<li><p><em>Scalable</em>: devices only need to implement the functionality that they will
+use.</p></li>
+<li><p><em>Modular</em>: larger devices implement larger subsets of the same interface,
+rather than different interfaces.</p></li>
 </ul>
 <p>In this interface, all operations on unbounded amounts of data
 allow <em>multi-part</em> processing, as long as the calculations on the data are
@@ -90,9 +83,9 @@ accesses by function calls. The backend is the part of the implementation that
 is located in a different environment, which is protected from the frontend.
 Various technologies can provide protection, for example:</p>
 <ul class="simple">
-<li>Process isolation in an operating system.</li>
-<li>Partition isolation, either with a virtual machine or a partition manager.</li>
-<li>Physical separation between devices.</li>
+<li><p>Process isolation in an operating system.</p></li>
+<li><p>Partition isolation, either with a virtual machine or a partition manager.</p></li>
+<li><p>Physical separation between devices.</p></li>
 </ul>
 <p>Communication between the frontend and backend is beyond the scope of this
 specification.</p>
@@ -107,19 +100,19 @@ document any implementation-specific extension of the API that enables frontend
 instances to share data in any form.</p>
 <p>In summary, there are three types of implementation:</p>
 <ul class="simple">
-<li>No isolation: there is no security boundary between the application and the
+<li><p>No isolation: there is no security boundary between the application and the
 cryptoprocessor. For example, a statically or dynamically linked library is
-an implementation with no isolation.</li>
-<li>Cryptoprocessor isolation: there is a security boundary between the
+an implementation with no isolation.</p></li>
+<li><p>Cryptoprocessor isolation: there is a security boundary between the
 application and the cryptoprocessor, but the cryptoprocessor does not
 communicate with other applications. For example, a cryptoprocessor chip that
 is a companion to an application processor is an implementation with
-cryptoprocessor isolation.</li>
-<li>Caller isolation: there are multiple application instances, with a security
+cryptoprocessor isolation.</p></li>
+<li><p>Caller isolation: there are multiple application instances, with a security
 boundary between the application instances among themselves, as well as
 between the cryptoprocessor and the application instances. For example, a
 cryptography service in a multiprocess environment is an implementation with
-caller and cryptoprocessor isolation.</li>
+caller and cryptoprocessor isolation.</p></li>
 </ul>
 </div>
 <div class="section" id="choice-of-algorithms">
@@ -214,6 +207,7 @@ populating a device with keys that represent that identity.</p>
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -263,13 +257,13 @@ Version 1.0.1
 <li class="toctree-l1"><a class="reference internal" href="../psa_c-identifiers.html">Index of API elements</a></li>
 </ul>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -280,8 +274,8 @@ Version 1.0.1
       &copy; 2018-2020, Arm Limited or its affiliates. All rights reserved.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
 
