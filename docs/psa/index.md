@@ -22,9 +22,7 @@ The driver interface is being tried out in Mbed TLS. Arm expects to make it an o
 
 For more information, please see the [proposed driver interface](https://github.com/ARMmbed/mbedtls/blob/development/docs/proposed/psa-driver-interface.md) as well as the [ongoing specification and implementation effort](https://github.com/ARMmbed/mbedtls/issues?q=+label%3AHwDrivers+).
 
-PSA includes functional specifications describing a hardware abstraction layer covering [cryptographic accelerators](accel/), [secure elements](se/) and [entropy sources](entropy/).
-
-### Secure element driver interface
+### Dynamic secure element driver interface
 
 The dynamic secure element driver interface lets you write drivers for external cryptoprocessors such as secure elements (SE), smart cards and hardware security modules (HSM) that perform operations on keys that never leave the external processor and are accessed only through opaque handles.
 Such drivers can be loaded dynamically into an implementation of the PSA Cryptography API such as Mbed TLS.

@@ -3,7 +3,7 @@
 The secure element driver interface lets you write drivers for external cryptoprocessors such as secure elements (SE), smart cards and hardware security modules (HSM) that perform operations on keys that never leave the external processor and are accessed only through opaque handles.
 You can plug such drivers into any implementation of the [PSA Cryptography API](../#application-programming-interface).
 
-**Status: draft** — major changes are still likely.
+**Status: obsolescent** — planned to be replaced by the [unified driver interface](../index.html#unified-driver-interface), although the unified interface does not support runtime driver registration.
 
 **Documentation**: for now, please see the header file:
 [`include/psa/crypto_se_driver.h`](https://github.com/ARMmbed/mbedtls/blob/development/include/psa/crypto_se_driver.h)
