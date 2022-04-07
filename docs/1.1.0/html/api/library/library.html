@@ -1,0 +1,177 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>8.2. PSA Crypto library &#8212; PSA Crypto API 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="9. Key management reference" href="../keys/index.html" />
+    <link rel="prev" title="8.1. PSA status codes" href="status.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="psa-crypto-library">
+<h1>8.2. PSA Crypto library</h1>
+<div class="section" id="api-version">
+<span id="id1"></span><h2>8.2.1. API version</h2>
+<div class="section" id="PSA_CRYPTO_API_VERSION_MAJOR">
+<span id="c.PSA_CRYPTO_API_VERSION_MAJOR"></span><h3><code class="docutils literal"><span class="pre">PSA_CRYPTO_API_VERSION_MAJOR</span></code> (macro)</h3>
+<p>The major version of this implementation of the PSA Crypto API.</p>
+<pre class="literal-block">
+#define <a class="reference internal" href="#c.PSA_CRYPTO_API_VERSION_MAJOR" title="PSA_CRYPTO_API_VERSION_MAJOR">PSA_CRYPTO_API_VERSION_MAJOR</a> 1
+</pre>
+</div>
+<div class="section" id="PSA_CRYPTO_API_VERSION_MINOR">
+<span id="c.PSA_CRYPTO_API_VERSION_MINOR"></span><h3><code class="docutils literal"><span class="pre">PSA_CRYPTO_API_VERSION_MINOR</span></code> (macro)</h3>
+<p>The minor version of this implementation of the PSA Crypto API.</p>
+<pre class="literal-block">
+#define <a class="reference internal" href="#c.PSA_CRYPTO_API_VERSION_MINOR" title="PSA_CRYPTO_API_VERSION_MINOR">PSA_CRYPTO_API_VERSION_MINOR</a> 1
+</pre>
+</div>
+</div>
+<div class="section" id="library-initialization">
+<span id="library-init"></span><h2>8.2.2. Library initialization</h2>
+<div class="section" id="psa_crypto_init">
+<span id="c.psa_crypto_init"></span><h3><code class="docutils literal"><span class="pre">psa_crypto_init</span></code> (function)</h3>
+<p>Library initialization.</p>
+<pre class="literal-block">
+<a class="reference internal" href="status.html#c.psa_status_t" title="psa_status_t">psa_status_t</a> <a class="reference internal" href="#c.psa_crypto_init" title="psa_crypto_init">psa_crypto_init</a>(void);
+</pre>
+<p class="rubric">Returns: <a class="reference internal" href="status.html#c.psa_status_t" title="psa_status_t"><code class="docutils literal"><span class="pre">psa_status_t</span></code></a></p>
+<dl class="docutils">
+<dt> <a class="reference internal" href="status.html#c.PSA_SUCCESS" title="PSA_SUCCESS"><code class="docutils literal"><span class="pre">PSA_SUCCESS</span></code></a></dt>
+<dd>Success.</dd>
+<dt> <a class="reference internal" href="status.html#c.PSA_ERROR_INSUFFICIENT_ENTROPY" title="PSA_ERROR_INSUFFICIENT_ENTROPY"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_ENTROPY</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="status.html#c.PSA_ERROR_INSUFFICIENT_MEMORY" title="PSA_ERROR_INSUFFICIENT_MEMORY"><code class="docutils literal"><span class="pre">PSA_ERROR_INSUFFICIENT_MEMORY</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="status.html#c.PSA_ERROR_COMMUNICATION_FAILURE" title="PSA_ERROR_COMMUNICATION_FAILURE"><code class="docutils literal"><span class="pre">PSA_ERROR_COMMUNICATION_FAILURE</span></code></a></dt>
+<dd></dd>
+<dt> <a class="reference internal" href="status.html#c.PSA_ERROR_CORRUPTION_DETECTED" title="PSA_ERROR_CORRUPTION_DETECTED"><code class="docutils literal"><span class="pre">PSA_ERROR_CORRUPTION_DETECTED</span></code></a></dt>
+<dd></dd>
+</dl>
+<p class="rubric">Description</p>
+<p>It is recommended that applications call this function before calling any other function in this module.</p>
+<p>Applications are permitted to call this function more than once. Once a call succeeds, subsequent calls are guaranteed to succeed.</p>
+<p>If the application calls any function that returns a <a class="reference internal" href="status.html#c.psa_status_t" title="psa_status_t"><code class="xref any c c-type docutils literal"><span class="pre">psa_status_t</span></code></a> result code before calling <a class="reference internal" href="#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_crypto_init()</span></code></a>, the following will occur:</p>
+<ul class="simple">
+<li>If initialization of the library is essential for secure operation of the function, the implementation must return <a class="reference internal" href="status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a> or other appropriate error.</li>
+<li>If failure to initialize the library does not compromise the security of the function, the implementation must either provide the expected result for the function, or return <a class="reference internal" href="status.html#c.PSA_ERROR_BAD_STATE" title="PSA_ERROR_BAD_STATE"><code class="xref any c c-macro docutils literal"><span class="pre">PSA_ERROR_BAD_STATE</span></code></a> or other appropriate error.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The following scenarios are examples where an implementation can require that the library has been initialized by calling <a class="reference internal" href="#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_crypto_init()</span></code></a>:</p>
+<ul class="last simple">
+<li>A client-server implementation, in which <a class="reference internal" href="#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_crypto_init()</span></code></a> establishes the communication with the server. No key management or cryptographic operation can be performed until this is done.</li>
+<li>An implementation in which <a class="reference internal" href="#c.psa_crypto_init" title="psa_crypto_init"><code class="xref any c c-func docutils literal"><span class="pre">psa_crypto_init()</span></code></a> initializes the random bit generator, and no operations that require the RNG can be performed until this is done. For example, random data, key, IV, or nonce generation; randomized signature or encryption; and algorithms that are implemented with blinding.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The set of functions that depend on successful initialization of the library is <a class="reference internal" href="../../about.html#term-implementation-defined"><span class="scterm">IMPLEMENTATION DEFINED</span></a>. Applications that rely on calling functions before initializing the library might not be portable to other implementations.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3><a href="../../index.html"><b>PSA Crypto API</b></a></h3>
+IHI 0086<br/>
+Non-confidential<br/>
+Version 1.1.0
+<span style="color: red; font-weight: bold;"></span>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About this document</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview/intro.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/goals.html">2. Design goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/functionality.html">3. Functionality overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/sample-arch.html">4. Sample architectures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/conventions.html">5. Library conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/implementation.html">6. Implementation considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview/usage.html">7. Usage considerations</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">8. Library management reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="status.html">8.1. PSA status codes</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">8.2. PSA Crypto library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#api-version">8.2.1. API version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#library-initialization">8.2.2. Library initialization</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../keys/index.html">9. Key management reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ops/index.html">10. Cryptographic operation reference</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../appendix/example_header.html">Example header file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendix/encodings.html">Algorithm and key type encoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendix/specdef_values.html">Example macro implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendix/sra.html">Security Risk Assessment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendix/history.html">Changes to the API</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../psa_c-identifiers.html">Index of API elements</a></li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy; 2018-2022, Arm Limited or its affiliates. All rights reserved.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

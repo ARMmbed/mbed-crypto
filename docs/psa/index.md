@@ -16,6 +16,9 @@ Past versions:
 * 1.0.1:
   [HTML](../1.0.1/html/index.html),
   [PDF](../1.0.1/PSA_Cryptography_API_Specification.pdf)
+* 1.1.0:
+  [HTML](../1.1.0/html/index.html),
+  [PDF](../1.1.0/PSA_Cryptography_API_Specification.pdf)
 
 **Reference implementation**: [Mbed TLS](https://github.com/ARMmbed/mbed-tls)
 
