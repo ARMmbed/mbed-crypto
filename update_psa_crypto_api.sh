@@ -28,5 +28,21 @@ if [ $# -ne 1 ] || [ "$1" = "--help" ]; then
   exit $(($# != 1))
 fi
 
-rsync -a --delete "$1/sphinx-build/html" docs/
-rsync -a "$1/sphinx-build/latex/psa_crypto_api.pdf" docs/PSA_Cryptography_API_Specification.pdf
+version=$(sed -n 's/^\(Version[^0-9A-Za-z][^0-9A-Za-z]*\)//p; T; q' "$1/sphinx-build/html/index.html")
+if [ -z "$version" ]; then
+    echo >&2 "Fatal error: unable to determine the version."
+    exit 1
+fi
+if [ ! -d "docs/$version" ]; then
+    mkdir "docs/$version"
+    cat <<EOF
+NOTE: Please update "Past versions" in docs/psa/index.md to add $version
+      then run make.
+
+NOTE: You may need to update the "latest" symbolic link.
+    ln -snf "$version" docs/latest
+EOF
+fi
+
+rsync -a --delete "$1/sphinx-build/html" "docs/$version/"
+rsync -a "$1/sphinx-build/latex/psa_crypto_api.pdf" "docs/$version/PSA_Cryptography_API_Specification.pdf"
