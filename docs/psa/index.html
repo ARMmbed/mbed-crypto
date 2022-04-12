@@ -9,6 +9,12 @@
 <li>1.1.0: <a href="../1.1.0/html/index.html">HTML</a>, <a href="../1.1.0/PSA_Cryptography_API_Specification.pdf">PDF</a></li>
 </ul>
 <p><strong>Reference implementation</strong>: <a href="https://github.com/ARMmbed/mbed-tls">Mbed TLS</a></p>
+<h3 id="pake-extension">PAKE extension</h3>
+<p>The PAKE extension is a draft to extend the PSA Cryptography API to support PAKE (password-authenticated key exchange) algorithms. It is currently in draft status. Arm intends to eventually integrate it as an optional part of the API. As long as this extension has draft status, it may undergo incompatible changes without notice.</p>
+<p>Versions:</p>
+<ul>
+<li>0-bet.0: <a href="../1.1_PAKE_Extension.0-bet.0/html/index.html">HTML</a>, <a href="../1.1_PAKE_Extension.0-bet.0/psa_crypto_api_pake_ext.pdf">PDF</a></li>
+</ul>
 <h2 id="hardware-abstraction-layer">Hardware abstraction layer</h2>
 <h3 id="unified-driver-interface">Unified driver interface</h3>
 <p>There is work in progress to define a PSA cryptography driver interface, allowing an implementation of the PSA Cryptography API to make use of dedicated hardware (accelerators, secure elements, random generators, etc.) or other external systems such as a remote key store. The driver interface is being tried out in Mbed TLS. Arm expects to make it an official PSA specification once it has been sufficiently validated.</p>

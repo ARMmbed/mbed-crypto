@@ -22,6 +22,16 @@ Past versions:
 
 **Reference implementation**: [Mbed TLS](https://github.com/ARMmbed/mbed-tls)
 
+### PAKE extension
+
+The PAKE extension is a draft to extend the PSA Cryptography API to support PAKE (password-authenticated key exchange) algorithms. It is currently in draft status. Arm intends to eventually integrate it as an optional part of the API. As long as this extension has draft status, it may undergo incompatible changes without notice.
+
+Versions:
+
+* 0-bet.0:
+  [HTML](../1.1_PAKE_Extension.0-bet.0/html/index.html),
+  [PDF](../1.1_PAKE_Extension.0-bet.0/psa_crypto_api_pake_ext.pdf)
+
 ## Hardware abstraction layer
 
 ### Unified driver interface
