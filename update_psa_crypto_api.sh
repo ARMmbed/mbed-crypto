@@ -13,7 +13,7 @@ Update the rendered copy of the PSA Cryptography API specification.
 2. Build the specification.
     cd psa-crypto-api
     sudo docker build -t psa_api - <psa-crypto-api/scripts/Dockerfile
-    sudo docker run -i -t -u \$(id -u):\$(id -g) -v \$PWD:/var/lib/builds psa_api make
+    sudo docker run -i -t -u \$(id -u):\$(id -g) -v \$PWD:/var/lib/builds psa_api -c make
     cd ..
 3. Copy the rendered files.
     $0 psa-crypto-api
