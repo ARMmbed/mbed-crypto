@@ -1,0 +1,181 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>PSA Cryptography API 1.1 PAKE Extension &#8212; PSA Crypto API PAKE Extension 1.1 PAKE Extension.0-bet.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.1 PAKE Extension.0-bet.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="About this document" href="about.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <a class="reference internal image-reference" href="_images/Arm_logo_blue_150LG.png"><img alt="_images/Arm_logo_blue_150LG.png" class="align-right" src="_images/Arm_logo_blue_150LG.png" style="width: 5cm;" /></a>
+<div class="section" id="doctitle-docversion">
+<h1>PSA Cryptography API 1.1 PAKE Extension</h1>
+<table border="1" class="titletable docutils align-left">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Document number:</td>
+<td>AES 0058</td>
+</tr>
+<tr class="row-even"><td>Release Quality:</td>
+<td>Beta</td>
+</tr>
+<tr class="row-odd"><td>Issue Number:</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>Confidentiality:</td>
+<td>Non-confidential</td>
+</tr>
+<tr class="row-odd"><td>Date of Issue:</td>
+<td>10/02/2022</td>
+</tr>
+</tbody>
+</table>
+<p class="titlecopyright">Copyright © 2022, Arm Limited. All rights reserved.</p>
+<div class="banner admonition docutils container">
+<p>BETA RELEASE</p>
+<p>This is a proposed update to the <em>IHI 0086 PSA Cryptography API 1.1</em> specification.</p>
+<p>This is a BETA release in order to enable wider review and feedback on the changes proposed to be included in a future version of the specification.</p>
+<p>At this quality level, the proposed changes and interfaces are complete, and suitable for initial product development. However, the specification is still subject to change.</p>
+</div>
+<p><span class="sectiontitle">Abstract</span></p>
+<p>This document is part of the PSA family of specifications.
+It defines an extension to the PSA Cryptography API, to introduce support for Password-authenticated key exchange (PAKE) algorithms.</p>
+<p><span class="sectiontitle">Contents</span></p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About this document</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="about.html#release-information">Release information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#arm-non-confidential-document-licence-licence">Arm Non-Confidential Document Licence (“Licence”)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#references">References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#terms-and-abbreviations">Terms and abbreviations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#conventions">Conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#current-status-and-anticipated-changes">Current status and anticipated changes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#feedback">Feedback</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">1. Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#objectives-for-the-pake-extension">1.1. Objectives for the PAKE Extension</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="intro.html#scheme-review">1.1.1. Scheme review</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro.html#scope-of-the-pake-extension">1.1.2. Scope of the PAKE Extension</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pake.html">2. Password-authenticated key exchange (PAKE)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pake.html#algorithm-encoding">2.1. Algorithm encoding</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pake.html#pake-algorithm-encoding">2.1.1. PAKE algorithm encoding</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pake.html#changes-and-additions-to-the-programming-api">2.2. Changes and additions to the Programming API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pake.html#pake-algorithms">2.2.1. PAKE algorithms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pake.html#pake-primitives">2.2.2. PAKE primitives</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pake.html#pake-cipher-suites">2.2.3. PAKE cipher suites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pake.html#pake-roles">2.2.4. PAKE roles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pake.html#pake-step-types">2.2.5. PAKE step types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pake.html#multi-part-pake-operations">2.2.6. Multi-part PAKE operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pake.html#support-macros">2.2.7. Support macros</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="example_header.html">Example header file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specdef_values.html">Example macro implementations</a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3><a href="#"><b>PSA Crypto API PAKE Extension</b></a></h3>
+AES 0058<br/>
+Non-confidential<br/>
+Version 1.1 PAKE Extension.0-bet.0
+<span style="color: red; font-weight: bold;"></span>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About this document</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pake.html">2. Password-authenticated key exchange (PAKE)</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="example_header.html">Example header file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specdef_values.html">Example macro implementations</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="psa_c-identifiers.html">Index of API elements</a></li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy; 2022, Arm Limited or its affiliates. All rights reserved.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
