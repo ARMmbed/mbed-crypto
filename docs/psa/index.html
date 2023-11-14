@@ -1,27 +1,9 @@
-<h1 id="psa-cryptography-interfaces">PSA cryptography interfaces</h1>
-<p>This page contains technical information about the cryptography interfaces in the Arm Platform Security Architecture (PSA) and related documents and software. For more information about the Platform Security Architecture, see <a href="https://developer.arm.com/architectures/security-architectures/platform-security-architecture">the Arm Developer website</a>.</p>
-<h2 id="application-programming-interface">Application programming interface</h2>
-<p>The PSA Cryptography API is a C programming interface for applications that wish to store cryptographic keys and use them to perform cryptographic operations.</p>
-<p><strong>Reference documentation</strong>: <a href="../html/index.html">HTML</a>, <a href="../PSA_Cryptography_API_Specification.pdf">PDF</a></p>
-<p>Past versions:</p>
-<ul>
-<li>1.0.1: <a href="../1.0.1/html/index.html">HTML</a>, <a href="../1.0.1/PSA_Cryptography_API_Specification.pdf">PDF</a></li>
-<li>1.1.0: <a href="../1.1.0/html/index.html">HTML</a>, <a href="../1.1.0/PSA_Cryptography_API_Specification.pdf">PDF</a></li>
-</ul>
-<p><strong>Reference implementation</strong>: <a href="https://github.com/ARMmbed/mbed-tls">Mbed TLS</a></p>
-<h3 id="pake-extension">PAKE extension</h3>
-<p>The PAKE extension is a draft to extend the PSA Cryptography API to support PAKE (password-authenticated key exchange) algorithms. It is currently in draft status. Arm intends to eventually integrate it as an optional part of the API. As long as this extension has draft status, it may undergo incompatible changes without notice.</p>
-<p>Versions:</p>
-<ul>
-<li>0-bet.0: <a href="../1.1_PAKE_Extension.0-bet.0/html/index.html">HTML</a>, <a href="../1.1_PAKE_Extension.0-bet.0/psa_crypto_api_pake_ext.pdf">PDF</a></li>
-</ul>
-<h2 id="hardware-abstraction-layer">Hardware abstraction layer</h2>
-<h3 id="unified-driver-interface">Unified driver interface</h3>
-<p>There is work in progress to define a PSA cryptography driver interface, allowing an implementation of the PSA Cryptography API to make use of dedicated hardware (accelerators, secure elements, random generators, etc.) or other external systems such as a remote key store. The driver interface is being tried out in Mbed TLS. Arm expects to make it an official PSA specification once it has been sufficiently validated.</p>
-<p>For more information, please see the <a href="https://github.com/ARMmbed/mbedtls/blob/development/docs/proposed/psa-driver-interface.md">proposed driver interface</a> as well as the <a href="https://github.com/ARMmbed/mbedtls/issues?q=+label%3AHwDrivers+">ongoing specification and implementation effort</a>.</p>
-<h3 id="dynamic-secure-element-driver-interface">Dynamic secure element driver interface</h3>
-<p>The dynamic secure element driver interface lets you write drivers for external cryptoprocessors such as secure elements (SE), smart cards and hardware security modules (HSM) that perform operations on keys that never leave the external processor and are accessed only through opaque handles. Such drivers can be loaded dynamically into an implementation of the PSA Cryptography API such as Mbed TLS.</p>
-<p>Work on this interface is currently frozen. The <a href="#unified-driver-interface">unified driver interface</a> replaces the older dynamic secure element driver for most purposes. The older interface has the advantage of allowing drivers to be dynamically loaded. If there is widespread demand for dynamic loading of secure element drivers, Arm may revive the effort on the older interface or merge it into the unified interface.</p>
-<p>For more information, see <a href="se/">PSA secure element driver interface</a>.</p>
-<h2 id="feedback">Feedback</h2>
-<p>Arm welcomes feedback on the design of the PSA cryptography interfaces. If you think something could be improved, please open an <a href="https://github.com/ARMmbed/mbedtls/labels/api-spec">issue on the Mbed TLS GitHub repository</a>. Alternatively, if you prefer to provide your feedback privately, please email us at <code>mbed-crypto@arm.com</code>. All feedback received by email is treated confidentially.</p>
+<html>
+  <head>
+    <title>Redirecting to https://arm-software.github.io/psa-api/crypto/</title>
+    <meta http-equiv="Refresh" content="0; url='https://arm-software.github.io/psa-api/crypto/'" />
+  </head>
+  <body>
+    <p>This page has moved to <a href="https://arm-software.github.io/psa-api/crypto/">https://arm-software.github.io/psa-api/crypto/</a>.</p>
+  </body>
+</html>
